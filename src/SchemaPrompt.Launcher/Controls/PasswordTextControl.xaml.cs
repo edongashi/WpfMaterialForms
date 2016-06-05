@@ -12,25 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
 using SchemaPrompt.Launcher.Schema;
 
-namespace SchemaPrompt.Launcher
+namespace SchemaPrompt.Launcher.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SingleLineTextControl.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class PasswordTextControl : UserControl
     {
-        public MainWindow()
+        public PasswordTextControl()
         {
             InitializeComponent();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SchemaPrompt.Launcher.Controls.SingleLineTextControl"
+﻿<UserControl x:Class="SchemaPrompt.Launcher.Controls.DatePickerControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Schema="clr-namespace:SchemaPrompt.Launcher.Schema"
@@ -13,7 +13,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <Schema:StringSchemaViewModel />
+        <Schema:SelectionSchemaViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
         <launcher:BindingProxy x:Key="Proxy" Data="{Binding}" />
@@ -34,15 +34,16 @@
                                                       ElementName=ContentTextBox}"
                                  Kind="{Binding IconKind}"
                                  Visibility="{Binding IconVisibility}" />
-        <TextBox x:Name="ContentTextBox"
-                 Grid.Column="1"
-                 Margin="8,0"
-                 VerticalAlignment="Center"
-                 materialDesign:HintAssist.Hint="{Binding Hint}"
-                 FontSize="16"
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 ToolTip="{Binding ToolTip}">
-            <TextBox.Text>
+        <ComboBox x:Name="ContentTextBox"
+                  Grid.Column="1"
+                  Margin="8,0"
+                  VerticalAlignment="Center"
+                  materialDesign:HintAssist.Hint="{Binding Hint}"
+                  FontSize="16"
+                  ItemsSource="{Binding Items}"
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                  ToolTip="{Binding ToolTip}">
+            <ComboBox.SelectedItem>
                 <Binding Path="Value">
                     <Binding.ValidationRules>
                         <Validation:BindableValidationRule>
@@ -52,7 +53,7 @@
                         </Validation:BindableValidationRule>
                     </Binding.ValidationRules>
                 </Binding>
-            </TextBox.Text>
-        </TextBox>
+            </ComboBox.SelectedItem>
+        </ComboBox>
     </Grid>
 </UserControl>

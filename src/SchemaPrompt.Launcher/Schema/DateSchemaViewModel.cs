@@ -6,8 +6,8 @@ using System.Windows;
 
 namespace SchemaPrompt.Launcher.Schema
 {
-    public class StringSchemaViewModel : BaseSchemaViewModel
+    public class DateTimeSchemaViewModel : BaseSchemaViewModel
     {
-        public string Value { get; set; } = "";
+        public DateTime Value { get; set; }
     }
 }

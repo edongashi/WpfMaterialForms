@@ -8,18 +8,21 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    Title=""
-                   Width="500"
+                   Width="400"
                    Height="Auto"
                    MinWidth="200"
                    Background="{DynamicResource MaterialDesignPaper}"
                    EnableDWMDropShadow="True"
                    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                   ResizeMode="CanMinimize"
+                   ShowCloseButton="False"
                    ShowMaxRestoreButton="False"
-                   ShowMinButton="True"
+                   ShowMinButton="False"
                    SizeToContent="Height"
                    Style="{DynamicResource CleanWindowStyleKey}"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-                   mc:Ignorable="d" ResizeMode="CanMinimize">
+                   WindowStartupLocation="CenterScreen"
+                   mc:Ignorable="d">
     <Grid>
         <ScrollViewer Margin="0"
                       VerticalScrollBarVisibility="Auto"
@@ -29,34 +32,41 @@
                             Margin="24,0"
                             Orientation="Vertical">
                     <TextBlock x:Name="Title"
-                               Margin="0,4,0,12"
+                               Margin="0,0,0,16"
                                Style="{StaticResource MaterialDesignTitleTextBlock}"
-                               Text="Konfigurimi"
+                               Text="Identifikimi"
                                TextWrapping="Wrap" />
                     <TextBlock x:Name="Subheading"
-                               Margin="0,4,0,12"
-                               Foreground="#B2000000"
+                               Margin="0,0,0,12"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}"
                                LineHeight="24"
                                Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-                               Text="Jepni parametrat e parserit. Vendoseni mausin permbi fusha per informacione me te hollesishme"
+                               Text="Jepni perdoruesin dhe fjalekalimin per te vazhduar"
                                TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel x:Name="ControlsStackPanel"
                             Margin="24,0,24,24"
                             Orientation="Vertical">
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="Width, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:DatePickerControl x:Name="first"
+                                                Margin="0"
+                                                d:LayoutOverrides="Width, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:ComboBoxControl x:Name="second"
+                                              Margin="0"
+                                              d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl x:Name="third"
+                                                    Margin="0"
+                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl x:Name="fourth"
+                                                    Margin="0"
+                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
                 </StackPanel>
                 <StackPanel x:Name="ButtonsStackPanel"
                             Margin="8"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
-                    <Button Content="CANCEL"
+                    <Button x:Name="CancelButton"
+                            Click="CancelButton_Click"
+                            Content="CANCEL"
                             Style="{StaticResource MaterialDesignFlatButton}"
                             ToolTip="MaterialDesignFlatButton" />
                     <Button Margin="0,0,8,0"
