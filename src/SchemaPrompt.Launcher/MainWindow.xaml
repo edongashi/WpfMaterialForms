@@ -1,0 +1,70 @@
+﻿<metro:MetroWindow x:Class="SchemaPrompt.Launcher.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:Controls="clr-namespace:SchemaPrompt.Launcher.Controls"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:local="clr-namespace:SchemaPrompt.Launcher"
+                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   Title=""
+                   Width="500"
+                   Height="Auto"
+                   MinWidth="200"
+                   Background="{DynamicResource MaterialDesignPaper}"
+                   EnableDWMDropShadow="True"
+                   FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                   ShowMaxRestoreButton="False"
+                   ShowMinButton="True"
+                   SizeToContent="Height"
+                   Style="{DynamicResource CleanWindowStyleKey}"
+                   TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                   mc:Ignorable="d" ResizeMode="CanMinimize">
+    <Grid>
+        <ScrollViewer Margin="0"
+                      VerticalScrollBarVisibility="Auto"
+                      d:LayoutOverrides="Height">
+            <StackPanel Margin="0,0,0,8" VerticalAlignment="Top">
+                <StackPanel x:Name="TitleStackPanel"
+                            Margin="24,0"
+                            Orientation="Vertical">
+                    <TextBlock x:Name="Title"
+                               Margin="0,4,0,12"
+                               Style="{StaticResource MaterialDesignTitleTextBlock}"
+                               Text="Konfigurimi"
+                               TextWrapping="Wrap" />
+                    <TextBlock x:Name="Subheading"
+                               Margin="0,4,0,12"
+                               Foreground="#B2000000"
+                               LineHeight="24"
+                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                               Text="Jepni parametrat e parserit. Vendoseni mausin permbi fusha per informacione me te hollesishme"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel x:Name="ControlsStackPanel"
+                            Margin="24,0,24,24"
+                            Orientation="Vertical">
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="Width, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SingleLineTextControl Margin="0" d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                </StackPanel>
+                <StackPanel x:Name="ButtonsStackPanel"
+                            Margin="8"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Content="CANCEL"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="MaterialDesignFlatButton" />
+                    <Button Margin="0,0,8,0"
+                            Content="ACCEPT"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="MaterialDesignFlatButton" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</metro:MetroWindow>
