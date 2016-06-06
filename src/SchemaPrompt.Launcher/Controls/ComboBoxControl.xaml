@@ -31,17 +31,18 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Foreground="{Binding BorderBrush,
-                                                      ElementName=ContentTextBox}"
+                                                      ElementName=ValueHolderControl}"
                                  Kind="{Binding IconKind}"
                                  Visibility="{Binding IconVisibility}" />
-        <ComboBox x:Name="ContentTextBox"
+        <ComboBox x:Name="ValueHolderControl"
                   Grid.Column="1"
                   Margin="8,0"
                   VerticalAlignment="Center"
                   materialDesign:HintAssist.Hint="{Binding Hint}"
                   FontSize="16"
+                  ItemsSource="{Binding Items}"
                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  ToolTip="{Binding ToolTip}" ItemsSource="{Binding Items}">
+                  ToolTip="{Binding ToolTip}">
             <ComboBox.SelectedItem>
                 <Binding Path="Value">
                     <Binding.ValidationRules>

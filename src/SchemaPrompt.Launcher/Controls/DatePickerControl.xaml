@@ -13,7 +13,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <Schema:SelectionSchemaViewModel />
+        <Schema:DateSchemaViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
         <launcher:BindingProxy x:Key="Proxy" Data="{Binding}" />
@@ -31,19 +31,18 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Foreground="{Binding BorderBrush,
-                                                      ElementName=ContentTextBox}"
+                                                      ElementName=ValueHolderControl}"
                                  Kind="{Binding IconKind}"
                                  Visibility="{Binding IconVisibility}" />
-        <ComboBox x:Name="ContentTextBox"
-                  Grid.Column="1"
-                  Margin="8,0"
-                  VerticalAlignment="Center"
-                  materialDesign:HintAssist.Hint="{Binding Hint}"
-                  FontSize="16"
-                  ItemsSource="{Binding Items}"
-                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  ToolTip="{Binding ToolTip}">
-            <ComboBox.SelectedItem>
+        <DatePicker x:Name="ValueHolderControl"
+                    Grid.Column="1"
+                    Margin="8,0,8,-11.5"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="{Binding Hint}"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                    ToolTip="{Binding ToolTip}">
+            <DatePicker.SelectedDate>
                 <Binding Path="Value">
                     <Binding.ValidationRules>
                         <Validation:BindableValidationRule>
@@ -53,7 +52,7 @@
                         </Validation:BindableValidationRule>
                     </Binding.ValidationRules>
                 </Binding>
-            </ComboBox.SelectedItem>
-        </ComboBox>
+            </DatePicker.SelectedDate>
+        </DatePicker>
     </Grid>
 </UserControl>

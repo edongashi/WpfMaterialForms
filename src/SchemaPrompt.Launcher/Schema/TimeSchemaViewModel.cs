@@ -6,8 +6,10 @@ using System.Windows;
 
 namespace SchemaPrompt.Launcher.Schema
 {
-    public class DateSchemaViewModel : BaseSchemaViewModel
+    public class TimeSchemaViewModel : BaseSchemaViewModel
     {
-        public DateTime? Value { get; set; }
+        public string Value { get; set; }
+
+        public bool Is24Hours { get; set; } = true;
     }
 }

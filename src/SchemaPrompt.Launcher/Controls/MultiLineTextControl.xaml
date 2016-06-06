@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SchemaPrompt.Launcher.Controls.SingleLineTextControl"
+﻿<UserControl x:Class="SchemaPrompt.Launcher.Controls.MultiLineTextControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Schema="clr-namespace:SchemaPrompt.Launcher.Schema"
@@ -7,7 +7,7 @@
              xmlns:launcher="clr-namespace:SchemaPrompt.Launcher"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Height="64"
+             Height="102"
              Margin="16,0"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -36,12 +36,16 @@
                                  Visibility="{Binding IconVisibility}" />
         <TextBox x:Name="ValueHolderControl"
                  Grid.Column="1"
+                 Height="84"
                  Margin="8,0"
                  VerticalAlignment="Center"
                  materialDesign:HintAssist.Hint="{Binding Hint}"
+                 AcceptsReturn="True"
                  FontSize="16"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 ToolTip="{Binding ToolTip}">
+                 TextWrapping="Wrap"
+                 ToolTip="{Binding ToolTip}"
+                 VerticalScrollBarVisibility="Auto">
             <TextBox.Text>
                 <Binding Path="Value">
                     <Binding.ValidationRules>

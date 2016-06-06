@@ -63,6 +63,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\MultiLineTextControl.xaml.cs">
+      <DependentUpon>MultiLineTextControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TimePickerControl.xaml.cs">
+      <DependentUpon>TimePickerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DatePickerControl.xaml.cs">
       <DependentUpon>DatePickerControl.xaml</DependentUpon>
     </Compile>
@@ -73,6 +79,7 @@
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schema\BaseSchemaViewModel.cs" />
+    <Compile Include="Schema\TimeSchemaViewModel.cs" />
     <Compile Include="Schema\SelectionSchemaViewModel.cs" />
     <Compile Include="Schema\StringSchemaViewModel.cs" />
     <Compile Include="Schema\DateSchemaViewModel.cs" />
@@ -80,6 +87,14 @@
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
+    <Page Include="Controls\MultiLineTextControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TimePickerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DatePickerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
