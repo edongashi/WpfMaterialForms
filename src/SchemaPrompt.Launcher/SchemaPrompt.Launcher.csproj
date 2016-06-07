@@ -66,6 +66,9 @@
     <Compile Include="Controls\MultiLineTextControl.xaml.cs">
       <DependentUpon>MultiLineTextControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SliderControl.xaml.cs">
+      <DependentUpon>SliderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TimePickerControl.xaml.cs">
       <DependentUpon>TimePickerControl.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,7 @@
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schema\BaseSchemaViewModel.cs" />
+    <Compile Include="Schema\NumberRangeSchemaViewModel.cs" />
     <Compile Include="Schema\TimeSchemaViewModel.cs" />
     <Compile Include="Schema\SelectionSchemaViewModel.cs" />
     <Compile Include="Schema\StringSchemaViewModel.cs" />
@@ -88,6 +92,10 @@
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
     <Page Include="Controls\MultiLineTextControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SliderControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
