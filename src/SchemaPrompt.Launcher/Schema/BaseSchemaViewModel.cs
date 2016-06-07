@@ -16,11 +16,11 @@ namespace SchemaPrompt.Launcher.Schema
 
         public Visibility IconVisibility { get; set; } = Visibility.Visible;
 
-        public PackIconKind IconKind { get; set; } = PackIconKind.Account; //(PackIconKind)Random.Next((600));
+        public PackIconKind IconKind { get; set; } = (PackIconKind)Random.Next((600));
 
         public string Hint { get; set; } = "Floating hint here";
 
-        public string ToolTip { get; set; } = null;
+        public string ToolTip { get; set; } = "Floating hint here";
 
         public ValidationRule ValidationRule { get; set; } = new NotEmptyValidationRule();
     }

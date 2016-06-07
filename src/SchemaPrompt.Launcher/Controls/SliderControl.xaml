@@ -17,13 +17,13 @@
             <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -55,13 +55,10 @@
                    Padding="0,0,0,10"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                    Text="{Binding Hint}"
-                   TextWrapping="Wrap"
-                   ToolTip="{Binding ToolTip}"
-                   d:LayoutOverrides="Height" />
+                   ToolTip="{Binding ToolTip}" />
         <Slider x:Name="ValueHolderControl"
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                FontSize="36"
                 Style="{StaticResource MaterialDesignDiscreteSlider}" />
     </Grid>
 </UserControl>

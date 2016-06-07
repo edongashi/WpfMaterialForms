@@ -50,15 +50,26 @@
                     <Controls:DatePickerControl x:Name="first"
                                                 Margin="0"
                                                 d:LayoutOverrides="Width, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:MultiLineTextControl x:Name="second"
-                                                   Margin="0"
-                                                   d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl x:Name="third"
+                     <Controls:SingleLineTextControl x:Name="third"
                                                     Margin="0"
                                                     d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:TimePickerControl x:Name="fourth"
-                                                Margin="0"
-                                                d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SliderControl x:Name="fourth"
+                                            Margin="0"
+                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+
+                    <Controls:ComboBoxControl 
+                                            Margin="0"
+                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+
+                    <Controls:TimePickerControl 
+                                            Margin="0"
+                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+
+                    <Controls:PasswordTextControl 
+                                            Margin="0"
+                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+
+
                 </StackPanel>
                 <StackPanel x:Name="ButtonsStackPanel"
                             Margin="8"
