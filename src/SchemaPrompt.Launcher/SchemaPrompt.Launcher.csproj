@@ -63,6 +63,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ButtonControl.xaml.cs">
+      <DependentUpon>ButtonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CaptionControl.xaml.cs">
+      <DependentUpon>CaptionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MultiLineTextControl.xaml.cs">
       <DependentUpon>MultiLineTextControl.xaml</DependentUpon>
     </Compile>
@@ -98,6 +104,14 @@
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
+    <Page Include="Controls\ButtonControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CaptionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\MultiLineTextControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

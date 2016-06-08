@@ -18,9 +18,9 @@ namespace SchemaPrompt.Launcher.Schema
 
         public PackIconKind IconKind { get; set; } = (PackIconKind)Random.Next((600));
 
-        public string Hint { get; set; } = "Floating hint here";
+        public string Hint { get; set; } = "Control Hint";
 
-        public string ToolTip { get; set; } = "Floating hint here";
+        public string ToolTip { get; set; } = "Control Tooltip";
 
         public ValidationRule ValidationRule { get; set; } = new NotEmptyValidationRule();
     }

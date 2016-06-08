@@ -8,7 +8,6 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Height="64"
-             Margin="16,0"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -35,7 +34,7 @@
                                  Grid.Column="0"
                                  Width="24"
                                  Height="24"
-                                 Margin="8,14,8,0"
+                                 Margin="0,0,16,0"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Kind="{Binding IconKind}"
@@ -43,10 +42,11 @@
                                  Visibility="{Binding IconVisibility}" />
         <TextBox x:Name="ValueHolderControl"
                  Grid.Column="1"
-                 Margin="8,0"
+                 Margin="0,-14,0,0"
                  VerticalAlignment="Center"
                  materialDesign:HintAssist.Hint="{Binding Hint}"
                  FontSize="16"
+                 Padding="0,1"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  ToolTip="{Binding ToolTip}">
             <TextBox.Text>
