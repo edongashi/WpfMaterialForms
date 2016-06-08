@@ -66,6 +66,12 @@
     <Compile Include="Controls\MultiLineTextControl.xaml.cs">
       <DependentUpon>MultiLineTextControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CheckBoxControl.xaml.cs">
+      <DependentUpon>CheckBoxControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SwitchControl.xaml.cs">
+      <DependentUpon>SwitchControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SliderControl.xaml.cs">
       <DependentUpon>SliderControl.xaml</DependentUpon>
     </Compile>
@@ -83,6 +89,7 @@
     </Compile>
     <Compile Include="Schema\BaseSchemaViewModel.cs" />
     <Compile Include="Schema\NumberRangeSchemaViewModel.cs" />
+    <Compile Include="Schema\BooleanSchemaViewModel.cs" />
     <Compile Include="Schema\TimeSchemaViewModel.cs" />
     <Compile Include="Schema\SelectionSchemaViewModel.cs" />
     <Compile Include="Schema\StringSchemaViewModel.cs" />
@@ -92,6 +99,14 @@
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
     <Page Include="Controls\MultiLineTextControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CheckBoxControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SwitchControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

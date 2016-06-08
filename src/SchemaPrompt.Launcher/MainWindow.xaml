@@ -47,25 +47,13 @@
                 <StackPanel x:Name="ControlsStackPanel"
                             Margin="24,0,24,24"
                             Orientation="Vertical">
-                    <Controls:DatePickerControl x:Name="first"
-                                                Margin="0"
-                                                d:LayoutOverrides="Width, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                     <Controls:SingleLineTextControl x:Name="third"
-                                                    Margin="0"
-                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SliderControl x:Name="fourth"
+                    <Controls:SingleLineTextControl x:Name="third"
                                             Margin="0"
                                             d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-
-                    <Controls:ComboBoxControl 
-                                            Margin="0"
-                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-
-                    <Controls:TimePickerControl 
-                                            Margin="0"
-                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-
-                    <Controls:PasswordTextControl 
+                    <Controls:SingleLineTextControl x:Name="third_Copy"
+                    	Margin="0"
+	d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                    <Controls:SwitchControl x:Name="third_Copy3"
                                             Margin="0"
                                             d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
 
