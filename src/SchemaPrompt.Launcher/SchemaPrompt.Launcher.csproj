@@ -75,6 +75,9 @@
     <Compile Include="Controls\CheckBoxControl.xaml.cs">
       <DependentUpon>CheckBoxControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\KeyValueControl.xaml.cs">
+      <DependentUpon>KeyValueControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SwitchControl.xaml.cs">
       <DependentUpon>SwitchControl.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CheckBoxControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\KeyValueControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
