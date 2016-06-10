@@ -7,7 +7,7 @@
              xmlns:launcher="clr-namespace:SchemaPrompt.Launcher"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Height="48"
+             Height="52"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -26,23 +26,21 @@
                                  Margin="0,0,16,0"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
+                                 Foreground="{StaticResource MaterialDesignBodyLight}"
                                  Kind="{Binding IconKind}"
                                  Visibility="{Binding IconVisibility}" />
         <TextBlock x:Name="HintText"
                    Grid.Column="1"
                    Margin="0,-24,0,0"
                    VerticalAlignment="Center"
-                   FontSize="14"
-                   Foreground="{DynamicResource MaterialDesignBodyLight}"
-                   Style="{StaticResource MaterialDesignBody1TextBlock}"
-                   Text="{Binding Hint}"
-                   ToolTip="{Binding ToolTip}" />
+                   FontSize="12"
+                   Foreground="{StaticResource MaterialDesignBodyLight}"
+                   Text="{Binding Hint}" />
         <TextBlock x:Name="ValueHolderControl"
                    Grid.Column="1"
-                   Margin="0,16,0,0"
+                   Margin="0,14,0,0"
                    VerticalAlignment="Center"
                    FontSize="16"
-                   Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                    Text="{Binding Value}"
                    ToolTip="{Binding ToolTip}" />
     </Grid>

@@ -50,8 +50,7 @@
                    Margin="0,-3,0,0"
                    VerticalAlignment="Center"
                    FontSize="14"
-                   Opacity="{Binding Path=(materialDesign:HintAssist.HintOpacity),
-                                     ElementName=ValueHolderControl}"
+                   Foreground="{StaticResource MaterialDesignBodyLight}"
                    Padding="0,0,0,13"
                    Text="{Binding Hint}"
                    ToolTip="{Binding ToolTip}" />

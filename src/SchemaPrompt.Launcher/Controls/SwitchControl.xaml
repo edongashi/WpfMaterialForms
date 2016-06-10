@@ -51,7 +51,6 @@
                    Grid.Column="1"
                    VerticalAlignment="Center"
                    FontSize="16"
-                   Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                    Text="{Binding Hint}"
                    ToolTip="{Binding ToolTip}" />
         <ToggleButton x:Name="ValueHolderControl"
