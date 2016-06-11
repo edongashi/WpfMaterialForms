@@ -38,8 +38,9 @@
                                TextWrapping="Wrap" />
                     <TextBlock x:Name="Subheading"
                                Margin="0,0,0,12"
-                               Foreground="{DynamicResource MaterialDesignBodyLight}"
+                               Foreground="Black"
                                LineHeight="24"
+                               Opacity="0.54"
                                Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                                Text="Jepni perdoruesin dhe fjalekalimin per te vazhduar"
                                TextWrapping="Wrap" />
@@ -48,11 +49,11 @@
                             Margin="24,0,24,24"
                             Orientation="Vertical">
                     <Controls:SingleLineTextControl x:Name="third"
-                                            Margin="0"
-                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                                                    Margin="0"
+                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
                     <Controls:SingleLineTextControl x:Name="third_Copy"
-                    	Margin="0"
-	d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
+                                                    Margin="0"
+                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
                     <Controls:SwitchControl x:Name="third_Copy3"
                                             Margin="0"
                                             d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
