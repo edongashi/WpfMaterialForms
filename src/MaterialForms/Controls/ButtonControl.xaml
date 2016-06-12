@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="MaterialForms.Controls.ButtonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Schema="clr-namespace:MaterialForms.Schema"
+             xmlns:Validation="clr-namespace:MaterialForms.Validation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:launcher="clr-namespace:MaterialForms"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Height="48"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
+            <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Button, Mode=OneWay}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFocused, ElementName=Button, Mode=OneWay}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Schema:CommandSchemaViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <materialDesign:PackIcon x:Name="Icon"
+                                 Grid.Column="0"
+                                 Width="24"
+                                 Height="24"
+                                 Margin="0,0,16,0"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Kind="{Binding IconKind}"
+                                 Style="{StaticResource ColoredIconStyle}"
+                                 Visibility="{Binding IconVisibility}" />
+        <TextBlock x:Name="HintText"
+                   Grid.Column="1"
+                   Margin="0"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Text="{Binding Hint}"
+                   ToolTip="{Binding ToolTip}" />
+        <Button x:Name="Button"
+                Grid.Column="2"
+                Height="24"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Content="{Binding CommandHint}"
+                Padding="16,1"
+                Style="{StaticResource MaterialDesignRaisedButton}" />
+    </Grid>
+</UserControl>
