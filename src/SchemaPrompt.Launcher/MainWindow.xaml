@@ -14,9 +14,9 @@
                    Background="{DynamicResource MaterialDesignPaper}"
                    EnableDWMDropShadow="True"
                    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-                   ResizeMode="CanResize"
+                   ResizeMode="CanMinimize"
                    ShowCloseButton="True"
-                   ShowMaxRestoreButton="True"
+                   ShowMaxRestoreButton="False"
                    ShowMinButton="True"
                    SizeToContent="Height"
                    Style="{DynamicResource CleanWindowStyleKey}"
@@ -25,56 +25,47 @@
                    mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="241*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="241*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="Title"
-    		Margin="24,0,24,8"
-    		Style="{StaticResource MaterialDesignTitleTextBlock}"
-    		Text="Identifikimi"
-    		TextWrapping="Wrap" d:LayoutOverrides="Width, Height" />
-        <ScrollViewer Margin="0"
+                   Margin="24,0,24,8"
+                   Style="{StaticResource MaterialDesignTitleTextBlock}"
+                   Text="Identifikimi"
+                   TextWrapping="Wrap"
+                   d:LayoutOverrides="Width, Height" />
+        <ScrollViewer Grid.Row="1"
+                      Margin="0"
                       VerticalScrollBarVisibility="Auto"
-                      d:LayoutOverrides="Height" Grid.Row="1">
+                      d:LayoutOverrides="Height">
             <StackPanel Margin="24,8,24,24" VerticalAlignment="Top">
                 <TextBlock x:Name="Subheading"
-            		Foreground="Black"
-            		LineHeight="24"
-            		Opacity="0.54"
-            		Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-            		Text="Jepni perdoruesin dhe fjalekalimin per te vazhduar"
-            		TextWrapping="Wrap" Margin="0,0,0,12" />
+                           Margin="0,0,0,12"
+                           Foreground="Black"
+                           LineHeight="24"
+                           Opacity="0.54"
+                           Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                           Text="Jepni perdoruesin dhe fjalekalimin per te vazhduar"
+                           TextWrapping="Wrap" />
                 <StackPanel x:Name="ControlsStackPanel"
                             Margin="0"
-                            Orientation="Vertical">
-                    <Controls:SingleLineTextControl x:Name="third"
-                                                    Margin="0"
-                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SingleLineTextControl x:Name="third_Copy"
-                                                    Margin="0"
-                                                    d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-                    <Controls:SwitchControl x:Name="third_Copy3"
-                                            Margin="0"
-                                            d:LayoutOverrides="TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" />
-
-
-                </StackPanel>
+                            Orientation="Vertical" />
             </StackPanel>
         </ScrollViewer>
         <StackPanel x:Name="ButtonsStackPanel"
-    		Margin="0,0,8,16"
-    		HorizontalAlignment="Right"
-    		Orientation="Horizontal" VerticalAlignment="Bottom" d:LayoutOverrides="HorizontalAlignment" Grid.Row="2">
+                    Grid.Row="2"
+                    Margin="0,0,8,16"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal"
+                    d:LayoutOverrides="HorizontalAlignment">
             <Button x:Name="CancelButton"
-        		Click="CancelButton_Click"
-        		Content="CANCEL"
-        		Style="{StaticResource MaterialDesignFlatButton}"
-        		ToolTip="MaterialDesignFlatButton" />
-            <Button Margin="0,0,8,0"
-        		Content="ACCEPT"
-        		Style="{StaticResource MaterialDesignFlatButton}"
-        		ToolTip="MaterialDesignFlatButton" />
+                    Margin="0"
+                    Click="CancelButton_Click"
+                    Content="CANCEL"
+                    Style="{StaticResource MaterialDesignFlatButton}" />
+            <Button Content="ACCEPT" Style="{StaticResource MaterialDesignFlatButton}" />
         </StackPanel>
     </Grid>
 </metro:MetroWindow>
