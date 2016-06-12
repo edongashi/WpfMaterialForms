@@ -9,8 +9,29 @@ namespace SchemaPrompt.Launcher.Schema
 {
     public class SelectionSchemaViewModel : BaseSchemaViewModel
     {
-        public object Value { get; set; } = "";
+        private object value = "";
+        private IEnumerable<object> items = new object[] { "First", "Second", "Third" };
 
-        public IEnumerable<object> Items { get; set; } = new object[] { "First", "Second", "Third" };
+        public object Value
+        {
+            get { return value; }
+            set
+            {
+                if (Equals(value, this.value)) return;
+                this.value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<object> Items
+        {
+            get { return items; }
+            set
+            {
+                if (Equals(value, items)) return;
+                items = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

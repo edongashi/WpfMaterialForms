@@ -1,13 +1,18 @@
-﻿using System;
-using System.Windows.Controls;
-using MaterialDesignThemes.Wpf;
-using SchemaPrompt.Launcher.Validation;
-using System.Windows;
-
-namespace SchemaPrompt.Launcher.Schema
+﻿namespace SchemaPrompt.Launcher.Schema
 {
     public class CommandSchemaViewModel : BaseSchemaViewModel
     {
-        public string CommandHint { get; set; } = "Action";
+        private string commandHint = "Action";
+
+        public string CommandHint
+        {
+            get { return commandHint; }
+            set
+            {
+                if (value == commandHint) return;
+                commandHint = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

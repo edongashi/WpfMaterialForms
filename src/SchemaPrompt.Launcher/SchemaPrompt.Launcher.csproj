@@ -78,6 +78,9 @@
     <Compile Include="Controls\KeyValueControl.xaml.cs">
       <DependentUpon>KeyValueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FileLoaderControl.xaml.cs">
+      <DependentUpon>FileLoaderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SwitchControl.xaml.cs">
       <DependentUpon>SwitchControl.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,8 @@
     <Compile Include="Controls\ComboBoxControl.xaml.cs">
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Schema\SingleFileSchemaViewModel.cs" />
     <Compile Include="Schema\BaseSchemaViewModel.cs" />
     <Compile Include="Schema\NumberRangeSchemaViewModel.cs" />
     <Compile Include="Schema\BooleanSchemaViewModel.cs" />
@@ -125,6 +130,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\KeyValueControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FileLoaderControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

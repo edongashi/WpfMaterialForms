@@ -8,6 +8,17 @@ namespace SchemaPrompt.Launcher.Schema
 {
     public class DateSchemaViewModel : BaseSchemaViewModel
     {
-        public DateTime? Value { get; set; }
+        private DateTime? value;
+
+        public DateTime? Value
+        {
+            get { return value; }
+            set
+            {
+                if (value.Equals(this.value)) return;
+                this.value = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

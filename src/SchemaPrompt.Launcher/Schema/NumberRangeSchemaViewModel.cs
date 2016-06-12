@@ -8,6 +8,17 @@ namespace SchemaPrompt.Launcher.Schema
 {
     public class NumberRangeSchemaViewModel : BaseSchemaViewModel
     {
-        public int Value { get; set; }
+        private int value;
+
+        public int Value
+        {
+            get { return value; }
+            set
+            {
+                if (value == this.value) return;
+                this.value = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
