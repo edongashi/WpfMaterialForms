@@ -1,12 +1,9 @@
-﻿using System;
-using System.Windows.Controls;
-using MaterialDesignThemes.Wpf;
-using SchemaPrompt.Launcher.Validation;
-using System.Windows;
+﻿using System.Windows.Controls;
+using SchemaPrompt.Launcher.Controls;
 
-namespace SchemaPrompt.Launcher.Schema
+namespace SchemaPrompt.Launcher.ViewModels
 {
-    public class TimeSchemaViewModel : BaseSchemaViewModel
+    internal class TimeSchemaViewModel : BaseSchemaViewModel
     {
         private string value;
         private bool is24Hours = true;
@@ -31,6 +28,14 @@ namespace SchemaPrompt.Launcher.Schema
                 is24Hours = value;
                 OnPropertyChanged();
             }
+        }
+
+        public override UserControl CreateView()
+        {
+            return new TimePickerControl
+            {
+                DataContext = this
+            };
         }
     }
 }

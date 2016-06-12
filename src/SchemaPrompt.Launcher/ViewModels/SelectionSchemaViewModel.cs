@@ -1,13 +1,10 @@
-﻿using System;
-using System.Windows.Controls;
-using MaterialDesignThemes.Wpf;
-using SchemaPrompt.Launcher.Validation;
-using System.Windows;
+﻿using System.Windows.Controls;
 using System.Collections.Generic;
+using SchemaPrompt.Launcher.Controls;
 
-namespace SchemaPrompt.Launcher.Schema
+namespace SchemaPrompt.Launcher.ViewModels
 {
-    public class SelectionSchemaViewModel : BaseSchemaViewModel
+    internal class SelectionSchemaViewModel : BaseSchemaViewModel
     {
         private object value = "";
         private IEnumerable<object> items = new object[] { "First", "Second", "Third" };
@@ -32,6 +29,14 @@ namespace SchemaPrompt.Launcher.Schema
                 items = value;
                 OnPropertyChanged();
             }
+        }
+
+        public override UserControl CreateView()
+        {
+            return new ComboBoxControl
+            {
+                DataContext = this
+            };
         }
     }
 }

@@ -69,7 +69,7 @@
                 Grid.Column="2"
                 Width="32"
                 Height="32"
-                Margin="4,0,0,0"
+                Margin="0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Center"
                 materialDesign:RippleAssist.IsCentered="True"

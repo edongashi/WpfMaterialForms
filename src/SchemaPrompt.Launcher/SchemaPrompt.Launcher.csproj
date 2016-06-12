@@ -100,15 +100,15 @@
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Schema\SingleFileSchemaViewModel.cs" />
-    <Compile Include="Schema\BaseSchemaViewModel.cs" />
-    <Compile Include="Schema\NumberRangeSchemaViewModel.cs" />
-    <Compile Include="Schema\BooleanSchemaViewModel.cs" />
-    <Compile Include="Schema\CommandSchemaViewModel.cs" />
-    <Compile Include="Schema\TimeSchemaViewModel.cs" />
-    <Compile Include="Schema\SelectionSchemaViewModel.cs" />
-    <Compile Include="Schema\StringSchemaViewModel.cs" />
-    <Compile Include="Schema\DateSchemaViewModel.cs" />
+    <Compile Include="ViewModels\SingleFileSchemaViewModel.cs" />
+    <Compile Include="ViewModels\BaseSchemaViewModel.cs" />
+    <Compile Include="ViewModels\NumberRangeSchemaViewModel.cs" />
+    <Compile Include="ViewModels\BooleanSchemaViewModel.cs" />
+    <Compile Include="ViewModels\CommandSchemaViewModel.cs" />
+    <Compile Include="ViewModels\TimeSchemaViewModel.cs" />
+    <Compile Include="ViewModels\SelectionSchemaViewModel.cs" />
+    <Compile Include="ViewModels\StringSchemaViewModel.cs" />
+    <Compile Include="ViewModels\DateSchemaViewModel.cs" />
     <Compile Include="Validation\BindableValidationRule.cs" />
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />

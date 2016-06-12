@@ -7,14 +7,14 @@ using MaterialDesignThemes.Wpf;
 using SchemaPrompt.Launcher.Annotations;
 using SchemaPrompt.Launcher.Validation;
 
-namespace SchemaPrompt.Launcher.Schema
+namespace SchemaPrompt.Launcher.ViewModels
 {
-    public class BaseSchemaViewModel : INotifyPropertyChanged
+    internal abstract class BaseSchemaViewModel : INotifyPropertyChanged
     {
         private static readonly Random Random = new Random();
         private string toolTip = "Control Tooltip";
         private string hint = "Control Hint";
-        private PackIconKind iconKind = (PackIconKind)Random.Next((600));
+        private PackIconKind iconKind = (PackIconKind)Random.Next(600);
         private Visibility iconVisibility = Visibility.Visible;
 
         public string Hint
@@ -62,6 +62,8 @@ namespace SchemaPrompt.Launcher.Schema
         }
 
         public ValidationRule ValidationRule { get; set; } = new NotEmptyValidationRule();
+
+        public abstract UserControl CreateView();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
