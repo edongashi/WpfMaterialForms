@@ -99,6 +99,7 @@
     <Compile Include="Schema\BaseSchemaViewModel.cs" />
     <Compile Include="Schema\NumberRangeSchemaViewModel.cs" />
     <Compile Include="Schema\BooleanSchemaViewModel.cs" />
+    <Compile Include="Schema\CommandSchemaViewModel.cs" />
     <Compile Include="Schema\TimeSchemaViewModel.cs" />
     <Compile Include="Schema\SelectionSchemaViewModel.cs" />
     <Compile Include="Schema\StringSchemaViewModel.cs" />

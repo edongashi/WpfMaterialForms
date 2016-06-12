@@ -7,53 +7,56 @@
              xmlns:launcher="clr-namespace:SchemaPrompt.Launcher"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Height="56"
+             Height="48"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
+            <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Button, Mode=OneWay}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <UserControl.DataContext>
-        Media Volume
+        <Schema:CommandSchemaViewModel />
     </UserControl.DataContext>
     <Grid>
-        <StackPanel VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    d:LayoutOverrides="Height">
-            <Button x:Name="button_Copy"
-                    Height="32"
-                    Margin="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="Button"
-                    Padding="16,1"
-                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    d:LayoutOverrides="TopPosition, BottomPosition" />
-            <Button x:Name="button_Copy3"
-                    Height="32"
-                    Margin="16,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="Button"
-                    Padding="16,1"
-                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    d:LayoutOverrides="TopPosition, BottomPosition" />
-            <Button x:Name="button_Copy1"
-                    Height="32"
-                    Margin="16,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="Button"
-                    Padding="16,1"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    d:LayoutOverrides="TopPosition, BottomPosition" />
-            <Button x:Name="button_Copy2"
-                    Height="32"
-                    Margin="16,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="Button"
-                    Padding="16,1"
-                    Style="{StaticResource MaterialDesignFlatButton}"
-                    d:LayoutOverrides="TopPosition, BottomPosition" />
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <materialDesign:PackIcon x:Name="Icon"
+                                 Grid.Column="0"
+                                 Width="24"
+                                 Height="24"
+                                 Margin="0,0,16,0"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Kind="{Binding IconKind}"
+                                 Style="{StaticResource ColoredIconStyle}"
+                                 Visibility="{Binding IconVisibility}" />
+        <TextBlock x:Name="HintText"
+                   Grid.Column="1"
+                   Margin="0"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Text="{Binding Hint}"
+                   ToolTip="{Binding ToolTip}" />
+        <Button x:Name="Button"
+                Grid.Column="2"
+                Height="24"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Content="{Binding CommandHint}"
+                Padding="16,1"
+                Style="{StaticResource MaterialDesignRaisedButton}" />
     </Grid>
 </UserControl>
