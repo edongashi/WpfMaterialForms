@@ -5,11 +5,14 @@ using System.Windows.Data;
 
 namespace MaterialForms.ValueConverters
 {
-    internal class StringToVisibilityConverter : IValueConverter
+    internal class FormEmptyMarginConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return string.IsNullOrEmpty(value as string) ? Visibility.Collapsed : Visibility.Visible;
+            var form = value as MaterialForm;
+            return form != null && form.Count != 0
+                ? new Thickness(0d, 0d, 0d, 8d)
+                : new Thickness(0d, 0d, 0d, 4d);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

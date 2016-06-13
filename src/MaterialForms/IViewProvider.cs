@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace MaterialForms
 {
-    interface IViewProvider : INotifyPropertyChanged
+    internal interface IViewProvider : INotifyPropertyChanged
     {
         UserControl View { get; }
     }

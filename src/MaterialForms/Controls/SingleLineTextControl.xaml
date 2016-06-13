@@ -5,7 +5,7 @@
              xmlns:Validation="clr-namespace:MaterialForms.Validation"
              xmlns:local="clr-namespace:MaterialForms"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             Height="64">
+             Height="56">
     <UserControl.Resources>
         <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">

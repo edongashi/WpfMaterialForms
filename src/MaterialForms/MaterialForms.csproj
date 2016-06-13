@@ -121,6 +121,7 @@
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
+    <Compile Include="ValueConverters\FormEmptyMarginConverter.cs" />
     <Compile Include="ValueConverters\StringToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\BoolToResizeModeConverter.cs" />
     <Compile Include="Views\DialogView.xaml.cs">

@@ -28,14 +28,15 @@ namespace MaterialForms
         }
 
         private int currentDialogId;
+        private MaterialFormsWindow currentWindow;
 
         private string title = "Dialog";
         private double width = 400d;
         private double height = double.NaN;
-        private bool showMinButton = true;
+        private bool showMinButton;
         private bool showMaxRestoreButton = true;
         private bool showCloseButton = true;
-        private bool canResize = false;
+        private bool canResize;
         private MaterialDialog dialog;
 
         public string Title
@@ -129,16 +130,14 @@ namespace MaterialForms
         public void Show()
         {
             currentDialogId = dialogId++;
-            new MaterialFormsWindow(this, currentDialogId).Show();
+            currentWindow = new MaterialFormsWindow(this, currentDialogId);
+            currentWindow.ShowDialog();
+            currentWindow = null;
         }
 
-        public void ShowDialog()
-        {
-            currentDialogId = dialogId++;
-            new MaterialFormsWindow(this, currentDialogId).ShowDialog();
-        }
-        
-        public async Task ShowDialog(MaterialDialog dialog, double width = 200d)
+        public void Close() => currentWindow?.Close();
+
+        public async Task ShowDialog(MaterialDialog dialog, double width = double.NaN)
         {
             var view = dialog.View;
             view.Width = width;

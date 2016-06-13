@@ -14,10 +14,10 @@
                    ShowCloseButton="{Binding ShowCloseButton}"
                    ShowMaxRestoreButton="{Binding ShowMaxRestoreButton}"
                    ShowMinButton="{Binding ShowMinButton}"
+                   ShowTitleBar="False"
                    SizeToContent="Height"
                    Style="{StaticResource CleanWindowStyleKey}"
                    TextElement.Foreground="{StaticResource MaterialDesignBody}"
-                   TitleForeground="Transparent"
                    WindowStartupLocation="CenterScreen">
     <metro:MetroWindow.Resources>
         <valueConverters:BoolToResizeModeConverter x:Key="BoolToResizeModeConverter" />
@@ -26,7 +26,7 @@
         <Binding Converter="{StaticResource BoolToResizeModeConverter}" Path="CanResize" />
     </metro:MetroWindow.ResizeMode>
     <Grid>
-        <ContentPresenter Content="{Binding Dialog.View}" />
+        <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View}" />
         <materialDesign:DialogHost x:Name="DialogHost" />
     </Grid>
 </metro:MetroWindow>

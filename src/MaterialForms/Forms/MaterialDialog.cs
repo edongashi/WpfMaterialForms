@@ -11,6 +11,9 @@ namespace MaterialForms
         private string title;
         private string subheading;
         private MaterialForm form;
+        private string negativeAction = "CANCEL";
+        private string positiveAction = "OK";
+        private string auxiliaryAction;
 
         public string Title
         {
@@ -30,6 +33,39 @@ namespace MaterialForms
             {
                 if (value == subheading) return;
                 subheading = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string PositiveAction
+        {
+            get { return positiveAction; }
+            set
+            {
+                if (value == positiveAction) return;
+                positiveAction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NegativeAction
+        {
+            get { return negativeAction; }
+            set
+            {
+                if (value == negativeAction) return;
+                negativeAction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string AuxiliaryAction
+        {
+            get { return auxiliaryAction; }
+            set
+            {
+                if (value == auxiliaryAction) return;
+                auxiliaryAction = value;
                 OnPropertyChanged();
             }
         }

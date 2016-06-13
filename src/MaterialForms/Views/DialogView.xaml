@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
-             xmlns:views="clr-namespace:MaterialForms.Views">
+             xmlns:views="clr-namespace:MaterialForms.Views"
+             Margin="0,16,0,0">
     <UserControl.Resources>
+        <valueConverters:FormEmptyMarginConverter x:Key="CollectionEmptyMarginConverter" />
         <valueConverters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
@@ -13,18 +15,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="Title"
-                   Margin="24,0,24,8"
+                   Margin="24,4,24,8"
                    Style="{StaticResource MaterialDesignTitleTextBlock}"
                    Text="{Binding Title}"
                    TextWrapping="Wrap"
                    Visibility="{Binding Title,
                                         Converter={StaticResource StringToVisibilityConverter}}" />
         <ScrollViewer Grid.Row="1"
-                      Margin="0"
+                      Margin="0,8,0,0"
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="24,8,24,24" VerticalAlignment="Top">
+            <StackPanel Margin="24,0,24,16" VerticalAlignment="Top">
                 <TextBlock x:Name="Subheading"
-                           Margin="0,0,0,8"
+                           Margin="{Binding Form,
+                                            Converter={StaticResource CollectionEmptyMarginConverter}}"
                            Foreground="Black"
                            LineHeight="24"
                            Opacity="0.54"
@@ -36,15 +39,34 @@
                 <views:FormView DataContext="{Binding Form}" />
             </StackPanel>
         </ScrollViewer>
-        <StackPanel x:Name="ButtonsStackPanel"
-                    Grid.Row="2"
-                    Margin="8,0,8,16"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <Button x:Name="CancelButton"
-                    Content="CANCEL"
-                    Style="{StaticResource MaterialDesignFlatButton}" />
-            <Button Content="ACCEPT" Style="{StaticResource MaterialDesignFlatButton}" />
-        </StackPanel>
+        <Grid x:Name="ButtonsGrid"
+              Grid.Row="2"
+              Margin="8,0,8,8">
+            <Button Height="36"
+                    MinWidth="64"
+                    HorizontalAlignment="Left"
+                    Content="{Binding AuxiliaryAction}"
+                    Padding="8,0"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Visibility="{Binding AuxiliaryAction,
+                                         Converter={StaticResource StringToVisibilityConverter}}" />
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Height="36"
+                        MinWidth="64"
+                        Content="{Binding NegativeAction}"
+                        Padding="8,0"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Visibility="{Binding NegativeAction,
+                                             Converter={StaticResource StringToVisibilityConverter}}" />
+                <Button Height="36"
+                        MinWidth="64"
+                        Margin="4,0,0,0"
+                        Content="{Binding PositiveAction}"
+                        Padding="8,0"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Visibility="{Binding PositiveAction,
+                                             Converter={StaticResource StringToVisibilityConverter}}" />
+            </WrapPanel>
+        </Grid>
     </Grid>
 </UserControl>
