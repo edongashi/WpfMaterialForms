@@ -1,0 +1,32 @@
+﻿<metro:MetroWindow x:Class="MaterialForms.MaterialFormsWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
+                   Title="{Binding Title}"
+                   Width="{Binding Width}"
+                   Height="{Binding Height}"
+                   MinWidth="200"
+                   x:ClassModifier="internal"
+                   EnableDWMDropShadow="True"
+                   FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                   ShowCloseButton="{Binding ShowCloseButton}"
+                   ShowMaxRestoreButton="{Binding ShowMaxRestoreButton}"
+                   ShowMinButton="{Binding ShowMinButton}"
+                   SizeToContent="Height"
+                   Style="{StaticResource CleanWindowStyleKey}"
+                   TextElement.Foreground="{StaticResource MaterialDesignBody}"
+                   TitleForeground="Transparent"
+                   WindowStartupLocation="CenterScreen">
+    <metro:MetroWindow.Resources>
+        <valueConverters:BoolToResizeModeConverter x:Key="BoolToResizeModeConverter" />
+    </metro:MetroWindow.Resources>
+    <metro:MetroWindow.ResizeMode>
+        <Binding Converter="{StaticResource BoolToResizeModeConverter}" Path="CanResize" />
+    </metro:MetroWindow.ResizeMode>
+    <Grid>
+        <ContentPresenter Content="{Binding Dialog.View}" />
+        <materialDesign:DialogHost x:Name="DialogHost" />
+    </Grid>
+</metro:MetroWindow>

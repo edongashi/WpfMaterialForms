@@ -1,12 +1,13 @@
 ﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class StringSchemaViewModel : BaseSchemaViewModel
+    public class StringSchema : SchemaBase
     {
-        private string value = "Value Text";
+        private string value;
         private bool isMultiLine;
+        private bool isReadOnly;
 
         public string Value
         {
@@ -26,6 +27,18 @@ namespace MaterialForms.ViewModels
             {
                 if (value == isMultiLine) return;
                 isMultiLine = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(View));
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return isReadOnly; }
+            set
+            {
+                if (value == isReadOnly) return;
+                isReadOnly = value;
                 OnPropertyChanged();
             }
         }

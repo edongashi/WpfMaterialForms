@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class SingleFileSchemaViewModel : BaseSchemaViewModel
+    public class SingleFileSchema : SchemaBase
     {
         private string path;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,47 +6,64 @@ using MaterialDesignThemes.Wpf;
 using MaterialForms.Annotations;
 using MaterialForms.Validation;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal abstract class BaseSchemaViewModel : INotifyPropertyChanged
+    public abstract class SchemaBase : IViewProvider
     {
-        private static readonly Random Random = new Random();
-        private string toolTip = "Control Tooltip";
-        private string hint = "Control Hint";
-        private PackIconKind iconKind = (PackIconKind)Random.Next(600);
-        private Visibility iconVisibility = Visibility.Visible;
+        private string key;
+        private string description;
+        private string name;
+        private PackIconKind packIconKind;
+        private Visibility iconVisibility;
 
-        public string Hint
+        public string Key
         {
-            get { return hint; }
+            get { return key; }
             set
             {
-                if (value == hint) return;
-                hint = value;
+                if (value == key) return;
+                key = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ToolTip
+        public string Name
         {
-            get { return toolTip; }
+            get { return name; }
             set
             {
-                if (value == toolTip) return;
-                toolTip = value;
+                if (value == name) return;
+                name = value;
                 OnPropertyChanged();
             }
         }
 
-        public PackIconKind IconKind
+        public string Description
         {
-            get { return iconKind; }
+            get { return description; }
             set
             {
-                if (value == iconKind) return;
-                iconKind = value;
+                if (value == description) return;
+                description = value;
                 OnPropertyChanged();
             }
+        }
+
+        public PackIconKind PackIconKind
+        {
+            get { return packIconKind; }
+            set
+            {
+                if (value == packIconKind) return;
+                packIconKind = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IconKind IconKind
+        {
+            get { return (IconKind)packIconKind; }
+            set { PackIconKind = (PackIconKind)value; }
         }
 
         public Visibility IconVisibility
@@ -62,6 +78,8 @@ namespace MaterialForms.ViewModels
         }
 
         public ValidationRule ValidationRule { get; set; } = new NotEmptyValidationRule();
+
+        public UserControl View => CreateView();
 
         public abstract UserControl CreateView();
 

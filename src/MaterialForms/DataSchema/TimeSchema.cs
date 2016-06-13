@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class TimeSchemaViewModel : BaseSchemaViewModel
+    public class TimeSchema : SchemaBase
     {
         private string value;
         private bool is24Hours = true;

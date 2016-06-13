@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
-using MaterialForms.Schema;
+using MaterialForms;
 
 namespace MaterialForms.Controls
 {
@@ -30,7 +30,7 @@ namespace MaterialForms.Controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var context = DataContext as SingleFileSchemaViewModel;
+            var context = DataContext as SingleFileSchema;
             if (context == null)
             {
                 return;

@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class DateSchemaViewModel : BaseSchemaViewModel
+    public class DateSchema : SchemaBase
     {
         private DateTime? value;
 

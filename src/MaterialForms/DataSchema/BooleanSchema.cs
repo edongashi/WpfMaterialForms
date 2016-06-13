@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class BooleanSchemaViewModel : BaseSchemaViewModel
+    public class BooleanSchema : SchemaBase
     {
         private bool value;
         private bool isCheckBox;
@@ -27,6 +27,7 @@ namespace MaterialForms.ViewModels
                 if (value == isCheckBox) return;
                 isCheckBox = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(View));
             }
         }
 

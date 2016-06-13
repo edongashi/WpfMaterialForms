@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialDesignThemes.Wpf", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialDesignColors.Wpf", "..\MaterialDesignInXamlToolkit\MaterialDesignColors.Wpf\MaterialDesignColors.Wpf.csproj", "{90B53209-C60C-4655-B28D-A1B3E1044BA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialFormsDemo", "src\MaterialFormsDemo\MaterialFormsDemo.csproj", "{07DBADE7-6E0A-4431-A64A-DA7C204C724A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU
@@ -34,6 +36,12 @@ Global
 		{90B53209-C60C-4655-B28D-A1B3E1044BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90B53209-C60C-4655-B28D-A1B3E1044BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90B53209-C60C-4655-B28D-A1B3E1044BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

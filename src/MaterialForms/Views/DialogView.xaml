@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="MaterialForms.Views.DialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
+             xmlns:views="clr-namespace:MaterialForms.Views">
+    <UserControl.Resources>
+        <valueConverters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="Title"
+                   Margin="24,0,24,8"
+                   Style="{StaticResource MaterialDesignTitleTextBlock}"
+                   Text="{Binding Title}"
+                   TextWrapping="Wrap"
+                   Visibility="{Binding Title,
+                                        Converter={StaticResource StringToVisibilityConverter}}" />
+        <ScrollViewer Grid.Row="1"
+                      Margin="0"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24,8,24,24" VerticalAlignment="Top">
+                <TextBlock x:Name="Subheading"
+                           Margin="0,0,0,8"
+                           Foreground="Black"
+                           LineHeight="24"
+                           Opacity="0.54"
+                           Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                           Text="{Binding Subheading}"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Subheading,
+                                                Converter={StaticResource StringToVisibilityConverter}}" />
+                <views:FormView DataContext="{Binding Form}" />
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel x:Name="ButtonsStackPanel"
+                    Grid.Row="2"
+                    Margin="8,0,8,16"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button x:Name="CancelButton"
+                    Content="CANCEL"
+                    Style="{StaticResource MaterialDesignFlatButton}" />
+            <Button Content="ACCEPT" Style="{StaticResource MaterialDesignFlatButton}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

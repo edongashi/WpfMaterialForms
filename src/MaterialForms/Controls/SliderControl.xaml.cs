@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
-using MaterialForms.Schema;
+using MaterialForms;
 
 namespace MaterialForms.Controls
 {

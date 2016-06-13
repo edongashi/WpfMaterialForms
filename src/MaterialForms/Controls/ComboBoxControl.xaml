@@ -1,21 +1,12 @@
 ﻿<UserControl x:Class="MaterialForms.Controls.ComboBoxControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Schema="clr-namespace:MaterialForms.Schema"
-             xmlns:Validation="clr-namespace:MaterialForms.Validation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:launcher="clr-namespace:MaterialForms"
+             xmlns:local="clr-namespace:MaterialForms"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Height="64"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
-             mc:Ignorable="d">
-    <UserControl.DataContext>
-        <Schema:SelectionSchemaViewModel />
-    </UserControl.DataContext>
+             xmlns:validation="clr-namespace:MaterialForms.Validation"
+             Height="64">
     <UserControl.Resources>
-        <launcher:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -31,28 +22,28 @@
                                  VerticalAlignment="Center"
                                  Foreground="{Binding BorderBrush,
                                                       ElementName=ValueHolderControl}"
-                                 Kind="{Binding IconKind}"
+                                 Kind="{Binding PackIconKind}"
                                  Visibility="{Binding IconVisibility}" />
         <ComboBox x:Name="ValueHolderControl"
                   Grid.Column="1"
                   Margin="0,-14,0,0"
-                  VerticalAlignment="Center"
-                  materialDesign:HintAssist.Hint="{Binding Hint}"
+                  materialDesign:HintAssist.Hint="{Binding Name}"
                   FontSize="16"
                   ItemsSource="{Binding Items}"
                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  ToolTip="{Binding ToolTip}">
+                  ToolTip="{Binding Description}">
             <ComboBox.SelectedItem>
                 <Binding Path="Value">
                     <Binding.ValidationRules>
-                        <Validation:BindableValidationRule>
-                            <Validation:BindableValidationRule.Provider>
-                                <Validation:ValidationRuleProvider BoundRule="{Binding Data.ValidationRule, Source={StaticResource Proxy}}" />
-                            </Validation:BindableValidationRule.Provider>
-                        </Validation:BindableValidationRule>
+                        <validation:BindableValidationRule>
+                            <validation:BindableValidationRule.Provider>
+                                <validation:ValidationRuleProvider BoundRule="{Binding Data.ValidationRule, Source={StaticResource Proxy}}" />
+                            </validation:BindableValidationRule.Provider>
+                        </validation:BindableValidationRule>
                     </Binding.ValidationRules>
                 </Binding>
             </ComboBox.SelectedItem>
         </ComboBox>
     </Grid>
 </UserControl>
+

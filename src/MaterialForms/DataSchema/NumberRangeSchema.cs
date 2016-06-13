@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class NumberRangeSchemaViewModel : BaseSchemaViewModel
+    public class NumberRangeSchema : SchemaBase
     {
         private int value;
         private int minValue;

@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MaterialForms.Controls;
 
-namespace MaterialForms.ViewModels
+namespace MaterialForms
 {
-    internal class SelectionSchemaViewModel : BaseSchemaViewModel
+    public class SelectionSchema : SchemaBase
     {
-        private object value = "";
-        private IEnumerable<object> items = new object[] { "First", "Second", "Third" };
+        private object value;
+        private ObservableCollection<object> items;
 
         public object Value
         {
@@ -20,7 +20,7 @@ namespace MaterialForms.ViewModels
             }
         }
 
-        public IEnumerable<object> Items
+        public ObservableCollection<object> Items
         {
             get { return items; }
             set
