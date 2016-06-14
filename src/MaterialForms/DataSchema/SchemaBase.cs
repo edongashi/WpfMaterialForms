@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,6 +83,23 @@ namespace MaterialForms
         public UserControl View => CreateView();
 
         public abstract UserControl CreateView();
+
+        public abstract bool HoldsValue { get; }
+
+        public abstract object GetValue();
+
+        public virtual void AssignValue(Action<string, object> assignFunction)
+        {
+            if (string.IsNullOrEmpty(Key))
+            {
+                return;
+            }
+
+            if (HoldsValue)
+            {
+                assignFunction(Key, GetValue());
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

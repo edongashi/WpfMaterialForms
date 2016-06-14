@@ -48,5 +48,9 @@ namespace MaterialForms
                 };
             }
         }
+
+        public override bool HoldsValue => true;
+
+        public override object GetValue() => Value;
     }
 }

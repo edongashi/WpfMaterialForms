@@ -5,22 +5,19 @@ namespace MaterialForms
 {
     public class PasswordSchema : SchemaBase
     {
-        private string value;
-
-        public string Value
+        public string GetPassword()
         {
-            get { return value; }
-            set
-            {
-                if (value == this.value) return;
-                this.value = value;
-                OnPropertyChanged();
-            }
+            // TODO: request from control
+            return null;
         }
 
         public override UserControl CreateView()
         {
             return new PasswordTextControl { DataContext = this };
         }
+
+        public override bool HoldsValue => true;
+
+        public override object GetValue() => GetPassword();
     }
 }

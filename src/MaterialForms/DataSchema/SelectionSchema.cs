@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using MaterialForms.Controls;
 
@@ -38,5 +39,9 @@ namespace MaterialForms
                 DataContext = this
             };
         }
+
+        public override bool HoldsValue => true;
+
+        public override object GetValue() => Value;
     }
 }

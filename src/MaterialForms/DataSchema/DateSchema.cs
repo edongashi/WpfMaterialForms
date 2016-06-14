@@ -26,5 +26,9 @@ namespace MaterialForms
                 DataContext = this
             };
         }
+
+        public override bool HoldsValue => true;
+
+        public override object GetValue() => Value;
     }
 }

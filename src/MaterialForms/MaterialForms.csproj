@@ -99,7 +99,7 @@
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataSchema\KeyValueSchema.cs" />
-    <Compile Include="DataSchema\Caption.cs" />
+    <Compile Include="DataSchema\CaptionSchema.cs" />
     <Compile Include="DataSchema\PasswordSchema.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Forms\MaterialDialog.cs" />
