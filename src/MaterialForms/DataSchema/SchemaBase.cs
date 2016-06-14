@@ -15,7 +15,7 @@ namespace MaterialForms
         private string description;
         private string name;
         private PackIconKind packIconKind;
-        private Visibility iconVisibility;
+        private Visibility iconVisibility = Visibility.Collapsed;
 
         public string Key
         {
@@ -64,7 +64,11 @@ namespace MaterialForms
         public IconKind IconKind
         {
             get { return (IconKind)packIconKind; }
-            set { PackIconKind = (PackIconKind)value; }
+            set
+            {
+                PackIconKind = (PackIconKind)value;
+                IconVisibility = Visibility.Visible;
+            }
         }
 
         public Visibility IconVisibility

@@ -7,7 +7,7 @@ namespace MaterialForms
 {
     public class CommandSchema : SchemaBase
     {
-        private string commandHint = "Action";
+        private string commandHint = "";
         private ICommand command;
 
         public string CommandHint

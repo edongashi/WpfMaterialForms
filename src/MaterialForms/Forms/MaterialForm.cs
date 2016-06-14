@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Linq;
 using System.Windows.Controls;
 using MaterialForms.Views;
@@ -20,6 +21,14 @@ namespace MaterialForms
         public List<object> GetValuesList()
         {
             return (from schema in this where schema.HoldsValue select schema.GetValue()).ToList();
+        }
+
+        public dynamic GetValuesDynamic()
+        {
+            var dictionary = (IDictionary<string, object>)new ExpandoObject();
+            Action<string, object> assignFunction = (key, value) => dictionary[key] = value;
+            AssignValues(assignFunction);
+            return dictionary;
         }
 
         public void AssignValues(Action<string, object> assignFunction)
