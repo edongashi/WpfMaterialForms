@@ -42,7 +42,8 @@
                    Margin="0,-3,0,0"
                    VerticalAlignment="Center"
                    FontSize="14"
-                   Foreground="{StaticResource MaterialDesignBodyLight}"
+                   Foreground="Black"
+                   Opacity="0.54"
                    Padding="0,0,0,13"
                    Text="{Binding Name}"
                    ToolTip="{Binding Description}" />
@@ -50,6 +51,9 @@
                 Grid.Column="1"
                 Margin="-8,-14,-8,0"
                 VerticalAlignment="Center"
-                Style="{StaticResource MaterialDesignDiscreteSlider}" />
+                Maximum="{Binding MaxValue}"
+                Minimum="{Binding MinValue}"
+                Style="{StaticResource MaterialDesignDiscreteSlider}"
+                Value="{Binding Value}" />
     </Grid>
 </UserControl>

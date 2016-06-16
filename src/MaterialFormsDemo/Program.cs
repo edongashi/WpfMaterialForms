@@ -20,6 +20,11 @@ namespace MaterialFormsDemo
                         Name = "Login window",
                         CommandHint = "SHOW",
                         Callback = ShowDemo(LoginDialog)
+                    },                    new CommandSchema
+                    {
+                        Name = "Settings window",
+                        CommandHint = "SHOW",
+                        Callback = ShowDemo(SettingsDialog)
                     },
                     new CommandSchema
                     {
@@ -80,6 +85,50 @@ namespace MaterialFormsDemo
                         Key = "Remember",
                         Name = "Remember me",
                         IsCheckBox = true
+                    }
+                }
+            };
+        }
+
+        public static MaterialDialog SettingsDialog()
+        {
+            return new MaterialDialog
+            {
+                Title = "Settings",
+                Form = new MaterialForm
+                {
+                    new CaptionSchema
+                    {
+                        Name = "Connectivity"
+                    },
+                    new BooleanSchema
+                    {
+                        Name = "WiFi",
+                        IconKind = IconKind.Wifi,
+                        Value = true
+                    },
+                    new BooleanSchema
+                    {
+                        Name = "Mobile Data",
+                        IconKind = IconKind.Signal
+                    },
+                    new CaptionSchema
+                    {
+                        Name = "Device"
+                    },
+                    new NumberRangeSchema
+                    {
+                        Name = "Volume",
+                        IconKind = IconKind.VolumeHigh,
+                        MinValue = 0,
+                        MaxValue = 10,
+                        Value = 5
+                    },
+                    new KeyValueSchema
+                    {
+                        Name = "Ringtone",
+                        Value = "Over the horizon",
+                        IconKind = IconKind.MusicNote
                     }
                 }
             };
