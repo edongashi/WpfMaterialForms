@@ -9,6 +9,7 @@
                    Height="{Binding Height}"
                    MinWidth="200"
                    x:ClassModifier="internal"
+                   Background="{StaticResource MaterialDesignPaper}"
                    EnableDWMDropShadow="True"
                    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
                    ShowCloseButton="{Binding ShowCloseButton}"
@@ -26,7 +27,10 @@
         <Binding Converter="{StaticResource BoolToResizeModeConverter}" Path="CanResize" />
     </metro:MetroWindow.ResizeMode>
     <metro:MetroWindow.CommandBindings>
-        <CommandBinding x:Name="CloseDialogCommandBinding" Command="materialDesign:DialogHost.CloseDialogCommand" Executed="CloseDialogCommandBinding_Executed" CanExecute="CloseDialogCommandBinding_CanExecute" />
+        <CommandBinding x:Name="CloseDialogCommandBinding"
+                        CanExecute="CloseDialogCommandBinding_CanExecute"
+                        Command="materialDesign:DialogHost.CloseDialogCommand"
+                        Executed="CloseDialogCommandBinding_Executed" />
     </metro:MetroWindow.CommandBindings>
     <Grid>
         <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View}" />
