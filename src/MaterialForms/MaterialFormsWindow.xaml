@@ -25,6 +25,9 @@
     <metro:MetroWindow.ResizeMode>
         <Binding Converter="{StaticResource BoolToResizeModeConverter}" Path="CanResize" />
     </metro:MetroWindow.ResizeMode>
+    <metro:MetroWindow.CommandBindings>
+        <CommandBinding x:Name="CloseDialogCommandBinding" Command="materialDesign:DialogHost.CloseDialogCommand" Executed="CloseDialogCommandBinding_Executed" CanExecute="CloseDialogCommandBinding_CanExecute" />
+    </metro:MetroWindow.CommandBindings>
     <Grid>
         <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View}" />
         <materialDesign:DialogHost x:Name="DialogHost" />

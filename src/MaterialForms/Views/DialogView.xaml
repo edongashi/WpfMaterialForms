@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="MaterialForms.Views.DialogView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
              xmlns:views="clr-namespace:MaterialForms.Views"
              Margin="0,16,0,0">
@@ -45,6 +46,7 @@
             <Button Height="36"
                     MinWidth="64"
                     HorizontalAlignment="Left"
+                    Command="{Binding AuxiliaryCommand}"
                     Content="{Binding AuxiliaryAction}"
                     Padding="8,0"
                     Style="{StaticResource MaterialDesignFlatButton}"
@@ -53,6 +55,7 @@
             <WrapPanel HorizontalAlignment="Right">
                 <Button Height="36"
                         MinWidth="64"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding NegativeAction}"
                         Padding="8,0"
                         Style="{StaticResource MaterialDesignFlatButton}"
@@ -61,11 +64,13 @@
                 <Button Height="36"
                         MinWidth="64"
                         Margin="4,0,0,0"
+                        Command="{Binding PositiveCommand}"
                         Content="{Binding PositiveAction}"
                         Padding="8,0"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Visibility="{Binding PositiveAction,
                                              Converter={StaticResource StringToVisibilityConverter}}" />
+
             </WrapPanel>
         </Grid>
     </Grid>
