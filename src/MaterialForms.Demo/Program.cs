@@ -39,6 +39,12 @@ namespace MaterialForms.Demo
                                 PositiveAction = "DISCARD"
                             }, 250d);
                         }
+                    },
+                    new CommandSchema
+                    {
+                        Name = "E-mail window",
+                        CommandHint = "SHOW",
+                        Callback = ShowDemo(EmailDialog)
                     }
                 }
             };
@@ -52,7 +58,8 @@ namespace MaterialForms.Demo
             {
                 var window = new MaterialWindow
                 {
-                    Dialog = dialog()
+                    Dialog = dialog(),
+                    ShowCloseButton = false
                 };
 
                 window.Show();
@@ -71,19 +78,16 @@ namespace MaterialForms.Demo
                 {
                     new StringSchema
                     {
-                        Key = "User",
                         Name = "Username",
                         IconKind = IconKind.Account
                     },
                     new PasswordSchema
                     {
-                        Key = "Pass",
                         Name = "Password",
                         IconKind = IconKind.Key
                     },
                     new BooleanSchema
                     {
-                        Key = "Remember",
                         Name = "Remember me",
                         IsCheckBox = true
                     }
@@ -130,6 +134,29 @@ namespace MaterialForms.Demo
                         Name = "Ringtone",
                         Value = "Over the horizon",
                         IconKind = IconKind.MusicNote
+                    }
+                }
+            };
+        }
+
+        public static MaterialDialog EmailDialog()
+        {
+            return new MaterialDialog
+            {
+                Title = "Send e-mail",
+                PositiveAction = "SEND",
+                Form = new MaterialForm
+                {
+                    new StringSchema
+                    {
+                        Name = "To",
+                        IconKind = IconKind.Email
+                    },
+                    new StringSchema
+                    {
+                        Name = "Message",
+                        IsMultiLine = true,
+                        IconKind = IconKind.Comment
                     }
                 }
             };
