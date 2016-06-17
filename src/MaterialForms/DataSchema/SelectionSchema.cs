@@ -9,6 +9,7 @@ namespace MaterialForms
     {
         private object value;
         private ObservableCollection<object> items;
+        private bool isEditable;
 
         public object Value
         {
@@ -28,6 +29,17 @@ namespace MaterialForms
             {
                 if (Equals(value, items)) return;
                 items = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEditable
+        {
+            get { return isEditable; }
+            set
+            {
+                if (value == isEditable) return;
+                isEditable = value;
                 OnPropertyChanged();
             }
         }

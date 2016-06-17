@@ -29,6 +29,7 @@
                   Margin="0,-14,0,0"
                   materialDesign:HintAssist.Hint="{Binding Name}"
                   FontSize="16"
+                  IsEditable="{Binding IsEditable}"
                   ItemsSource="{Binding Items}"
                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                   ToolTip="{Binding Description}">

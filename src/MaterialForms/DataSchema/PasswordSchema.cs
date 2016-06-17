@@ -5,11 +5,13 @@ namespace MaterialForms
 {
     public class PasswordSchema : SchemaBase
     {
-        public string GetPassword()
-        {
-            // TODO: request from control
-            return null;
-        }
+        public string Value { get; set; }
+
+        //public string GetPassword()
+        //{
+        //    // TODO: request from control
+        //    return null;
+        //}
 
         public override UserControl CreateView()
         {
@@ -18,6 +20,6 @@ namespace MaterialForms
 
         public override bool HoldsValue => true;
 
-        public override object GetValue() => GetPassword();
+        public override object GetValue() => Value;
     }
 }
