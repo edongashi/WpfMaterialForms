@@ -7,8 +7,8 @@
     <ProjectGuid>{07DBADE7-6E0A-4431-A64A-DA7C204C724A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MaterialFormsDemo</RootNamespace>
-    <AssemblyName>MaterialFormsDemo</AssemblyName>
+    <RootNamespace>MaterialForms.Demo</RootNamespace>
+    <AssemblyName>MaterialForms.Demo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

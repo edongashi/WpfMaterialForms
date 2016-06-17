@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using MaterialForms;
 
-namespace MaterialFormsDemo
+namespace MaterialForms.Demo
 {
     public class Program
     {
@@ -20,7 +20,8 @@ namespace MaterialFormsDemo
                         Name = "Login window",
                         CommandHint = "SHOW",
                         Callback = ShowDemo(LoginDialog)
-                    },                    new CommandSchema
+                    },
+                    new CommandSchema
                     {
                         Name = "Settings window",
                         CommandHint = "SHOW",
