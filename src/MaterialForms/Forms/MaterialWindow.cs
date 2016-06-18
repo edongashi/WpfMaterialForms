@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Annotations;
 
@@ -10,13 +12,13 @@ namespace MaterialForms
 {
     public class MaterialWindow : INotifyPropertyChanged
     {
-        private static int dialogId;
-        private static readonly Application MaterialFormsApplication;
+        private static int staticDialogId;
+        private static Dispatcher customDispatcher;
 
         static MaterialWindow()
         {
-            MaterialFormsApplication = new Application();
-            LoadResources(MaterialFormsApplication);
+            var materialFormsApplication = Application.Current ?? new Application();
+            LoadResources(materialFormsApplication);
         }
 
         public static void LoadResources(Application application)
@@ -27,8 +29,39 @@ namespace MaterialForms
                     UriKind.Relative)) as ResourceDictionary);
         }
 
+        public static void ShutDownCustomDispatcher()
+        {
+            if (customDispatcher == null)
+            {
+                return;
+            }
+
+            customDispatcher.InvokeShutdown();
+            customDispatcher = null;
+        }
+
+        private static Dispatcher GetCustomDispatcher()
+        {
+            if (customDispatcher != null)
+            {
+                return customDispatcher;
+            }
+
+            var waitHandle = new ManualResetEventSlim();
+            var thread = new Thread(() =>
+            {
+                customDispatcher = Dispatcher.CurrentDispatcher;
+                waitHandle.Set();
+                Dispatcher.Run();
+            });
+            
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            waitHandle.Wait();
+            return customDispatcher;
+        }
+
         private int currentDialogId;
-        private MaterialFormsWindow currentWindow;
 
         private string title = "Dialog";
         private double width = 400d;
@@ -127,20 +160,53 @@ namespace MaterialForms
             }
         }
 
-        public void Show()
+        public Task<bool?> ShowAsync() => ShowAsync(Dispatcher.CurrentDispatcher);
+
+        public Task<bool?> ShowAsync(DispatcherOption dispatcherOption)
         {
-            currentDialogId = dialogId++;
-            currentWindow = new MaterialFormsWindow(this, currentDialogId);
-            currentWindow.ShowDialog();
-            currentWindow = null;
+            Dispatcher dispatcher;
+            switch (dispatcherOption)
+            {
+                case DispatcherOption.CurrentThread:
+                    dispatcher = Dispatcher.CurrentDispatcher;
+                    break;
+                case DispatcherOption.CurrentApplication:
+                    dispatcher = Application.Current.Dispatcher;
+                    break;
+                case DispatcherOption.Custom:
+                    dispatcher = GetCustomDispatcher();
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            return ShowAsync(dispatcher);
         }
 
-        public void Close() => currentWindow?.Close();
-
-        public async Task ShowDialog(MaterialDialog dialog, double width = double.NaN)
+        private Task<bool?> ShowAsync(Dispatcher dispatcher)
         {
-            var view = dialog.View;
-            view.Width = width;
+            var completion = new TaskCompletionSource<bool?>();
+            dispatcher.InvokeAsync(() =>
+            {
+                try
+                {
+                    currentDialogId = Interlocked.Increment(ref staticDialogId);
+                    var window = new MaterialFormsWindow(this, currentDialogId);
+                    completion.SetResult(window.ShowDialog());
+                }
+                catch (Exception ex)
+                {
+                    completion.SetException(ex);
+                }
+            });
+
+            return completion.Task;
+        }
+
+        public async Task ShowDialog(MaterialDialog modalDialog, double dialogWidth = double.NaN)
+        {
+            var view = modalDialog.View;
+            view.Width = dialogWidth;
             await DialogHost.Show(view, "DialogHost" + currentDialogId);
         }
 
