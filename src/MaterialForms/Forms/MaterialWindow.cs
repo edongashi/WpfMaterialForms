@@ -160,6 +160,13 @@ namespace MaterialForms
             }
         }
 
+        public bool? Show()
+        {
+            currentDialogId = Interlocked.Increment(ref staticDialogId);
+            var window = new MaterialFormsWindow(this, currentDialogId);
+            return window.ShowDialog();
+        }
+
         public Task<bool?> ShowAsync() => ShowAsync(Dispatcher.CurrentDispatcher);
 
         public Task<bool?> ShowAsync(DispatcherOption dispatcherOption)
@@ -190,9 +197,7 @@ namespace MaterialForms
             {
                 try
                 {
-                    currentDialogId = Interlocked.Increment(ref staticDialogId);
-                    var window = new MaterialFormsWindow(this, currentDialogId);
-                    completion.SetResult(window.ShowDialog());
+                    completion.SetResult(Show());
                 }
                 catch (Exception ex)
                 {
