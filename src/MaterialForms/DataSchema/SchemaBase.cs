@@ -9,6 +9,9 @@ using MaterialForms.Validation;
 
 namespace MaterialForms
 {
+    /// <summary>
+    /// Base class for all schemas. Custom data types and controls can be implemented by extending this class.
+    /// </summary>
     public abstract class SchemaBase : IViewProvider
     {
         private string key;
@@ -17,6 +20,9 @@ namespace MaterialForms
         private PackIconKind packIconKind;
         private Visibility iconVisibility = Visibility.Collapsed;
 
+        /// <summary>
+        /// Gets or sets the key that identifies the value in the form. Does not appear in the UI.
+        /// </summary>
         public string Key
         {
             get { return key; }
@@ -28,6 +34,9 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the display name of the schema, usually appearing as a control hint or label.
+        /// </summary>
         public string Name
         {
             get { return name; }
@@ -39,6 +48,9 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the description of the schema, usually appearing as a tooltip on mouse over.
+        /// </summary>
         public string Description
         {
             get { return description; }
@@ -50,17 +62,9 @@ namespace MaterialForms
             }
         }
 
-        public PackIconKind PackIconKind
-        {
-            get { return packIconKind; }
-            set
-            {
-                if (value == packIconKind) return;
-                packIconKind = value;
-                OnPropertyChanged();
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets the icon type shown in the control. Some controls do not display icons.
+        /// </summary>
         public IconKind IconKind
         {
             get { return (IconKind)packIconKind; }
@@ -78,6 +82,17 @@ namespace MaterialForms
             {
                 if (value == iconVisibility) return;
                 iconVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PackIconKind PackIconKind
+        {
+            get { return packIconKind; }
+            set
+            {
+                if (value == packIconKind) return;
+                packIconKind = value;
                 OnPropertyChanged();
             }
         }

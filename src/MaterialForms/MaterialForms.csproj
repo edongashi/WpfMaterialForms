@@ -42,6 +42,14 @@
       <HintPath>..\..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaterialDesignColors.1.1.3-beta\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.621, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaterialDesignThemes.2.0.0-ci621\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -80,6 +88,9 @@
     <Compile Include="Controls\FileLoaderControl.xaml.cs">
       <DependentUpon>FileLoaderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProgressControl.xaml.cs">
+      <DependentUpon>ProgressControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SwitchControl.xaml.cs">
       <DependentUpon>SwitchControl.xaml</DependentUpon>
     </Compile>
@@ -98,6 +109,7 @@
     <Compile Include="Controls\ComboBoxControl.xaml.cs">
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataSchema\ProgressSchema.cs" />
     <Compile Include="DataSchema\KeyValueSchema.cs" />
     <Compile Include="DataSchema\CaptionSchema.cs" />
     <Compile Include="DataSchema\PasswordSchema.cs" />
@@ -105,6 +117,7 @@
     <Compile Include="Forms\MaterialDialog.cs" />
     <Compile Include="Forms\MaterialWindow.cs" />
     <Compile Include="IViewProvider.cs" />
+    <Compile Include="ProgressBarSmoother.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Forms\MaterialForm.cs" />
     <Compile Include="DataSchema\IconKind.cs" />
@@ -121,6 +134,8 @@
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="Validation\ValidationRuleProvider.cs" />
+    <Compile Include="ValueConverters\BoolInversionConverter.cs" />
+    <Compile Include="ValueConverters\ValueToPercentConverter.cs" />
     <Compile Include="ValueConverters\FormEmptyMarginConverter.cs" />
     <Compile Include="ValueConverters\StringToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\BoolToResizeModeConverter.cs" />
@@ -151,6 +166,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\FileLoaderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ProgressControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -233,16 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\MaterialDesignInXamlToolkit\MaterialDesignColors.Wpf\MaterialDesignColors.Wpf.csproj">
-      <Project>{90b53209-c60c-4655-b28d-a1b3e1044ba3}</Project>
-      <Name>MaterialDesignColors.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\MaterialDesignInXamlToolkit\MaterialDesignThemes.Wpf\MaterialDesignThemes.Wpf.csproj">
-      <Project>{f079fb0a-a8ed-4216-b6a5-345756751a04}</Project>
-      <Name>MaterialDesignThemes.Wpf</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
