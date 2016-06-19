@@ -225,6 +225,11 @@ namespace MaterialForms
 
         private Task<bool?> Show(Dispatcher dispatcher)
         {
+            if (dispatcher.CheckAccess())
+            {
+                return Task.FromResult(ShowSync());
+            }
+
             var completion = new TaskCompletionSource<bool?>();
             dispatcher.InvokeAsync(() =>
             {
