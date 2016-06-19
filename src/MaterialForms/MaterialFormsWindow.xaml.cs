@@ -18,6 +18,11 @@ namespace MaterialForms
 
         private void CloseDialogCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if (e.Parameter is bool)
+            {
+                DialogResult = (bool)e.Parameter;
+            }
+
             Close();
         }
 

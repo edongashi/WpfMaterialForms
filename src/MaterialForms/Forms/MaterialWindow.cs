@@ -13,11 +13,14 @@ namespace MaterialForms
     public class MaterialWindow : INotifyPropertyChanged
     {
         private static int staticDialogId;
+        private static DispatcherOption defaultDispatcher;
         private static Dispatcher customDispatcher;
 
         static MaterialWindow()
         {
-            var materialFormsApplication = Application.Current ?? new Application();
+            defaultDispatcher = DispatcherOption.CurrentThread;
+            var materialFormsApplication = Application.Current ??
+                                           new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
             LoadResources(materialFormsApplication);
         }
 
@@ -40,6 +43,16 @@ namespace MaterialForms
             customDispatcher = null;
         }
 
+        public static void ShutDownApplication()
+        {
+            Application.Current.Shutdown();
+        }
+
+        public static void SetDefaultDispatcher(DispatcherOption dispatcherOption)
+        {
+            defaultDispatcher = dispatcherOption;
+        }
+
         private static Dispatcher GetCustomDispatcher()
         {
             if (customDispatcher != null)
@@ -54,7 +67,7 @@ namespace MaterialForms
                 waitHandle.Set();
                 Dispatcher.Run();
             });
-            
+
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             waitHandle.Wait();
@@ -75,7 +88,7 @@ namespace MaterialForms
         public MaterialWindow()
         {
         }
-        
+
         public MaterialWindow(MaterialDialog dialog)
         {
             Dialog = dialog;
@@ -169,16 +182,16 @@ namespace MaterialForms
             }
         }
 
-        public bool? Show()
+        public bool? ShowSync()
         {
             currentDialogId = Interlocked.Increment(ref staticDialogId);
             var window = new MaterialFormsWindow(this, currentDialogId);
             return window.ShowDialog();
         }
 
-        public Task<bool?> ShowAsync() => ShowAsync(Dispatcher.CurrentDispatcher);
+        public Task<bool?> Show() => Show(defaultDispatcher);
 
-        public Task<bool?> ShowAsync(DispatcherOption dispatcherOption)
+        public Task<bool?> Show(DispatcherOption dispatcherOption)
         {
             Dispatcher dispatcher;
             switch (dispatcherOption)
@@ -196,17 +209,17 @@ namespace MaterialForms
                     throw new InvalidOperationException();
             }
 
-            return ShowAsync(dispatcher);
+            return Show(dispatcher);
         }
 
-        private Task<bool?> ShowAsync(Dispatcher dispatcher)
+        private Task<bool?> Show(Dispatcher dispatcher)
         {
             var completion = new TaskCompletionSource<bool?>();
             dispatcher.InvokeAsync(() =>
             {
                 try
                 {
-                    completion.SetResult(Show());
+                    completion.SetResult(ShowSync());
                 }
                 catch (Exception ex)
                 {

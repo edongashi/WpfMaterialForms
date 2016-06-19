@@ -49,7 +49,7 @@ namespace MaterialForms.Demo
                 }
             };
 
-            window.Show();
+            window.ShowSync();
         }
 
         public static Action<object> ShowDemo(Func<MaterialDialog> dialog)
@@ -61,7 +61,7 @@ namespace MaterialForms.Demo
                     Dialog = dialog(),
                 };
 
-                window.Show();
+                window.ShowSync();
             };
 
             return callback;
