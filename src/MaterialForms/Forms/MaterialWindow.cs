@@ -53,6 +53,32 @@ namespace MaterialForms
             defaultDispatcher = dispatcherOption;
         }
 
+        public bool CheckDispatcherAccess(DispatcherOption dispatcherOption)
+        {
+            var dispatcher = GetDispatcher(dispatcherOption);
+            return dispatcher.CheckAccess();
+        }
+
+        private static Dispatcher GetDispatcher(DispatcherOption dispatcherOption)
+        {
+            Dispatcher dispatcher;
+            switch (dispatcherOption)
+            {
+                case DispatcherOption.CurrentThread:
+                    dispatcher = Dispatcher.CurrentDispatcher;
+                    break;
+                case DispatcherOption.CurrentApplication:
+                    dispatcher = Application.Current.Dispatcher;
+                    break;
+                case DispatcherOption.Custom:
+                    dispatcher = GetCustomDispatcher();
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+            return dispatcher;
+        }
+
         private static Dispatcher GetCustomDispatcher()
         {
             if (customDispatcher != null)
@@ -193,22 +219,7 @@ namespace MaterialForms
 
         public Task<bool?> Show(DispatcherOption dispatcherOption)
         {
-            Dispatcher dispatcher;
-            switch (dispatcherOption)
-            {
-                case DispatcherOption.CurrentThread:
-                    dispatcher = Dispatcher.CurrentDispatcher;
-                    break;
-                case DispatcherOption.CurrentApplication:
-                    dispatcher = Application.Current.Dispatcher;
-                    break;
-                case DispatcherOption.Custom:
-                    dispatcher = GetCustomDispatcher();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-
+            var dispatcher = GetDispatcher(dispatcherOption);
             return Show(dispatcher);
         }
 

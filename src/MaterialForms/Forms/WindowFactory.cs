@@ -8,7 +8,7 @@
 
         public static MaterialWindow Alert(string message, string title, string action)
         {
-            return new MaterialWindow(new MaterialDialog(message, title, null, action))
+            return new MaterialWindow(new MaterialDialog(message, title, action, null))
             {
                 Width = 300d
             };
