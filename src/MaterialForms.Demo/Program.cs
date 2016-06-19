@@ -35,7 +35,7 @@ namespace MaterialForms.Demo
                         {
                             await window.ShowDialog(new MaterialDialog
                             {
-                                Subheading = "Discard draft?",
+                                Message = "Discard draft?",
                                 PositiveAction = "DISCARD"
                             }, 250d);
                         }
@@ -59,7 +59,6 @@ namespace MaterialForms.Demo
                 var window = new MaterialWindow
                 {
                     Dialog = dialog(),
-                    ShowCloseButton = false
                 };
 
                 window.Show();

@@ -9,11 +9,76 @@ namespace MaterialForms
     public class MaterialDialog : IViewProvider
     {
         private string title;
-        private string subheading;
+        private string message;
         private MaterialForm form;
-        private string negativeAction = "CANCEL";
-        private string positiveAction = "OK";
+        private string negativeAction;
+        private string positiveAction;
         private string auxiliaryAction;
+
+        public MaterialDialog()
+            : this(message: null)
+        {
+        }
+
+        public MaterialDialog(params SchemaBase[] schemas)
+            : this(new MaterialForm(schemas))
+        {
+        }
+
+        public MaterialDialog(MaterialForm form)
+            : this(null, form)
+        {
+        }
+
+        public MaterialDialog(string message)
+            : this(message, title: null)
+        {
+        }
+
+        public MaterialDialog(string message, params SchemaBase[] schemas)
+            : this(message, new MaterialForm(schemas))
+        {
+        }
+
+        public MaterialDialog(string message, MaterialForm form)
+            : this(message, null, form)
+        {
+        }
+
+        public MaterialDialog(string message, string title)
+            : this(message, title, form: null)
+        {
+        }
+
+        public MaterialDialog(string message, string title, params SchemaBase[] schemas)
+            : this(message, title, new MaterialForm(schemas))
+        {
+        }
+
+        public MaterialDialog(string message, string title, MaterialForm form)
+            : this(message, title, "OK", "CANCEL", form)
+        {
+        }
+
+        public MaterialDialog(string message, string title, string positiveAction, string negativeAction)
+            : this(message, title, positiveAction, negativeAction, null)
+        {
+        }
+
+        public MaterialDialog(string message, string title, string positiveAction, string negativeAction, MaterialForm form)
+            : this(message, title, positiveAction, negativeAction, null, form)
+        {
+        }
+
+        public MaterialDialog(string message, string title, string positiveAction, string negativeAction, string auxiliaryAction, MaterialForm form)
+        {
+            Message = message;
+            Title = title;
+            PositiveAction = positiveAction;
+            NegativeAction = negativeAction;
+            AuxiliaryAction = auxiliaryAction;
+            Form = form;
+        }
 
         public string Title
         {
@@ -26,13 +91,13 @@ namespace MaterialForms
             }
         }
 
-        public string Subheading
+        public string Message
         {
-            get { return subheading; }
+            get { return message; }
             set
             {
-                if (value == subheading) return;
-                subheading = value;
+                if (value == message) return;
+                message = value;
                 OnPropertyChanged();
             }
         }
@@ -81,7 +146,7 @@ namespace MaterialForms
             }
         }
 
-        public UserControl View => new DialogView {DataContext = this};
+        public UserControl View => new DialogView { DataContext = this };
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -68,9 +68,18 @@ namespace MaterialForms
         private double height = double.NaN;
         private bool showMinButton;
         private bool showMaxRestoreButton = true;
-        private bool showCloseButton = true;
+        private bool showCloseButton;
         private bool canResize;
         private MaterialDialog dialog;
+
+        public MaterialWindow()
+        {
+        }
+        
+        public MaterialWindow(MaterialDialog dialog)
+        {
+            Dialog = dialog;
+        }
 
         public string Title
         {

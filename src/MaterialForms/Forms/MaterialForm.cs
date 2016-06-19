@@ -11,6 +11,15 @@ namespace MaterialForms
 {
     public class MaterialForm : ObservableCollection<SchemaBase>
     {
+        public MaterialForm()
+        {
+        }
+
+        public MaterialForm(params SchemaBase[] schemas)
+            : base(schemas)
+        {
+        }
+
         /// <summary>
         /// Gets all form key-value pairs as a dictionary. Schemas that have no key or cannot hold values are excluded.
         /// </summary>

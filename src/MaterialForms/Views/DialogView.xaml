@@ -33,9 +33,9 @@
                            LineHeight="24"
                            Opacity="0.54"
                            Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-                           Text="{Binding Subheading}"
+                           Text="{Binding Message}"
                            TextWrapping="Wrap"
-                           Visibility="{Binding Subheading,
+                           Visibility="{Binding Message,
                                                 Converter={StaticResource StringToVisibilityConverter}}" />
                 <views:FormView DataContext="{Binding Form}" />
             </StackPanel>

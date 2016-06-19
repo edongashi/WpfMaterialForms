@@ -101,7 +101,7 @@ The dialogs and windows are generated dynamically from data schemas. The API is 
 
 ```cs
 {
-    Subheading = "Discard draft?",
+    Message = "Discard draft?",
     PositiveAction = "DISCARD"
 }
 ```
