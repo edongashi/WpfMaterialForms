@@ -6,13 +6,13 @@ namespace MaterialForms
 {
     public class ProgressSchema : SchemaBase
     {
-        private int progress;
+        private double progress;
         private int maximum = 100;
         private bool isIndeterminate;
         private bool showAbsolute;
         private bool showPercentage = true;
 
-        public int Progress
+        public double Progress
         {
             get { return progress; }
             set
@@ -28,7 +28,7 @@ namespace MaterialForms
             get { return maximum; }
             set
             {
-                if (value == maximum) return;
+                if (value <= 0 || value == maximum) return;
                 maximum = value;
                 OnPropertyChanged();
             }
