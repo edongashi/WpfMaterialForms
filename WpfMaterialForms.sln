@@ -9,11 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Demo", "src\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Tests", "src\MaterialForms.Tests\MaterialForms.Tests.csproj", "{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MaterialForms.Script", "MaterialForms.Script", "{26274975-9230-40C3-85EC-66942CDCC2A1}"
-	ProjectSection(SolutionItems) = preProject
-		src\MaterialForms.Script\main.js = src\MaterialForms.Script\main.js
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU
