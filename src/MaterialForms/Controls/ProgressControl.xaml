@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialForms="clr-namespace:MaterialForms"
              xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
-             Height="48">
+             Height="44">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <valueConverters:ValueToPercentConverter x:Key="ValueToPercentConverter" />
@@ -16,14 +16,14 @@
         </Grid.ColumnDefinitions>
         <ProgressBar x:Name="ProgressBar"
                      Grid.ColumnSpan="3"
-                     Margin="0,0,0,8"
+                     Margin="0"
                      VerticalAlignment="Center"
                      materialForms:ProgressBarSmoother.SmoothValue="{Binding Progress}"
                      IsIndeterminate="{Binding IsIndeterminate}"
                      Maximum="{Binding Maximum}"
                      Style="{StaticResource MaterialDesignLinearProgressBar}" />
         <TextBlock Grid.Column="0"
-                   Margin="0,24,0,0"
+                   Margin="0,32,0,0"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    Opacity="0.54"
@@ -37,7 +37,7 @@
             </TextBlock.Text>
         </TextBlock>
         <TextBlock Grid.Column="2"
-                   Margin="0,24,0,0"
+                   Margin="0,32,0,0"
                    VerticalAlignment="Center"
                    Foreground="Black"
                    Opacity="0.54"

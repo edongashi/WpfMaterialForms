@@ -32,9 +32,13 @@
 
         public static MaterialWindow FromSingleSchema(string message, SchemaBase schema) => FromSingleSchema(message, null, schema);
 
-        public static MaterialWindow FromSingleSchema(string message, string title, SchemaBase schema)
+        public static MaterialWindow FromSingleSchema(string message, string title, SchemaBase schema) => FromSingleSchema(message, title, "OK", schema);
+
+        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction, SchemaBase schema) => FromSingleSchema(message, title, positiveAction, "CANCEL", schema);
+
+        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction, string negativeAction, SchemaBase schema)
         {
-            return new MaterialWindow(new MaterialDialog(message, title, new MaterialForm(schema)));
+            return new MaterialWindow(new MaterialDialog(message, title, positiveAction, negativeAction, new MaterialForm(schema)));
         }
     }
 }

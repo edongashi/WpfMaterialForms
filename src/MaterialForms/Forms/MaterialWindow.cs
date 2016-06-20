@@ -44,6 +44,7 @@ namespace MaterialForms
 
         public static void ShutDownApplication()
         {
+            ShutDownCustomDispatcher();
             Application.Current.Shutdown();
         }
 
