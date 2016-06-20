@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using MaterialDesignThemes.Wpf;
 using MaterialForms.Annotations;
 
 namespace MaterialForms
@@ -61,6 +60,8 @@ namespace MaterialForms
             return dispatcher.CheckAccess();
         }
 
+        public static void RunDispatcher() => Dispatcher.Run();
+
         private static Dispatcher GetDispatcher(DispatcherOption dispatcherOption)
         {
             Dispatcher dispatcher;
@@ -102,8 +103,6 @@ namespace MaterialForms
             return customDispatcher;
         }
 
-        private int currentDialogId;
-
         private string title = "Dialog";
         private double width = 400d;
         private double height = double.NaN;
@@ -121,6 +120,8 @@ namespace MaterialForms
         {
             Dialog = dialog;
         }
+
+        public WindowSession CurrentSession { get; private set; }
 
         public string Title
         {
@@ -210,34 +211,61 @@ namespace MaterialForms
             }
         }
 
-        public bool? ShowSync()
-        {
-            currentDialogId = Interlocked.Increment(ref staticDialogId);
-            var window = new MaterialFormsWindow(this, currentDialogId);
-            return window.ShowDialog();
-        }
-
         public Task<bool?> Show() => Show(defaultDispatcher);
 
-        public Task<bool?> Show(DispatcherOption dispatcherOption)
-        {
-            var dispatcher = GetDispatcher(dispatcherOption);
-            return Show(dispatcher);
-        }
+        public Task<bool?> Show(DispatcherOption dispatcherOption) => ShowTracked(GetDispatcher(dispatcherOption)).Task;
 
-        private Task<bool?> Show(Dispatcher dispatcher)
+        public WindowSession ShowTracked() => ShowTracked(defaultDispatcher);
+
+        public WindowSession ShowTracked(DispatcherOption dispatcherOption) => ShowTracked(GetDispatcher(dispatcherOption));
+
+        private WindowSession ShowTracked(Dispatcher dispatcher)
         {
-            if (dispatcher.CheckAccess())
+            if (CurrentSession != null)
             {
-                return Task.FromResult(ShowSync());
+                throw new InvalidOperationException("A window session for this instance is already open.");
             }
 
+            var id = Interlocked.Increment(ref staticDialogId);
             var completion = new TaskCompletionSource<bool?>();
+            CurrentSession = new WindowSession(id, completion.Task);
             dispatcher.InvokeAsync(() =>
             {
                 try
                 {
-                    completion.SetResult(ShowSync());
+                    var source = CurrentSession.CancellationSource;
+                    var token = source.Token;
+                    if (token.IsCancellationRequested)
+                    {
+                        completion.SetResult(null);
+                        return;
+                    }
+
+                    var window = new MaterialFormsWindow(this, id);
+                    CurrentSession.Window = window;
+                    if (token.IsCancellationRequested)
+                    {
+                        completion.SetResult(null);
+                        return;
+                    }
+
+                    window.Loaded += (sender, args) =>
+                    {
+                        lock (source)
+                        {
+                            if (token.IsCancellationRequested)
+                            {
+                                completion.SetResult(null);
+                                window.Close();
+                            }
+
+                            CurrentSession.Loaded = true;
+                        }
+                    };
+
+                    completion.SetResult(window.ShowDialog());
+                    CurrentSession.Closed = true;
+                    CurrentSession = null;
                 }
                 catch (Exception ex)
                 {
@@ -245,14 +273,7 @@ namespace MaterialForms
                 }
             });
 
-            return completion.Task;
-        }
-
-        public async Task ShowDialog(MaterialDialog modalDialog, double dialogWidth = double.NaN)
-        {
-            var view = modalDialog.View;
-            view.Width = dialogWidth;
-            await DialogHost.Show(view, "DialogHost" + currentDialogId);
+            return CurrentSession;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

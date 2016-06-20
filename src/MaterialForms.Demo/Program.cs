@@ -33,7 +33,7 @@ namespace MaterialForms.Demo
                         CommandHint = "SHOW",
                         Callback = async arg =>
                         {
-                            await window.ShowDialog(new MaterialDialog
+                            await window.CurrentSession.ShowDialog(new MaterialDialog
                             {
                                 Message = "Discard draft?",
                                 PositiveAction = "DISCARD"
@@ -49,7 +49,8 @@ namespace MaterialForms.Demo
                 }
             };
 
-            window.ShowSync();
+            window.ShowTracked();
+            MaterialWindow.RunDispatcher();
         }
 
         public static Action<object> ShowDemo(Func<MaterialDialog> dialog)
@@ -61,7 +62,7 @@ namespace MaterialForms.Demo
                     Dialog = dialog(),
                 };
 
-                window.ShowSync();
+                window.Show();
             };
 
             return callback;
