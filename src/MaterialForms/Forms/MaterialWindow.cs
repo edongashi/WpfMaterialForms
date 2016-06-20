@@ -53,7 +53,9 @@ namespace MaterialForms
             defaultDispatcher = dispatcherOption;
         }
 
-        public bool CheckDispatcherAccess(DispatcherOption dispatcherOption)
+        public static bool CheckDispatcherAccess() => CheckDispatcherAccess(defaultDispatcher);
+
+        public static bool CheckDispatcherAccess(DispatcherOption dispatcherOption)
         {
             var dispatcher = GetDispatcher(dispatcherOption);
             return dispatcher.CheckAccess();

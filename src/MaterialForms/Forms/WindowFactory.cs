@@ -27,5 +27,14 @@
                 Width = 300d
             };
         }
+
+        public static MaterialWindow FromSingleSchema(SchemaBase schema) => FromSingleSchema(null, schema);
+
+        public static MaterialWindow FromSingleSchema(string message, SchemaBase schema) => FromSingleSchema(message, null, schema);
+
+        public static MaterialWindow FromSingleSchema(string message, string title, SchemaBase schema)
+        {
+            return new MaterialWindow(new MaterialDialog(message, title, new MaterialForm(schema)));
+        }
     }
 }
