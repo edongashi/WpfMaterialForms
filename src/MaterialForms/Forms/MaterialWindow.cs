@@ -264,12 +264,19 @@ namespace MaterialForms
                         }
                     };
 
-                    completion.SetResult(window.ShowDialog());
+                    var result = window.ShowDialog();
                     CurrentSession.Closed = true;
                     CurrentSession = null;
+                    completion.SetResult(result);
                 }
                 catch (Exception ex)
                 {
+                    if (CurrentSession != null)
+                    {
+                        CurrentSession.Closed = true;
+                        CurrentSession = null;
+                    }
+
                     completion.SetException(ex);
                 }
             });
