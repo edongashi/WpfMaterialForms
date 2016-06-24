@@ -6,7 +6,18 @@ namespace MaterialForms
 {
     public class PasswordSchema : SchemaBase
     {
-        public SecureString Password { get; set; }
+        private SecureString password;
+
+        public SecureString Password
+        {
+            get { return password; }
+            set
+            {
+                if (Equals(value, password)) return;
+                password = value;
+                OnPropertyChanged();
+            }
+        }
 
         public override UserControl CreateView()
         {
