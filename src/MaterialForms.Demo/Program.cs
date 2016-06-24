@@ -19,7 +19,7 @@ namespace MaterialForms.Demo
                     {
                         Name = "Login window",
                         CommandHint = "SHOW",
-                        Callback = ShowDemo(LoginDialog)
+                        Callback = ShowLogin
                     },
                     new CommandSchema
                     {
@@ -49,28 +49,13 @@ namespace MaterialForms.Demo
                 }
             };
 
-            window.ShowTracked();
+            window.Show();
             MaterialWindow.RunDispatcher();
         }
 
-        public static Action<object> ShowDemo(Func<MaterialDialog> dialog)
+        public static async void ShowLogin(object nothing)
         {
-            Action<object> callback = arg =>
-            {
-                var window = new MaterialWindow
-                {
-                    Dialog = dialog(),
-                };
-
-                window.Show();
-            };
-
-            return callback;
-        }
-
-        public static MaterialDialog LoginDialog()
-        {
-            return new MaterialDialog
+            var window = new MaterialWindow(new MaterialDialog
             {
                 Title = "Please log in to continue",
                 PositiveAction = "LOG IN",
@@ -92,7 +77,33 @@ namespace MaterialForms.Demo
                         IsCheckBox = true
                     }
                 }
+            });
+
+            bool? result = await window.Show();
+            if (result == true)
+            {
+                var formData = window.Dialog.Form.GetValuesList();
+                await WindowFactory.Alert($"Username: {formData[0]}\nPassword: {formData[1]}\nRemember me: {formData[2]}", "Positive").Show();
+            }
+            else
+            {
+                await WindowFactory.Alert("Dialog dismissed", "Negative").Show();
+            }
+        }
+
+        public static Action<object> ShowDemo(Func<MaterialDialog> dialog)
+        {
+            Action<object> callback = arg =>
+            {
+                var window = new MaterialWindow
+                {
+                    Dialog = dialog(),
+                };
+
+                window.Show();
             };
+
+            return callback;
         }
 
         public static MaterialDialog SettingsDialog()

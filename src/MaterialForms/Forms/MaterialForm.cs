@@ -26,8 +26,25 @@ namespace MaterialForms
         public Dictionary<string, object> GetValuesDictionary()
         {
             var dictionary = new Dictionary<string, object>();
-            Action<string, object> assignFunction = (key, value) => dictionary[key] = value;
-            AssignValues(assignFunction);
+            foreach (var schema in ValidKeySchemas())
+            {
+                dictionary[schema.Key] = schema.GetValue();
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Gets all form name-value pairs as a dictionary. Schemas that have no name or cannot hold values are excluded.
+        /// </summary>
+        public Dictionary<string, object> GetValuesDictionaryFromNames()
+        {
+            var dictionary = new Dictionary<string, object>();
+            foreach (var schema in this.Where(schema => schema.HoldsValue && !string.IsNullOrEmpty(schema.Name)))
+            {
+                dictionary[schema.Name] = schema.GetValue();
+            }
+
             return dictionary;
         }
 
@@ -46,8 +63,11 @@ namespace MaterialForms
         public dynamic GetValuesDynamic()
         {
             var dictionary = (IDictionary<string, object>)new ExpandoObject();
-            Action<string, object> assignFunction = (key, value) => dictionary[key] = value;
-            AssignValues(assignFunction);
+            foreach (var schema in ValidKeySchemas())
+            {
+                dictionary[schema.Key] = schema.GetValue();
+            }
+
             return dictionary;
         }
 
@@ -57,9 +77,7 @@ namespace MaterialForms
         /// <typeparam name="T">Type of object to be assigned to. Must have a default constructor.</typeparam>
         public T Bind<T>() where T : class, new()
         {
-            var instance = new T();
-            Bind(instance);
-            return instance;
+            return Bind(new T());
         }
 
         /// <summary>
@@ -69,37 +87,27 @@ namespace MaterialForms
         public T Bind<T>(T instance) where T : class
         {
             var type = instance.GetType();
-            Action<string, object> assignFunction = (key, value) =>
+            foreach (var schema in ValidKeySchemas())
             {
                 try
                 {
-                    var propertyInfo = type.GetProperty(key, BindingFlags.Instance | BindingFlags.Public);
-                    propertyInfo?.SetValue(instance, value);
+                    var propertyInfo = type.GetProperty(schema.Key, BindingFlags.Instance | BindingFlags.Public);
+                    propertyInfo?.SetValue(instance, schema.GetValue());
                 }
                 catch
                 {
                     // ignored
                 }
-            };
-
-            AssignValues(assignFunction);
-            return instance;
-        }
-
-        /// <summary>
-        /// Visits all valid form key-value pairs by invoking the provided function for each of them.
-        /// </summary>
-        public void AssignValues(Action<string, object> assignFunction)
-        {
-            foreach (var schema in this)
-            {
-                schema.AssignValue(assignFunction);
             }
+
+            return instance;
         }
 
         /// <summary>
         /// Gets a new view bound to the current state of the object. Use this if you need to host your forms manually.
         /// </summary>
         public UserControl View => new FormView { DataContext = this };
+
+        public IEnumerable<SchemaBase> ValidKeySchemas() => this.Where(schema => schema.HoldsValue && !string.IsNullOrEmpty(schema.Key));
     }
 }

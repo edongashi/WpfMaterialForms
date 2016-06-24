@@ -27,7 +27,7 @@ namespace MaterialForms.Tests
                 {
                     Name = "Enter password"
                 },
-                new PasswordSchema
+                new StringSchema
                 {
                     Key = "Password",
                     Value = "Value_Password"

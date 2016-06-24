@@ -120,6 +120,7 @@
     <Compile Include="Forms\WindowSession.cs" />
     <Compile Include="Forms\WindowFactory.cs" />
     <Compile Include="IViewProvider.cs" />
+    <Compile Include="PasswordHelpers.cs" />
     <Compile Include="ProgressBarSmoother.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Forms\MaterialForm.cs" />

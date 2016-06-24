@@ -107,19 +107,6 @@ namespace MaterialForms
 
         public abstract object GetValue();
 
-        public virtual void AssignValue(Action<string, object> assignFunction)
-        {
-            if (string.IsNullOrEmpty(Key))
-            {
-                return;
-            }
-
-            if (HoldsValue)
-            {
-                assignFunction(Key, GetValue());
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

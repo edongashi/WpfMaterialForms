@@ -1,17 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using System.Security;
+using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
 {
     public class PasswordSchema : SchemaBase
     {
-        public string Value { get; set; }
-
-        //public string GetPassword()
-        //{
-        //    // TODO: request from control
-        //    return null;
-        //}
+        public SecureString Password { get; set; }
 
         public override UserControl CreateView()
         {
@@ -20,6 +15,6 @@ namespace MaterialForms
 
         public override bool HoldsValue => true;
 
-        public override object GetValue() => Value;
+        public override object GetValue() => PasswordHelpers.ConvertToUnsecureString(Password);
     }
 }
