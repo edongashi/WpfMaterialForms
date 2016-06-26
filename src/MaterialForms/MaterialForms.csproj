@@ -114,9 +114,12 @@
     <Compile Include="DataSchema\CaptionSchema.cs" />
     <Compile Include="DataSchema\PasswordSchema.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Forms\DialogSession.cs" />
     <Compile Include="Forms\DispatcherOption.cs" />
+    <Compile Include="Forms\MaterialApplication.cs" />
     <Compile Include="Forms\MaterialDialog.cs" />
     <Compile Include="Forms\MaterialWindow.cs" />
+    <Compile Include="Forms\Session.cs" />
     <Compile Include="Forms\WindowSession.cs" />
     <Compile Include="Forms\WindowFactory.cs" />
     <Compile Include="IViewProvider.cs" />
@@ -134,6 +137,7 @@
     <Compile Include="DataSchema\SelectionSchema.cs" />
     <Compile Include="DataSchema\StringSchema.cs" />
     <Compile Include="DataSchema\DateSchema.cs" />
+    <Compile Include="SessionAssist.cs" />
     <Compile Include="Validation\BindableValidationRule.cs" />
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />

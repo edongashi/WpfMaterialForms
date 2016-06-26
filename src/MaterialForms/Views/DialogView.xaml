@@ -10,6 +10,12 @@
         <valueConverters:FormEmptyMarginConverter x:Key="CollectionEmptyMarginConverter" />
         <valueConverters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding x:Name="CloseDialogCommandBinding"
+                        CanExecute="CloseDialogCommandBinding_CanExecute"
+                        Command="materialDesign:DialogHost.CloseDialogCommand"
+                        Executed="CloseDialogCommandBinding_Executed" />
+    </UserControl.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -27,7 +33,7 @@
                       Margin="0,8,0,0"
                       VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="24,0,24,16" VerticalAlignment="Top">
-                <TextBlock x:Name="Subheading"
+                <TextBlock x:Name="Message"
                            Margin="{Binding Form,
                                             Converter={StaticResource CollectionEmptyMarginConverter}}"
                            Foreground="Black"
@@ -44,9 +50,11 @@
         <Grid x:Name="ButtonsGrid"
               Grid.Row="2"
               Margin="8,0,8,8">
-            <Button Height="36"
+            <Button x:Name="AuxiliaryActionButton"
+                    Height="36"
                     MinWidth="64"
                     HorizontalAlignment="Left"
+                    Click="AuxiliaryActionButton_Click"
                     Command="{Binding AuxiliaryCommand}"
                     Content="{Binding AuxiliaryAction}"
                     Padding="8,0"
@@ -54,7 +62,8 @@
                     Visibility="{Binding AuxiliaryAction,
                                          Converter={StaticResource StringToVisibilityConverter}}" />
             <WrapPanel HorizontalAlignment="Right">
-                <Button Height="36"
+                <Button x:Name="NegativeActionButton"
+                        Height="36"
                         MinWidth="64"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding NegativeAction}"
@@ -66,7 +75,8 @@
                         <system:Boolean>False</system:Boolean>
                     </Button.CommandParameter>
                 </Button>
-                <Button Height="36"
+                <Button x:Name="PositiveActionButton"
+                        Height="36"
                         MinWidth="64"
                         Margin="4,0,0,0"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
@@ -79,7 +89,6 @@
                         <system:Boolean>True</system:Boolean>
                     </Button.CommandParameter>
                 </Button>
-
             </WrapPanel>
         </Grid>
     </Grid>

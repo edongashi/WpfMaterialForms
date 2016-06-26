@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using MaterialForms;
+using System.Threading.Tasks;
 
 namespace MaterialForms.Demo
 {
@@ -9,8 +8,8 @@ namespace MaterialForms.Demo
         [STAThread]
         private static void Main(string[] args)
         {
-            var window = new MaterialWindow();
-            window.Dialog = new MaterialDialog
+            WindowSession session = null;
+            var window = new MaterialWindow(new MaterialDialog
             {
                 Title = "Demo material forms",
                 Form = new MaterialForm
@@ -29,11 +28,17 @@ namespace MaterialForms.Demo
                     },
                     new CommandSchema
                     {
+                        Name = "2x settings window (data binding)",
+                        CommandHint = "SHOW",
+                        Callback = ShowDemo(SettingsDialog, true)
+                    },
+                    new CommandSchema
+                    {
                         Name = "Dialog inside window",
                         CommandHint = "SHOW",
                         Callback = async arg =>
                         {
-                            await window.CurrentSession.ShowDialog(new MaterialDialog
+                            await session.ShowDialog(new MaterialDialog
                             {
                                 Message = "Discard draft?",
                                 PositiveAction = "DISCARD"
@@ -47,10 +52,10 @@ namespace MaterialForms.Demo
                         Callback = ShowDemo(EmailDialog)
                     }
                 }
-            };
+            });
 
-            window.Show();
-            MaterialWindow.RunDispatcher();
+            session = window.ShowTracked();
+            MaterialApplication.RunDispatcher();
         }
 
         public static async void ShowLogin(object nothing)
@@ -58,17 +63,18 @@ namespace MaterialForms.Demo
             var window = new MaterialWindow(new MaterialDialog
             {
                 Title = "Please log in to continue",
-                PositiveAction = "LOG IN",
                 Form = new MaterialForm
                 {
                     new StringSchema
                     {
                         Name = "Username",
+                        Key = "user",
                         IconKind = IconKind.Account
                     },
                     new PasswordSchema
                     {
                         Name = "Password",
+                        Key = "pass",
                         IconKind = IconKind.Key
                     },
                     new BooleanSchema
@@ -76,10 +82,24 @@ namespace MaterialForms.Demo
                         Name = "Remember me",
                         IsCheckBox = true
                     }
+                },
+                PositiveAction = "LOG IN",
+                OnPositiveAction = async session =>
+                {
+                    // Simulate asynchronous work
+                    await Task.Delay(2000);
+                    if ((string)session["user"] == "test" && (string)session["pass"] == "123456")
+                    {
+                        session.Close(true);
+                    }
+                    else
+                    {
+                        await ((WindowSession)session).Alert("Invalid username or password.");
+                    }
                 }
             });
 
-            bool? result = await window.Show();
+            var result = await window.Show();
             if (result == true)
             {
                 var formData = window.Dialog.Form.GetValuesList();
@@ -91,7 +111,7 @@ namespace MaterialForms.Demo
             }
         }
 
-        public static Action<object> ShowDemo(Func<MaterialDialog> dialog)
+        public static Action<object> ShowDemo(Func<MaterialDialog> dialog, bool showTwice = false)
         {
             Action<object> callback = arg =>
             {
@@ -101,6 +121,10 @@ namespace MaterialForms.Demo
                 };
 
                 window.Show();
+                if (showTwice)
+                {
+                    window.Show();
+                }
             };
 
             return callback;
@@ -113,6 +137,11 @@ namespace MaterialForms.Demo
                 Title = "Settings",
                 Form = new MaterialForm
                 {
+                    new StringSchema
+                    {
+                        Name = "Device name",
+                        Value = "Android"
+                    },
                     new CaptionSchema
                     {
                         Name = "Connectivity"

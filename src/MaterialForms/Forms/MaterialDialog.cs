@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using MaterialForms.Annotations;
 using MaterialForms.Views;
@@ -113,6 +115,8 @@ namespace MaterialForms
             }
         }
 
+        public Func<Session, Task> OnPositiveAction { get; set; }
+
         public string NegativeAction
         {
             get { return negativeAction; }
@@ -124,6 +128,8 @@ namespace MaterialForms
             }
         }
 
+        public Func<Session, Task> OnNegativeAction { get; set; }
+
         public string AuxiliaryAction
         {
             get { return auxiliaryAction; }
@@ -134,6 +140,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public Func<Session, Task> OnAuxiliaryAction { get; set; }
 
         public MaterialForm Form
         {

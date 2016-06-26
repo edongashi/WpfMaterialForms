@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 
@@ -9,20 +10,17 @@ namespace MaterialForms
     /// </summary>
     internal partial class MaterialFormsWindow : MetroWindow
     {
-        public MaterialFormsWindow(MaterialWindow dataContext, int dialogId = 0)
+        public MaterialFormsWindow(WindowSession session, int dialogId = 0)
         {
-            DataContext = dataContext;
+            SetValue(SessionAssist.HostingSessionProperty, session);
+            DataContext = session.Window;
             InitializeComponent();
             DialogHost.Identifier = "DialogHost" + dialogId;
         }
 
         private void CloseDialogCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Parameter is bool)
-            {
-                DialogResult = (bool)e.Parameter;
-            }
-
+            DialogResult = e.Parameter as bool?;
             Close();
         }
 

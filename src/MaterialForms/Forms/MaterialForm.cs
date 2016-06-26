@@ -21,6 +21,14 @@ namespace MaterialForms
         }
 
         /// <summary>
+        /// Gets the value of the schema with the specified key.
+        /// </summary>
+        public object this[string key]
+        {
+            get { return this.First(schema => schema.HoldsValue && schema.Key == key).GetValue(); }
+        }
+
+        /// <summary>
         /// Gets all form key-value pairs as a dictionary. Schemas that have no key or cannot hold values are excluded.
         /// </summary>
         public Dictionary<string, object> GetValuesDictionary()

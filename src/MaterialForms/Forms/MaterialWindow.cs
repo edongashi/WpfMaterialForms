@@ -1,109 +1,12 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using MaterialForms.Annotations;
 
 namespace MaterialForms
 {
     public class MaterialWindow : INotifyPropertyChanged
     {
-        private static int staticDialogId;
-        private static DispatcherOption defaultDispatcher;
-        private static Dispatcher customDispatcher;
-
-        static MaterialWindow()
-        {
-            defaultDispatcher = DispatcherOption.CurrentThread;
-            var materialFormsApplication = Application.Current ??
-                                           new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-            LoadResources(materialFormsApplication);
-        }
-
-        public static void LoadResources(Application application)
-        {
-            application.Resources.MergedDictionaries.Add(
-                Application.LoadComponent(
-                    new Uri("MaterialForms;component/Resources/Material.xaml",
-                    UriKind.Relative)) as ResourceDictionary);
-        }
-
-        public static void ShutDownCustomDispatcher()
-        {
-            if (customDispatcher == null)
-            {
-                return;
-            }
-
-            customDispatcher.InvokeShutdown();
-            customDispatcher = null;
-        }
-
-        public static void ShutDownApplication()
-        {
-            ShutDownCustomDispatcher();
-            Application.Current.Shutdown();
-        }
-
-        public static void SetDefaultDispatcher(DispatcherOption dispatcherOption)
-        {
-            defaultDispatcher = dispatcherOption;
-        }
-
-        public static bool CheckDispatcherAccess() => CheckDispatcherAccess(defaultDispatcher);
-
-        public static bool CheckDispatcherAccess(DispatcherOption dispatcherOption)
-        {
-            var dispatcher = GetDispatcher(dispatcherOption);
-            return dispatcher.CheckAccess();
-        }
-
-        public static void RunDispatcher() => Dispatcher.Run();
-
-        private static Dispatcher GetDispatcher(DispatcherOption dispatcherOption)
-        {
-            Dispatcher dispatcher;
-            switch (dispatcherOption)
-            {
-                case DispatcherOption.CurrentThread:
-                    dispatcher = Dispatcher.CurrentDispatcher;
-                    break;
-                case DispatcherOption.CurrentApplication:
-                    dispatcher = Application.Current.Dispatcher;
-                    break;
-                case DispatcherOption.Custom:
-                    dispatcher = GetCustomDispatcher();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-            return dispatcher;
-        }
-
-        private static Dispatcher GetCustomDispatcher()
-        {
-            if (customDispatcher != null)
-            {
-                return customDispatcher;
-            }
-
-            var waitHandle = new ManualResetEventSlim();
-            var thread = new Thread(() =>
-            {
-                customDispatcher = Dispatcher.CurrentDispatcher;
-                waitHandle.Set();
-                Dispatcher.Run();
-            });
-
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            waitHandle.Wait();
-            return customDispatcher;
-        }
-
         private string title = "Dialog";
         private double width = 400d;
         private double height = double.NaN;
@@ -121,8 +24,6 @@ namespace MaterialForms
         {
             Dialog = dialog;
         }
-
-        public WindowSession CurrentSession { get; private set; }
 
         public string Title
         {
@@ -212,76 +113,15 @@ namespace MaterialForms
             }
         }
 
-        public Task<bool?> Show() => Show(defaultDispatcher);
+        public Task<bool?> Show() => Show(MaterialApplication.DefaultDispatcher);
 
-        public Task<bool?> Show(DispatcherOption dispatcherOption) => ShowTracked(GetDispatcher(dispatcherOption)).Task;
+        public Task<bool?> Show(DispatcherOption dispatcherOption) => ShowTracked(dispatcherOption).Task;
 
-        public WindowSession ShowTracked() => ShowTracked(defaultDispatcher);
+        public WindowSession ShowTracked() => ShowTracked(MaterialApplication.DefaultDispatcher);
 
-        public WindowSession ShowTracked(DispatcherOption dispatcherOption) => ShowTracked(GetDispatcher(dispatcherOption));
-
-        private WindowSession ShowTracked(Dispatcher dispatcher)
+        public WindowSession ShowTracked(DispatcherOption dispatcherOption)
         {
-            if (CurrentSession != null)
-            {
-                throw new InvalidOperationException("A window session for this instance is already open.");
-            }
-
-            var id = Interlocked.Increment(ref staticDialogId);
-            var completion = new TaskCompletionSource<bool?>();
-            CurrentSession = new WindowSession(id, completion.Task);
-            dispatcher.InvokeAsync(() =>
-            {
-                try
-                {
-                    var source = CurrentSession.CancellationSource;
-                    var token = source.Token;
-                    if (token.IsCancellationRequested)
-                    {
-                        completion.SetResult(null);
-                        return;
-                    }
-
-                    var window = new MaterialFormsWindow(this, id);
-                    CurrentSession.Window = window;
-                    if (token.IsCancellationRequested)
-                    {
-                        completion.SetResult(null);
-                        return;
-                    }
-
-                    window.Loaded += (sender, args) =>
-                    {
-                        lock (source)
-                        {
-                            if (token.IsCancellationRequested)
-                            {
-                                completion.SetResult(null);
-                                window.Close();
-                            }
-
-                            CurrentSession.Loaded = true;
-                        }
-                    };
-
-                    var result = window.ShowDialog();
-                    CurrentSession.Closed = true;
-                    CurrentSession = null;
-                    completion.SetResult(result);
-                }
-                catch (Exception ex)
-                {
-                    if (CurrentSession != null)
-                    {
-                        CurrentSession.Closed = true;
-                        CurrentSession = null;
-                    }
-
-                    completion.SetException(ex);
-                }
-            });
-
-            return CurrentSession;
+            return new WindowSession(this, MaterialApplication.GetDispatcher(dispatcherOption)).Show();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
