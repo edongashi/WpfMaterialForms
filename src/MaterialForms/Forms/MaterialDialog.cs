@@ -82,6 +82,9 @@ namespace MaterialForms
             Form = form;
         }
 
+        /// <summary>
+        /// Gets or sets the title that appears in the dialog. This is not the same as the window title.
+        /// </summary>
         public string Title
         {
             get { return title; }
@@ -93,6 +96,9 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the message that appears in the dialog.
+        /// </summary>
         public string Message
         {
             get { return message; }
@@ -104,6 +110,9 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text that appears on the positive dialog button. A null or empty value hides the button.
+        /// </summary>
         public string PositiveAction
         {
             get { return positiveAction; }
@@ -115,8 +124,15 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the callback that will be invoked when the positive button is clicked by the user.
+        /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
+        /// </summary>
         public Func<Session, Task> OnPositiveAction { get; set; }
 
+        /// <summary>
+        /// Gets or sets the text that appears on the negative dialog button. A null or empty value hides the button.
+        /// </summary>
         public string NegativeAction
         {
             get { return negativeAction; }
@@ -128,8 +144,15 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the callback that will be invoked when the negative button is clicked by the user.
+        /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
+        /// </summary>
         public Func<Session, Task> OnNegativeAction { get; set; }
 
+        /// <summary>
+        /// Gets or sets the text that appears on the auxiliary dialog button. A null or empty value hides the button.
+        /// </summary>
         public string AuxiliaryAction
         {
             get { return auxiliaryAction; }
@@ -141,6 +164,9 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the callback that will be invoked when the auxiliary button is clicked by the user.
+        /// </summary>
         public Func<Session, Task> OnAuxiliaryAction { get; set; }
 
         public MaterialForm Form

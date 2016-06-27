@@ -53,13 +53,11 @@ namespace MaterialForms
                     DataContext = this
                 };
             }
-            else
+
+            return new SingleLineTextControl
             {
-                return new SingleLineTextControl()
-                {
-                    DataContext = this
-                };
-            }
+                DataContext = this
+            };
         }
 
         public override bool HoldsValue => true;

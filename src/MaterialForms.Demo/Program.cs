@@ -9,6 +9,7 @@ namespace MaterialForms.Demo
         private static void Main(string[] args)
         {
             WindowSession session = null;
+            var nameSchema = new StringSchema();
             var window = new MaterialWindow(new MaterialDialog
             {
                 Title = "Demo material forms",
@@ -50,6 +51,12 @@ namespace MaterialForms.Demo
                         Name = "E-mail window",
                         CommandHint = "SHOW",
                         Callback = ShowDemo(EmailDialog)
+                    },
+                    new CommandSchema
+                    {
+                        Name = "Modal 2x schema (data binding)",
+                        CommandHint = "SHOW",
+                        Callback = async arg => await session.ShowDialog(new MaterialDialog(nameSchema, nameSchema), 250d)
                     }
                 }
             });

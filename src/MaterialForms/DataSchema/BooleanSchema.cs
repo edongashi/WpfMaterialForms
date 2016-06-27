@@ -40,13 +40,11 @@ namespace MaterialForms
                     DataContext = this
                 };
             }
-            else
+
+            return new SwitchControl
             {
-                return new SwitchControl()
-                {
-                    DataContext = this
-                };
-            }
+                DataContext = this
+            };
         }
 
         public override bool HoldsValue => true;

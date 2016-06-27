@@ -97,7 +97,7 @@ namespace MaterialForms
             }
         }
 
-        public ValidationRule ValidationRule { get; set; } = new NotEmptyValidationRule();
+        public ValidationRule ValidationRule { get; set; }
 
         public UserControl View => CreateView();
 
