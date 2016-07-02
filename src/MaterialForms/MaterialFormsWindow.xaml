@@ -33,7 +33,7 @@
                         Executed="CloseDialogCommandBinding_Executed" />
     </metro:MetroWindow.CommandBindings>
     <Grid>
-        <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View}" />
+        <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View, Mode=OneTime}" />
         <materialDesign:DialogHost x:Name="DialogHost" />
     </Grid>
 </metro:MetroWindow>

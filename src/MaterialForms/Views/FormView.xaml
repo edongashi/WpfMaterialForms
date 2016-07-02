@@ -6,7 +6,7 @@
         <ItemsControl ItemsSource="{Binding}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:IViewProvider}">
-                    <ContentPresenter Content="{Binding View}" />
+                    <ContentPresenter Content="{Binding View, Mode=OneTime}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
