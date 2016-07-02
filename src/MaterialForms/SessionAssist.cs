@@ -8,7 +8,7 @@ namespace MaterialForms
             DependencyProperty.RegisterAttached(
                 "HostingSession",
                 typeof(Session),
-                typeof(Session),
+                typeof(SessionAssist),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
     }
 }
