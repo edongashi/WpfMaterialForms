@@ -56,7 +56,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="Title"
                    Margin="24,4,24,8"
-                   Style="{StaticResource MaterialDesignTitleTextBlock}"
+                   Style="{StaticResource TextBlockTitleStyle}"
                    Text="{Binding Title}"
                    TextWrapping="Wrap"
                    Visibility="{Binding Title,
@@ -87,10 +87,8 @@
                 <TextBlock x:Name="Message"
                            Margin="{Binding Form,
                                             Converter={StaticResource CollectionEmptyMarginConverter}}"
-                           Foreground="Black"
                            LineHeight="24"
-                           Opacity="0.54"
-                           Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                           Style="{StaticResource TextBlockSubheadingStyle}"
                            Text="{Binding Message}"
                            TextWrapping="Wrap"
                            Visibility="{Binding Message,
