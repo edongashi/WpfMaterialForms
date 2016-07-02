@@ -10,7 +10,7 @@ namespace MaterialForms
         {
             if (securePassword == null)
             {
-                throw new ArgumentNullException(nameof(securePassword));
+                return null;
             }
 
             var unmanagedString = IntPtr.Zero;

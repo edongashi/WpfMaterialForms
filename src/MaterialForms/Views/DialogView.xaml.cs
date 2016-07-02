@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -13,16 +14,29 @@ namespace MaterialForms.Views
         public DialogView()
         {
             InitializeComponent();
+            CommandManager.AddExecutedHandler(this, CloseDialogCommand_Executed);
         }
 
-        private void CloseDialogCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private Session Session => (Session)GetValue(SessionAssist.HostingSessionProperty);
+
+        private void CloseDialogCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var action = e.Parameter as bool?;
             var dialog = (MaterialDialog)DataContext;
-            if (action == true && dialog.OnPositiveAction != null)
+
+            if (action == true)
             {
-                e.Handled = true;
-                HandleCallback(dialog.OnPositiveAction);
+                if (dialog.ValidatesOnPositiveAction && !dialog.Validate())
+                {
+                    e.Handled = true;
+                    return;
+                }
+
+                if (dialog.OnPositiveAction != null)
+                {
+                    e.Handled = true;
+                    HandleCallback(dialog.OnPositiveAction);
+                }
             }
             else if (action == false && dialog.OnNegativeAction != null)
             {
@@ -31,15 +45,7 @@ namespace MaterialForms.Views
             }
         }
 
-        private void CloseDialogCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            var action = e.Parameter as bool?;
-            var dialog = (MaterialDialog)DataContext;
-            e.CanExecute = (action == true && dialog.OnPositiveAction != null)
-                           || (action == false && dialog.OnNegativeAction != null);
-        }
-
-        private void AuxiliaryActionButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AuxiliaryActionButton_Click(object sender, RoutedEventArgs e)
         {
             Func<Session, Task> callback;
             if ((callback = ((MaterialDialog)DataContext).OnAuxiliaryAction) != null)
@@ -53,8 +59,7 @@ namespace MaterialForms.Views
             IsEnabled = false;
             try
             {
-                var session = (Session)GetValue(SessionAssist.HostingSessionProperty);
-                await callback(session);
+                await callback(Session);
             }
             finally
             {

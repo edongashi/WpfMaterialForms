@@ -180,7 +180,23 @@ namespace MaterialForms
             }
         }
 
+        /// <summary>
+        /// Gets a new instance of a DialogView bound to this object.
+        /// </summary>
         public UserControl View => new DialogView { DataContext = this };
+
+        /// <summary>
+        /// Gets or sets whether to perform form validation before handling the positive dialog action.
+        /// </summary>
+        public bool ValidatesOnPositiveAction { get; set; } = true;
+
+        public bool Validate()
+        {
+            var currentForm = Form;
+            return currentForm == null || currentForm.Validate();
+        }
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -189,5 +205,7 @@ namespace MaterialForms
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

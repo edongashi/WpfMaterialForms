@@ -10,12 +10,6 @@
         <valueConverters:FormEmptyMarginConverter x:Key="CollectionEmptyMarginConverter" />
         <valueConverters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </UserControl.Resources>
-    <UserControl.CommandBindings>
-        <CommandBinding x:Name="CloseDialogCommandBinding"
-                        CanExecute="CloseDialogCommandBinding_CanExecute"
-                        Command="materialDesign:DialogHost.CloseDialogCommand"
-                        Executed="CloseDialogCommandBinding_Executed" />
-    </UserControl.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

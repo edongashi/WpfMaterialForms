@@ -116,6 +116,8 @@ namespace MaterialForms
         /// </summary>
         public UserControl View => new FormView { DataContext = this };
 
+        public bool Validate() => this.All(schema => schema.Validate());
+
         public IEnumerable<SchemaBase> ValidKeySchemas() => this.Where(schema => schema.HoldsValue && !string.IsNullOrEmpty(schema.Key));
     }
 }
