@@ -23,8 +23,7 @@
                    Margin="0,-24,0,0"
                    VerticalAlignment="Center"
                    FontSize="12"
-                   Foreground="Black"
-                   Opacity="0.54"
+                   Style="{StaticResource TextBlockHintStyle}"
                    Text="{Binding Name}" />
         <TextBlock x:Name="ValueHolderControl"
                    Grid.Column="1"

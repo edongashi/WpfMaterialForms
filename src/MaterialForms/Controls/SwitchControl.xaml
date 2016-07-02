@@ -39,6 +39,7 @@
                    Grid.Column="1"
                    VerticalAlignment="Center"
                    FontSize="16"
+                   Style="{StaticResource TextBlockLabelStyle}"
                    Text="{Binding Name}"
                    ToolTip="{Binding Description}" />
         <ToggleButton x:Name="ValueHolderControl"
