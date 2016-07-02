@@ -138,10 +138,8 @@
     <Compile Include="DataSchema\StringSchema.cs" />
     <Compile Include="DataSchema\DateSchema.cs" />
     <Compile Include="SessionAssist.cs" />
-    <Compile Include="Validation\BindableValidationRule.cs" />
-    <Compile Include="BindingProxy.cs" />
-    <Compile Include="Validation\NotEmptyValidationRule.cs" />
-    <Compile Include="Validation\ValidationRuleProvider.cs" />
+    <Compile Include="Validation\ValidationCallback.cs" />
+    <Compile Include="Validation\Validators.cs" />
     <Compile Include="ValueConverters\BoolInversionConverter.cs" />
     <Compile Include="ValueConverters\ValueToPercentConverter.cs" />
     <Compile Include="ValueConverters\FormEmptyMarginConverter.cs" />
@@ -269,6 +267,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

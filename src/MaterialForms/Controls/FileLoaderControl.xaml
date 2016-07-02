@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MaterialForms"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:validation="clr-namespace:MaterialForms.Validation"
              Height="56">
     <UserControl.Resources>
-        <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
             <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
             <Style.Triggers>
@@ -43,19 +41,8 @@
                  FontSize="16"
                  Padding="0,1"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 ToolTip="{Binding Description}">
-            <TextBox.Text>
-                <Binding Path="Path">
-                    <Binding.ValidationRules>
-                        <validation:BindableValidationRule>
-                            <validation:BindableValidationRule.Provider>
-                                <validation:ValidationRuleProvider BoundRule="{Binding Data.ValidationRule, Source={StaticResource Proxy}}" />
-                            </validation:BindableValidationRule.Provider>
-                        </validation:BindableValidationRule>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+                 Text="{Binding Value}"
+                 ToolTip="{Binding Description}" />
         <Button x:Name="Button"
                 Grid.Column="2"
                 Width="32"

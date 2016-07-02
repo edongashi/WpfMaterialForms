@@ -1,20 +1,19 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
 {
     public class SingleFileSchema : SchemaBase
     {
-        private string path;
+        private string value;
 
-        public string Path
+        public string Value
         {
-            get { return path; }
+            get { return value; }
             set
             {
-                if (value == path) return;
-                path = value;
+                if (value == this.value) return;
+                this.value = value;
                 OnPropertyChanged();
             }
         }
@@ -29,6 +28,6 @@ namespace MaterialForms
 
         public override bool HoldsValue => true;
 
-        public override object GetValue() => Path;
+        public override object GetValue() => Value;
     }
 }

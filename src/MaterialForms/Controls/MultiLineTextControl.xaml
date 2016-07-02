@@ -1,9 +1,7 @@
 ﻿<UserControl x:Class="MaterialForms.Controls.MultiLineTextControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MaterialForms"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:validation="clr-namespace:MaterialForms.Validation"
              Height="102">
     <UserControl.Resources>
         <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
@@ -14,7 +12,6 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -41,21 +38,10 @@
                  IsReadOnly="{Binding IsReadOnly}"
                  Padding="0,1"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 Text="{Binding Value}"
                  TextWrapping="Wrap"
                  ToolTip="{Binding Description}"
-                 VerticalScrollBarVisibility="Auto">
-            <TextBox.Text>
-                <Binding Path="Value">
-                    <Binding.ValidationRules>
-                        <validation:BindableValidationRule>
-                            <validation:BindableValidationRule.Provider>
-                                <validation:ValidationRuleProvider BoundRule="{Binding Data.ValidationRule, Source={StaticResource Proxy}}" />
-                            </validation:BindableValidationRule.Provider>
-                        </validation:BindableValidationRule>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+                 VerticalScrollBarVisibility="Auto" />
     </Grid>
 </UserControl>
 

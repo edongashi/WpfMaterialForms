@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
@@ -63,5 +62,19 @@ namespace MaterialForms
         public override bool HoldsValue => true;
 
         public override object GetValue() => Value;
+
+        public ValidationCallback<string> Validation { get; set; }
+
+        protected override bool OnValidation()
+        {
+            var callback = Validation;
+            if (callback == null)
+            {
+                return true;
+            }
+
+            Error = callback(value);
+            return HasNoError;
+        }
     }
 }

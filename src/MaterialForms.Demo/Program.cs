@@ -76,7 +76,8 @@ namespace MaterialForms.Demo
                     {
                         Name = "Username",
                         Key = "user",
-                        IconKind = IconKind.Account
+                        IconKind = IconKind.Account,
+                        Validation = Validators.IsNotEmpty
                     },
                     new PasswordSchema
                     {

@@ -40,7 +40,7 @@ namespace MaterialForms.Controls
             if (dialog.ShowDialog() == true)
             {
                 var fileName = dialog.FileName;
-                context.Path = fileName;
+                context.Value = fileName;
             }
         }
     }
