@@ -190,6 +190,12 @@ namespace MaterialForms
         /// </summary>
         public bool ValidatesOnPositiveAction { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets whether to show a progress indicator while performing the positive dialog action.
+        /// Applies only when a custom handler is assigned to the PositiveAction property.
+        /// </summary>
+        public bool ShowsProgressOnPositiveAction { get; set; }
+
         public bool Validate()
         {
             var currentForm = Form;

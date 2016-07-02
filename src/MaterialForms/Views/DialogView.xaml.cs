@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace MaterialForms.Views
 {
@@ -35,13 +36,13 @@ namespace MaterialForms.Views
                 if (dialog.OnPositiveAction != null)
                 {
                     e.Handled = true;
-                    HandleCallback(dialog.OnPositiveAction);
+                    HandleCallback(dialog.OnPositiveAction, dialog.ShowsProgressOnPositiveAction);
                 }
             }
             else if (action == false && dialog.OnNegativeAction != null)
             {
                 e.Handled = true;
-                HandleCallback(dialog.OnNegativeAction);
+                HandleCallback(dialog.OnNegativeAction, false);
             }
         }
 
@@ -50,19 +51,29 @@ namespace MaterialForms.Views
             Func<Session, Task> callback;
             if ((callback = ((MaterialDialog)DataContext).OnAuxiliaryAction) != null)
             {
-                HandleCallback(callback);
+                HandleCallback(callback, false);
             }
         }
 
-        private async void HandleCallback(Func<Session, Task> callback)
+        private async void HandleCallback(Func<Session, Task> callback, bool showProgress)
         {
             IsEnabled = false;
             try
             {
+                if (showProgress)
+                {
+                    ((Storyboard)FindResource("ShowProgressCard")).Begin();
+                }
+
                 await callback(Session);
             }
             finally
             {
+                if (showProgress)
+                {
+                    ((Storyboard)FindResource("HideProgressCard")).Begin();
+                }
+
                 IsEnabled = true;
             }
         }

@@ -103,7 +103,8 @@ namespace MaterialForms.Demo
                     {
                         await ((WindowSession)session).Alert("Invalid username or password.");
                     }
-                }
+                },
+                ShowsProgressOnPositiveAction = true
             });
 
             var result = await window.Show();
