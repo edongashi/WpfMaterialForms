@@ -5,10 +5,27 @@ using MaterialForms.Controls;
 
 namespace MaterialForms
 {
+    public class CommandArgs
+    {
+        public CommandArgs(CommandSchema sender, Session session, MaterialForm commandForm)
+        {
+            Sender = sender;
+            Session = session;
+            CommandForm = commandForm;
+        }
+
+        public CommandSchema Sender { get; }
+
+        public Session Session { get; }
+
+        public MaterialForm CommandForm { get; }
+    }
+
     public class CommandSchema : SchemaBase
     {
         private string commandHint = "";
         private ICommand command;
+        private MaterialForm form;
 
         public string CommandHint
         {
@@ -21,18 +38,29 @@ namespace MaterialForms
             }
         }
 
-        public Action<object> Callback
+        public MaterialForm Form
+        {
+            get { return form; }
+            set
+            {
+                if (Equals(value, form)) return;
+                form = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Action<CommandArgs> Callback
         {
             set
             {
-                Command = new DelegateCommand(value);
+                Command = new DelegateCommand(arg => value(new CommandArgs(this, arg as Session, form)));
             }
         }
 
         public ICommand Command
         {
             get { return command; }
-            set
+            private set
             {
                 if (Equals(value, command)) return;
                 command = value;

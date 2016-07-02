@@ -6,9 +6,8 @@ namespace MaterialForms.Demo
     public class Program
     {
         [STAThread]
-        private static void Main(string[] args)
+        private static void Main()
         {
-            WindowSession session = null;
             var nameSchema = new StringSchema();
             var window = new MaterialWindow(new MaterialDialog
             {
@@ -37,9 +36,9 @@ namespace MaterialForms.Demo
                     {
                         Name = "Dialog inside window",
                         CommandHint = "SHOW",
-                        Callback = async arg =>
+                        Callback = async args =>
                         {
-                            await session.ShowDialog(new MaterialDialog
+                            await ((WindowSession)args.Session).ShowDialog(new MaterialDialog
                             {
                                 Message = "Discard draft?",
                                 PositiveAction = "DISCARD"
@@ -56,12 +55,12 @@ namespace MaterialForms.Demo
                     {
                         Name = "Modal 2x schema (data binding)",
                         CommandHint = "SHOW",
-                        Callback = async arg => await session.ShowDialog(new MaterialDialog(nameSchema, nameSchema), 250d)
+                        Callback = async args => await ((WindowSession)args.Session).ShowDialog(new MaterialDialog(nameSchema, nameSchema), 250d)
                     }
                 }
             });
 
-            session = window.ShowTracked();
+            window.Show();
             MaterialApplication.RunDispatcher();
         }
 
