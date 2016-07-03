@@ -57,15 +57,17 @@ namespace MaterialForms.Views
 
         private async void HandleCallback(Func<Session, Task> callback, bool showProgress)
         {
-            IsEnabled = false;
+            var session = Session;
             try
             {
+                session.Lock();
+                IsEnabled = false;
                 if (showProgress)
                 {
                     ((Storyboard)FindResource("ShowProgressCard")).Begin();
                 }
 
-                await callback(Session);
+                await callback(session);
             }
             finally
             {
@@ -75,6 +77,7 @@ namespace MaterialForms.Views
                 }
 
                 IsEnabled = true;
+                session.Unlock();
             }
         }
     }

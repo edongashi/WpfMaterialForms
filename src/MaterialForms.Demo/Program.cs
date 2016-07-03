@@ -95,13 +95,22 @@ namespace MaterialForms.Demo
                 {
                     // Simulate asynchronous work
                     await Task.Delay(2000);
-                    if ((string)session["user"] == "test" && (string)session["pass"] == "123456")
+                    var userCorrect = (string)session["user"] == "test";
+                    var passwordCorrect = (string)session["pass"] == "123456";
+                    if (userCorrect && passwordCorrect)
                     {
                         session.Close(true);
                     }
                     else
                     {
-                        await ((WindowSession)session).Alert("Invalid username or password.");
+                        if (!userCorrect)
+                        {
+                            session.Invalidate("user", "This username does not exist.");
+                        }
+                        else
+                        {
+                            session.Invalidate("pass", "Invalid password.");
+                        }
                     }
                 },
                 ShowsProgressOnPositiveAction = true

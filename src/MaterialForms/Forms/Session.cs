@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MaterialForms
@@ -7,9 +8,13 @@ namespace MaterialForms
     {
         private static int staticId;
 
+        private readonly Dictionary<string, string> pendingInvalidations;
+        private bool locked;
+
         protected Session()
         {
             Id = Interlocked.Increment(ref staticId);
+            pendingInvalidations = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -38,5 +43,48 @@ namespace MaterialForms
         /// </summary>
         /// <param name="result">The value that will be returned from the session's task.</param>
         public abstract void Close(bool? result);
+
+        /// <summary>
+        /// Displays an error message for the specified schema.
+        /// </summary>
+        public void Invalidate(string key, string message)
+        {
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(message))
+            {
+                return;
+            }
+
+            if (locked)
+            {
+                pendingInvalidations[key] = message;
+            }
+            else
+            {
+                Dialog.Form?.GetSchemaByKey(key)?.Invalidate(message);
+            }
+        }
+
+        internal void Lock()
+        {
+            locked = true;
+        }
+
+        internal void Unlock()
+        {
+            var form = Dialog.Form;
+            if (form == null)
+            {
+                pendingInvalidations.Clear();
+                return;
+            }
+
+            foreach (var pair in pendingInvalidations)
+            {
+                form.GetSchemaByKey(pair.Key)?.Invalidate(pair.Value);
+            }
+
+            pendingInvalidations.Clear();
+            locked = false;
+        }
     }
 }

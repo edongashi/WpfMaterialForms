@@ -14,13 +14,14 @@ namespace MaterialForms.Controls
     {
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register("Password",
-                typeof(SecureString), typeof(PasswordTextControl),
+                typeof(SecureString),
+                typeof(PasswordBox),
                 new PropertyMetadata(default(SecureString)));
 
         public SecureString Password
         {
-            get { return (SecureString)GetValue(PasswordProperty); }
-            set { SetValue(PasswordProperty, value); }
+            get { return (SecureString)ValueHolderControl.GetValue(PasswordProperty); }
+            set { ValueHolderControl.SetValue(PasswordProperty, value); }
         }
 
         public PasswordTextControl()
@@ -31,13 +32,13 @@ namespace MaterialForms.Controls
                 Password = ((PasswordBox)sender).SecurePassword;
             };
 
-            var binding = new Binding("Password")
+            var binding = new Binding("Value")
             {
                 Mode = BindingMode.TwoWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
             };
 
-            SetBinding(PasswordProperty, binding);
+            ValueHolderControl.SetBinding(PasswordProperty, binding);
         }
     }
 }

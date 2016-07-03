@@ -147,6 +147,13 @@ namespace MaterialForms
             return isValid;
         }
 
+        public virtual void Invalidate(string message)
+        {
+            Error = message;
+            HasErrors = true;
+            OnErrorsChanged("Value");
+        }
+
         public bool IsValid() => OnValidation();
 
         protected virtual bool OnValidation()

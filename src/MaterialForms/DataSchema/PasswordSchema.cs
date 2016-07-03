@@ -6,15 +6,15 @@ namespace MaterialForms
 {
     public class PasswordSchema : SchemaBase
     {
-        private SecureString password;
+        private SecureString value;
 
-        public SecureString Password
+        public SecureString Value
         {
-            get { return password; }
+            get { return value; }
             set
             {
-                if (Equals(value, password)) return;
-                password = value;
+                if (Equals(value, this.value)) return;
+                this.value = value;
                 OnPropertyChanged();
             }
         }
@@ -26,6 +26,6 @@ namespace MaterialForms
 
         public override bool HoldsValue => true;
 
-        public override object GetValue() => PasswordHelpers.ConvertToUnsecureString(Password);
+        public override object GetValue() => PasswordHelpers.ConvertToUnsecureString(Value);
     }
 }

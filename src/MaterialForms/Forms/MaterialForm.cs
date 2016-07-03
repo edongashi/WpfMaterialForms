@@ -119,5 +119,7 @@ namespace MaterialForms
         public bool Validate() => this.All(schema => schema.Validate());
 
         public IEnumerable<SchemaBase> ValidKeySchemas() => this.Where(schema => schema.HoldsValue && !string.IsNullOrEmpty(schema.Key));
+
+        public SchemaBase GetSchemaByKey(string key) => this.FirstOrDefault(schema => schema.Key == key);
     }
 }
