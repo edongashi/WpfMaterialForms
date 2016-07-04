@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Linq;
 using MaterialForms.Controls;
 
 namespace MaterialForms
@@ -54,5 +55,16 @@ namespace MaterialForms
         public override bool HoldsValue => true;
 
         public override object GetValue() => Value;
+
+        public override void SetValue(object obj)
+        {
+            if (obj == null)
+            {
+                Value = null;
+                return;
+            }
+
+            Value = Items.FirstOrDefault(item => Equals(item, obj));
+        }
     }
 }

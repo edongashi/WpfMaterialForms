@@ -77,5 +77,23 @@ namespace MaterialForms
         public override bool HoldsValue => false;
 
         public override object GetValue() => Progress;
+
+        public override void SetValue(object obj)
+        {
+            if (obj is double)
+            {
+                Progress = (double)obj;
+            }
+            else if (obj is int)
+            {
+                Progress = (int)obj;
+            }
+            else if (obj is string)
+            {
+                double result;
+                double.TryParse((string)obj, out result);
+                Progress = result;
+            }
+        }
     }
 }

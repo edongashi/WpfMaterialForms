@@ -107,6 +107,8 @@ namespace MaterialForms
 
         public abstract object GetValue();
 
+        public virtual void SetValue(object obj) { }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -53,5 +53,19 @@ namespace MaterialForms
         public override bool HoldsValue => true;
 
         public override object GetValue() => Value;
+
+        public override void SetValue(object obj)
+        {
+            if (obj is int)
+            {
+                Value = (int)obj;
+            }
+            else if (obj is string)
+            {
+                int result;
+                int.TryParse((string)obj, out result);
+                Value = result;
+            }
+        }
     }
 }

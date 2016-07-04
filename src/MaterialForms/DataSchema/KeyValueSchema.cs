@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
@@ -29,5 +30,10 @@ namespace MaterialForms
         public override bool HoldsValue => true;
 
         public override object GetValue() => Value;
+
+        public override void SetValue(object obj)
+        {
+            Value = obj?.ToString();
+        }
     }
 }

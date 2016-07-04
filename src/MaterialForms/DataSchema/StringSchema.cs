@@ -63,6 +63,11 @@ namespace MaterialForms
 
         public override object GetValue() => Value;
 
+        public override void SetValue(object obj)
+        {
+            Value = obj?.ToString();
+        }
+
         public ValidationCallback<string> Validation { get; set; }
 
         protected override bool OnValidation()

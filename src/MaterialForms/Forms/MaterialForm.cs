@@ -21,11 +21,12 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets the value of the schema with the specified key.
+        /// Gets or sets the value of the schema with the specified key.
         /// </summary>
         public object this[string key]
         {
-            get { return this.First(schema => schema.HoldsValue && schema.Key == key).GetValue(); }
+            get { return GetSchema(key)?.GetValue(); }
+            set { GetSchema(key)?.SetValue(value); }
         }
 
         /// <summary>
@@ -120,6 +121,6 @@ namespace MaterialForms
 
         public IEnumerable<SchemaBase> ValidKeySchemas() => this.Where(schema => schema.HoldsValue && !string.IsNullOrEmpty(schema.Key));
 
-        public SchemaBase GetSchemaByKey(string key) => this.FirstOrDefault(schema => schema.Key == key);
+        public SchemaBase GetSchema(string key) => this.FirstOrDefault(schema => schema.Key == key);
     }
 }

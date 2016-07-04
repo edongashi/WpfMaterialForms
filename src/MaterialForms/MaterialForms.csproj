@@ -140,6 +140,8 @@
     <Compile Include="DataSchema\StringSchema.cs" />
     <Compile Include="DataSchema\DateSchema.cs" />
     <Compile Include="SessionAssist.cs" />
+    <Compile Include="Tasks\ProgressController.cs" />
+    <Compile Include="Tasks\ProgressDialogOptions.cs" />
     <Compile Include="Validation\ValidationCallback.cs" />
     <Compile Include="Validation\Validators.cs" />
     <Compile Include="ValueConverters\BoolInversionConverter.cs" />
@@ -251,6 +253,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Tasks\TaskRunner.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

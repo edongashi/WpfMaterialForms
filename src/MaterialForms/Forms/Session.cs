@@ -28,10 +28,14 @@ namespace MaterialForms
         public abstract MaterialDialog Dialog { get; }
 
         /// <summary>
-        /// Gets the value of the form schema with the specified key.
+        /// Gets or sets the value of the form schema with the specified key.
         /// </summary>
         /// <param name="key">The key of the schema.</param>
-        public object this[string key] => Dialog.Form[key];
+        public object this[string key]
+        {
+            get { return Dialog.Form[key]; }
+            set { Dialog.Form[key] = value; }
+        }
 
         /// <summary>
         /// Gets the task that represents the dialog's session lifecycle.
@@ -60,7 +64,7 @@ namespace MaterialForms
             }
             else
             {
-                Dialog.Form?.GetSchemaByKey(key)?.Invalidate(message);
+                Dialog.Form?.GetSchema(key)?.Invalidate(message);
             }
         }
 
@@ -80,7 +84,7 @@ namespace MaterialForms
 
             foreach (var pair in pendingInvalidations)
             {
-                form.GetSchemaByKey(pair.Key)?.Invalidate(pair.Value);
+                form.GetSchema(pair.Key)?.Invalidate(pair.Value);
             }
 
             pendingInvalidations.Clear();

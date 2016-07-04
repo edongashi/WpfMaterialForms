@@ -27,6 +27,11 @@ namespace MaterialForms
         }
 
         /// <summary>
+        /// Gets the unique identifier for the window's dialog host.
+        /// </summary>
+        public string DialogIdentifier => "DialogHost" + Id;
+
+        /// <summary>
         /// Occurs when the window has loaded and has been displayed to the user.
         /// </summary>
         public event EventHandler Loaded;
@@ -101,7 +106,7 @@ namespace MaterialForms
                 throw new InvalidOperationException("Current session has not yet loaded or has been closed.");
             }
 
-            return new DialogSession("DialogHost" + Id, dialog, dialogWidth).Show();
+            return new DialogSession(DialogIdentifier, dialog, dialogWidth).Show();
         }
 
         public Task Alert(string message) => Alert(message, null);

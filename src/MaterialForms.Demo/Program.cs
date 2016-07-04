@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MaterialForms.Tasks;
 
 namespace MaterialForms.Demo
 {
@@ -206,15 +207,38 @@ namespace MaterialForms.Demo
                 {
                     new StringSchema
                     {
+                        Key = "to",
                         Name = "To",
                         IconKind = IconKind.Email
                     },
                     new StringSchema
                     {
+                        Key = "message",
                         Name = "Message",
                         IsMultiLine = true,
                         IconKind = IconKind.Comment
                     }
+                },
+                OnPositiveAction = async session =>
+                {
+                    await TaskRunner.Run(async progress =>
+                    {
+                        progress.Message = "Sending e-mail...";
+                        await Task.Delay(1500);
+                        progress.Message = "Doing some work...";
+                        progress.Progress = 33d;
+                        await Task.Delay(1500);
+                        progress.Message = "Awaiting confirmation...";
+                        progress.Progress = 66d;
+                        await Task.Delay(1500);
+                        progress.Message = "E-mail sent...";
+                        progress.Progress = 100d;
+                        await Task.Delay(1500);
+                    }, session);
+
+                    session.Dialog.Message = "E-mail sent successfully.";
+                    session["to"] = "";
+                    session["message"] = "";
                 }
             };
         }
