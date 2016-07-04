@@ -114,8 +114,10 @@
     <Compile Include="DataSchema\CaptionSchema.cs" />
     <Compile Include="DataSchema\PasswordSchema.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Forms\DialogActionListener.cs" />
     <Compile Include="Forms\DialogSession.cs" />
     <Compile Include="Forms\DispatcherOption.cs" />
+    <Compile Include="Forms\FormActionCallback.cs" />
     <Compile Include="Forms\MaterialApplication.cs" />
     <Compile Include="Forms\MaterialDialog.cs" />
     <Compile Include="Forms\MaterialWindow.cs" />

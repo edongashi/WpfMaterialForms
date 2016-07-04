@@ -128,7 +128,7 @@ namespace MaterialForms
         /// Gets or sets the callback that will be invoked when the positive button is clicked by the user.
         /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
         /// </summary>
-        public Func<Session, Task> OnPositiveAction { get; set; }
+        public FormActionCallback OnPositiveAction { get; set; }
 
         /// <summary>
         /// Gets or sets the text that appears on the negative dialog button. A null or empty value hides the button.
@@ -148,7 +148,7 @@ namespace MaterialForms
         /// Gets or sets the callback that will be invoked when the negative button is clicked by the user.
         /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
         /// </summary>
-        public Func<Session, Task> OnNegativeAction { get; set; }
+        public FormActionCallback OnNegativeAction { get; set; }
 
         /// <summary>
         /// Gets or sets the text that appears on the auxiliary dialog button. A null or empty value hides the button.
@@ -167,7 +167,7 @@ namespace MaterialForms
         /// <summary>
         /// Gets or sets the callback that will be invoked when the auxiliary button is clicked by the user.
         /// </summary>
-        public Func<Session, Task> OnAuxiliaryAction { get; set; }
+        public FormActionCallback OnAuxiliaryAction { get; set; }
 
         public MaterialForm Form
         {

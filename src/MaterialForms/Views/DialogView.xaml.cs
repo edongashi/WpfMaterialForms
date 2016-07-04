@@ -48,14 +48,14 @@ namespace MaterialForms.Views
 
         private void AuxiliaryActionButton_Click(object sender, RoutedEventArgs e)
         {
-            Func<Session, Task> callback;
+            FormActionCallback callback;
             if ((callback = ((MaterialDialog)DataContext).OnAuxiliaryAction) != null)
             {
                 HandleCallback(callback, false);
             }
         }
 
-        private async void HandleCallback(Func<Session, Task> callback, bool showProgress)
+        private async void HandleCallback(FormActionCallback callback, bool showProgress)
         {
             var session = Session;
             try
