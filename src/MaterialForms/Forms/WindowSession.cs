@@ -88,9 +88,13 @@ namespace MaterialForms
             }
         }
 
-        public Task<bool?> ShowDialog(MaterialDialog dialog, double dialogWidth = double.NaN) => ShowDialogTracked(dialog, dialogWidth).Task;
+        public Task<bool?> ShowDialog(MaterialDialog dialog) => ShowDialog(dialog, double.NaN);
 
-        public DialogSession ShowDialogTracked(MaterialDialog dialog, double dialogWidth = double.NaN)
+        public Task<bool?> ShowDialog(MaterialDialog dialog, double dialogWidth) => ShowDialogTracked(dialog, dialogWidth).Task;
+
+        public DialogSession ShowDialogTracked(MaterialDialog dialog) => ShowDialogTracked(dialog, double.NaN);
+
+        public DialogSession ShowDialogTracked(MaterialDialog dialog, double dialogWidth)
         {
             if (!IsLoaded || IsClosed)
             {

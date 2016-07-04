@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -200,6 +199,17 @@ namespace MaterialForms
         {
             var currentForm = Form;
             return currentForm == null || currentForm.Validate();
+        }
+
+        public Task<bool?> Show(string dialogIdentifier) => Show(dialogIdentifier, double.NaN);
+
+        public Task<bool?> Show(string dialogIdentifier, double width) => ShowTracked(dialogIdentifier, width).Task;
+
+        public DialogSession ShowTracked(string dialogIdentifier) => ShowTracked(dialogIdentifier, double.NaN);
+
+        public DialogSession ShowTracked(string dialogIdentifier, double width)
+        {
+            return new DialogSession(dialogIdentifier, this, width).Show();
         }
 
         #region INotifyPropertyChanged

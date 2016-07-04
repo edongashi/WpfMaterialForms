@@ -14,6 +14,8 @@ namespace MaterialForms
     /// </summary>
     public abstract class SchemaBase : IViewProvider, INotifyDataErrorInfo
     {
+        public static implicit operator MaterialForm(SchemaBase schema) => new MaterialForm(schema);
+
         private string key;
         private string description;
         private string name;
