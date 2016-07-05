@@ -109,6 +109,7 @@
     <Compile Include="Controls\ComboBoxControl.xaml.cs">
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataSchema\IntegerSchema.cs" />
     <Compile Include="DataSchema\ProgressSchema.cs" />
     <Compile Include="DataSchema\KeyValueSchema.cs" />
     <Compile Include="DataSchema\CaptionSchema.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Validation\ValidationCallback.cs" />
     <Compile Include="Validation\Validators.cs" />
     <Compile Include="ValueConverters\BoolInversionConverter.cs" />
+    <Compile Include="ValueConverters\StringToIntegerConverter.cs" />
     <Compile Include="ValueConverters\ValueToPercentConverter.cs" />
     <Compile Include="ValueConverters\FormEmptyMarginConverter.cs" />
     <Compile Include="ValueConverters\StringToVisibilityConverter.cs" />
