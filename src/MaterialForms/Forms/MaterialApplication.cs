@@ -40,7 +40,7 @@ namespace MaterialForms
         public static void ShutDownApplication()
         {
             ShutDownCustomDispatcher();
-            Application.Current.Shutdown();
+            Application.Current?.Shutdown();
         }
 
         public static void SetDefaultDispatcher(DispatcherOption dispatcherOption)

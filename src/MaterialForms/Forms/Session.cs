@@ -43,7 +43,7 @@ namespace MaterialForms
         public abstract Task<bool?> Task { get; }
 
         /// <summary>
-        /// Closes the session unconditionally..
+        /// Closes the session unconditionally.
         /// </summary>
         /// <param name="result">The value that will be returned from the session's task.</param>
         public abstract void Close(bool? result);

@@ -18,6 +18,10 @@ namespace MaterialForms
             }
         }
 
+        public string Filter { get; set; }
+
+        public ValidationCallback<string> Validation { get; set; }
+
         public override UserControl CreateView()
         {
             return new FileLoaderControl()
@@ -33,6 +37,18 @@ namespace MaterialForms
         public override void SetValue(object obj)
         {
             Value = obj?.ToString();
+        }
+
+        protected override bool OnValidation()
+        {
+            var callback = Validation;
+            if (callback == null)
+            {
+                return true;
+            }
+
+            Error = callback(value);
+            return HasNoError;
         }
     }
 }

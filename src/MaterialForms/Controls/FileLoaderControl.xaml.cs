@@ -37,6 +37,11 @@ namespace MaterialForms.Controls
             }
 
             var dialog = new OpenFileDialog();
+            if (context.Filter != null)
+            {
+                dialog.Filter = context.Filter;
+            }
+
             if (dialog.ShowDialog() == true)
             {
                 var fileName = dialog.FileName;
