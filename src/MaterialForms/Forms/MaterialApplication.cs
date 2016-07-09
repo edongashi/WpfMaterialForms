@@ -40,7 +40,20 @@ namespace MaterialForms
         public static void ShutDownApplication()
         {
             ShutDownCustomDispatcher();
-            Application.Current?.Shutdown();
+            var application = Application.Current;
+            if (application == null)
+            {
+                return;
+            }
+
+            if (application.CheckAccess())
+            {
+                application.Shutdown();
+            }
+            else
+            {
+                application.Dispatcher.InvokeAsync(application.Shutdown);
+            }
         }
 
         public static void SetDefaultDispatcher(DispatcherOption dispatcherOption)
