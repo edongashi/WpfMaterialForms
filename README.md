@@ -5,7 +5,7 @@ The dialogs and windows are generated dynamically from data schemas. The API is 
 
 ## How to use
 ### In a WPF project
-In your App.xaml you need to have the following resources included. If you are using Material Design in XAML for you UI you will have those already declared.
+In your App.xaml you need to have the following resources included. If you are using Material Design in XAML for you UI you will have those already declared (the color theme does not matter).
 ```xaml
 <Application.Resources>
     <ResourceDictionary>
@@ -24,12 +24,32 @@ You need to call this method only once before creating any Material window or di
 MaterialApplication.CreateApplication();
 ```
 
-If you need a message loop you can call ```cs MaterialApplication.RunDispatcher(); ```
+If you need a message loop you can call ```MaterialApplication.RunDispatcher();```
 
 Before stopping your application you need to shut down explicitly:
 ```cs
 MaterialApplication.ShutDownApplication();
 ```
+
+### API guide
+The ```MaterialDialog``` class describes displayed dialog contents ```{ Title, Message, Form, PositiveAction, NegativeAction, ... }```
+
+The ```MaterialForm``` class is a list of data schemas that display as controls inside the dialogs. Schemas can hold values and can be given keys. You can access schema values in different ways:
+```cs
+string username = (string)Form["username"];
+Dictionary<string, object> dictionary = Form.GetValuesDictionary();
+List<object> schemaValues = Form.GetValuesList();
+```
+
+Dialogs can be hosted in two contexts: in a new WPF Window or in an existing DialogHost.
+
+To host within a DialogHost, call ```await dialog.Show("DialogIdentifier")``` where "DialogIdentifier" is the ```DialogHost.Identifer``` that you specify in your window.
+
+To host within a new Window, create a ```new MaterialWindow(dialog)```. MaterialWindow abstracts WPF Window properties and binds them automatically ```{ Title, Width, Height, ShowCloseButton, ... }```. To show the created window call ```await window.Show()```.
+
+The async Show() method returns a bool? value. Usually true represents positive action click, false negative action click, and null that the dialog has been closed by other means.
+
+The ShowTracked() method returns a ```Session``` object, which you can use to close the dialog host from code. If a dialog has been shown using ShowTracked, you can await its session.Task.
 
 ## Examples
 
