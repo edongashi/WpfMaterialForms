@@ -16,7 +16,7 @@
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Foreground="{StaticResource MaterialDesignBodyLight}"
-                                 Kind="{Binding PackIconKind}"
+                                 Kind="{Binding IconKind}"
                                  Visibility="{Binding IconVisibility}" />
         <TextBlock x:Name="HintText"
                    Grid.Column="1"

@@ -19,7 +19,7 @@ namespace MaterialForms
         private string key;
         private string description;
         private string name;
-        private PackIconKind packIconKind;
+        private PackIconKind iconKind;
         private Visibility iconVisibility = Visibility.Collapsed;
 
         /// <summary>
@@ -64,19 +64,6 @@ namespace MaterialForms
             }
         }
 
-        /// <summary>
-        /// Gets or sets the icon type shown in the control. Some controls do not display icons.
-        /// </summary>
-        public IconKind IconKind
-        {
-            get { return (IconKind)packIconKind; }
-            set
-            {
-                PackIconKind = (PackIconKind)value;
-                IconVisibility = Visibility.Visible;
-            }
-        }
-
         public Visibility IconVisibility
         {
             get { return iconVisibility; }
@@ -87,14 +74,18 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
-
-        public PackIconKind PackIconKind
+        
+        /// <summary>
+        /// Gets or sets the icon type shown in the control. Some controls do not display icons.
+        /// </summary>
+        public PackIconKind IconKind
         {
-            get { return packIconKind; }
+            get { return iconKind; }
             set
             {
-                if (value == packIconKind) return;
-                packIconKind = value;
+                IconVisibility = Visibility.Visible;
+                if (value == iconKind) return;
+                iconKind = value;
                 OnPropertyChanged();
             }
         }

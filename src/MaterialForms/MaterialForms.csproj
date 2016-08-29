@@ -46,8 +46,8 @@
       <HintPath>..\..\packages\MaterialDesignColors.1.1.3-beta\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MaterialDesignThemes.2.0.0-ci621\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.1.0.657, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaterialDesignThemes.2.1.0.657\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -130,7 +130,6 @@
     <Compile Include="ProgressBarSmoother.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Forms\MaterialForm.cs" />
-    <Compile Include="DataSchema\IconKind.cs" />
     <Compile Include="DataSchema\SingleFileSchema.cs" />
     <Compile Include="DataSchema\SchemaBase.cs" />
     <Compile Include="DataSchema\NumberRangeSchema.cs" />

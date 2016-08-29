@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Tasks;
 
 namespace MaterialForms.Demo
@@ -76,14 +77,14 @@ namespace MaterialForms.Demo
                     {
                         Name = "Username",
                         Key = "user",
-                        IconKind = IconKind.Account,
+                        IconKind = PackIconKind.Account,
                         Validation = Validators.IsNotEmpty
                     },
                     new PasswordSchema
                     {
                         Name = "Password",
                         Key = "pass",
-                        IconKind = IconKind.Key
+                        IconKind = PackIconKind.Key
                     },
                     new BooleanSchema
                     {
@@ -167,13 +168,13 @@ namespace MaterialForms.Demo
                     new BooleanSchema
                     {
                         Name = "WiFi",
-                        IconKind = IconKind.Wifi,
+                        IconKind = PackIconKind.Wifi,
                         Value = true
                     },
                     new BooleanSchema
                     {
                         Name = "Mobile Data",
-                        IconKind = IconKind.Signal
+                        IconKind = PackIconKind.Signal
                     },
                     new CaptionSchema
                     {
@@ -182,7 +183,7 @@ namespace MaterialForms.Demo
                     new NumberRangeSchema
                     {
                         Name = "Volume",
-                        IconKind = IconKind.VolumeHigh,
+                        IconKind = PackIconKind.VolumeHigh,
                         MinValue = 0,
                         MaxValue = 10,
                         Value = 5
@@ -191,7 +192,7 @@ namespace MaterialForms.Demo
                     {
                         Name = "Ringtone",
                         Value = "Over the horizon",
-                        IconKind = IconKind.MusicNote
+                        IconKind = PackIconKind.MusicNote
                     }
                 }
             };
@@ -209,14 +210,14 @@ namespace MaterialForms.Demo
                     {
                         Key = "to",
                         Name = "To",
-                        IconKind = IconKind.Email
+                        IconKind = PackIconKind.Email
                     },
                     new StringSchema
                     {
                         Key = "message",
                         Name = "Message",
                         IsMultiLine = true,
-                        IconKind = IconKind.Comment
+                        IconKind = PackIconKind.Comment
                     }
                 },
                 OnPositiveAction = async session =>
