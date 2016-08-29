@@ -55,7 +55,13 @@ The async Show() method returns a bool? value. Usually true represents positive 
 The ShowTracked() method returns a ```Session``` object, which you can use to close the dialog host from code. If a dialog has been shown using ShowTracked, you can await its session.Task.
 
 ## Examples
+### Basic dialogs
+```cs
+await WindowFactory.Alert("Hello World!").Show();
+bool? result = await WindowFactory.Prompt("Delete item?").Show();
+```
 
+### Customized dialogs
 ```cs
 {
     Title = "Please log in to continue",
