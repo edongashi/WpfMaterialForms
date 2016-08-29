@@ -3,6 +3,34 @@ Work in progress of a windows and dialogs library using Material Design In XAML 
 
 The dialogs and windows are generated dynamically from data schemas. The API is aimed to be detached from XAML/WPF and the underlying libraries.
 
+## How to use
+### In a WPF project
+In your App.xaml you need to have the following resources included. If you are using Material Design in XAML for you UI you will have those already declared.
+```xaml
+<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</Application.Resources>
+```
+
+### Outside of WPF (WinForms, Console)
+You need to call this method only once before creating any Material window or dialog (in Main or somewhere during startup):
+```cs
+MaterialApplication.CreateApplication();
+```
+
+If you need a message loop you can call ```cs MaterialApplication.RunDispatcher(); ```
+
+Before stopping your application you need to shut down explicitly:
+```cs
+MaterialApplication.ShutDownApplication();
+```
+
 ## Examples
 
 ```cs
