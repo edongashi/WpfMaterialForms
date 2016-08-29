@@ -3,8 +3,11 @@ Work in progress of a windows and dialogs library using Material Design In XAML 
 
 The dialogs and windows are generated dynamically from data schemas. The API is aimed to be detached from XAML/WPF and the underlying libraries.
 
+Check out MaterialForms.WpfDemo for easy to follow examples.
+
 ## How to use
 ### In a WPF project
+
 In your App.xaml you need to have the following resources included. If you are using Material Design in XAML for you UI you will have those already declared (the color theme does not matter).
 ```xaml
 <Application.Resources>
@@ -52,7 +55,13 @@ The async Show() method returns a bool? value. Usually true represents positive 
 The ShowTracked() method returns a ```Session``` object, which you can use to close the dialog host from code. If a dialog has been shown using ShowTracked, you can await its session.Task.
 
 ## Examples
+### Basic dialogs
+```cs
+await WindowFactory.Alert("Hello World!").Show();
+bool? result = await WindowFactory.Prompt("Delete item?").Show();
+```
 
+### Customized dialogs
 ```cs
 {
     Title = "Please log in to continue",
