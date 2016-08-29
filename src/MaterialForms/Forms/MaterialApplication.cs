@@ -13,8 +13,12 @@ namespace MaterialForms
         static MaterialApplication()
         {
             DefaultDispatcher = DispatcherOption.CurrentThread;
+        }
+
+        public static void CreateApplication()
+        {
             var materialFormsApplication = Application.Current ??
-                                           new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+                               new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
             LoadResources(materialFormsApplication);
         }
 

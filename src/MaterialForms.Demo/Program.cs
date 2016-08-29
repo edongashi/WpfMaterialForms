@@ -10,6 +10,7 @@ namespace MaterialForms.Demo
         [STAThread]
         private static void Main()
         {
+            MaterialApplication.CreateApplication();
             var nameSchema = new StringSchema();
             var window = new MaterialWindow(new MaterialDialog
             {
