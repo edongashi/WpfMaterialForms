@@ -116,6 +116,7 @@
     <Compile Include="DataSchema\PasswordSchema.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Forms\DialogActionListener.cs" />
+    <Compile Include="Forms\DialogFactory.cs" />
     <Compile Include="Forms\DialogSession.cs" />
     <Compile Include="Forms\DispatcherOption.cs" />
     <Compile Include="Forms\FormActionCallback.cs" />
