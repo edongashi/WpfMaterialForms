@@ -5,8 +5,13 @@
              xmlns:valueConverters="clr-namespace:MaterialForms.ValueConverters"
              Height="44">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <valueConverters:ValueToPercentConverter x:Key="ValueToPercentConverter" />
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <valueConverters:ValueToPercentConverter x:Key="ValueToPercentConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

@@ -4,14 +4,19 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Height="102">
     <UserControl.Resources>
-        <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
-            <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
+                <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

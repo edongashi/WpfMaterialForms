@@ -5,20 +5,25 @@
              xmlns:materialForms="clr-namespace:MaterialForms"
              Height="48">
     <UserControl.Resources>
-        <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
-            <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Button, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, ElementName=Button, Mode=OneWay}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
+                <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=Button, Mode=OneWay}" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsFocused, ElementName=Button, Mode=OneWay}" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

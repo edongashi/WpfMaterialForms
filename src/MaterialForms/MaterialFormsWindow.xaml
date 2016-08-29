@@ -17,12 +17,21 @@
                    ShowMinButton="{Binding ShowMinButton}"
                    ShowTitleBar="False"
                    SizeToContent="Height"
-                   Style="{StaticResource CleanWindowStyleKey}"
                    TextElement.Foreground="{StaticResource MaterialDesignBody}"
                    WindowStartupLocation="CenterScreen">
     <metro:MetroWindow.Resources>
-        <valueConverters:BoolToResizeModeConverter x:Key="BoolToResizeModeConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Clean/Clean.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <valueConverters:BoolToResizeModeConverter x:Key="BoolToResizeModeConverter" />
+        </ResourceDictionary>
     </metro:MetroWindow.Resources>
+    <metro:MetroWindow.Style>
+        <StaticResource ResourceKey="CleanWindowStyleKey" />
+    </metro:MetroWindow.Style>
     <metro:MetroWindow.ResizeMode>
         <Binding Converter="{StaticResource BoolToResizeModeConverter}" Path="CanResize" />
     </metro:MetroWindow.ResizeMode>

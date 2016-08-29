@@ -24,5 +24,15 @@ namespace MaterialForms.WpfDemo
         {
             InitializeComponent();
         }
+
+        private async void button_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new MaterialWindow(new MaterialDialog
+            {
+                Message = "Hello world!"
+            });
+
+            await window.Show();
+        }
     }
 }

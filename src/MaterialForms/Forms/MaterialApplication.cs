@@ -19,10 +19,10 @@ namespace MaterialForms
         {
             var materialFormsApplication = Application.Current ??
                                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-            LoadResources(materialFormsApplication);
+            LoadMaterialDesign(materialFormsApplication);
         }
 
-        public static void LoadResources(Application application)
+        public static void LoadMaterialDesign(Application application)
         {
             application.Resources.MergedDictionaries.Add(
                 Application.LoadComponent(

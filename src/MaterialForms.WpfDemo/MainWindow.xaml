@@ -8,7 +8,12 @@
         Width="525"
         Height="350"
         mc:Ignorable="d">
-    <Grid >
-        <Button x:Name="button" Content="Button" VerticalAlignment="Center" HorizontalAlignment="Center" Width="75"/>
+    <Grid>
+        <Button x:Name="button"
+                Width="75"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Click="button_Click"
+                Content="Button" />
     </Grid>
 </Window>
