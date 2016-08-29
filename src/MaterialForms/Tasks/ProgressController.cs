@@ -13,7 +13,8 @@ namespace MaterialForms.Tasks
             {
                 Progress = options.Progress,
                 Maximum = options.Maximum,
-                IsIndeterminate = options.IsIndeterminate
+                IsIndeterminate = options.IsIndeterminate,
+                ShowPercentage = !options.IsIndeterminate
             };
 
             Dialog = new MaterialDialog
