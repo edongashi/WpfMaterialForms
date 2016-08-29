@@ -3,8 +3,11 @@ Work in progress of a windows and dialogs library using Material Design In XAML 
 
 The dialogs and windows are generated dynamically from data schemas. The API is aimed to be detached from XAML/WPF and the underlying libraries.
 
+Check out MaterialForms.WpfDemo for easy to follow examples.
+
 ## How to use
 ### In a WPF project
+
 In your App.xaml you need to have the following resources included. If you are using Material Design in XAML for you UI you will have those already declared (the color theme does not matter).
 ```xaml
 <Application.Resources>
