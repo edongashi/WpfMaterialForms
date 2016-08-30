@@ -1,5 +1,7 @@
 # WPF Material Forms
-Work in progress of a windows and dialogs library using Material Design In XAML Toolkit and MahApps.Metro.
+A windows and dialogs library using Material Design In XAML Toolkit and MahApps.Metro.
+
+[NuGet](https://www.nuget.org/packages/WpfMaterialForms) - ```Install-Package WpfMaterialForms```
 
 The dialogs and windows are generated dynamically from data schemas. The API is aimed to be detached from XAML/WPF and the underlying libraries.
 
