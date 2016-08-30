@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WpfMaterialForms</id>
+    <version>1.0.0</version>
+    <title>WPF Material Forms</title>
+    <authors>Edon Gashi</authors>
+    <owners>Edon Gashi</owners>
+    <projectUrl>https://github.com/EdonGashi/WpfMaterialForms</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Schema generated material dialogs in WPF</description>
+    <tags>Material Design Dialog Dialog WPF XAML</tags>
+  </metadata>
+</package>
