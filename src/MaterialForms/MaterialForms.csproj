@@ -90,6 +90,9 @@
     <Compile Include="Controls\FileLoaderControl.xaml.cs">
       <DependentUpon>FileLoaderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MultiSchemaControl.xaml.cs">
+      <DependentUpon>MultiSchemaControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProgressControl.xaml.cs">
       <DependentUpon>ProgressControl.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,7 @@
       <DependentUpon>ComboBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataSchema\IntegerSchema.cs" />
+    <Compile Include="DataSchema\MultiSchema.cs" />
     <Compile Include="DataSchema\ProgressSchema.cs" />
     <Compile Include="DataSchema\KeyValueSchema.cs" />
     <Compile Include="DataSchema\CaptionSchema.cs" />
@@ -182,6 +186,10 @@
     <Page Include="Controls\FileLoaderControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MultiSchemaControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ProgressControl.xaml">
       <Generator>MSBuild:Compile</Generator>

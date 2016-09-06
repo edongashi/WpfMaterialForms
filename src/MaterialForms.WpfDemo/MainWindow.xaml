@@ -10,34 +10,49 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <materialDesign:DialogHost Identifier="RootDialog">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Margin="8"
-                    Click="ShowAlert"
-                    Content="Show Alert" />
-            <Button Margin="8"
-                    Click="ShowModalAlert"
-                    Content="Show Modal Alert" />
-            <Button Margin="8"
-                    Click="ShowPrompt"
-                    Content="Show Prompt" />
-            <Button Margin="8"
-                    Click="ShowModalPrompt"
-                    Content="Show Modal Prompt" />
-            <Button Margin="8"
-                    Click="ShowInput"
-                    Content="Show Input" />
-            <Button Margin="8"
-                    Click="ShowModalInput"
-                    Content="Show Modal Input" />
-            <Button Margin="8"
-                    Click="ShowProgress"
-                    Content="Show Progress" />
-            <Button Margin="8"
-                    Click="ShowModalProgress"
-                    Content="Show Modal Progress" />
-            <Button Margin="8"
-                    Click="ShowComplexWindow"
-                    Content="Show Complex Window" />
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center">Basic dialogs</TextBlock>
+                <Button Margin="8"
+                        Click="ShowAlert"
+                        Content="Show Alert" />
+                <Button Margin="8"
+                        Click="ShowModalAlert"
+                        Content="Show Modal Alert" />
+                <Button Margin="8"
+                        Click="ShowPrompt"
+                        Content="Show Prompt" />
+                <Button Margin="8"
+                        Click="ShowModalPrompt"
+                        Content="Show Modal Prompt" />
+                <Button Margin="8"
+                        Click="ShowInput"
+                        Content="Show Input" />
+                <Button Margin="8"
+                        Click="ShowModalInput"
+                        Content="Show Modal Input" />
+                <Button Margin="8"
+                        Click="ShowProgress"
+                        Content="Show Progress" />
+                <Button Margin="8"
+                        Click="ShowModalProgress"
+                        Content="Show Modal Progress" />
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center">Advanced dialogs</TextBlock>
+                <Button Margin="8"
+                        Click="ShowMultiSchema"
+                        Content="Show MultiSchema" />
+                <Button Margin="8"
+                        Click="ShowComplexWindow"
+                        Content="Show Complex Window" />
+            </StackPanel>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Tasks;
@@ -48,7 +49,7 @@ namespace MaterialForms.WpfDemo
 
         private async void ShowInput(object sender, RoutedEventArgs e)
         {
-            var schema = new StringSchema { Name = "Name", IconKind = PackIconKind.Account };
+            StringSchema schema = new StringSchema { Name = "Name", IconKind = PackIconKind.Account };
             bool? result = await WindowFactory.FromSingleSchema("What is your name?", schema).Show();
             if (result == true)
             {
@@ -59,8 +60,9 @@ namespace MaterialForms.WpfDemo
 
         private async void ShowModalInput(object sender, RoutedEventArgs e)
         {
-            var schema = new StringSchema { Name = "Name", IconKind = PackIconKind.Account };
-            bool? result = await DialogFactory.FromSingleSchema("What is your name?", schema).Show("RootDialog", LargeModalWidth);
+            StringSchema schema = new StringSchema { Name = "Name", IconKind = PackIconKind.Account };
+            bool? result =
+                await DialogFactory.FromSingleSchema("What is your name?", schema).Show("RootDialog", LargeModalWidth);
             if (result == true)
             {
                 string name = schema.Value;
@@ -96,6 +98,39 @@ namespace MaterialForms.WpfDemo
             {
                 Message = "Processing data..."
             }, "RootDialog");
+        }
+
+        private async void ShowMultiSchema(object sender, RoutedEventArgs e)
+        {
+            var dialog = new MaterialDialog
+            {
+                Form = new MaterialForm
+                {
+                    new CaptionSchema { Name = "Personal details" },
+                    new MultiSchema(
+                        new StringSchema { Name = "First Name", Key = "first", IconKind = PackIconKind.Account },
+                        new StringSchema { Name = "Last Name", Key = "last" })
+                    {
+                        Key = "PersonalDetails"
+                    },
+                    new CaptionSchema { Name = "Reservation details" },
+                    new MultiSchema(
+                        new DateSchema { Name = "Date", IconKind = PackIconKind.CalendarClock },
+                        new TimeSchema { Name = "Time" })
+                    {
+                        RelativeColumnWidths = new[] { 6d, 4d }
+                    }
+                }
+            };
+
+            bool? result = await dialog.Show("RootDialog", LargeModalWidth);
+            if (result == true)
+            {
+                MaterialForm personalDetails = (MaterialForm)dialog.Form["PersonalDetails"];
+                string firstName = (string)personalDetails["first"];
+                string lastName = (string)personalDetails["last"];
+                await DialogFactory.Alert($"Hello {firstName} {lastName}!").Show("RootDialog", ModalWidth);
+            }
         }
     }
 }
