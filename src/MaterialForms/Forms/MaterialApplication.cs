@@ -26,7 +26,7 @@ namespace MaterialForms
         {
             application.Resources.MergedDictionaries.Add(
                 Application.LoadComponent(
-                    new Uri("MaterialForms;component/Resources/Material.xaml",
+                    new Uri("pack://application:,,,/MaterialForms;component/Resources/Material.xaml",
                     UriKind.Relative)) as ResourceDictionary);
         }
 

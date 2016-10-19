@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using MaterialDesignThemes.Wpf;
+using MaterialForms.Extensions;
 using MaterialForms.Tasks;
 
 namespace MaterialForms.WpfDemo
@@ -131,6 +131,32 @@ namespace MaterialForms.WpfDemo
                 string lastName = (string)personalDetails["last"];
                 await DialogFactory.Alert($"Hello {firstName} {lastName}!").Show("RootDialog", ModalWidth);
             }
+        }
+
+        private async void ShowLightTheme(object sender, RoutedEventArgs e)
+        {
+            await DialogFactory
+                .Alert("Light dialog independent of application resources")
+                .With(dialog => dialog.Theme = DialogTheme.Light)
+                .Show("RootDialog", LargeModalWidth);
+        }
+
+        private async void ShowDarkTheme(object sender, RoutedEventArgs e)
+        {
+            await DialogFactory
+                .Alert("Dark dialog independent of application resources")
+                .With(dialog => dialog.Theme = DialogTheme.Dark)
+                .Show("RootDialog", LargeModalWidth);
+        }
+
+        private void DarkModeChecked(object sender, RoutedEventArgs e)
+        {
+            new PaletteHelper().SetLightDark(true);
+        }
+
+        private void DarkModeUnchecked(object sender, RoutedEventArgs e)
+        {
+            new PaletteHelper().SetLightDark(false);
         }
     }
 }

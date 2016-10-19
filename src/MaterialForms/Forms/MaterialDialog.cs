@@ -15,6 +15,7 @@ namespace MaterialForms
         private string negativeAction;
         private string positiveAction;
         private string auxiliaryAction;
+        private DialogTheme theme;
 
         public MaterialDialog()
             : this(message: null)
@@ -124,6 +125,20 @@ namespace MaterialForms
         }
 
         /// <summary>
+        /// Gets or sets the dialog theme.
+        /// </summary>
+        public DialogTheme Theme
+        {
+            get { return theme; }
+            set
+            {
+                if (value == theme) return;
+                theme = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the callback that will be invoked when the positive button is clicked by the user.
         /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
         /// </summary>
@@ -182,7 +197,7 @@ namespace MaterialForms
         /// <summary>
         /// Gets a new instance of a DialogView bound to this object.
         /// </summary>
-        public UserControl View => new DialogView { DataContext = this };
+        public UserControl View => new DialogView(this);
 
         /// <summary>
         /// Gets or sets whether to perform form validation before handling the positive dialog action.

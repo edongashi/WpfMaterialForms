@@ -9,7 +9,8 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <valueConverters:ValueToPercentConverter x:Key="ValueToPercentConverter" />
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/TextStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

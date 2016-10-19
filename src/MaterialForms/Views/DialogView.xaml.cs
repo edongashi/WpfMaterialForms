@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace MaterialForms.Views
@@ -12,8 +13,53 @@ namespace MaterialForms.Views
     /// </summary>
     public partial class DialogView : UserControl
     {
-        public DialogView()
+        private readonly MaterialDialog dialog;
+
+        public DialogView(MaterialDialog dialog)
         {
+            if (dialog == null)
+            {
+                throw new ArgumentNullException(nameof(dialog));
+            }
+
+            this.dialog = dialog;
+            DataContext = dialog;
+            var isDark = false;
+            if (dialog.Theme == DialogTheme.Dark)
+            {
+                isDark = true;
+            }
+            else if (dialog.Theme == DialogTheme.Inherit)
+            {
+                if (Application.Current.Resources.MergedDictionaries
+                    .Any(rd => rd.Source != null && rd.Source.OriginalString
+                    .Contains("/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark")))
+                {
+                    isDark = true;
+                }
+            }
+
+            if (isDark)
+            {
+                SetValue(ColorAssist.ForegroundProperty, Brushes.White);
+                SetValue(ColorAssist.OpacityProperty, 0.70d);
+                SetValue(ColorAssist.DisabledOpacityProperty, 0.50d);
+            }
+
+            var theme = isDark ? "Dark.xaml" : "Light.xaml";
+            Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme." + theme)
+            });
+            Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/MaterialForms;component/Resources/TextStyles.xaml")
+            });
+            Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/MaterialForms;component/Resources/DialogViewResources.xaml")
+            });
+
             InitializeComponent();
             CommandManager.AddExecutedHandler(this, CloseDialogCommand_Executed);
         }
@@ -23,8 +69,6 @@ namespace MaterialForms.Views
         private void CloseDialogCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var action = e.Parameter as bool?;
-            var dialog = (MaterialDialog)DataContext;
-
             if (action == true)
             {
                 if (dialog.ValidatesOnPositiveAction && !dialog.Validate())

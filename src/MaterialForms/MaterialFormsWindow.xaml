@@ -9,15 +9,12 @@
                    Height="{Binding Height}"
                    MinWidth="200"
                    x:ClassModifier="internal"
-                   Background="{StaticResource MaterialDesignPaper}"
                    EnableDWMDropShadow="True"
-                   FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
                    ShowCloseButton="{Binding ShowCloseButton}"
                    ShowMaxRestoreButton="{Binding ShowMaxRestoreButton}"
                    ShowMinButton="{Binding ShowMinButton}"
                    ShowTitleBar="False"
                    SizeToContent="Height"
-                   TextElement.Foreground="{StaticResource MaterialDesignBody}"
                    WindowStartupLocation="CenterScreen">
     <metro:MetroWindow.Resources>
         <ResourceDictionary>
@@ -41,8 +38,7 @@
                         Command="materialDesign:DialogHost.CloseDialogCommand"
                         Executed="CloseDialogCommandBinding_Executed" />
     </metro:MetroWindow.CommandBindings>
-    <Grid>
-        <ContentPresenter Margin="0,8,0,0" Content="{Binding Dialog.View, Mode=OneTime}" />
-        <materialDesign:DialogHost x:Name="DialogHost" />
-    </Grid>
+    <materialDesign:DialogHost x:Name="DialogHost">
+        <ContentPresenter x:Name="ContentPresenter" Margin="0,8,0,0" />
+    </materialDesign:DialogHost>
 </metro:MetroWindow>

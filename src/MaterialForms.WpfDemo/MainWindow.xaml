@@ -11,11 +11,23 @@
         mc:Ignorable="d">
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <CheckBox Grid.ColumnSpan="2"
+                      Margin="0,16,0,0"
+                      HorizontalAlignment="Center"
+                      Checked="DarkModeChecked"
+                      Content="DarkMode"
+                      Unchecked="DarkModeUnchecked" />
+            <StackPanel Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center">Basic dialogs</TextBlock>
                 <Button Margin="8"
                         Click="ShowAlert"
@@ -42,7 +54,8 @@
                         Click="ShowModalProgress"
                         Content="Show Modal Progress" />
             </StackPanel>
-            <StackPanel Grid.Column="1"
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center">Advanced dialogs</TextBlock>
@@ -52,6 +65,12 @@
                 <Button Margin="8"
                         Click="ShowComplexWindow"
                         Content="Show Complex Window" />
+                <Button Margin="8"
+                        Click="ShowLightTheme"
+                        Content="Light Theme Alert" />
+                <Button Margin="8"
+                        Click="ShowDarkTheme"
+                        Content="Dark Theme Alert" />
             </StackPanel>
         </Grid>
     </materialDesign:DialogHost>

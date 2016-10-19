@@ -15,6 +15,11 @@ namespace MaterialForms
             SetValue(SessionAssist.HostingSessionProperty, session);
             DataContext = session.Window;
             InitializeComponent();
+            var view = session.Window.Dialog.View;
+            ContentPresenter.Content = view;
+            Background = view.Background;
+            // We need to remove view background as it blocks dragmove behavior
+            view.Background = null;
             DialogHost.Identifier = "DialogHost" + dialogId;
         }
 

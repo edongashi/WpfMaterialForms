@@ -124,6 +124,7 @@
     <Compile Include="Forms\DialogActionListener.cs" />
     <Compile Include="Forms\DialogFactory.cs" />
     <Compile Include="Forms\DialogSession.cs" />
+    <Compile Include="Forms\DialogTheme.cs" />
     <Compile Include="Forms\DispatcherOption.cs" />
     <Compile Include="Forms\FormActionCallback.cs" />
     <Compile Include="Forms\MaterialApplication.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Forms\Session.cs" />
     <Compile Include="Forms\WindowSession.cs" />
     <Compile Include="Forms\WindowFactory.cs" />
+    <Compile Include="Extensions\InitializerExtensions.cs" />
     <Compile Include="IViewProvider.cs" />
     <Compile Include="PasswordHelpers.cs" />
     <Compile Include="ProgressBarSmoother.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="DataSchema\StringSchema.cs" />
     <Compile Include="DataSchema\DateSchema.cs" />
     <Compile Include="SessionAssist.cs" />
+    <Compile Include="ColorAssist.cs" />
     <Compile Include="Tasks\ProgressController.cs" />
     <Compile Include="Tasks\ProgressDialogOptions.cs" />
     <Compile Include="Validation\ValidationCallback.cs" />
@@ -234,11 +237,15 @@
       <DependentUpon>MaterialFormsWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\Material.xaml">
+    <Page Include="Resources\DialogViewResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\Styles.xaml">
+    <Page Include="Resources\TextStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Material.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
