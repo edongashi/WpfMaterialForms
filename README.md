@@ -40,7 +40,8 @@ bool? result = await WindowFactory.Prompt("Delete item?").Show();
             Name = "Remember me",
             IsCheckBox = true
         }
-    }
+    },
+	Theme = DialogTheme.Light // DialogTheme.Dark
 }
 ```
 ---
