@@ -4,7 +4,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:views="clr-namespace:MaterialForms.Views"
-             Background="{StaticResource MaterialDesignPaper}"
+             Background="{DynamicResource MaterialDesignCardBackground}"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              Padding="0,16,0,0"
              TextElement.Foreground="{StaticResource MaterialDesignBody}">

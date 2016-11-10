@@ -9,6 +9,11 @@ namespace MaterialForms
 {
     public class MaterialDialog : IViewProvider
     {
+        /// <summary>
+        /// Represents the default theme used by new dialogs.
+        /// </summary>
+        public static DialogTheme DefaultDialogTheme = DialogTheme.Inherit;
+
         private string title;
         private string message;
         private MaterialForm form;
@@ -80,6 +85,7 @@ namespace MaterialForms
             NegativeAction = negativeAction;
             AuxiliaryAction = auxiliaryAction;
             Form = form;
+            Theme = DefaultDialogTheme;
         }
 
         /// <summary>

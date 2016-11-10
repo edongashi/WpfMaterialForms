@@ -32,10 +32,10 @@
                    Margin="0,32,0,0"
                    VerticalAlignment="Center"
                    Style="{StaticResource TextBlockHintStyle}"
-                   Visibility="{Binding ShowPercentage,
+                   Visibility="{Binding ShowAbsolute,
                                         Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock.Text>
-                <MultiBinding Converter="{StaticResource ValueToPercentConverter}">
+                <MultiBinding StringFormat="{}{0:0}/{1}">
                     <Binding ElementName="ProgressBar" Path="Value" />
                     <Binding ElementName="ProgressBar" Path="Maximum" />
                 </MultiBinding>
@@ -45,10 +45,10 @@
                    Margin="0,32,0,0"
                    VerticalAlignment="Center"
                    Style="{StaticResource TextBlockHintStyle}"
-                   Visibility="{Binding ShowAbsolute,
+                   Visibility="{Binding ShowPercentage,
                                         Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0:0}/{1}">
+                <MultiBinding Converter="{StaticResource ValueToPercentConverter}">
                     <Binding ElementName="ProgressBar" Path="Value" />
                     <Binding ElementName="ProgressBar" Path="Maximum" />
                 </MultiBinding>
