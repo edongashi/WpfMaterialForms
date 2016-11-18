@@ -133,6 +133,37 @@ namespace MaterialForms.WpfDemo
             }
         }
 
+        private async void ShowLogin(object sender, RoutedEventArgs e)
+        {
+            await new MaterialDialog
+            {
+                Title = "Please log in to continue",
+                Form = new MaterialForm
+                {
+                    new StringSchema
+                    {
+                        Name = "Username",
+                        Key = "user",
+                        IconKind = PackIconKind.Account,
+                        Validation = Validators.IsNotEmpty
+                    },
+                    new PasswordSchema
+                    {
+                        Name = "Password",
+                        Key = "pass",
+                        IconKind = PackIconKind.Key
+                    },
+                    new BooleanSchema
+                    {
+                        Name = "Remember me",
+                        IsCheckBox = true
+                    }
+                },
+                PositiveAction = "LOG IN",
+                ShowsProgressOnPositiveAction = true
+            }.Show("RootDialog", LargeModalWidth);
+        }
+
         private async void ShowLightTheme(object sender, RoutedEventArgs e)
         {
             await DialogFactory

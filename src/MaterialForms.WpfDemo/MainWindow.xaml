@@ -63,6 +63,9 @@
                         Click="ShowMultiSchema"
                         Content="Show MultiSchema" />
                 <Button Margin="8"
+                        Click="ShowLogin"
+                        Content="Show Login" />
+                <Button Margin="8"
                         Click="ShowComplexWindow"
                         Content="Show Complex Window" />
                 <Button Margin="8"
