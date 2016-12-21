@@ -89,6 +89,7 @@
                         Margin="4,0,0,0"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding PositiveAction}"
+                        IsDefault="True"
                         Padding="8,0"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Visibility="{Binding PositiveAction,
