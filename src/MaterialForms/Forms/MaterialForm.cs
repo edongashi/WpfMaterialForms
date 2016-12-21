@@ -21,6 +21,12 @@ namespace MaterialForms
         }
 
         /// <summary>
+        /// Gets or sets the value that indicates which form element should receive focus
+        /// when the form is displayed. A negative value disables this feature.
+        /// </summary>
+        public int FocusedSchema { get; set; } = 0;
+
+        /// <summary>
         /// Gets or sets the value of the schema with the specified key.
         /// </summary>
         public object this[string key]
