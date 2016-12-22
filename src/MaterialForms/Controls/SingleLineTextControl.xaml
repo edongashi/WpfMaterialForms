@@ -43,7 +43,7 @@
                  IsReadOnly="{Binding IsReadOnly}"
                  Padding="0,1"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding Value}"
+                 Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="{Binding Description}" />
     </Grid>
 </UserControl>
