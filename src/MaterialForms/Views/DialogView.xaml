@@ -60,7 +60,7 @@
               Margin="8,0,8,8">
             <Button x:Name="AuxiliaryActionButton"
                     Height="36"
-                    MinWidth="64"
+                    MinWidth="56"
                     HorizontalAlignment="Left"
                     Click="AuxiliaryActionButton_Click"
                     Command="{Binding AuxiliaryCommand}"
@@ -72,7 +72,7 @@
             <WrapPanel HorizontalAlignment="Right">
                 <Button x:Name="NegativeActionButton"
                         Height="36"
-                        MinWidth="64"
+                        MinWidth="56"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding NegativeAction}"
                         Padding="8,0"
@@ -85,7 +85,7 @@
                 </Button>
                 <Button x:Name="PositiveActionButton"
                         Height="36"
-                        MinWidth="64"
+                        MinWidth="56"
                         Margin="4,0,0,0"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding PositiveAction}"

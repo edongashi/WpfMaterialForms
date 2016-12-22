@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace MaterialForms.Controls
@@ -18,6 +19,11 @@ namespace MaterialForms.Controls
             InitializeComponent();
             var binding = new Binding("Value") { Converter = converter };
             ValueHolderControl.SetBinding(TextBox.TextProperty, binding);
+        }
+
+        private void SingleLineTextControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ValueHolderControl.SelectAll();
         }
     }
 }
