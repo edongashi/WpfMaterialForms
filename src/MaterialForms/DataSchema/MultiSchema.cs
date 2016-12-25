@@ -38,7 +38,7 @@ namespace MaterialForms
             return new MultiSchemaControl(Schemas, columnWidths);
         }
 
-        public override bool HoldsValue => true;
+        public override bool HoldsValue => Schemas.Any(schema => schema.HoldsValue);
 
         protected override bool OnValidation()
         {
