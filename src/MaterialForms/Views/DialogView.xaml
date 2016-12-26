@@ -75,6 +75,7 @@
                         MinWidth="56"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Content="{Binding NegativeAction}"
+                        IsCancel="True"
                         Padding="8,0"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Visibility="{Binding NegativeAction,
