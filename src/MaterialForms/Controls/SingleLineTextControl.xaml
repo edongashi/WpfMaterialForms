@@ -9,9 +9,13 @@
             <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
                 <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding ElementName=ValueHolderControl, Path=IsFocused}" Value="True" />
+                            <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}" Value="False" />
+                        </MultiDataTrigger.Conditions>
                         <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-                    </DataTrigger>
+                    </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
