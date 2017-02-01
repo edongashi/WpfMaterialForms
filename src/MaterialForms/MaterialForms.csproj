@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -133,6 +133,9 @@
     <Compile Include="Forms\WindowFactory.cs" />
     <Compile Include="Extensions\InitializerExtensions.cs" />
     <Compile Include="IViewProvider.cs" />
+    <Compile Include="Wpf\MaterialField.cs" />
+    <Compile Include="Wpf\MaterialForm.cs" />
+    <Compile Include="Wpf\MaterialFormSchema.cs" />
     <Compile Include="PasswordHelpers.cs" />
     <Compile Include="ProgressBarSmoother.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -146,6 +149,9 @@
     <Compile Include="DataSchema\SelectionSchema.cs" />
     <Compile Include="DataSchema\StringSchema.cs" />
     <Compile Include="DataSchema\DateSchema.cs" />
+    <Compile Include="Wpf\IMaterialFormDefinitionBuilder.cs" />
+    <Compile Include="Wpf\MaterialDialog.cs" />
+    <Compile Include="Wpf\MaterialFieldSchema.cs" />
     <Compile Include="SessionAssist.cs" />
     <Compile Include="ColorAssist.cs" />
     <Compile Include="Tasks\ProgressController.cs" />
@@ -164,6 +170,7 @@
     <Compile Include="Views\FormView.xaml.cs">
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wpf\TypeManager.cs" />
     <Page Include="Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
