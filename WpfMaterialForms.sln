@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms", "src\MaterialForms\MaterialForms.csproj", "{703572CE-5A7E-4B37-9F12-FF9A11483DE2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Demo", "src\MaterialForms.Demo\MaterialForms.Demo.csproj", "{07DBADE7-6E0A-4431-A64A-DA7C204C724A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Tests", "src\MaterialForms.Tests\MaterialForms.Tests.csproj", "{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}"
 EndProject
@@ -24,12 +22,6 @@ Global
 		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07DBADE7-6E0A-4431-A64A-DA7C204C724A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
