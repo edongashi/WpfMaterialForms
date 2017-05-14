@@ -1,46 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MaterialForms.Wpf
 {
     public static class TypeManager
     {
-        private static Dictionary<Type, MaterialFormSchema> CachedDefinitions;
+        private static Dictionary<Type, FormDefinition> CachedDefinitions;
 
-        public static void RegisterFormDefinition(Type type, MaterialFormSchema schema)
+        public static void RegisterFormDefinition(Type type, FormDefinition formDefinition)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            if (schema == null)
+            if (formDefinition == null)
             {
-                throw new ArgumentNullException(nameof(schema));
+                throw new ArgumentNullException(nameof(formDefinition));
             }
 
-            CachedDefinitions[type] = schema;
+            CachedDefinitions[type] = formDefinition;
         }
 
-        public static MaterialFormSchema GetDefinition(Type type)
+        public static FormDefinition GetDefinition(Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            MaterialFormSchema schema;
-            if (CachedDefinitions.TryGetValue(type, out schema))
+            FormDefinition formDefinition;
+            if (CachedDefinitions.TryGetValue(type, out formDefinition))
             {
-                return schema;
+                return formDefinition;
             }
 
-            schema = BuildDefinition(type);
-            CachedDefinitions[type] = schema;
-            return schema;
+            formDefinition = BuildDefinition(type);
+            CachedDefinitions[type] = formDefinition;
+            return formDefinition;
         }
 
         public static bool IsSimpleType(Type type)
@@ -53,7 +50,7 @@ namespace MaterialForms.Wpf
             return Activator.CreateInstance(type);
         }
 
-        public static MaterialFormSchema BuildDefinition(Type type)
+        public static FormDefinition BuildDefinition(Type type)
         {
             if (type == null)
             {

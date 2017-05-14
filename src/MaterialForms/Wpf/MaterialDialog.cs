@@ -2,7 +2,7 @@
 
 namespace MaterialForms.Wpf
 {
-    public abstract class MaterialDialog : Control
+    public abstract class MaterialDialog : ContentControl
     {
         
     }

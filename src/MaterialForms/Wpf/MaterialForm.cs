@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace MaterialForms.Wpf
 {
     public class MaterialForm : Control
     {
-        private readonly ObservableCollection<MaterialField> fields;
-
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model",
             typeof(object),
@@ -21,6 +19,12 @@ namespace MaterialForms.Wpf
             typeof(MaterialForm),
             new FrameworkPropertyMetadata(null));
 
+        public static readonly DependencyProperty ContextProperty = DependencyProperty.Register(
+            "Context",
+            typeof(object),
+            typeof(MaterialForm),
+            new FrameworkPropertyMetadata(null));
+
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
@@ -28,13 +32,14 @@ namespace MaterialForms.Wpf
             ((MaterialForm)obj).UpdateModel(e.OldValue, e.NewValue);
         }
 
-        public ReadOnlyObservableCollection<MaterialField> Fields { get; }
-
         public MaterialForm()
         {
-            fields = new ObservableCollection<MaterialField>();
-            Fields = new ReadOnlyObservableCollection<MaterialField>(fields);
-            Initialized += (s, e) => UpdateModel(null, Model);
+            BindingOperations.SetBinding(this, ContextProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(DataContextProperty),
+                Mode = BindingMode.OneWay
+            });
         }
 
         /// <summary>
@@ -46,14 +51,20 @@ namespace MaterialForms.Wpf
         /// </summary>
         public object Model
         {
-            get { return GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
+            get => GetValue(ModelProperty);
+            set => SetValue(ModelProperty, value);
         }
 
         /// <summary>
         /// Gets the value of the current model instance.
         /// </summary>
         public object Value => GetValue(ValueProperty);
+
+        public object Context
+        {
+            get => GetValue(ContextProperty);
+            set => SetValue(ContextProperty, value);
+        }
 
         private void UpdateModel(object oldModel, object newModel)
         {
@@ -73,20 +84,20 @@ namespace MaterialForms.Wpf
                 ClearForm();
                 SetValue(ValuePropertyKey, null);
             }
-            else if (newModel is MaterialFormSchema)
+            else if (newModel is FormDefinition)
             {
                 // MaterialFormDefinition -> Build form
                 throw new NotImplementedException();
-                RebuildForm((MaterialFormSchema)newModel, null);
-                SetValue(ValuePropertyKey, null);
+                //RebuildForm((MaterialFormSchema)newModel, null);
+                //SetValue(ValuePropertyKey, null);
             }
             else if (newModel is Type)
             {
                 // Type -> Build form, Value = new Type
                 var type = (Type)newModel;
                 var instance = TypeManager.CreateInstance(type);
-                RebuildForm(GetDefinition(type), instance);
-                SetValue(ValuePropertyKey, instance);
+                //RebuildForm(GetDefinition(type), instance);
+                //SetValue(ValuePropertyKey, instance);
             }
             else if (oldModel.GetType() == newModel.GetType())
             {
@@ -98,10 +109,7 @@ namespace MaterialForms.Wpf
                 }
                 else
                 {
-                    foreach (var field in Fields)
-                    {
-                        field.UpdateSource(newModel);
-                    }
+                    
                 }
 
                 SetValue(ValuePropertyKey, newModel);
@@ -109,26 +117,13 @@ namespace MaterialForms.Wpf
             else
             {
                 // Complex object -> Build form, Value = model
-                RebuildForm(GetDefinition(newModel.GetType()), newModel);
+                //RebuildForm(GetDefinition(newModel.GetType()), newModel);
                 SetValue(ValuePropertyKey, newModel);
             }
         }
 
         private void ClearForm()
         {
-            fields.Clear();
         }
-
-        private void RebuildForm(MaterialFormSchema schema, object valueHolder)
-        {
-
-        }
-
-        private MaterialFormSchema GetDefinition(Type type)
-        {
-            return TypeManager.GetDefinition(type);
-        }
-
-        internal MaterialFormSchema FormSchema { get; set; }
     }
 }

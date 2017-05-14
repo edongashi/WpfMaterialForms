@@ -133,9 +133,23 @@
     <Compile Include="Old\Forms\WindowFactory.cs" />
     <Compile Include="Old\Extensions\InitializerExtensions.cs" />
     <Compile Include="Old\IViewProvider.cs" />
-    <Compile Include="Wpf\MaterialField.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
+    <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
+    <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
+    <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
+    <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
+    <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
+    <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />
+    <Compile Include="Wpf\FormDefinition\FormField.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\ContextPropertyBinding.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\DynamicResource.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\LiteralValue.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\PropertyBinding.cs" />
+    <Compile Include="Wpf\FormDefinition\BoundExpression.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\Resource.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\StaticResource.cs" />
+    <Compile Include="Wpf\FormDefinition\SelectionType.cs" />
     <Compile Include="Wpf\MaterialForm.cs" />
-    <Compile Include="Wpf\MaterialFormSchema.cs" />
     <Compile Include="Old\PasswordHelpers.cs" />
     <Compile Include="Old\ProgressBarSmoother.cs" />
     <Compile Include="Old\Forms\MaterialForm.cs" />
@@ -148,9 +162,7 @@
     <Compile Include="Old\DataSchema\SelectionSchema.cs" />
     <Compile Include="Old\DataSchema\StringSchema.cs" />
     <Compile Include="Old\DataSchema\DateSchema.cs" />
-    <Compile Include="Wpf\IMaterialFormDefinitionBuilder.cs" />
     <Compile Include="Wpf\MaterialDialog.cs" />
-    <Compile Include="Wpf\MaterialFieldSchema.cs" />
     <Compile Include="Old\SessionAssist.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Tasks\ProgressController.cs" />
@@ -169,6 +181,7 @@
     <Compile Include="Old\Views\FormView.xaml.cs">
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wpf\ResourceProxy.cs" />
     <Compile Include="Wpf\TypeManager.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -291,9 +304,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Wpf\NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
