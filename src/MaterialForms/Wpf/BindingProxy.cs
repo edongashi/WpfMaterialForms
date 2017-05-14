@@ -2,22 +2,22 @@ using System.Windows;
 
 namespace MaterialForms.Wpf
 {
-    internal class BindingProxy : Freezable
+    public class BindingProxy : Freezable
     {
         protected override Freezable CreateInstanceCore()
         {
             return new BindingProxy();
         }
 
-        public object Data
+        public object Value
         {
-            get => GetValue(DataProperty);
-            set => SetValue(DataProperty, value);
+            get => GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty DataProperty =
+        public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
-                nameof(Data),
+                nameof(Value),
                 typeof(object),
                 typeof(BindingProxy),
                 new UIPropertyMetadata(null));

@@ -26,15 +26,30 @@ namespace MaterialForms.Wpf.Resources
 
             var proxy = new BindingProxy();
             element.Resources.Add(key, proxy);
-            proxy.Data = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(element));
+            proxy.Value = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(element));
             return CreateBinding(proxy);
+        }
+
+        public override bool Equals(Resource other)
+        {
+            if (other is DynamicResource resource)
+            {
+                return ResourceKey == resource.ResourceKey;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ResourceKey.GetHashCode();
         }
 
         private Binding CreateBinding(BindingProxy proxy)
         {
             return new Binding
             {
-                Path = new PropertyPath(BindingProxy.DataProperty),
+                Path = new PropertyPath(BindingProxy.ValueProperty),
                 Source = proxy,
                 Mode = BindingMode.OneWay
             };

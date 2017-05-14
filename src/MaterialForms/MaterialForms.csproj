@@ -181,7 +181,7 @@
     <Compile Include="Old\Views\FormView.xaml.cs">
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wpf\ResourceProxy.cs" />
+    <Compile Include="Wpf\BindingProxy.cs" />
     <Compile Include="Wpf\TypeManager.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>

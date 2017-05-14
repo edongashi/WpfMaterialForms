@@ -22,5 +22,20 @@ namespace MaterialForms.Wpf.Resources
                 Mode = BindingMode.OneTime
             };
         }
+
+        public override bool Equals(Resource other)
+        {
+            if (other is LiteralValue resource)
+            {
+                return Equals(Value, resource.Value);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value?.GetHashCode() ?? 0;
+        }
     }
 }

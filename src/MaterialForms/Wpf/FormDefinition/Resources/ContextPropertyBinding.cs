@@ -26,5 +26,20 @@ namespace MaterialForms.Wpf.Resources
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
+
+        public override bool Equals(Resource other)
+        {
+            if (other is ContextPropertyBinding resource)
+            {
+                return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return PropertyPath.GetHashCode() ^ (OneTimeBinding ? 741852963 : 123456789);
+        }
     }
 }
