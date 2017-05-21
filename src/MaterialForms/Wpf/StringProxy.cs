@@ -2,6 +2,9 @@ using System.Windows;
 
 namespace MaterialForms.Wpf
 {
+    /// <summary>
+    /// Encapsulates a string bound to a resource.
+    /// </summary>
     public class StringProxy : Freezable
     {
         public static readonly DependencyProperty ValueProperty =

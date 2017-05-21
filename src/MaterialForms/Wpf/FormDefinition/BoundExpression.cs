@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
+using MaterialForms.Wpf.ValueConverters;
 
 namespace MaterialForms.Wpf
 {
@@ -92,9 +93,55 @@ namespace MaterialForms.Wpf
             return proxy;
         }
 
-        public static BoundExpression Parse(string expression) => Parse(expression, null);
+        public static IValueConverter GetConverter(string name)
+        {
+            return ValueConverters.TryGetValue(name, out var converter)
+                ? converter
+                : null;
+        }
 
-        public static BoundExpression Parse(string expression, IDictionary<string, Resource> contextResources)
+        public static readonly Dictionary<string, IValueConverter> ValueConverters =
+            new Dictionary<string, IValueConverter>
+            {
+                ["IsNull"] = new IsNullConverter(),
+                ["IsNotNull"] = new IsNotNullConverter(),
+                ["IsEmpty"] = new IsEmptyConverter(),
+                ["IsNotEmpty"] = new IsNotEmptyConverter(),
+                ["ToUpper"] = new ToUpperConverter(),
+                ["ToLower"] = new ToLowerConverter()
+            };
+
+        public static BoundExpression Parse(string expression)
+        {
+            return Parse(expression, contextResource: null);
+        }
+
+        public static BoundExpression Parse(string expression, IDictionary<string, object> contextResources)
+        {
+            Resource Factory(string name, IValueConverter converter)
+            {
+                if (!contextResources.TryGetValue(name, out var value))
+                {
+                    return null;
+                }
+
+                switch (value)
+                {
+                    case Resource resource:
+                        return resource;
+                    case BindingProxy proxy:
+                        return new BindingProxyResource(proxy, false, converter);
+                    case StringProxy proxy:
+                        return new StringProxyResource(proxy, false, converter);
+                    default:
+                        return new LiteralValue(value, converter);
+                }
+            }
+
+            return Parse(expression, Factory);
+        }
+
+        public static BoundExpression Parse(string expression, Func<string, IValueConverter, Resource> contextResource)
         {
             if (expression == null)
             {
@@ -105,6 +152,7 @@ namespace MaterialForms.Wpf
             var stringFormat = new StringBuilder();
             var resourceType = new StringBuilder();
             var resourceName = new StringBuilder();
+            var resourceConverter = new StringBuilder();
             var resourceFormat = new StringBuilder();
             var length = expression.Length;
             var i = 0;
@@ -179,7 +227,7 @@ namespace MaterialForms.Wpf
             }
 
             // Resource name.
-            while ((c = expression[i]) != ',' && c != ':')
+            while ((c = expression[i]) != ',' && c != ':' && c != '|')
             {
                 if (char.IsWhiteSpace(c))
                 {
@@ -218,7 +266,7 @@ namespace MaterialForms.Wpf
                 }
             }
 
-            // Skip whitespace between name and format/end.
+            // Skip whitespace between name and converter/format/end.
             while (char.IsWhiteSpace(expression[i]))
             {
                 if (++i == length)
@@ -230,7 +278,7 @@ namespace MaterialForms.Wpf
             c = expression[i];
             if (c == '}')
             {
-                // Resource can close at this point assuming no string format.
+                // Resource can close at this point assuming no converter and no string format.
                 if (++i == length)
                 {
                     goto addResource;
@@ -242,6 +290,48 @@ namespace MaterialForms.Wpf
                 }
 
                 throw new FormatException("Invalid '}}' sequence.");
+            }
+
+            // Value converter, read while character is letter.
+            if (c == '|')
+            {
+                if (++i == length)
+                {
+                    throw new FormatException("Unexpected end of input.");
+                }
+
+                while (char.IsLetter(c = expression[i]))
+                {
+                    resourceConverter.Append(c);
+                    if (++i == length)
+                    {
+                        throw new FormatException("Unexpected end of input.");
+                    }
+                }
+
+                // Skip whitespace between converter to format/end.
+                while (char.IsWhiteSpace(expression[i]))
+                {
+                    if (++i == length)
+                    {
+                        throw new FormatException("Unexpected end of input.");
+                    }
+                }
+
+                if (c == '}')
+                {
+                    if (++i == length)
+                    {
+                        goto addResource;
+                    }
+
+                    if (expression[i] != '}')
+                    {
+                        goto addResource;
+                    }
+
+                    throw new FormatException("Converter name cannot contain braces.");
+                }
             }
 
             // String format, read until single '}'.
@@ -278,29 +368,31 @@ namespace MaterialForms.Wpf
             addResource:
             var key = resourceName.ToString();
             Resource resource;
+            var converter = GetConverter(resourceConverter.ToString());
             var resourceTypeString = resourceType.ToString();
             switch (resourceTypeString)
             {
                 case "Binding":
-                    resource = new PropertyBinding(key, false);
+                    resource = new PropertyBinding(key, false, converter);
                     break;
                 case "Property":
-                    resource = new PropertyBinding(key, true);
+                    resource = new PropertyBinding(key, true, converter);
                     break;
                 case "StaticResource":
-                    resource = new StaticResource(key);
+                    resource = new StaticResource(key, converter);
                     break;
                 case "DynamicResource":
-                    resource = new DynamicResource(key);
+                    resource = new DynamicResource(key, converter);
                     break;
                 case "ContextBinding":
-                    resource = new ContextPropertyBinding(key, false);
+                    resource = new ContextPropertyBinding(key, false, converter);
                     break;
                 case "ContextProperty":
-                    resource = new ContextPropertyBinding(key, true);
+                    resource = new ContextPropertyBinding(key, true, converter);
                     break;
                 default:
-                    if (contextResources != null && contextResources.TryGetValue(resourceTypeString, out resource))
+                    resource = contextResource?.Invoke(resourceTypeString, converter);
+                    if (resource != null)
                     {
                         break;
                     }
@@ -326,6 +418,7 @@ namespace MaterialForms.Wpf
             resourceType.Clear();
             resourceName.Clear();
             resourceFormat.Clear();
+            resourceConverter.Clear();
             goto outside;
         }
 

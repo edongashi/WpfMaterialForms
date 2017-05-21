@@ -7,6 +7,12 @@ namespace MaterialForms.Wpf.Resources
     public class StaticResource : Resource
     {
         public StaticResource(string resourceKey)
+            : this(resourceKey, null)
+        {
+        }
+
+        public StaticResource(string resourceKey, IValueConverter valueConverter)
+            : base(valueConverter)
         {
             ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
         }
@@ -20,6 +26,7 @@ namespace MaterialForms.Wpf.Resources
             return new Binding
             {
                 Source = element.FindResource(ResourceKey),
+                Converter = ValueConverter,
                 Mode = BindingMode.OneTime
             };
         }
@@ -28,7 +35,7 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is StaticResource resource)
             {
-                return ResourceKey == resource.ResourceKey;
+                return ResourceKey == resource.ResourceKey && Equals(ValueConverter, resource.ValueConverter);
             }
 
             return false;

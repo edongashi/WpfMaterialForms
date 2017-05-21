@@ -8,6 +8,12 @@ namespace MaterialForms.Wpf.Resources
     public class DynamicResource : Resource
     {
         public DynamicResource(string resourceKey)
+            : this(resourceKey, null)
+        {
+        }
+
+        public DynamicResource(string resourceKey, IValueConverter valueConverter)
+            : base(valueConverter)
         {
             ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
         }
@@ -34,7 +40,7 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is DynamicResource resource)
             {
-                return ResourceKey == resource.ResourceKey;
+                return ResourceKey == resource.ResourceKey && Equals(ValueConverter, resource.ValueConverter);
             }
 
             return false;
@@ -49,8 +55,9 @@ namespace MaterialForms.Wpf.Resources
         {
             return new Binding
             {
-                Path = new PropertyPath(BindingProxy.ValueProperty),
                 Source = proxy,
+                Path = new PropertyPath(BindingProxy.ValueProperty),
+                Converter = ValueConverter,
                 Mode = BindingMode.OneWay
             };
         }
@@ -94,13 +101,16 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
             return obj is DynamicResourceKey && Equals((DynamicResourceKey)obj);
         }
 
         public override int GetHashCode()
         {
-            return (Key != null ? Key.GetHashCode() : 0);
+            return Key != null ? Key.GetHashCode() : 0;
         }
     }
 }

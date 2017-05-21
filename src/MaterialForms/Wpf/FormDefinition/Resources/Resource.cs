@@ -6,11 +6,18 @@ namespace MaterialForms.Wpf.Resources
 {
     public abstract class Resource : IEquatable<Resource>
     {
+        protected Resource(IValueConverter valueConverter)
+        {
+            ValueConverter = valueConverter;
+        }
+
+        public IValueConverter ValueConverter { get; }
+
         public abstract bool IsDynamic { get; }
 
-        public abstract BindingBase GetBinding(FrameworkElement element);
-
         public abstract bool Equals(Resource other);
+
+        public abstract BindingBase GetBinding(FrameworkElement element);
 
         public override bool Equals(object obj)
         {
@@ -24,7 +31,7 @@ namespace MaterialForms.Wpf.Resources
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }

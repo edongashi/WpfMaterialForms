@@ -176,14 +176,41 @@ namespace MaterialForms.Tests
             };
 
             var expression = BoundExpression.Parse("Input number must be between {MinValue:0.00} and {MaxValue}.",
-                new Dictionary<string, Resource>
+                new Dictionary<string, object>
                 {
-                    ["MinValue"] = new LiteralValue(15.1125d),
-                    ["MaxValue"] = new BindingProxyResource(proxy, true)
+                    ["MinValue"] = 15.1125d,
+                    ["MaxValue"] = proxy
                 });
 
             var value = expression.GetStringValue(null);
             Assert.AreEqual("Input number must be between 15.11 and 42.", value.Value);
+        }
+
+        private class Model
+        {
+            public string Name { get; set; }
+
+            public int Value { get; set; }
+        }
+
+        [TestMethod]
+        public void TestValueConverters()
+        {
+            var form = new DummyForm
+            {
+                Value = new Model
+                {
+                    Name = "Test"
+                },
+                Context = new List<int> { 1, 2, 3, 4, 5 }
+            };
+
+            var expression =
+                BoundExpression.Parse(
+                    "Default: {Binding Name}, Uppercase: {Binding Name|ToUpper}, Lowercase: {Binding Name|ToLower}");
+
+            var str = expression.GetStringValue(form).Value;
+            Assert.AreEqual("Default: Test, Uppercase: TEST, Lowercase: test", str);
         }
     }
 }

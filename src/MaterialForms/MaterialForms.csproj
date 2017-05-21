@@ -186,6 +186,12 @@
     </Compile>
     <Compile Include="Wpf\BindingProxy.cs" />
     <Compile Include="Wpf\TypeManager.cs" />
+    <Compile Include="Wpf\ValueConverters\IsNotEmptyConverter.cs" />
+    <Compile Include="Wpf\ValueConverters\IsEmptyConverter.cs" />
+    <Compile Include="Wpf\ValueConverters\IsNotNullConverter.cs" />
+    <Compile Include="Wpf\ValueConverters\IsNullConverter.cs" />
+    <Compile Include="Wpf\ValueConverters\ToUpperConverter.cs" />
+    <Compile Include="Wpf\ValueConverters\ToLowerConverter.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

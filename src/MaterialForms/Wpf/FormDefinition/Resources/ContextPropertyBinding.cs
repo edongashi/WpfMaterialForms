@@ -6,6 +6,12 @@ namespace MaterialForms.Wpf.Resources
     public class ContextPropertyBinding : Resource
     {
         public ContextPropertyBinding(string propertyPath, bool oneTimeBinding)
+            : this(propertyPath, oneTimeBinding, null)
+        {
+        }
+
+        public ContextPropertyBinding(string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
+            : base(valueConverter)
         {
             PropertyPath = propertyPath;
             OneTimeBinding = oneTimeBinding;
@@ -23,6 +29,7 @@ namespace MaterialForms.Wpf.Resources
             return new Binding(nameof(MaterialForm.Context) + path)
             {
                 Source = element,
+                Converter = ValueConverter,
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
@@ -31,7 +38,8 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is ContextPropertyBinding resource)
             {
-                return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding;
+                return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding &&
+                       Equals(ValueConverter, resource.ValueConverter);
             }
 
             return false;

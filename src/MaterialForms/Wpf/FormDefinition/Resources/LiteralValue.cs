@@ -6,6 +6,12 @@ namespace MaterialForms.Wpf.Resources
     public class LiteralValue : Resource
     {
         public LiteralValue(object value)
+            : this(value, null)
+        {
+        }
+
+        public LiteralValue(object value, IValueConverter valueConverter)
+            : base(valueConverter)
         {
             Value = value;
         }
@@ -19,6 +25,7 @@ namespace MaterialForms.Wpf.Resources
             return new Binding
             {
                 Source = Value,
+                Converter = ValueConverter,
                 Mode = BindingMode.OneTime
             };
         }

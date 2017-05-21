@@ -54,7 +54,7 @@ namespace MaterialForms.Wpf
 
         /// <summary>
         /// Gets or sets the model associated with this form.
-        /// If the value is a MaterialFormDefinition, a form will be build based on that definition.
+        /// If the value is a MaterialFormDefinition, a form will be built based on that definition.
         /// If the value is a Type, a form will be built and bound to a new instance of that type.
         /// If the value is a simple object, a single field bound to this property will be displayed.
         /// If the value is a complex object, a form will be built and bound to properties of that instance.
