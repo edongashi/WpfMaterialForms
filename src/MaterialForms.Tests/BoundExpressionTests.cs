@@ -204,7 +204,7 @@ namespace MaterialForms.Tests
             var value = expression.GetStringValue(null);
             Assert.AreEqual("Test 42 9", value.Value);
 
-            expression = BoundExpression.Parse("{List[2].Date:yyyy-MM-dd}", new Dictionary<string, object>
+            expression = BoundExpression.Parse("{^List[2].Date:yyyy-MM-dd}", new Dictionary<string, object>
             {
                 ["List"] = new List<Model>
                 {

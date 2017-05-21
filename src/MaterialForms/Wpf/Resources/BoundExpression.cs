@@ -115,14 +115,14 @@ namespace MaterialForms.Wpf.Resources
 
         public static BoundExpression Parse(string expression)
         {
-            return Parse(expression, contextResource: null);
+            return Parse(expression, contextualResource: null);
         }
 
-        public static BoundExpression Parse(string expression, IDictionary<string, object> contextResources)
+        public static BoundExpression Parse(string expression, IDictionary<string, object> contextualResources)
         {
-            Resource Factory(string name, IValueConverter converter)
+            Resource Factory(string name, bool oneTimeBinding, IValueConverter converter)
             {
-                if (!contextResources.TryGetValue(name, out var value))
+                if (!contextualResources.TryGetValue(name, out var value))
                 {
                     var index = name.IndexOf('.');
                     var indexBracket = name.IndexOf('[');
@@ -139,8 +139,8 @@ namespace MaterialForms.Wpf.Resources
                     }
 
                     var source = name.Substring(0, index);
-                    return contextResources.TryGetValue(source, out value) 
-                        ? new BoundValue(value, name.Substring(index + increment), false, converter)
+                    return contextualResources.TryGetValue(source, out value) 
+                        ? new BoundValue(value, name.Substring(index + increment), oneTimeBinding, converter)
                         : null;
                 }
 
@@ -149,9 +149,9 @@ namespace MaterialForms.Wpf.Resources
                     case Resource resource:
                         return resource.Rewrap(converter);
                     case BindingProxy proxy:
-                        return new BindingProxyResource(proxy, false, converter);
+                        return new BindingProxyResource(proxy, oneTimeBinding, converter);
                     case StringProxy proxy:
-                        return new StringProxyResource(proxy, false, converter);
+                        return new StringProxyResource(proxy, oneTimeBinding, converter);
                     default:
                         return new LiteralValue(value, converter);
                 }
@@ -160,7 +160,7 @@ namespace MaterialForms.Wpf.Resources
             return Parse(expression, Factory);
         }
 
-        public static BoundExpression Parse(string expression, Func<string, IValueConverter, Resource> contextResource)
+        public static BoundExpression Parse(string expression, Func<string, bool, IValueConverter, Resource> contextualResource)
         {
             if (expression == null)
             {
@@ -173,6 +173,7 @@ namespace MaterialForms.Wpf.Resources
             var resourceName = new StringBuilder();
             var resourceConverter = new StringBuilder();
             var resourceFormat = new StringBuilder();
+            var oneTimeBind = false;
             var length = expression.Length;
             var i = 0;
             char c;
@@ -225,6 +226,17 @@ namespace MaterialForms.Wpf.Resources
             goto outside;
 
             readResource:
+            // A leading ^ indicates one time binding for contextual resources.
+            if (expression[i] == '^')
+            {
+                if (++i == length)
+                {
+                    throw new FormatException("Unexpected end of input.");
+                }
+
+                oneTimeBind = true;
+            }
+
             // Resource type.
             while (char.IsLetter(c = expression[i]))
             {
@@ -409,7 +421,7 @@ namespace MaterialForms.Wpf.Resources
                     resource = new ContextPropertyBinding(key, true, converter);
                     break;
                 default:
-                    resource = contextResource?.Invoke(resourceTypeString + key, converter);
+                    resource = contextualResource?.Invoke(resourceTypeString + key, oneTimeBind, converter);
                     if (resource != null)
                     {
                         break;
@@ -437,6 +449,7 @@ namespace MaterialForms.Wpf.Resources
             resourceName.Clear();
             resourceFormat.Clear();
             resourceConverter.Clear();
+            oneTimeBind = false;
             goto outside;
         }
 
