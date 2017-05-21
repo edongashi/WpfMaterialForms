@@ -139,6 +139,8 @@
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\StringProxyResource.cs" />
+    <Compile Include="Wpf\StringProxy.cs" />
     <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />
     <Compile Include="Wpf\FormDefinition\FormField.cs" />
     <Compile Include="Wpf\FormDefinition\Resources\ContextPropertyBinding.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Wpf\FormDefinition\Resources\LiteralValue.cs" />
     <Compile Include="Wpf\FormDefinition\Resources\PropertyBinding.cs" />
     <Compile Include="Wpf\FormDefinition\BoundExpression.cs" />
+    <Compile Include="Wpf\FormDefinition\Resources\BindingProxyResource.cs" />
     <Compile Include="Wpf\FormDefinition\Resources\Resource.cs" />
     <Compile Include="Wpf\FormDefinition\Resources\StaticResource.cs" />
     <Compile Include="Wpf\FormDefinition\SelectionType.cs" />

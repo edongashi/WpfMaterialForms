@@ -2,10 +2,20 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf
 {
-    public class MaterialForm : Control
+    public interface IMaterialForm
+    {
+        object Model { get; }
+
+        object Value { get; }
+
+        object Context { get; }
+    }
+
+    public class MaterialForm : Control, IMaterialForm
     {
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model",
@@ -68,62 +78,74 @@ namespace MaterialForms.Wpf
 
         private void UpdateModel(object oldModel, object newModel)
         {
-            if (Equals(oldModel, newModel))
-            {
-                return;
-            }
+            SetValue(ValuePropertyKey, newModel);
+            //if (Equals(oldModel, newModel))
+            //{
+            //    return;
+            //}
 
-            if (Equals(Value, newModel))
-            {
-                return;
-            }
+            //if (Equals(Value, newModel))
+            //{
+            //    return;
+            //}
 
-            if (newModel == null)
-            {
-                // null -> Clear Form
-                ClearForm();
-                SetValue(ValuePropertyKey, null);
-            }
-            else if (newModel is FormDefinition)
-            {
-                // MaterialFormDefinition -> Build form
-                throw new NotImplementedException();
-                //RebuildForm((MaterialFormSchema)newModel, null);
-                //SetValue(ValuePropertyKey, null);
-            }
-            else if (newModel is Type)
-            {
-                // Type -> Build form, Value = new Type
-                var type = (Type)newModel;
-                var instance = TypeManager.CreateInstance(type);
-                //RebuildForm(GetDefinition(type), instance);
-                //SetValue(ValuePropertyKey, instance);
-            }
-            else if (oldModel.GetType() == newModel.GetType())
-            {
-                // Same type -> update values only
-                var type = newModel.GetType();
-                if (TypeManager.IsSimpleType(type))
-                {
-                    SetCurrentValue(ModelProperty, newModel);
-                }
-                else
-                {
-                    
-                }
+            //if (newModel == null)
+            //{
+            //    // null -> Clear Form
+            //    ClearForm();
+            //    SetValue(ValuePropertyKey, null);
+            //}
+            //else if (newModel is FormDefinition)
+            //{
+            //    // MaterialFormDefinition -> Build form
+            //    throw new NotImplementedException();
+            //    //RebuildForm((MaterialFormSchema)newModel, null);
+            //    //SetValue(ValuePropertyKey, null);
+            //}
+            //else if (newModel is Type)
+            //{
+            //    // Type -> Build form, Value = new Type
+            //    var type = (Type)newModel;
+            //    var instance = TypeManager.CreateInstance(type);
+            //    //RebuildForm(GetDefinition(type), instance);
+            //    //SetValue(ValuePropertyKey, instance);
+            //}
+            //else if (oldModel.GetType() == newModel.GetType())
+            //{
+            //    // Same type -> update values only
+            //    var type = newModel.GetType();
+            //    if (TypeManager.IsSimpleType(type))
+            //    {
+            //        SetCurrentValue(ModelProperty, newModel);
+            //    }
+            //    else
+            //    {
 
-                SetValue(ValuePropertyKey, newModel);
-            }
-            else
-            {
-                // Complex object -> Build form, Value = model
-                //RebuildForm(GetDefinition(newModel.GetType()), newModel);
-                SetValue(ValuePropertyKey, newModel);
-            }
+            //    }
+
+            //    SetValue(ValuePropertyKey, newModel);
+            //}
+            //else
+            //{
+            //    // Complex object -> Build form, Value = model
+            //    //RebuildForm(GetDefinition(newModel.GetType()), newModel);
+            //    SetValue(ValuePropertyKey, newModel);
+            //}
         }
 
         private void ClearForm()
         {
+            var resources = Resources;
+            var keys = resources.Keys;
+            foreach (var key in keys)
+            {
+                if (key is DynamicResourceKey)
+                {
+                    var proxy = (BindingProxy)resources[key];
+                    proxy.Value = null;
+                    resources.Remove(key);
+                }
+            }
         }
     }
 }

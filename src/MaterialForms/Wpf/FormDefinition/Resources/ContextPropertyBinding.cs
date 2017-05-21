@@ -19,8 +19,8 @@ namespace MaterialForms.Wpf.Resources
 
         public override BindingBase GetBinding(FrameworkElement element)
         {
-            var path = string.IsNullOrEmpty(PropertyPath) ? "." + PropertyPath : null;
-            return new Binding(path)
+            var path = string.IsNullOrEmpty(PropertyPath) ? "" : "." + PropertyPath;
+            return new Binding(nameof(MaterialForm.Context) + path)
             {
                 Source = element,
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay

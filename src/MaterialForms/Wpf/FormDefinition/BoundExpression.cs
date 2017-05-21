@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
@@ -42,6 +41,8 @@ namespace MaterialForms.Wpf
         public string StringFormat { get; }
 
         public IReadOnlyList<Resource> Resources { get; }
+
+        public bool IsDynamic => Resources != null && Resources.Any(res => res.IsDynamic);
 
         public void SetValue(FrameworkElement container, DependencyObject element, DependencyProperty property)
         {
@@ -84,7 +85,16 @@ namespace MaterialForms.Wpf
             return proxy;
         }
 
-        public static BoundExpression Parse(string expression)
+        public StringProxy GetStringValue(FrameworkElement container)
+        {
+            var proxy = new StringProxy();
+            SetValue(container, proxy, StringProxy.ValueProperty);
+            return proxy;
+        }
+
+        public static BoundExpression Parse(string expression) => Parse(expression, null);
+
+        public static BoundExpression Parse(string expression, IDictionary<string, Resource> contextResources)
         {
             if (expression == null)
             {
@@ -148,23 +158,27 @@ namespace MaterialForms.Wpf
             goto outside;
 
             readResource:
+
+            // Resource type.
             while (char.IsLetter(c = expression[i]))
             {
                 resourceType.Append(c);
                 if (++i == length)
                 {
-                    throw new FormatException("Unexpected end of input (1).");
+                    throw new FormatException("Unexpected end of input.");
                 }
             }
 
+            // Skip whitespace.
             while (char.IsWhiteSpace(expression[i]))
             {
                 if (++i == length)
                 {
-                    throw new FormatException("Unexpected end of input (2).");
+                    throw new FormatException("Unexpected end of input.");
                 }
             }
 
+            // Resource name.
             while ((c = expression[i]) != ',' && c != ':')
             {
                 if (char.IsWhiteSpace(c))
@@ -172,7 +186,19 @@ namespace MaterialForms.Wpf
                     break;
                 }
 
-                if (c == '}')
+                if (c == '{')
+                {
+                    if (++i == length)
+                    {
+                        throw new FormatException("Unexpected end of input.");
+                    }
+
+                    if (expression[i] != '{')
+                    {
+                        throw new FormatException("Invalid unescaped '{'.");
+                    }
+                }
+                else if (c == '}')
                 {
                     if (++i == length)
                     {
@@ -183,28 +209,28 @@ namespace MaterialForms.Wpf
                     {
                         goto addResource;
                     }
-
-                    resourceName.Append('}');
                 }
 
                 resourceName.Append(c);
                 if (++i == length)
                 {
-                    throw new FormatException("Unexpected end of input (3).");
+                    throw new FormatException("Unexpected end of input.");
                 }
             }
 
+            // Skip whitespace between name and format/end.
             while (char.IsWhiteSpace(expression[i]))
             {
                 if (++i == length)
                 {
-                    throw new FormatException("Unexpected end of input (4).");
+                    throw new FormatException("Unexpected end of input.");
                 }
             }
 
             c = expression[i];
             if (c == '}')
             {
+                // Resource can close at this point assuming no string format.
                 if (++i == length)
                 {
                     goto addResource;
@@ -218,6 +244,7 @@ namespace MaterialForms.Wpf
                 throw new FormatException("Invalid '}}' sequence.");
             }
 
+            // String format, read until single '}'.
             if (c == ',' || c == ':')
             {
                 resourceFormat.Append(c);
@@ -225,7 +252,7 @@ namespace MaterialForms.Wpf
                 {
                     if (++i == length)
                     {
-                        throw new FormatException("Unexpected end of input (5).");
+                        throw new FormatException("Unexpected end of input.");
                     }
 
                     c = expression[i];
@@ -241,19 +268,18 @@ namespace MaterialForms.Wpf
                             goto addResource;
                         }
 
-                        resourceFormat.Append("}}");
+                        resourceFormat.Append('}');
                     }
-                    else
-                    {
-                        resourceFormat.Append(c);
-                    }
+
+                    resourceFormat.Append(c);
                 }
             }
 
             addResource:
             var key = resourceName.ToString();
             Resource resource;
-            switch (resourceType.ToString())
+            var resourceTypeString = resourceType.ToString();
+            switch (resourceTypeString)
             {
                 case "Binding":
                     resource = new PropertyBinding(key, false);
@@ -274,6 +300,11 @@ namespace MaterialForms.Wpf
                     resource = new ContextPropertyBinding(key, true);
                     break;
                 default:
+                    if (contextResources != null && contextResources.TryGetValue(resourceTypeString, out resource))
+                    {
+                        break;
+                    }
+
                     throw new FormatException("Invalid resource type.");
             }
 

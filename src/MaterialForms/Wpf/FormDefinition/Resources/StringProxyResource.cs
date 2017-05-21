@@ -1,17 +1,22 @@
+﻿using System;
 using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class PropertyBinding : Resource
+    public class StringProxyResource : Resource
     {
-        public PropertyBinding(string propertyPath, bool oneTimeBinding)
+        public StringProxyResource(StringProxy proxy) : this(proxy, false)
         {
-            PropertyPath = propertyPath;
+        }
+
+        public StringProxyResource(StringProxy proxy, bool oneTimeBinding)
+        {
+            Proxy = proxy ?? throw new ArgumentNullException(nameof(proxy));
             OneTimeBinding = oneTimeBinding;
         }
 
-        public string PropertyPath { get; }
+        public StringProxy Proxy { get; }
 
         public bool OneTimeBinding { get; }
 
@@ -19,19 +24,19 @@ namespace MaterialForms.Wpf.Resources
 
         public override BindingBase GetBinding(FrameworkElement element)
         {
-            var path = string.IsNullOrEmpty(PropertyPath) ? "" : "." + PropertyPath;
-            return new Binding(nameof(MaterialForm.Value) + path)
+            return new Binding
             {
-                Source = element,
+                Source = Proxy,
+                Path = new PropertyPath(BindingProxy.ValueProperty),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
 
         public override bool Equals(Resource other)
         {
-            if (other is PropertyBinding resource)
+            if (other is StringProxyResource resource)
             {
-                return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding;
+                return ReferenceEquals(Proxy, resource.Proxy);
             }
 
             return false;
@@ -39,7 +44,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override int GetHashCode()
         {
-            return PropertyPath.GetHashCode() ^ (OneTimeBinding ? 123456789 : 741852963);
+            return Proxy.GetHashCode();
         }
     }
 }
