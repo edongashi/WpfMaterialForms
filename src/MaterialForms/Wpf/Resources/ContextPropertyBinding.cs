@@ -25,7 +25,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override BindingBase GetBinding(FrameworkElement element)
         {
-            var path = string.IsNullOrEmpty(PropertyPath) ? "" : "." + PropertyPath;
+            var path = FormatPath(PropertyPath);
             return new Binding(nameof(Controls.MaterialForm.Context) + path)
             {
                 Source = element,

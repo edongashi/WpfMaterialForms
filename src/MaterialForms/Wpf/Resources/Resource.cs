@@ -42,5 +42,20 @@ namespace MaterialForms.Wpf.Resources
         }
 
         public abstract override int GetHashCode();
+
+        protected static string FormatPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return "";
+            }
+
+            if (path[0] == '[')
+            {
+                return path;
+            }
+
+            return "." + path;
+        }
     }
 }

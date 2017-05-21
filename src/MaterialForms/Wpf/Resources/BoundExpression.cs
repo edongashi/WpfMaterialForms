@@ -139,9 +139,23 @@ namespace MaterialForms.Wpf.Resources
                     }
 
                     var source = name.Substring(0, index);
-                    return contextualResources.TryGetValue(source, out value) 
-                        ? new BoundValue(value, name.Substring(index + increment), oneTimeBinding, converter)
-                        : null;
+                    if (!contextualResources.TryGetValue(source, out value))
+                    {
+                        return null;
+                    }
+
+                    var path = name.Substring(index + increment);
+                    switch (value)
+                    {
+                        case Resource _:
+                            throw new InvalidOperationException("Cannot use nested paths for a resource.");
+                        case BindingProxy proxy:
+                            return new BindingProxyResource(proxy, path, oneTimeBinding, converter);
+                        case StringProxy proxy:
+                            return new StringProxyResource(proxy, path, oneTimeBinding, converter);
+                        default:
+                            return new BoundValue(value, path, oneTimeBinding, converter);
+                    }
                 }
 
                 switch (value)
@@ -149,9 +163,9 @@ namespace MaterialForms.Wpf.Resources
                     case Resource resource:
                         return resource.Rewrap(converter);
                     case BindingProxy proxy:
-                        return new BindingProxyResource(proxy, oneTimeBinding, converter);
+                        return new BindingProxyResource(proxy, null, oneTimeBinding, converter);
                     case StringProxy proxy:
-                        return new StringProxyResource(proxy, oneTimeBinding, converter);
+                        return new StringProxyResource(proxy, null, oneTimeBinding, converter);
                     default:
                         return new LiteralValue(value, converter);
                 }
