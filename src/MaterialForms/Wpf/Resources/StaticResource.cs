@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class StaticResource : Resource
+    public sealed class StaticResource : Resource
     {
         public StaticResource(string resourceKey)
             : this(resourceKey, null)

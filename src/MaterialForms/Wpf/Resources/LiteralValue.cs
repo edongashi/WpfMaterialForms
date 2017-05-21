@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class LiteralValue : Resource
+    public sealed class LiteralValue : Resource
     {
         public LiteralValue(object value)
             : this(value, null)

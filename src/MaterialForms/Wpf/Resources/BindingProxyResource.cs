@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class BindingProxyResource : Resource
+    public sealed class BindingProxyResource : Resource
     {
         public BindingProxyResource(BindingProxy bindingProxy, string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
             : base(valueConverter)

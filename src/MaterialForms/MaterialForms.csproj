@@ -137,8 +137,10 @@
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
+    <Compile Include="Wpf\Annotations\FieldRequiredAttribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
+    <Compile Include="Wpf\Annotations\ValidatorAttribute.cs" />
     <Compile Include="Wpf\FormDefinition\ModelMessages.cs" />
     <Compile Include="Wpf\Resources\BoundValue.cs" />
     <Compile Include="Wpf\Resources\StringProxyResource.cs" />

@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class ContextPropertyBinding : Resource
+    public sealed class ContextPropertyBinding : Resource
     {
         public ContextPropertyBinding(string propertyPath, bool oneTimeBinding)
             : this(propertyPath, oneTimeBinding, null)

@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class BoundValue : Resource
+    public sealed class BoundValue : Resource
     {
         public BoundValue(object source, string propertyPath, bool oneTimeBinding)
             : this(source, propertyPath, oneTimeBinding, null)
@@ -13,7 +14,7 @@ namespace MaterialForms.Wpf.Resources
         public BoundValue(object source, string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
             : base(valueConverter)
         {
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
             PropertyPath = propertyPath;
             OneTimeBinding = oneTimeBinding;
         }
@@ -56,7 +57,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override int GetHashCode()
         {
-            return (Source?.GetHashCode() ?? 0) ^ (PropertyPath?.GetHashCode() ?? 0);
+            return Source.GetHashCode() ^ (PropertyPath?.GetHashCode() ?? 0);
         }
     }
 }

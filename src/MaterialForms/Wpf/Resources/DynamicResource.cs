@@ -5,7 +5,7 @@ using System.Windows.Markup;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class DynamicResource : Resource
+    public sealed class DynamicResource : Resource
     {
         public DynamicResource(string resourceKey)
             : this(resourceKey, null)
