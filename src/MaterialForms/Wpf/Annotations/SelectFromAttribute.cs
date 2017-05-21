@@ -2,7 +2,8 @@ using System;
 
 namespace MaterialForms.Wpf.Annotations
 {
-    public class SelectFromAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class SelectFromAttribute : Attribute
     {
         public SelectFromAttribute(object itemsSource)
         {

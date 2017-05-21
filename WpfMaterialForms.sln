@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms", "src\MaterialForms\MaterialForms.csproj", "{703572CE-5A7E-4B37-9F12-FF9A11483DE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Tests", "src\MaterialForms.Tests\MaterialForms.Tests.csproj", "{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.WpfDemo", "src\MaterialForms.WpfDemo\MaterialForms.WpfDemo.csproj", "{9366F07D-D5DE-4B19-987C-B27C40476685}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Demo", "src\MaterialForms.Demo\MaterialForms.Demo.csproj", "{9366F07D-D5DE-4B19-987C-B27C40476685}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

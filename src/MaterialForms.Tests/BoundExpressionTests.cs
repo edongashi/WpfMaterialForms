@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using MaterialForms.Wpf;
+using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -186,11 +187,46 @@ namespace MaterialForms.Tests
             Assert.AreEqual("Input number must be between 15.11 and 42.", value.Value);
         }
 
+        [TestMethod]
+        public void TestContextualResourcesNestedProperties()
+        {
+            var expression = BoundExpression.Parse("{Model.Name} {Model.Value} {Model.Grades[1]}",
+                new Dictionary<string, object>
+                {
+                    ["Model"] = new Model
+                    {
+                        Name = "Test",
+                        Value = 42,
+                        Grades = new List<int> { 8, 9, 10 }
+                    }
+                });
+
+            var value = expression.GetStringValue(null);
+            Assert.AreEqual("Test 42 9", value.Value);
+
+            expression = BoundExpression.Parse("{List[2].Date:yyyy-MM-dd}", new Dictionary<string, object>
+            {
+                ["List"] = new List<Model>
+                {
+                    new Model(),
+                    new Model(),
+                    new Model { Date = new DateTime(2017, 02, 03) }
+                }
+            });
+
+            value = expression.GetStringValue(null);
+            Assert.AreEqual("2017-02-03", value.Value);
+        }
+
         private class Model
         {
             public string Name { get; set; }
 
             public int Value { get; set; }
+
+            public DateTime Date { get; set; }
+
+            public List<int> Grades { get; set; }
         }
 
         [TestMethod]

@@ -139,6 +139,8 @@
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
+    <Compile Include="Wpf\FormDefinition\ModelMessages.cs" />
+    <Compile Include="Wpf\Resources\BoundValue.cs" />
     <Compile Include="Wpf\Resources\StringProxyResource.cs" />
     <Compile Include="Wpf\Resources\StringProxy.cs" />
     <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />

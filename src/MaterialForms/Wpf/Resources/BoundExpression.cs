@@ -124,7 +124,24 @@ namespace MaterialForms.Wpf.Resources
             {
                 if (!contextResources.TryGetValue(name, out var value))
                 {
-                    return null;
+                    var index = name.IndexOf('.');
+                    var indexBracket = name.IndexOf('[');
+                    var increment = 1;
+                    if (index == -1 || indexBracket != -1 && indexBracket < index)
+                    {
+                        increment = 0;
+                        index = indexBracket;
+                    }
+
+                    if (index == -1)
+                    {
+                        return null;
+                    }
+
+                    var source = name.Substring(0, index);
+                    return contextResources.TryGetValue(source, out value) 
+                        ? new BoundValue(value, name.Substring(index + increment), false, converter)
+                        : null;
                 }
 
                 switch (value)
@@ -208,7 +225,6 @@ namespace MaterialForms.Wpf.Resources
             goto outside;
 
             readResource:
-
             // Resource type.
             while (char.IsLetter(c = expression[i]))
             {
@@ -393,7 +409,7 @@ namespace MaterialForms.Wpf.Resources
                     resource = new ContextPropertyBinding(key, true, converter);
                     break;
                 default:
-                    resource = contextResource?.Invoke(resourceTypeString, converter);
+                    resource = contextResource?.Invoke(resourceTypeString + key, converter);
                     if (resource != null)
                     {
                         break;

@@ -4,7 +4,7 @@ using MaterialDesignThemes.Wpf;
 namespace MaterialForms.Wpf.Annotations
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class FieldAttribute : Attribute
+    public sealed class FieldAttribute : Attribute
     {
         public string Name { get; set; }
 

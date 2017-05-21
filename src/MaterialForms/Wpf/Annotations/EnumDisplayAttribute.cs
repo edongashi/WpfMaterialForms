@@ -3,7 +3,7 @@ using System;
 namespace MaterialForms.Wpf.Annotations
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class EnumDisplayAttribute : Attribute
+    public sealed class EnumDisplayAttribute : Attribute
     {
         public EnumDisplayAttribute(string name)
         {
