@@ -2,13 +2,13 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace MaterialForms.Wpf.ValueConverters
+namespace MaterialForms.Wpf.Resources.ValueConverters
 {
-    public class ToLowerConverter : IValueConverter
+    public class ToUpperConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as string)?.ToLower(culture);
+            return (value as string)?.ToUpper(culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -4,21 +4,21 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class BindingProxyResource : Resource
+    public class StringProxyResource : Resource
     {
-        public BindingProxyResource(BindingProxy bindingProxy, bool oneTimeBinding)
-            : this(bindingProxy, oneTimeBinding, null)
+        public StringProxyResource(StringProxy proxy, bool oneTimeBinding)
+            : this(proxy, oneTimeBinding, null)
         {
         }
 
-        public BindingProxyResource(BindingProxy bindingProxy, bool oneTimeBinding, IValueConverter valueConverter)
+        public StringProxyResource(StringProxy proxy, bool oneTimeBinding, IValueConverter valueConverter)
             : base(valueConverter)
         {
-            Proxy = bindingProxy ?? throw new ArgumentNullException(nameof(bindingProxy));
+            Proxy = proxy ?? throw new ArgumentNullException(nameof(proxy));
             OneTimeBinding = oneTimeBinding;
         }
 
-        public BindingProxy Proxy { get; }
+        public StringProxy Proxy { get; }
 
         public bool OneTimeBinding { get; }
 
@@ -35,9 +35,14 @@ namespace MaterialForms.Wpf.Resources
             };
         }
 
+        public override Resource Rewrap(IValueConverter valueConverter)
+        {
+            return new StringProxyResource(Proxy, OneTimeBinding, valueConverter);
+        }
+
         public override bool Equals(Resource other)
         {
-            if (other is BindingProxyResource resource)
+            if (other is StringProxyResource resource)
             {
                 return ReferenceEquals(Proxy, resource.Proxy) && Equals(ValueConverter, resource.ValueConverter);
             }

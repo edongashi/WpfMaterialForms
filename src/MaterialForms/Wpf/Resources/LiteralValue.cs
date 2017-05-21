@@ -30,6 +30,11 @@ namespace MaterialForms.Wpf.Resources
             };
         }
 
+        public override Resource Rewrap(IValueConverter valueConverter)
+        {
+            return new LiteralValue(Value, valueConverter);
+        }
+
         public override bool Equals(Resource other)
         {
             if (other is LiteralValue resource)

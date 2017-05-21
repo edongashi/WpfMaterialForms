@@ -5,11 +5,11 @@ namespace MaterialForms.Wpf.Annotations
     [AttributeUsage(AttributeTargets.Field)]
     public class EnumDisplayAttribute : Attribute
     {
-        public EnumDisplayAttribute(string expression)
+        public EnumDisplayAttribute(string name)
         {
-            Expression = expression;
+            Name = name;
         }
 
-        public string Expression { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -31,6 +31,11 @@ namespace MaterialForms.Wpf.Resources
             };
         }
 
+        public override Resource Rewrap(IValueConverter valueConverter)
+        {
+            return new StaticResource(ResourceKey, valueConverter);
+        }
+
         public override bool Equals(Resource other)
         {
             if (other is StaticResource resource)

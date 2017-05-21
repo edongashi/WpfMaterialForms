@@ -19,6 +19,8 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract BindingBase GetBinding(FrameworkElement element);
 
+        public abstract Resource Rewrap(IValueConverter valueConverter);
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))

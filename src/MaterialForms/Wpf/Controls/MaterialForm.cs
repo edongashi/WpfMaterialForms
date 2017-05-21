@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
-namespace MaterialForms.Wpf
+namespace MaterialForms.Wpf.Controls
 {
     public interface IMaterialForm
     {

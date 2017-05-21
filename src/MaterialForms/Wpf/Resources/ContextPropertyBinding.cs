@@ -3,14 +3,14 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class PropertyBinding : Resource
+    public class ContextPropertyBinding : Resource
     {
-        public PropertyBinding(string propertyPath, bool oneTimeBinding)
+        public ContextPropertyBinding(string propertyPath, bool oneTimeBinding)
             : this(propertyPath, oneTimeBinding, null)
         {
         }
 
-        public PropertyBinding(string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
+        public ContextPropertyBinding(string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
@@ -26,7 +26,7 @@ namespace MaterialForms.Wpf.Resources
         public override BindingBase GetBinding(FrameworkElement element)
         {
             var path = string.IsNullOrEmpty(PropertyPath) ? "" : "." + PropertyPath;
-            return new Binding(nameof(MaterialForm.Value) + path)
+            return new Binding(nameof(Controls.MaterialForm.Context) + path)
             {
                 Source = element,
                 Converter = ValueConverter,
@@ -34,9 +34,14 @@ namespace MaterialForms.Wpf.Resources
             };
         }
 
+        public override Resource Rewrap(IValueConverter valueConverter)
+        {
+            return new ContextPropertyBinding(PropertyPath, OneTimeBinding, valueConverter);
+        }
+
         public override bool Equals(Resource other)
         {
-            if (other is PropertyBinding resource)
+            if (other is ContextPropertyBinding resource)
             {
                 return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding &&
                        Equals(ValueConverter, resource.ValueConverter);
@@ -47,7 +52,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override int GetHashCode()
         {
-            return PropertyPath.GetHashCode() ^ (OneTimeBinding ? 123456789 : 741852963);
+            return PropertyPath.GetHashCode() ^ (OneTimeBinding ? 741852963 : 123456789);
         }
     }
 }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
-using MaterialForms.Wpf.ValueConverters;
+using MaterialForms.Wpf.Resources.ValueConverters;
 
-namespace MaterialForms.Wpf
+namespace MaterialForms.Wpf.Resources
 {
     public class BoundExpression
     {
@@ -100,6 +99,9 @@ namespace MaterialForms.Wpf
                 : null;
         }
 
+        /// <summary>
+        /// Global cache for value converters accessible from expressions.
+        /// </summary>
         public static readonly Dictionary<string, IValueConverter> ValueConverters =
             new Dictionary<string, IValueConverter>
             {
@@ -128,7 +130,7 @@ namespace MaterialForms.Wpf
                 switch (value)
                 {
                     case Resource resource:
-                        return resource;
+                        return resource.Rewrap(converter);
                     case BindingProxy proxy:
                         return new BindingProxyResource(proxy, false, converter);
                     case StringProxy proxy:

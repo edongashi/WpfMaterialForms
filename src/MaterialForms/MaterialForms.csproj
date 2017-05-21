@@ -133,26 +133,26 @@
     <Compile Include="Old\Forms\WindowFactory.cs" />
     <Compile Include="Old\Extensions\InitializerExtensions.cs" />
     <Compile Include="Old\IViewProvider.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\StringProxyResource.cs" />
-    <Compile Include="Wpf\StringProxy.cs" />
+    <Compile Include="Wpf\Resources\StringProxyResource.cs" />
+    <Compile Include="Wpf\Resources\StringProxy.cs" />
     <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />
     <Compile Include="Wpf\FormDefinition\FormField.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\ContextPropertyBinding.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\DynamicResource.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\LiteralValue.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\PropertyBinding.cs" />
-    <Compile Include="Wpf\FormDefinition\BoundExpression.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\BindingProxyResource.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\Resource.cs" />
-    <Compile Include="Wpf\FormDefinition\Resources\StaticResource.cs" />
+    <Compile Include="Wpf\Resources\ContextPropertyBinding.cs" />
+    <Compile Include="Wpf\Resources\DynamicResource.cs" />
+    <Compile Include="Wpf\Resources\LiteralValue.cs" />
+    <Compile Include="Wpf\Resources\PropertyBinding.cs" />
+    <Compile Include="Wpf\Resources\BoundExpression.cs" />
+    <Compile Include="Wpf\Resources\BindingProxyResource.cs" />
+    <Compile Include="Wpf\Resources\Resource.cs" />
+    <Compile Include="Wpf\Resources\StaticResource.cs" />
     <Compile Include="Wpf\FormDefinition\SelectionType.cs" />
-    <Compile Include="Wpf\MaterialForm.cs" />
+    <Compile Include="Wpf\Controls\MaterialForm.cs" />
     <Compile Include="Old\PasswordHelpers.cs" />
     <Compile Include="Old\ProgressBarSmoother.cs" />
     <Compile Include="Old\Forms\MaterialForm.cs" />
@@ -165,7 +165,7 @@
     <Compile Include="Old\DataSchema\SelectionSchema.cs" />
     <Compile Include="Old\DataSchema\StringSchema.cs" />
     <Compile Include="Old\DataSchema\DateSchema.cs" />
-    <Compile Include="Wpf\MaterialDialog.cs" />
+    <Compile Include="Wpf\Controls\MaterialDialog.cs" />
     <Compile Include="Old\SessionAssist.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Tasks\ProgressController.cs" />
@@ -184,14 +184,14 @@
     <Compile Include="Old\Views\FormView.xaml.cs">
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wpf\BindingProxy.cs" />
-    <Compile Include="Wpf\TypeManager.cs" />
-    <Compile Include="Wpf\ValueConverters\IsNotEmptyConverter.cs" />
-    <Compile Include="Wpf\ValueConverters\IsEmptyConverter.cs" />
-    <Compile Include="Wpf\ValueConverters\IsNotNullConverter.cs" />
-    <Compile Include="Wpf\ValueConverters\IsNullConverter.cs" />
-    <Compile Include="Wpf\ValueConverters\ToUpperConverter.cs" />
-    <Compile Include="Wpf\ValueConverters\ToLowerConverter.cs" />
+    <Compile Include="Wpf\Resources\BindingProxy.cs" />
+    <Compile Include="Wpf\FormDefinition\TypeManager.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\IsNotEmptyConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\IsEmptyConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\IsNotNullConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\IsNullConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\ToUpperConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\ToLowerConverter.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

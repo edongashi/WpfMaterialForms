@@ -36,6 +36,11 @@ namespace MaterialForms.Wpf.Resources
             return CreateBinding(proxy);
         }
 
+        public override Resource Rewrap(IValueConverter valueConverter)
+        {
+            return new DynamicResource(ResourceKey, valueConverter);
+        }
+
         public override bool Equals(Resource other)
         {
             if (other is DynamicResource resource)
