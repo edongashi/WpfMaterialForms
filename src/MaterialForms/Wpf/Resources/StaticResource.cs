@@ -11,7 +11,7 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public StaticResource(string resourceKey, IValueConverter valueConverter)
+        public StaticResource(string resourceKey, string valueConverter)
             : base(valueConverter)
         {
             ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
@@ -26,12 +26,12 @@ namespace MaterialForms.Wpf.Resources
             return new Binding
             {
                 Source = element.FindResource(ResourceKey),
-                Converter = ValueConverter,
+                Converter = GetValueConverter(element),
                 Mode = BindingMode.OneTime
             };
         }
 
-        public override Resource Rewrap(IValueConverter valueConverter)
+        public override Resource Rewrap(string valueConverter)
         {
             return new StaticResource(ResourceKey, valueConverter);
         }

@@ -10,7 +10,7 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public LiteralValue(object value, IValueConverter valueConverter)
+        public LiteralValue(object value, string valueConverter)
             : base(valueConverter)
         {
             Value = value;
@@ -25,12 +25,12 @@ namespace MaterialForms.Wpf.Resources
             return new Binding
             {
                 Source = Value,
-                Converter = ValueConverter,
+                Converter = GetValueConverter(element),
                 Mode = BindingMode.OneTime
             };
         }
 
-        public override Resource Rewrap(IValueConverter valueConverter)
+        public override Resource Rewrap(string valueConverter)
         {
             return new LiteralValue(Value, valueConverter);
         }

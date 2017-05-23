@@ -10,7 +10,7 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public PropertyBinding(string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
+        public PropertyBinding(string propertyPath, bool oneTimeBinding, string valueConverter)
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
@@ -29,12 +29,12 @@ namespace MaterialForms.Wpf.Resources
             return new Binding(nameof(Controls.MaterialForm.Value) + path)
             {
                 Source = element,
-                Converter = ValueConverter,
+                Converter = GetValueConverter(element),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
 
-        public override Resource Rewrap(IValueConverter valueConverter)
+        public override Resource Rewrap(string valueConverter)
         {
             return new PropertyBinding(PropertyPath, OneTimeBinding, valueConverter);
         }

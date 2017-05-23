@@ -6,7 +6,7 @@ namespace MaterialForms.Wpf.Resources
 {
     public sealed class BindingProxyResource : Resource
     {
-        public BindingProxyResource(BindingProxy bindingProxy, string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
+        public BindingProxyResource(BindingProxy bindingProxy, string propertyPath, bool oneTimeBinding, string valueConverter)
             : base(valueConverter)
         {
             Proxy = bindingProxy ?? throw new ArgumentNullException(nameof(bindingProxy));
@@ -28,12 +28,12 @@ namespace MaterialForms.Wpf.Resources
             return new Binding(nameof(BindingProxy.Value) + path)
             {
                 Source = Proxy,
-                Converter = ValueConverter,
+                Converter = GetValueConverter(element),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
 
-        public override Resource Rewrap(IValueConverter valueConverter)
+        public override Resource Rewrap(string valueConverter)
         {
             return new BindingProxyResource(Proxy, PropertyPath, OneTimeBinding, valueConverter);
         }

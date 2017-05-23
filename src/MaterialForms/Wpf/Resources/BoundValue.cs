@@ -11,7 +11,7 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public BoundValue(object source, string propertyPath, bool oneTimeBinding, IValueConverter valueConverter)
+        public BoundValue(object source, string propertyPath, bool oneTimeBinding, string valueConverter)
             : base(valueConverter)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -45,12 +45,12 @@ namespace MaterialForms.Wpf.Resources
             return new Binding(PropertyPath)
             {
                 Source = Source,
-                Converter = ValueConverter,
+                Converter = GetValueConverter(element),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }
 
-        public override Resource Rewrap(IValueConverter valueConverter)
+        public override Resource Rewrap(string valueConverter)
         {
             return new BoundValue(Source, PropertyPath, OneTimeBinding, valueConverter);
         }

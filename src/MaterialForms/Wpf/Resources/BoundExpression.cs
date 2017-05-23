@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources.ValueConverters;
 
 namespace MaterialForms.Wpf.Resources
 {
@@ -99,28 +98,7 @@ namespace MaterialForms.Wpf.Resources
             SetValue(container, proxy, StringProxy.ValueProperty);
             return proxy;
         }
-
-        public static IValueConverter GetConverter(string name)
-        {
-            return ValueConverters.TryGetValue(name, out var converter)
-                ? converter
-                : null;
-        }
-
-        /// <summary>
-        /// Global cache for value converters accessible from expressions.
-        /// </summary>
-        public static readonly Dictionary<string, IValueConverter> ValueConverters =
-            new Dictionary<string, IValueConverter>
-            {
-                ["IsNull"] = new IsNullConverter(),
-                ["IsNotNull"] = new IsNotNullConverter(),
-                ["IsEmpty"] = new IsEmptyConverter(),
-                ["IsNotEmpty"] = new IsNotEmptyConverter(),
-                ["ToUpper"] = new ToUpperConverter(),
-                ["ToLower"] = new ToLowerConverter()
-            };
-
+        
         public static BoundExpression Parse(string expression)
         {
             return Parse(expression, contextualResource: null);
@@ -128,7 +106,7 @@ namespace MaterialForms.Wpf.Resources
 
         public static BoundExpression Parse(string expression, IDictionary<string, object> contextualResources)
         {
-            Resource Factory(string name, bool oneTimeBinding, IValueConverter converter)
+            Resource Factory(string name, bool oneTimeBinding, string converter)
             {
                 if (!contextualResources.TryGetValue(name, out var value))
                 {
@@ -182,7 +160,7 @@ namespace MaterialForms.Wpf.Resources
             return Parse(expression, Factory);
         }
 
-        public static BoundExpression Parse(string expression, Func<string, bool, IValueConverter, Resource> contextualResource)
+        public static BoundExpression Parse(string expression, Func<string, bool, string, Resource> contextualResource)
         {
             if (expression == null)
             {
@@ -429,7 +407,7 @@ namespace MaterialForms.Wpf.Resources
             addResource:
             var key = resourceName.ToString();
             Resource resource;
-            var converter = GetConverter(resourceConverter.ToString());
+            var converter = resourceConverter.ToString();
             var resourceTypeString = resourceType.ToString();
             switch (resourceTypeString)
             {

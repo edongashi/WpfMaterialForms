@@ -1,17 +1,40 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
+using MaterialForms.Wpf.Resources.ValueConverters;
 
 namespace MaterialForms.Wpf.Resources
 {
     public abstract class Resource : IEquatable<Resource>
     {
-        protected Resource(IValueConverter valueConverter)
+        public static IValueConverter GetConverter(string name)
+        {
+            return ValueConverters.TryGetValue(name, out var converter)
+                ? converter
+                : null;
+        }
+
+        /// <summary>
+        /// Global cache for value converters accessible from expressions.
+        /// </summary>
+        public static readonly Dictionary<string, IValueConverter> ValueConverters =
+            new Dictionary<string, IValueConverter>
+            {
+                ["IsNull"] = new IsNullConverter(),
+                ["IsNotNull"] = new IsNotNullConverter(),
+                ["IsEmpty"] = new IsEmptyConverter(),
+                ["IsNotEmpty"] = new IsNotEmptyConverter(),
+                ["ToUpper"] = new ToUpperConverter(),
+                ["ToLower"] = new ToLowerConverter()
+            };
+
+        protected Resource(string valueConverter)
         {
             ValueConverter = valueConverter;
         }
 
-        public IValueConverter ValueConverter { get; }
+        public string ValueConverter { get; }
 
         public abstract bool IsDynamic { get; }
 
@@ -19,7 +42,22 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract BindingBase GetBinding(FrameworkElement element);
 
-        public abstract Resource Rewrap(IValueConverter valueConverter);
+        public abstract Resource Rewrap(string valueConverter);
+
+        protected IValueConverter GetValueConverter(FrameworkElement element)
+        {
+            if (string.IsNullOrEmpty(ValueConverter))
+            {
+                return null;
+            }
+
+            if (element != null && element.TryFindResource(ValueConverter) is IValueConverter c)
+            {
+                return c;
+            }
+
+            return ValueConverters[ValueConverter];
+        }
 
         public override bool Equals(object obj)
         {
@@ -45,7 +83,7 @@ namespace MaterialForms.Wpf.Resources
 
         protected static string FormatPath(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (String.IsNullOrEmpty(path))
             {
                 return "";
             }
