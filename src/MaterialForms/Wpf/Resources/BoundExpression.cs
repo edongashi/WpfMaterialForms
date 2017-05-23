@@ -98,7 +98,7 @@ namespace MaterialForms.Wpf.Resources
             SetValue(container, proxy, StringProxy.ValueProperty);
             return proxy;
         }
-        
+
         public static BoundExpression Parse(string expression)
         {
             return Parse(expression, contextualResource: null);
@@ -168,11 +168,11 @@ namespace MaterialForms.Wpf.Resources
             }
 
             var i = 0;
-            if (expression.StartsWith("\0@"))
+            if (expression.StartsWith("\\"))
             {
                 i = 1;
             }
-            else if(expression.StartsWith("@"))
+            else if (expression.StartsWith("@"))
             {
                 return new BoundExpression(expression.Substring(1));
             }

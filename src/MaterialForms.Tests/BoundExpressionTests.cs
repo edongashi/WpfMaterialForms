@@ -110,6 +110,34 @@ namespace MaterialForms.Tests
         }
 
         [TestMethod]
+        public void TestVerbatimExpression()
+        {
+            var expression = BoundExpression.Parse("@{Binding Name}");
+            Assert.AreEqual("{Binding Name}", expression.StringFormat);
+
+            expression = BoundExpression.Parse("@");
+            Assert.AreEqual("", expression.StringFormat);
+
+            expression = BoundExpression.Parse("\\");
+            Assert.AreEqual("", expression.StringFormat);
+
+            expression = BoundExpression.Parse("\\\\");
+            Assert.AreEqual("\\", expression.StringFormat);
+
+            expression = BoundExpression.Parse("\\@");
+            Assert.AreEqual("@", expression.StringFormat);
+
+            expression = BoundExpression.Parse("@@");
+            Assert.AreEqual("@", expression.StringFormat);
+
+            expression = BoundExpression.Parse("\\@@");
+            Assert.AreEqual("@@", expression.StringFormat);
+
+            expression = BoundExpression.Parse("\\@{Binding Name}");
+            Assert.AreEqual("@{0}", expression.StringFormat);
+        }
+
+        [TestMethod]
         public void TestObjectBinding()
         {
             var expression = BoundExpression.Parse("{Binding} {Binding Test} {ContextBinding}");
