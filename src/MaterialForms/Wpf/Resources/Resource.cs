@@ -26,7 +26,8 @@ namespace MaterialForms.Wpf.Resources
                 ["IsEmpty"] = new IsEmptyConverter(),
                 ["IsNotEmpty"] = new IsNotEmptyConverter(),
                 ["ToUpper"] = new ToUpperConverter(),
-                ["ToLower"] = new ToLowerConverter()
+                ["ToLower"] = new ToLowerConverter(),
+                ["Length"] = new LengthValueConverter()
             };
 
         protected Resource(string valueConverter)
@@ -51,12 +52,17 @@ namespace MaterialForms.Wpf.Resources
                 return null;
             }
 
-            if (element != null && element.TryFindResource(ValueConverter) is IValueConverter c)
+            if (ValueConverters.TryGetValue(ValueConverter, out var c))
             {
                 return c;
             }
 
-            return ValueConverters[ValueConverter];
+            if (element != null && element.TryFindResource(ValueConverter) is IValueConverter converter)
+            {
+                return converter;
+            }
+
+            throw new InvalidOperationException($"Value converter '{ValueConverter}' not found.");
         }
 
         public override bool Equals(object obj)

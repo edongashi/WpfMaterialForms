@@ -137,12 +137,12 @@
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
-    <Compile Include="Wpf\Annotations\FieldRequiredAttribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
-    <Compile Include="Wpf\Annotations\FieldValue.cs" />
+    <Compile Include="Wpf\Annotations\Value.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
     <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\ExistsInValidator.cs" />
