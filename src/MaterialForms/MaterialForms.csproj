@@ -143,7 +143,13 @@
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldValue.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
-    <Compile Include="Wpf\Validation\EqualToValidationRule.cs" />
+    <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
+    <Compile Include="Wpf\Validation\ExistsInValidator.cs" />
+    <Compile Include="Wpf\Validation\NotNullValidator.cs" />
+    <Compile Include="Wpf\Validation\NullValidator.cs" />
+    <Compile Include="Wpf\Validation\NotEmptyValidator.cs" />
+    <Compile Include="Wpf\Validation\EmptyValidator.cs" />
+    <Compile Include="Wpf\Validation\EqualsValidator.cs" />
     <Compile Include="Wpf\Validation\FieldValidator.cs" />
     <Compile Include="Wpf\FormDefinition\ModelMessages.cs" />
     <Compile Include="Wpf\Resources\BoundValue.cs" />
@@ -200,6 +206,15 @@
     <Compile Include="Wpf\Resources\ValueConverters\IsNullConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\ToUpperConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\ToLowerConverter.cs" />
+    <Compile Include="Wpf\Validation\LessThanEqualValidator.cs" />
+    <Compile Include="Wpf\Validation\LessThanValidator.cs" />
+    <Compile Include="Wpf\Validation\GreaterThanEqualValidator.cs" />
+    <Compile Include="Wpf\Validation\GreaterThanValidator.cs" />
+    <Compile Include="Wpf\Validation\NotEqualsValidator.cs" />
+    <Compile Include="Wpf\Validation\FalseValidator.cs" />
+    <Compile Include="Wpf\Validation\NotMatchPatternValidator.cs" />
+    <Compile Include="Wpf\Validation\MatchPatternValidator.cs" />
+    <Compile Include="Wpf\Validation\TrueValidator.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
