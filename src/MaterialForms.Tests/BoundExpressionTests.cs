@@ -275,6 +275,9 @@ namespace MaterialForms.Tests
 
             var str = expression.GetStringValue(form).Value;
             Assert.AreEqual("Default: Test, Uppercase: TEST, Lowercase: test", str);
+
+            expression = BoundExpression.Parse("{Binding Name|ToUpper}");
+            Assert.IsNull(expression.StringFormat);
         }
     }
 }

@@ -9,15 +9,15 @@ namespace MaterialForms.Wpf.Validation
     {
         public IValueConverter ValueConverter { get; }
 
-        public StringProxy ErrorMessage { get; }
+        public IStringProxy ErrorMessage { get; }
 
-        protected FieldValidator(StringProxy errorMessage, IValueConverter valueConverter)
+        protected FieldValidator(IStringProxy errorMessage, IValueConverter valueConverter)
         {
             ErrorMessage = errorMessage;
             ValueConverter = valueConverter;
         }
 
-        protected FieldValidator(StringProxy errorMessage)
+        protected FieldValidator(IStringProxy errorMessage)
         {
             ErrorMessage = errorMessage;
         }

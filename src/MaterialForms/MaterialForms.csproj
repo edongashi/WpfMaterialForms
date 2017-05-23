@@ -142,6 +142,7 @@
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldValue.cs" />
+    <Compile Include="Wpf\Resources\IProxy.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
     <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\ExistsInValidator.cs" />

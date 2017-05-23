@@ -6,11 +6,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class NotNullValidator : FieldValidator
     {
-        public NotNullValidator(StringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public NotNullValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
         {
         }
 
-        public NotNullValidator(StringProxy errorMessage) : base(errorMessage)
+        public NotNullValidator(IStringProxy errorMessage) : base(errorMessage)
         {
         }
 

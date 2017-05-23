@@ -8,18 +8,18 @@ namespace MaterialForms.Wpf.Validation
 {
     public class MatchPatternValidator : FieldValidator
     {
-        protected MatchPatternValidator(StringProxy argument, StringProxy errorMessage)
+        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorMessage)
             : this(argument, errorMessage, null)
         {
         }
 
-        protected MatchPatternValidator(StringProxy argument, StringProxy errorMessage, IValueConverter valueConverter)
+        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorMessage, IValueConverter valueConverter)
             : base(errorMessage, valueConverter)
         {
             Argument = argument ?? throw new ArgumentNullException(nameof(argument));
         }
 
-        public StringProxy Argument { get; }
+        public IStringProxy Argument { get; }
 
         protected override bool ValidateValue(object value, CultureInfo cultureInfo)
         {

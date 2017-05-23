@@ -6,12 +6,12 @@ namespace MaterialForms.Wpf.Validation
 {
     internal class EqualsValidator : ComparisonValidator
     {
-        public EqualsValidator(BindingProxy argument, StringProxy errorMessage)
+        public EqualsValidator(IProxy argument, IStringProxy errorMessage)
             : base(argument, errorMessage)
         {
         }
 
-        public EqualsValidator(BindingProxy argument, StringProxy errorMessage, IValueConverter valueConverter)
+        public EqualsValidator(IProxy argument, IStringProxy errorMessage, IValueConverter valueConverter)
             : base(argument, errorMessage, valueConverter)
         {
         }

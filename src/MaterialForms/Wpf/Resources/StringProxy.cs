@@ -5,7 +5,7 @@ namespace MaterialForms.Wpf.Resources
     /// <summary>
     /// Encapsulates a string bound to a resource.
     /// </summary>
-    public class StringProxy : Freezable
+    public class StringProxy : Freezable, IStringProxy, IProxy
     {
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
@@ -19,6 +19,8 @@ namespace MaterialForms.Wpf.Resources
             get => (string)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
+
+        object IProxy.Value => Value;
 
         protected override Freezable CreateInstanceCore()
         {

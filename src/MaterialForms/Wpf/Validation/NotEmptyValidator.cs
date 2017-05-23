@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
@@ -10,11 +8,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class NotEmptyValidator : FieldValidator
     {
-        public NotEmptyValidator(StringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public NotEmptyValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
         {
         }
 
-        public NotEmptyValidator(StringProxy errorMessage) : base(errorMessage)
+        public NotEmptyValidator(IStringProxy errorMessage) : base(errorMessage)
         {
         }
 

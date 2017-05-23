@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
@@ -10,11 +8,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class ExistsInValidator : ComparisonValidator
     {
-        public ExistsInValidator(BindingProxy argument, StringProxy errorMessage) : base(argument, errorMessage)
+        public ExistsInValidator(IProxy argument, IStringProxy errorMessage) : base(argument, errorMessage)
         {
         }
 
-        public ExistsInValidator(BindingProxy argument, StringProxy errorMessage, IValueConverter valueConverter) : base(argument, errorMessage, valueConverter)
+        public ExistsInValidator(IProxy argument, IStringProxy errorMessage, IValueConverter valueConverter) : base(argument, errorMessage, valueConverter)
         {
         }
 

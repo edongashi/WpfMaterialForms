@@ -5,7 +5,7 @@ namespace MaterialForms.Wpf.Resources
     /// <summary>
     /// Encapsulates an object bound to a resource.
     /// </summary>
-    public class BindingProxy : Freezable
+    public class BindingProxy : Freezable, IProxy
     {
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
