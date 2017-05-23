@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
@@ -69,6 +70,11 @@ namespace MaterialForms.Wpf.Controls
         /// </summary>
         public object Value => GetValue(ValueProperty);
 
+        /// <summary>
+        /// Gets or sets the context associated with this form.
+        /// Models can utilize this property to get data from
+        /// outside of their instance scope.
+        /// </summary>
         public object Context
         {
             get => GetValue(ContextProperty);
@@ -77,59 +83,54 @@ namespace MaterialForms.Wpf.Controls
 
         private void UpdateModel(object oldModel, object newModel)
         {
-            SetValue(ValuePropertyKey, newModel);
-            //if (Equals(oldModel, newModel))
-            //{
-            //    return;
-            //}
+            if (Equals(oldModel, newModel))
+            {
+                return;
+            }
 
-            //if (Equals(Value, newModel))
-            //{
-            //    return;
-            //}
+            if (Equals(Value, newModel))
+            {
+                return;
+            }
 
-            //if (newModel == null)
-            //{
-            //    // null -> Clear Form
-            //    ClearForm();
-            //    SetValue(ValuePropertyKey, null);
-            //}
-            //else if (newModel is FormDefinition)
-            //{
-            //    // MaterialFormDefinition -> Build form
-            //    throw new NotImplementedException();
-            //    //RebuildForm((MaterialFormSchema)newModel, null);
-            //    //SetValue(ValuePropertyKey, null);
-            //}
-            //else if (newModel is Type)
-            //{
-            //    // Type -> Build form, Value = new Type
-            //    var type = (Type)newModel;
-            //    var instance = TypeManager.CreateInstance(type);
-            //    //RebuildForm(GetDefinition(type), instance);
-            //    //SetValue(ValuePropertyKey, instance);
-            //}
-            //else if (oldModel.GetType() == newModel.GetType())
-            //{
-            //    // Same type -> update values only
-            //    var type = newModel.GetType();
-            //    if (TypeManager.IsSimpleType(type))
-            //    {
-            //        SetCurrentValue(ModelProperty, newModel);
-            //    }
-            //    else
-            //    {
+            if (newModel == null)
+            {
+                // null -> Clear Form
+                ClearForm();
+                SetValue(ValuePropertyKey, null);
+            }
+            else if (oldModel.GetType() == newModel.GetType())
+            {
+                // Same type -> update values only
+                SetValue(ValuePropertyKey, newModel);
+            }
+            else if (newModel is FormDefinition formDefinition)
+            {
+                // MaterialFormDefinition -> Build form
+                var instance = formDefinition.CreateInstance();
+                RebuildForm(formDefinition);
+                SetValue(ValuePropertyKey, instance);
+            }
+            else if (newModel is Type type)
+            {
+                // Type -> Build form, Value = new Type
+                formDefinition = TypeManager.BuildDefinition(type);
+                var instance = formDefinition.CreateInstance();
+                RebuildForm(formDefinition);
+                SetValue(ValuePropertyKey, instance);
+            }
+            else
+            {
+                // object -> Build form, Value = model
+                RebuildForm(TypeManager.BuildDefinition(newModel.GetType()));
+                SetValue(ValuePropertyKey, newModel);
+            }
+        }
 
-            //    }
+        private void RebuildForm(FormDefinition formDefinition)
+        {
+            ClearForm();
 
-            //    SetValue(ValuePropertyKey, newModel);
-            //}
-            //else
-            //{
-            //    // Complex object -> Build form, Value = model
-            //    //RebuildForm(GetDefinition(newModel.GetType()), newModel);
-            //    SetValue(ValuePropertyKey, newModel);
-            //}
         }
 
         private void ClearForm()

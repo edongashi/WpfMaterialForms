@@ -13,6 +13,7 @@ namespace MaterialForms.Wpf.Resources
         public BoundExpression(string value)
         {
             StringFormat = value ?? throw new ArgumentNullException(nameof(value));
+            IsPlainString = true;
         }
 
         public BoundExpression(Resource resource) : this(resource, null)
@@ -36,11 +37,18 @@ namespace MaterialForms.Wpf.Resources
             {
                 StringFormat = stringFormat;
             }
+
+            if (Resources.Count == 0)
+            {
+                IsPlainString = true;
+            }
         }
 
         public string StringFormat { get; }
 
         public IReadOnlyList<Resource> Resources { get; }
+
+        public bool IsPlainString { get; }
 
         public bool IsDynamic => Resources != null && Resources.Any(res => res.IsDynamic);
 
@@ -181,6 +189,16 @@ namespace MaterialForms.Wpf.Resources
                 throw new ArgumentNullException(nameof(expression));
             }
 
+            var i = 0;
+            if (expression.StartsWith("\0@"))
+            {
+                i = 1;
+            }
+            else if(expression.StartsWith("@"))
+            {
+                return new BoundExpression(expression.Substring(1));
+            }
+
             var resources = new List<Resource>();
             var stringFormat = new StringBuilder();
             var resourceType = new StringBuilder();
@@ -189,7 +207,6 @@ namespace MaterialForms.Wpf.Resources
             var resourceFormat = new StringBuilder();
             var oneTimeBind = false;
             var length = expression.Length;
-            var i = 0;
             char c;
             outside:
             if (i == length)

@@ -6,7 +6,10 @@ namespace MaterialForms.Wpf
 {
     public class FormDefinition
     {
-
+        public object CreateInstance()
+        {
+            return null;
+        }
     }
 
     public class ModelDefinition
