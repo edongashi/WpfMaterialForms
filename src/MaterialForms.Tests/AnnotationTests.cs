@@ -28,7 +28,7 @@ namespace MaterialForms.Tests
         public DateTime DateOfBirth { get; set; }
 
         [Field(Name = "Username")]
-        [Value(Must.MatchPattern, "[a-Z][a-Z0-9]*",
+        [Value(Must.MatchPattern, "^[a-Z][a-Z0-9]*$",
             Message = "{Value} is not a valid username, usernames must match pattern {Argument}.")]
         [Value(Must.NotExistIn, "{ContextBinding Users}",
             Message = "User {Value} is already taken.")]
@@ -44,5 +44,8 @@ namespace MaterialForms.Tests
         [Value(Must.BeEqualTo, "{Binding Password}",
             Message = "The entered passwords do not match.")]
         public string PasswordConfirm { get; set; }
+
+        [Value(Must.BeTrue, Message = "You must accept the license agreement.")]
+        public bool AgreeToLicense { get; set; }
     }
 }

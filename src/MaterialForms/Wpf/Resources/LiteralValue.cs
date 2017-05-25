@@ -39,7 +39,8 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is LiteralValue resource)
             {
-                return Equals(Value, resource.Value);
+                return Equals(Value, resource.Value)
+                    && ValueConverter == other.ValueConverter;
             }
 
             return false;

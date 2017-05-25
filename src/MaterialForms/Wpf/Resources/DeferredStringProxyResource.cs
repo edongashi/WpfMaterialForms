@@ -4,17 +4,17 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public sealed class BindingProxyResource : Resource
+    public sealed class DeferredStringProxyResource : Resource
     {
-        public BindingProxyResource(BindingProxy bindingProxy, string propertyPath, bool oneTimeBinding, string valueConverter)
+        public DeferredStringProxyResource(Func<FrameworkElement, StringProxy> bindingProxyProvider, string propertyPath, bool oneTimeBinding, string valueConverter)
             : base(valueConverter)
         {
-            Proxy = bindingProxy ?? throw new ArgumentNullException(nameof(bindingProxy));
+            ProxyProvider = bindingProxyProvider ?? throw new ArgumentNullException(nameof(bindingProxyProvider));
             PropertyPath = propertyPath;
             OneTimeBinding = oneTimeBinding;
         }
 
-        public BindingProxy Proxy { get; }
+        public Func<FrameworkElement, StringProxy> ProxyProvider { get; }
 
         public string PropertyPath { get; }
 
@@ -25,9 +25,9 @@ namespace MaterialForms.Wpf.Resources
         public override BindingBase GetBinding(FrameworkElement element)
         {
             var path = FormatPath(PropertyPath);
-            return new Binding(nameof(BindingProxy.Value) + path)
+            return new Binding(nameof(StringProxy.Value) + path)
             {
-                Source = Proxy,
+                Source = ProxyProvider(element) ?? throw new InvalidOperationException("A binding proxy could not be resolved."),
                 Converter = GetValueConverter(element),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
@@ -35,14 +35,14 @@ namespace MaterialForms.Wpf.Resources
 
         public override Resource Rewrap(string valueConverter)
         {
-            return new BindingProxyResource(Proxy, PropertyPath, OneTimeBinding, valueConverter);
+            return new DeferredStringProxyResource(ProxyProvider, PropertyPath, OneTimeBinding, valueConverter);
         }
 
         public override bool Equals(Resource other)
         {
-            if (other is BindingProxyResource resource)
+            if (other is DeferredStringProxyResource resource)
             {
-                return ReferenceEquals(Proxy, resource.Proxy)
+                return ReferenceEquals(ProxyProvider, resource.ProxyProvider)
                        && PropertyPath == resource.PropertyPath
                        && OneTimeBinding == resource.OneTimeBinding
                        && ValueConverter == resource.ValueConverter;
@@ -53,7 +53,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override int GetHashCode()
         {
-            return Proxy.GetHashCode();
+            return ProxyProvider.GetHashCode();
         }
     }
 }

@@ -40,7 +40,8 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is StaticResource resource)
             {
-                return ResourceKey == resource.ResourceKey && Equals(ValueConverter, resource.ValueConverter);
+                return ResourceKey == resource.ResourceKey
+                    && ValueConverter == resource.ValueConverter;
             }
 
             return false;

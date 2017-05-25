@@ -45,7 +45,7 @@ namespace MaterialForms.Wpf.Resources
                 return ReferenceEquals(Proxy, resource.Proxy) 
                     && PropertyPath == resource.PropertyPath
                     && OneTimeBinding == resource.OneTimeBinding
-                    && Equals(ValueConverter, resource.ValueConverter);
+                    && ValueConverter == resource.ValueConverter;
             }
 
             return false;

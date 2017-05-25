@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -133,12 +134,20 @@ namespace MaterialForms.Wpf.Resources
                     var path = name.Substring(index + increment);
                     switch (value)
                     {
-                        case Resource _:
-                            throw new InvalidOperationException("Cannot use nested paths for a resource.");
                         case BindingProxy proxy:
                             return new BindingProxyResource(proxy, path, oneTimeBinding, converter);
                         case StringProxy proxy:
                             return new StringProxyResource(proxy, path, oneTimeBinding, converter);
+                        case Lazy<BindingProxy> lazyProxy:
+                            return new DeferredBindingProxyResource(e => lazyProxy.Value, path, oneTimeBinding, converter);
+                        case Lazy<StringProxy> lazyProxy:
+                            return new DeferredStringProxyResource(e => lazyProxy.Value, path, oneTimeBinding, converter);
+                        case Func<FrameworkElement, BindingProxy> lazyProxy:
+                            return new DeferredBindingProxyResource(lazyProxy, path, oneTimeBinding, converter);
+                        case Func<FrameworkElement, StringProxy> lazyProxy:
+                            return new DeferredStringProxyResource(lazyProxy, path, oneTimeBinding, converter);
+                        case Resource _:
+                            throw new InvalidOperationException("Cannot use nested paths for a resource.");
                         default:
                             return new BoundValue(value, path, oneTimeBinding, converter);
                     }
@@ -152,6 +161,14 @@ namespace MaterialForms.Wpf.Resources
                         return new BindingProxyResource(proxy, null, oneTimeBinding, converter);
                     case StringProxy proxy:
                         return new StringProxyResource(proxy, null, oneTimeBinding, converter);
+                    case Lazy<BindingProxy> lazyProxy:
+                        return new DeferredBindingProxyResource(e => lazyProxy.Value, null, oneTimeBinding, converter);
+                    case Lazy<StringProxy> lazyProxy:
+                        return new DeferredStringProxyResource(e => lazyProxy.Value, null, oneTimeBinding, converter);
+                    case Func<FrameworkElement, BindingProxy> lazyProxy:
+                        return new DeferredBindingProxyResource(lazyProxy, null, oneTimeBinding, converter);
+                    case Func<FrameworkElement, StringProxy> lazyProxy:
+                        return new DeferredStringProxyResource(lazyProxy, null, oneTimeBinding, converter);
                     default:
                         return new LiteralValue(value, converter);
                 }

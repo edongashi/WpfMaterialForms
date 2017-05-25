@@ -141,6 +141,8 @@
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\Value.cs" />
+    <Compile Include="Wpf\Resources\DeferredStringProxyResource.cs" />
+    <Compile Include="Wpf\Resources\DeferredBindingProxyResource.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />

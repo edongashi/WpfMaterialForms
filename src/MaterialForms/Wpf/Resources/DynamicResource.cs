@@ -45,7 +45,7 @@ namespace MaterialForms.Wpf.Resources
         {
             if (other is DynamicResource resource)
             {
-                return ResourceKey == resource.ResourceKey && Equals(ValueConverter, resource.ValueConverter);
+                return ResourceKey == resource.ResourceKey && ValueConverter == resource.ValueConverter;
             }
 
             return false;
@@ -101,7 +101,7 @@ namespace MaterialForms.Wpf.Resources
 
         public bool Equals(DynamicResourceKey other)
         {
-            return string.Equals(Key, other.Key);
+            return Key == other.Key;
         }
 
         public override bool Equals(object obj)
@@ -110,7 +110,8 @@ namespace MaterialForms.Wpf.Resources
             {
                 return false;
             }
-            return obj is DynamicResourceKey && Equals((DynamicResourceKey)obj);
+
+            return obj is DynamicResourceKey key && Equals(key);
         }
 
         public override int GetHashCode()
