@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,10 +15,10 @@ namespace MaterialForms.Wpf
 {
     public class FormBuilder
     {
+        public static readonly FormBuilder Default = new FormBuilder();
+
         private readonly Dictionary<Type, FormDefinition> cachedDefinitions;
         private readonly Dictionary<Type, Func<PropertyInfo, IEnumerable<FormElement>>> fieldFactories;
-
-        public static readonly FormBuilder Default = new FormBuilder();
 
         public FormBuilder()
         {
@@ -110,7 +111,6 @@ namespace MaterialForms.Wpf
 
         private void InitializeFormField(FormField field, PropertyInfo propertyInfo)
         {
-
         }
 
         private IValidatorProvider CreateValidator(string propertyKey, ValueAttribute attribute)
@@ -140,7 +140,7 @@ namespace MaterialForms.Wpf
                 argumentProvider = container => literal;
             }
 
-            Func<FrameworkElement, IProxy> valueProvider = container =>
+            BindingProxy ValueProvider(FrameworkElement container)
             {
                 var key = new BindingProxyKey(propertyKey);
                 if (container.TryFindResource(key) is BindingProxy proxy)
@@ -151,37 +151,92 @@ namespace MaterialForms.Wpf
                 proxy = new BindingProxy();
                 container.Resources[key] = proxy;
                 return proxy;
-            };
+            }
 
             Func<FrameworkElement, IBoolProxy> isEnforcedProvider;
-            if (attribute.When != null)
+            switch (attribute.When)
             {
-                var boundExpression = BoundExpression.Parse(attribute.When);
-                if (!boundExpression.IsSingleResource)
-                {
+                case null:
+                    isEnforcedProvider = container => new PlainBool(true);
+                    break;
+                case string expr:
+                    var boundExpression = BoundExpression.Parse(expr);
+                    if (!boundExpression.IsSingleResource)
+                    {
+                        throw new ArgumentException(
+                            "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
+                    }
+
+                    isEnforcedProvider = container => boundExpression.GetBoolValue(container);
+                    break;
+                case bool b:
+                    isEnforcedProvider = container => new PlainBool(b);
+                    break;
+                default:
                     throw new ArgumentException(
                         "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
-                }
 
-                isEnforcedProvider = container => boundExpression.GetBoolValue(container);
             }
-            else
+
+            Func<FrameworkElement, IErrorStringProvider> errorProvider;
+            var message = attribute.Message;
+            if (message == null)
             {
-                bool isEnforced;
-                if (attribute.When is bool b)
+                switch (attribute.Condition)
                 {
-                    isEnforced = b;
+                    case Must.BeGreaterThan:
+                        message = "Value must be greater than {Argument}.";
+                        break;
+                    case Must.BeGreaterThanOrEqualTo:
+                        message = "Value must be greater than or equal to {Argument}.";
+                        break;
+                    case Must.BeLessThan:
+                        message = "Value must be less than {Argument}.";
+                        break;
+                    case Must.BeLessThanOrEqualTo:
+                        message = "Value must be less than or equal to {Argument}.";
+                        break;
+                    case Must.BeEmpty:
+                        message = "@Field must be empty.";
+                        break;
+                    case Must.NotBeEmpty:
+                        message = "@Field cannot be empty.";
+                        break;
+                    default:
+                        message = "@Invalid value.";
+                        break;
+                }
+            }
+
+            {
+                var func = new Func<FrameworkElement, IProxy>(ValueProvider);
+                var boundExpression = BoundExpression.Parse(message, new Dictionary<string, object>
+                {
+                    ["Value"] = func,
+                    ["Argument"] = argumentProvider
+                });
+
+                if (boundExpression.IsPlainString)
+                {
+                    var errorMessage = boundExpression.StringFormat;
+                    errorProvider = container => new PlainErrorStringProvider(errorMessage);
                 }
                 else
                 {
-                    isEnforced = true;
+                    if (boundExpression.Resources.Any(
+                        res => res is DeferredProxyResource resource && resource.ProxyProvider == func))
+                    {
+                        errorProvider =
+                            container => new ValueErrorStringProvider(boundExpression.GetStringValue(container),
+                                ValueProvider(container));
+                    }
+                    else
+                    {
+                        errorProvider =
+                            container => new ErrorStringProvider(boundExpression.GetStringValue(container));
+                    }
                 }
-
-                var literal = new PlainBool(isEnforced);
-                isEnforcedProvider = container => literal;
             }
-
-            Func<FrameworkElement, IErrorStringProvider> errorProvider = null;
 
             IValueConverter GetConverter(FrameworkElement container)
             {
@@ -197,56 +252,49 @@ namespace MaterialForms.Wpf
             switch (attribute.Condition)
             {
                 case Must.BeEqualTo:
-                    return new ValidatorProvider(container => new EqualsValidator(argumentProvider(container), errorProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new EqualsValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotBeEqualTo:
-                    break;
+                    return new ValidatorProvider(container => new NotEqualsValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeGreaterThan:
-                    break;
+                    return new ValidatorProvider(container => new GreaterThanValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeGreaterThanOrEqualTo:
-                    break;
+                    return new ValidatorProvider(container => new GreaterThanEqualValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeLessThan:
-                    break;
+                    return new ValidatorProvider(container => new LessThanValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeLessThanOrEqualTo:
-                    break;
+                    return new ValidatorProvider(container => new LessThanEqualValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeEmpty:
-                    break;
+                    return new ValidatorProvider(container => new EmptyValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotBeEmpty:
-                    break;
+                    return new ValidatorProvider(container => new NotEmptyValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeTrue:
-                    break;
+                    return new ValidatorProvider(container => new TrueValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeFalse:
-                    break;
+                    return new ValidatorProvider(container => new FalseValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeNull:
-                    break;
+                    return new ValidatorProvider(container => new NullValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotBeNull:
-                    break;
+                    return new ValidatorProvider(container => new NotNullValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.ExistIn:
-                    break;
+                    return new ValidatorProvider(container => new ExistsInValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotExistIn:
-                    break;
+                    return new ValidatorProvider(container => new NotExistsInValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.MatchPattern:
-                    break;
+                    return new ValidatorProvider(container => new MatchPatternValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotMatchPattern:
-                    break;
+                    return new ValidatorProvider(container => new NotMatchPatternValidator(argumentProvider(container),
+                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 default:
                     throw new ArgumentException("Invalid validator condition.", nameof(attribute));
-            }
-
-            return null;
-        }
-
-        private class ValidatorProvider : IValidatorProvider
-        {
-            private readonly Func<FrameworkElement, ValidationRule> func;
-
-            public ValidatorProvider(Func<FrameworkElement, ValidationRule> func)
-            {
-                this.func = func;
-            }
-
-            public ValidationRule GetValidator(FrameworkElement container)
-            {
-                return func(container);
             }
         }
 
@@ -262,7 +310,8 @@ namespace MaterialForms.Wpf
                 var boundExpression = BoundExpression.Parse(expression);
                 if (!boundExpression.IsSingleResource)
                 {
-                    throw new ArgumentException($"The expression '{expression}' is not a valid resource because it does not define a single value source.",
+                    throw new ArgumentException(
+                        $"The expression '{expression}' is not a valid resource because it does not define a single value source.",
                         nameof(value));
                 }
 
@@ -293,6 +342,21 @@ namespace MaterialForms.Wpf
             }
 
             return boundExpression;
+        }
+
+        private class ValidatorProvider : IValidatorProvider
+        {
+            private readonly Func<FrameworkElement, ValidationRule> func;
+
+            public ValidatorProvider(Func<FrameworkElement, ValidationRule> func)
+            {
+                this.func = func;
+            }
+
+            public ValidationRule GetValidator(FrameworkElement container)
+            {
+                return func(container);
+            }
         }
     }
 }
