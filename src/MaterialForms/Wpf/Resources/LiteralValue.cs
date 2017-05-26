@@ -20,12 +20,12 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => false;
 
-        public override BindingBase GetBinding(FrameworkElement element)
+        public override BindingBase ProvideBinding(FrameworkElement container)
         {
             return new Binding
             {
                 Source = Value,
-                Converter = GetValueConverter(element),
+                Converter = GetValueConverter(container),
                 Mode = BindingMode.OneTime
             };
         }

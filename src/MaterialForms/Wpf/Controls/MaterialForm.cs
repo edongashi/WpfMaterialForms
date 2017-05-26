@@ -6,15 +6,6 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Controls
 {
-    public interface IMaterialForm
-    {
-        object Model { get; }
-
-        object Value { get; }
-
-        object Context { get; }
-    }
-
     public class MaterialForm : Control, IMaterialForm
     {
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
@@ -29,6 +20,12 @@ namespace MaterialForms.Wpf.Controls
             typeof(MaterialForm),
             new FrameworkPropertyMetadata(null));
 
+        internal static readonly DependencyPropertyKey FormDefinitionPropertyKey = DependencyProperty.RegisterReadOnly(
+            "FormDefinition",
+            typeof(object),
+            typeof(FormDefinition),
+            new FrameworkPropertyMetadata(null));
+
         public static readonly DependencyProperty ContextProperty = DependencyProperty.Register(
             "Context",
             typeof(object),
@@ -36,6 +33,8 @@ namespace MaterialForms.Wpf.Controls
             new FrameworkPropertyMetadata(null));
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
+
+        public static readonly DependencyProperty FormDefinitionProperty = FormDefinitionPropertyKey.DependencyProperty;
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -69,6 +68,8 @@ namespace MaterialForms.Wpf.Controls
         /// Gets the value of the current model instance.
         /// </summary>
         public object Value => GetValue(ValueProperty);
+
+        public FormDefinition FormDefinition => (FormDefinition)GetValue(FormDefinitionProperty);
 
         /// <summary>
         /// Gets or sets the context associated with this form.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -8,7 +7,7 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class BoundExpression
+    public class BoundExpression : IValueProvider
     {
         public BoundExpression(string value)
         {
@@ -52,40 +51,6 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsDynamic => Resources != null && Resources.Any(res => res.IsDynamic);
 
-        public void SetValue(FrameworkElement container, DependencyObject element, DependencyProperty property)
-        {
-            if (Resources == null || Resources.Count == 0)
-            {
-                element.SetValue(property, StringFormat);
-                return;
-            }
-
-            if (Resources.Count == 1)
-            {
-                var resource = Resources[0];
-                var binding = resource.GetBinding(container);
-                if (StringFormat != null)
-                {
-                    binding.StringFormat = StringFormat;
-                }
-
-                BindingOperations.SetBinding(element, property, binding);
-                return;
-            }
-
-            var multiBinding = new MultiBinding
-            {
-                StringFormat = StringFormat
-            };
-
-            foreach (var binding in Resources.Select(resource => resource.GetBinding(container)))
-            {
-                multiBinding.Bindings.Add(binding);
-            }
-
-            BindingOperations.SetBinding(element, property, multiBinding);
-        }
-
         public BindingProxy GetValue(FrameworkElement container)
         {
             var proxy = new BindingProxy();
@@ -98,6 +63,59 @@ namespace MaterialForms.Wpf.Resources
             var proxy = new StringProxy();
             SetValue(container, proxy, StringProxy.ValueProperty);
             return proxy;
+        }
+
+        public void SetValue(FrameworkElement container, DependencyObject element, DependencyProperty property)
+        {
+            if (Resources == null || Resources.Count == 0)
+            {
+                element.SetValue(property, StringFormat);
+                return;
+            }
+
+            BindingOperations.SetBinding(element, property, ProvideBinding(container));
+        }
+
+        public BindingBase ProvideBinding(FrameworkElement container)
+        {
+            if (Resources == null || Resources.Count == 0)
+            {
+                return new LiteralValue(StringFormat).ProvideBinding(container);
+            }
+
+            if (Resources.Count == 1)
+            {
+                var resource = Resources[0];
+                var binding = resource.ProvideBinding(container);
+                if (StringFormat != null)
+                {
+                    binding.StringFormat = StringFormat;
+                }
+
+                return binding;
+            }
+
+            var multiBinding = new MultiBinding
+            {
+                StringFormat = StringFormat
+            };
+
+            foreach (var binding in Resources.Select(resource => resource.ProvideBinding(container)))
+            {
+                multiBinding.Bindings.Add(binding);
+            }
+
+            return multiBinding;
+        }
+
+        public object ProvideValue(FrameworkElement container)
+        {
+            if (Resources == null || Resources.Count == 0)
+            {
+                return StringFormat;
+            }
+
+            return ProvideBinding(container);
         }
 
         public static BoundExpression Parse(string expression)

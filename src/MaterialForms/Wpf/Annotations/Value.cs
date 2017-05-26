@@ -43,6 +43,6 @@ namespace MaterialForms.Wpf.Annotations
 
         public string Message { get; set; }
 
-        public string IsEnforced { get; set; }
+        public string When { get; set; }
     }
 }

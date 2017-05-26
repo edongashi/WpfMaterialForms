@@ -40,12 +40,12 @@ namespace MaterialForms.Wpf.Resources
             return false;
         }
 
-        public override BindingBase GetBinding(FrameworkElement element)
+        public override BindingBase ProvideBinding(FrameworkElement container)
         {
             return new Binding(PropertyPath)
             {
                 Source = Source,
-                Converter = GetValueConverter(element),
+                Converter = GetValueConverter(container),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }

@@ -22,13 +22,13 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => !OneTimeBinding;
 
-        public override BindingBase GetBinding(FrameworkElement element)
+        public override BindingBase ProvideBinding(FrameworkElement container)
         {
             var path = FormatPath(PropertyPath);
             return new Binding(nameof(BindingProxy.Value) + path)
             {
                 Source = Proxy,
-                Converter = GetValueConverter(element),
+                Converter = GetValueConverter(container),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
         }

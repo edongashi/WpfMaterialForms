@@ -22,18 +22,18 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => true;
 
-        public override BindingBase GetBinding(FrameworkElement element)
+        public override BindingBase ProvideBinding(FrameworkElement container)
         {
             var key = new DynamicResourceKey(ResourceKey);
-            if (element.TryFindResource(key) is BindingProxy proxy)
+            if (container.TryFindResource(key) is BindingProxy proxy)
             {
-                return CreateBinding(element, proxy);
+                return CreateBinding(container, proxy);
             }
 
             proxy = new BindingProxy();
-            element.Resources.Add(key, proxy);
-            proxy.Value = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(element));
-            return CreateBinding(element, proxy);
+            container.Resources.Add(key, proxy);
+            proxy.Value = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(container));
+            return CreateBinding(container, proxy);
         }
 
         public override Resource Rewrap(string valueConverter)

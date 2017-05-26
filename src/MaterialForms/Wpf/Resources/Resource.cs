@@ -6,7 +6,7 @@ using MaterialForms.Wpf.Resources.ValueConverters;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public abstract class Resource : IEquatable<Resource>
+    public abstract class Resource : IEquatable<Resource>, IValueProvider
     {
         public static IValueConverter GetConverter(string name)
         {
@@ -41,7 +41,9 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract bool Equals(Resource other);
 
-        public abstract BindingBase GetBinding(FrameworkElement element);
+        public abstract BindingBase ProvideBinding(FrameworkElement container);
+
+        public virtual object ProvideValue(FrameworkElement container) => ProvideBinding(container);
 
         public abstract Resource Rewrap(string valueConverter);
 

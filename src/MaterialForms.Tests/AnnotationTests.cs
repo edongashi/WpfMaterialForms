@@ -37,7 +37,7 @@ namespace MaterialForms.Tests
         [Value("Length", Must.BeGreaterThan, 6,
             Message = "Your password has {Value|Length} characters, which is less than the required {Argument}.")]
         [Value("Length", Must.BeGreaterThan, 12,
-            IsEnforced = "{ContextBinding RequireLongPasswords}",
+            When = "{ContextBinding RequireLongPasswords}",
             Message = "The administrator decided that your password must be really long!")]
         public string Password { get; set; }
 
