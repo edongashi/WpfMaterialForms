@@ -1,16 +1,15 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public class FalseValidator : FieldValidator
     {
-        public FalseValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public FalseValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(errorProvider, valueConverter)
         {
         }
 
-        public FalseValidator(IStringProxy errorMessage) : base(errorMessage)
+        public FalseValidator(IErrorStringProvider errorProvider) : base(errorProvider)
         {
         }
 

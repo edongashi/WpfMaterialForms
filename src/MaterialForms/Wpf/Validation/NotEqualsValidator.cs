@@ -6,11 +6,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class NotEqualsValidator : ComparisonValidator
     {
-        public NotEqualsValidator(IProxy argument, IStringProxy errorMessage) : base(argument, errorMessage)
+        public NotEqualsValidator(IProxy argument, IStringProxy errorProvider) : base(argument, errorProvider)
         {
         }
 
-        public NotEqualsValidator(IProxy argument, IStringProxy errorMessage, IValueConverter valueConverter) : base(argument, errorMessage, valueConverter)
+        public NotEqualsValidator(IProxy argument, IStringProxy errorProvider, IValueConverter valueConverter) : base(argument, errorProvider, valueConverter)
         {
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
@@ -9,17 +8,17 @@ namespace MaterialForms.Wpf.Validation
     {
         public IValueConverter ValueConverter { get; }
 
-        public IStringProxy ErrorMessage { get; }
+        public IErrorStringProvider ErrorProvider { get; }
 
-        protected FieldValidator(IStringProxy errorMessage, IValueConverter valueConverter)
+        protected FieldValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter)
         {
-            ErrorMessage = errorMessage;
+            ErrorProvider = errorProvider;
             ValueConverter = valueConverter;
         }
 
-        protected FieldValidator(IStringProxy errorMessage)
+        protected FieldValidator(IErrorStringProvider errorProvider)
         {
-            ErrorMessage = errorMessage;
+            ErrorProvider = errorProvider;
         }
 
         public sealed override ValidationResult Validate(object value, CultureInfo cultureInfo)
@@ -30,7 +29,7 @@ namespace MaterialForms.Wpf.Validation
 
             return isValid 
                 ? new ValidationResult(true, null) 
-                : new ValidationResult(false, ErrorMessage.Value);
+                : new ValidationResult(false, ErrorProvider.GetErrorMessage(value));
         }
 
         protected abstract bool ValidateValue(object value, CultureInfo cultureInfo);

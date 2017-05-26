@@ -1,16 +1,15 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public class TrueValidator : FieldValidator
     {
-        public TrueValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public TrueValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(errorProvider, valueConverter)
         {
         }
 
-        public TrueValidator(IStringProxy errorMessage) : base(errorMessage)
+        public TrueValidator(IErrorStringProvider errorProvider) : base(errorProvider)
         {
         }
 

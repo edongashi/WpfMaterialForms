@@ -91,7 +91,7 @@ namespace MaterialForms.Wpf.Resources
 
         protected static string FormatPath(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 return "";
             }

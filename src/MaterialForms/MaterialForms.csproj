@@ -153,6 +153,7 @@
     <Compile Include="Wpf\Resources\IValueProvider.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
+    <Compile Include="Wpf\Validation\IErrorStringProvider.cs" />
     <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\ExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\NotNullValidator.cs" />
@@ -166,7 +167,7 @@
     <Compile Include="Wpf\Resources\StringProxyResource.cs" />
     <Compile Include="Wpf\Resources\StringProxy.cs" />
     <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />
-    <Compile Include="Wpf\FormDefinition\FormField.cs" />
+    <Compile Include="Wpf\Fields\FormField.cs" />
     <Compile Include="Wpf\Resources\ContextPropertyBinding.cs" />
     <Compile Include="Wpf\Resources\DynamicResource.cs" />
     <Compile Include="Wpf\Resources\LiteralValue.cs" />

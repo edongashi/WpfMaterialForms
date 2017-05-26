@@ -8,11 +8,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class ExistsInValidator : ComparisonValidator
     {
-        public ExistsInValidator(IProxy argument, IStringProxy errorMessage) : base(argument, errorMessage)
+        public ExistsInValidator(IProxy argument, IStringProxy errorProvider) : base(argument, errorProvider)
         {
         }
 
-        public ExistsInValidator(IProxy argument, IStringProxy errorMessage, IValueConverter valueConverter) : base(argument, errorMessage, valueConverter)
+        public ExistsInValidator(IProxy argument, IStringProxy errorProvider, IValueConverter valueConverter) : base(argument, errorProvider, valueConverter)
         {
         }
 

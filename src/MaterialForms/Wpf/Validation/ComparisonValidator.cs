@@ -6,13 +6,13 @@ namespace MaterialForms.Wpf.Validation
 {
     public abstract class ComparisonValidator : FieldValidator
     {
-        protected ComparisonValidator(IProxy argument, IStringProxy errorMessage)
-            : this(argument, errorMessage, null)
+        protected ComparisonValidator(IProxy argument, IStringProxy errorProvider)
+            : this(argument, errorProvider, null)
         {
         }
 
-        protected ComparisonValidator(IProxy argument, IStringProxy errorMessage, IValueConverter valueConverter)
-            : base(errorMessage, valueConverter)
+        protected ComparisonValidator(IProxy argument, IStringProxy errorProvider, IValueConverter valueConverter)
+            : base(errorProvider, valueConverter)
         {
             Argument = argument ?? throw new ArgumentNullException(nameof(argument));
         }

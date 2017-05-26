@@ -1,16 +1,15 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public class NotNullValidator : FieldValidator
     {
-        public NotNullValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public NotNullValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(errorProvider, valueConverter)
         {
         }
 
-        public NotNullValidator(IStringProxy errorMessage) : base(errorMessage)
+        public NotNullValidator(IErrorStringProvider errorProvider) : base(errorProvider)
         {
         }
 

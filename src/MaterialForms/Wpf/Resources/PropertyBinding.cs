@@ -14,14 +14,28 @@ namespace MaterialForms.Wpf.Resources
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
-            OneTimeBinding = oneTimeBinding;
+            BindingMode = oneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay;
+        }
+
+        public PropertyBinding(string propertyPath, BindingMode bindingMode)
+            : this(propertyPath, bindingMode, null)
+        {
+        }
+
+        public PropertyBinding(string propertyPath, BindingMode bindingMode, string valueConverter)
+            : base(valueConverter)
+        {
+            PropertyPath = propertyPath;
+            BindingMode = bindingMode;
         }
 
         public string PropertyPath { get; }
 
-        public bool OneTimeBinding { get; }
+        public BindingMode BindingMode { get; }
 
-        public override bool IsDynamic => !OneTimeBinding;
+        public bool OneTimeBinding => BindingMode == BindingMode.OneTime;
+
+        public override bool IsDynamic => BindingMode != BindingMode.OneTime;
 
         public override BindingBase ProvideBinding(FrameworkElement container)
         {
@@ -30,7 +44,7 @@ namespace MaterialForms.Wpf.Resources
             {
                 Source = container,
                 Converter = GetValueConverter(container),
-                Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
+                Mode = BindingMode
             };
         }
 

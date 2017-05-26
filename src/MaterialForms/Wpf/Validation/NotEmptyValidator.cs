@@ -2,17 +2,16 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public class NotEmptyValidator : FieldValidator
     {
-        public NotEmptyValidator(IStringProxy errorMessage, IValueConverter valueConverter) : base(errorMessage, valueConverter)
+        public NotEmptyValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(errorProvider, valueConverter)
         {
         }
 
-        public NotEmptyValidator(IStringProxy errorMessage) : base(errorMessage)
+        public NotEmptyValidator(IErrorStringProvider errorProvider) : base(errorProvider)
         {
         }
 

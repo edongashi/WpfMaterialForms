@@ -8,13 +8,13 @@ namespace MaterialForms.Wpf.Validation
 {
     public class MatchPatternValidator : FieldValidator
     {
-        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorMessage)
-            : this(argument, errorMessage, null)
+        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorProvider)
+            : this(argument, errorProvider, null)
         {
         }
 
-        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorMessage, IValueConverter valueConverter)
-            : base(errorMessage, valueConverter)
+        protected MatchPatternValidator(IStringProxy argument, IStringProxy errorProvider, IValueConverter valueConverter)
+            : base(errorProvider, valueConverter)
         {
             Argument = argument ?? throw new ArgumentNullException(nameof(argument));
         }
