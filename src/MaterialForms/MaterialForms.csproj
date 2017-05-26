@@ -151,10 +151,10 @@
     <Compile Include="Wpf\FormDefinition\FieldValueProvider.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />
-    <Compile Include="Wpf\Resources\DeferredBindingProxyResource.cs" />
-    <Compile Include="Wpf\Resources\DeferredStringProxyResource.cs" />
+    <Compile Include="Wpf\Resources\DeferredProxyResource.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
     <Compile Include="Wpf\Resources\IValueProvider.cs" />
+    <Compile Include="Wpf\Resources\BoolProxy.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\AsBoolConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\ConverterWrapper.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />
@@ -173,7 +173,6 @@
     <Compile Include="Wpf\Validation\FieldValidator.cs" />
     <Compile Include="Wpf\FormDefinition\ModelMessages.cs" />
     <Compile Include="Wpf\Resources\BoundValue.cs" />
-    <Compile Include="Wpf\Resources\StringProxyResource.cs" />
     <Compile Include="Wpf\Resources\StringProxy.cs" />
     <Compile Include="Wpf\FormDefinition\FormDefinition.cs" />
     <Compile Include="Wpf\Fields\FormField.cs" />
@@ -182,7 +181,7 @@
     <Compile Include="Wpf\Resources\LiteralValue.cs" />
     <Compile Include="Wpf\Resources\PropertyBinding.cs" />
     <Compile Include="Wpf\Resources\BoundExpression.cs" />
-    <Compile Include="Wpf\Resources\BindingProxyResource.cs" />
+    <Compile Include="Wpf\Resources\ProxyResource.cs" />
     <Compile Include="Wpf\Resources\Resource.cs" />
     <Compile Include="Wpf\Resources\StaticResource.cs" />
     <Compile Include="Wpf\FormDefinition\SelectionType.cs" />

@@ -7,11 +7,8 @@ namespace MaterialForms.Wpf.Validation
 {
     public class GreaterThanEqualValidator : ComparisonValidator
     {
-        public GreaterThanEqualValidator(IProxy argument, IErrorStringProvider errorProvider) : base(argument, errorProvider)
-        {
-        }
-
-        public GreaterThanEqualValidator(IProxy argument, IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(argument, errorProvider, valueConverter)
+        public GreaterThanEqualValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
+            : base(argument, errorProvider, isEnforced, valueConverter)
         {
         }
 

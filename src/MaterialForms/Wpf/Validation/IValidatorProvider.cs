@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace MaterialForms.Wpf.Validation
 {
     public interface IValidatorProvider
     {
-        FieldValidator GetValidator(FrameworkElement container);
+        ValidationRule GetValidator(FrameworkElement container);
     }
 }

@@ -2,16 +2,14 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public class EmptyValidator : FieldValidator
     {
-        public EmptyValidator(IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(errorProvider, valueConverter)
-        {
-        }
-
-        public EmptyValidator(IErrorStringProvider errorProvider) : base(errorProvider)
+        public EmptyValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
+            : base(errorProvider, isEnforced, valueConverter)
         {
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
@@ -114,32 +115,32 @@ namespace MaterialForms.Wpf
 
         private IValidatorProvider CreateValidator(string propertyKey, ValueAttribute attribute)
         {
-            object argumentProvider;
+            Func<FrameworkElement, IProxy> argumentProvider;
             var argument = attribute.Argument;
             if (argument is string expression)
             {
                 var boundExpression = BoundExpression.Parse(expression);
                 if (boundExpression.IsPlainString)
                 {
-                    argumentProvider = boundExpression.StringFormat;
+                    var literal = new PlainObject(boundExpression.StringFormat);
+                    argumentProvider = container => literal;
                 }
                 else if (boundExpression.StringFormat != null)
                 {
-                    argumentProvider = new Func<FrameworkElement, StringProxy>(
-                        container => boundExpression.GetStringValue(container));
+                    argumentProvider = container => boundExpression.GetStringValue(container);
                 }
                 else
                 {
-                    argumentProvider = new Func<FrameworkElement, BindingProxy>(
-                        container => boundExpression.GetValue(container));
+                    argumentProvider = container => boundExpression.GetValue(container);
                 }
             }
             else
             {
-                argumentProvider = argument;
+                var literal = new PlainObject(argument);
+                argumentProvider = container => literal;
             }
 
-            Func<FrameworkElement, BindingProxy> valueProvider = container =>
+            Func<FrameworkElement, IProxy> valueProvider = container =>
             {
                 var key = new BindingProxyKey(propertyKey);
                 if (container.TryFindResource(key) is BindingProxy proxy)
@@ -152,17 +153,35 @@ namespace MaterialForms.Wpf
                 return proxy;
             };
 
-            Func<FrameworkElement, IErrorStringProvider> errorProvider;
+            Func<FrameworkElement, IBoolProxy> isEnforcedProvider;
+            if (attribute.When != null)
+            {
+                var boundExpression = BoundExpression.Parse(attribute.When);
+                if (!boundExpression.IsSingleResource)
+                {
+                    throw new ArgumentException(
+                        "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
+                }
 
-            //IErrorStringProvider GetErrorProvider(FrameworkElement container)
-            //{
-            //    return new ErrorStringProvider();
-            //    BoundExpression message;
-            //    if (attribute.Message != null)
-            //    {
-            //        message = BoundExpression.Parse(attribute.Message);
-            //    }
-            //}
+                isEnforcedProvider = container => boundExpression.GetBoolValue(container);
+            }
+            else
+            {
+                bool isEnforced;
+                if (attribute.When is bool b)
+                {
+                    isEnforced = b;
+                }
+                else
+                {
+                    isEnforced = true;
+                }
+
+                var literal = new PlainBool(isEnforced);
+                isEnforcedProvider = container => literal;
+            }
+
+            Func<FrameworkElement, IErrorStringProvider> errorProvider = null;
 
             IValueConverter GetConverter(FrameworkElement container)
             {
@@ -178,11 +197,7 @@ namespace MaterialForms.Wpf
             switch (attribute.Condition)
             {
                 case Must.BeEqualTo:
-                    return new ValidatorProvider(container =>
-                    {
-                        IProxy argumentValue = argumentResource.GetValue(container);
-                        return new EqualsValidator(argumentValue, null, GetConverter(container));
-                    });
+                    return new ValidatorProvider(container => new EqualsValidator(argumentProvider(container), errorProvider(container), GetConverter(container)));
                 case Must.NotBeEqualTo:
                     break;
                 case Must.BeGreaterThan:
@@ -222,33 +237,17 @@ namespace MaterialForms.Wpf
 
         private class ValidatorProvider : IValidatorProvider
         {
-            private readonly Func<FrameworkElement, FieldValidator> func;
+            private readonly Func<FrameworkElement, ValidationRule> func;
 
-            public ValidatorProvider(Func<FrameworkElement, FieldValidator> func)
+            public ValidatorProvider(Func<FrameworkElement, ValidationRule> func)
             {
                 this.func = func;
             }
 
-            public FieldValidator GetValidator(FrameworkElement container)
+            public ValidationRule GetValidator(FrameworkElement container)
             {
                 return func(container);
             }
-        }
-
-        private IValueProvider GetResource(object value)
-        {
-            if (value is string expression)
-            {
-                var boundExpression = BoundExpression.Parse(expression);
-                if (boundExpression.IsPlainString)
-                {
-                    return new LiteralValue(value);
-                }
-
-                return boundExpression;
-            }
-
-            return new LiteralValue(value);
         }
 
         private IValueProvider GetResource<T>(object value, object defaultValue)
@@ -261,7 +260,7 @@ namespace MaterialForms.Wpf
             if (value is string expression)
             {
                 var boundExpression = BoundExpression.Parse(expression);
-                if (boundExpression.Resources == null || boundExpression.Resources.Count != 1)
+                if (!boundExpression.IsSingleResource)
                 {
                     throw new ArgumentException($"The expression '{expression}' is not a valid resource because it does not define a single value source.",
                         nameof(value));

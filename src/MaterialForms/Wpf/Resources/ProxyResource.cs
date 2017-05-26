@@ -4,9 +4,9 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public sealed class StringProxyResource : Resource
+    public sealed class ProxyResource : Resource
     {
-        public StringProxyResource(StringProxy proxy, string propertyPath, bool oneTimeBinding, string valueConverter)
+        public ProxyResource(IProxy proxy, string propertyPath, bool oneTimeBinding, string valueConverter)
             : base(valueConverter)
         {
             Proxy = proxy ?? throw new ArgumentNullException(nameof(proxy));
@@ -14,7 +14,7 @@ namespace MaterialForms.Wpf.Resources
             OneTimeBinding = oneTimeBinding;
         }
 
-        public StringProxy Proxy { get; }
+        public IProxy Proxy { get; }
 
         public string PropertyPath { get; }
 
@@ -25,7 +25,7 @@ namespace MaterialForms.Wpf.Resources
         public override BindingBase ProvideBinding(FrameworkElement container)
         {
             var path = FormatPath(PropertyPath);
-            return new Binding(nameof(StringProxy.Value) + path)
+            return new Binding(nameof(IProxy.Value) + path)
             {
                 Source = Proxy,
                 Converter = GetValueConverter(container),
@@ -35,17 +35,17 @@ namespace MaterialForms.Wpf.Resources
 
         public override Resource Rewrap(string valueConverter)
         {
-            return new StringProxyResource(Proxy, PropertyPath, OneTimeBinding, valueConverter);
+            return new ProxyResource(Proxy, PropertyPath, OneTimeBinding, valueConverter);
         }
 
         public override bool Equals(Resource other)
         {
-            if (other is StringProxyResource resource)
+            if (other is ProxyResource resource)
             {
-                return ReferenceEquals(Proxy, resource.Proxy) 
-                    && PropertyPath == resource.PropertyPath
-                    && OneTimeBinding == resource.OneTimeBinding
-                    && ValueConverter == resource.ValueConverter;
+                return ReferenceEquals(Proxy, resource.Proxy)
+                       && PropertyPath == resource.PropertyPath
+                       && OneTimeBinding == resource.OneTimeBinding
+                       && ValueConverter == resource.ValueConverter;
             }
 
             return false;

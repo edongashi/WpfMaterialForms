@@ -25,6 +25,16 @@
         public object Value { get; }
     }
 
+    internal class PlainBool : IBoolProxy
+    {
+        public PlainBool(bool value)
+        {
+            Value = value;
+        }
+
+        public bool Value { get; }
+    }
+
     internal class PlainString : IStringProxy
     {
         public PlainString(string value)

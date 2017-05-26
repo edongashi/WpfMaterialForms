@@ -49,6 +49,8 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsPlainString { get; }
 
+        public bool IsSingleResource => StringFormat == null && Resources != null && Resources.Count == 1;
+
         public BindingBase ProvideBinding(FrameworkElement container)
         {
             if (Resources == null || Resources.Count == 0)
@@ -125,18 +127,10 @@ namespace MaterialForms.Wpf.Resources
                     var path = name.Substring(index + increment);
                     switch (value)
                     {
-                        case BindingProxy proxy:
-                            return new BindingProxyResource(proxy, path, oneTimeBinding, converter);
-                        case StringProxy proxy:
-                            return new StringProxyResource(proxy, path, oneTimeBinding, converter);
-                        case Lazy<BindingProxy> lazyProxy:
-                            return new DeferredBindingProxyResource(e => lazyProxy.Value, path, oneTimeBinding, converter);
-                        case Lazy<StringProxy> lazyProxy:
-                            return new DeferredStringProxyResource(e => lazyProxy.Value, path, oneTimeBinding, converter);
-                        case Func<FrameworkElement, BindingProxy> lazyProxy:
-                            return new DeferredBindingProxyResource(lazyProxy, path, oneTimeBinding, converter);
-                        case Func<FrameworkElement, StringProxy> lazyProxy:
-                            return new DeferredStringProxyResource(lazyProxy, path, oneTimeBinding, converter);
+                        case IProxy proxy:
+                            return new ProxyResource(proxy, path, oneTimeBinding, converter);
+                        case Func<FrameworkElement, IProxy> lazyProxy:
+                            return new DeferredProxyResource(lazyProxy, path, oneTimeBinding, converter);
                         case IValueProvider _:
                             throw new InvalidOperationException("Cannot use nested paths for a resource.");
                         default:
@@ -146,20 +140,12 @@ namespace MaterialForms.Wpf.Resources
 
                 switch (value)
                 {
+                    case IProxy proxy:
+                        return new ProxyResource(proxy, null, oneTimeBinding, converter);
+                    case Func<FrameworkElement, IProxy> lazyProxy:
+                        return new DeferredProxyResource(lazyProxy, null, oneTimeBinding, converter);
                     case IValueProvider valueProvider:
                         return valueProvider.Wrap(converter);
-                    case BindingProxy proxy:
-                        return new BindingProxyResource(proxy, null, oneTimeBinding, converter);
-                    case StringProxy proxy:
-                        return new StringProxyResource(proxy, null, oneTimeBinding, converter);
-                    case Lazy<BindingProxy> lazyProxy:
-                        return new DeferredBindingProxyResource(e => lazyProxy.Value, null, oneTimeBinding, converter);
-                    case Lazy<StringProxy> lazyProxy:
-                        return new DeferredStringProxyResource(e => lazyProxy.Value, null, oneTimeBinding, converter);
-                    case Func<FrameworkElement, BindingProxy> lazyProxy:
-                        return new DeferredBindingProxyResource(lazyProxy, null, oneTimeBinding, converter);
-                    case Func<FrameworkElement, StringProxy> lazyProxy:
-                        return new DeferredStringProxyResource(lazyProxy, null, oneTimeBinding, converter);
                     default:
                         return new LiteralValue(value, converter);
                 }

@@ -44,6 +44,6 @@ namespace MaterialForms.Wpf.Annotations
 
         public string Message { get; set; }
 
-        public string When { get; set; }
+        public object When { get; set; }
     }
 }

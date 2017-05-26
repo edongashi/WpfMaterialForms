@@ -46,6 +46,22 @@ namespace MaterialForms.Wpf.Resources
             return proxy;
         }
 
+        public static BoolProxy GetBoolValue(this IValueProvider valueProvider, FrameworkElement container)
+        {
+            var proxy = new BoolProxy();
+            var value = valueProvider.ProvideValue(container);
+            if (value is BindingBase binding)
+            {
+                BindingOperations.SetBinding(proxy, BoolProxy.ValueProperty, binding);
+            }
+            else
+            {
+                proxy.Value = value is bool b && b;
+            }
+
+            return proxy;
+        }
+
         public static IValueProvider Wrap(this IValueProvider valueProvider, string valueConverter)
         {
             return valueConverter == null 
