@@ -6,12 +6,12 @@ namespace MaterialForms.Wpf.Resources.ValueConverters
 {
     public class CoercedValueConverter<T> : IValueConverter
     {
-        public CoercedValueConverter(T defaultValue)
+        public CoercedValueConverter(object defaultValue)
         {
             DefaultValue = defaultValue;
         }
 
-        public T DefaultValue { get; }
+        public object DefaultValue { get; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

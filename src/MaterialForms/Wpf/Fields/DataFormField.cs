@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
+using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Fields
 {
@@ -11,7 +12,7 @@ namespace MaterialForms.Wpf.Fields
         protected DataFormField(string key)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
-            Validators = new List<ValidationRule>();
+            Validators = new List<IValidatorProvider>();
         }
 
         protected internal override void Freeze()
@@ -25,6 +26,6 @@ namespace MaterialForms.Wpf.Fields
 
         public BindingMode BindingMode { get; set; }
 
-        public List<ValidationRule> Validators { get; set; }
+        public List<IValidatorProvider> Validators { get; set; }
     }
 }

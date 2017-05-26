@@ -1,5 +1,4 @@
 using System;
-using MaterialDesignThemes.Wpf;
 
 namespace MaterialForms.Wpf.Annotations
 {
@@ -11,5 +10,7 @@ namespace MaterialForms.Wpf.Annotations
         public string Tooltip { get; set; }
 
         public object Icon { get; set; }
+
+        public object IsReadOnly { get; set; }
     }
 }

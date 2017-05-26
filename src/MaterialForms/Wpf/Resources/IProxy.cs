@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace MaterialForms.Wpf.Resources
+﻿namespace MaterialForms.Wpf.Resources
 {
     public interface IProxy
     {
@@ -10,6 +8,11 @@ namespace MaterialForms.Wpf.Resources
     public interface IStringProxy
     {
         string Value { get; }
+    }
+
+    public interface IBoolProxy
+    {
+        bool Value { get; }
     }
 
     internal class PlainObject : IProxy

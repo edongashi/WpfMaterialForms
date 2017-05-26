@@ -25,7 +25,7 @@ namespace MaterialForms.Wpf.Fields
         /// <summary>
         /// Gets or sets the string expression of the field's tooltip.
         /// </summary>
-        public IValueProvider Hint { get; set; }
+        public IValueProvider ToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets the field's PackIconKind resource. Not all controls may display an icon.
@@ -40,7 +40,7 @@ namespace MaterialForms.Wpf.Fields
         {
             Resources.Add(nameof(IsVisible), IsVisible ?? FalseValue);
             Resources.Add(nameof(Name), Name ?? NullValue);
-            Resources.Add(nameof(Hint), Hint ?? NullValue);
+            Resources.Add(nameof(ToolTip), ToolTip ?? NullValue);
             Resources.Add(nameof(Icon), Icon ?? NullValue);
         }
     }

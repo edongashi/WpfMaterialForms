@@ -6,9 +6,9 @@ namespace MaterialForms.Wpf.Resources
     public class CoercedValueProvider<T> : IValueProvider
     {
         private readonly IValueProvider innerProvider;
-        private readonly T defaultValue;
+        private readonly object defaultValue;
 
-        public CoercedValueProvider(IValueProvider innerProvider, T defaultValue)
+        public CoercedValueProvider(IValueProvider innerProvider, object defaultValue)
         {
             this.innerProvider = innerProvider;
             this.defaultValue = defaultValue;

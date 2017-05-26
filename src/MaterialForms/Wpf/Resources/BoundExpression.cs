@@ -15,17 +15,17 @@ namespace MaterialForms.Wpf.Resources
             IsPlainString = true;
         }
 
-        public BoundExpression(Resource resource) : this(resource, null)
+        public BoundExpression(IValueProvider resource) : this(resource, null)
         {
         }
 
-        public BoundExpression(Resource resource, string stringFormat)
+        public BoundExpression(IValueProvider resource, string stringFormat)
         {
-            Resources = new List<Resource>(1) { resource ?? throw new ArgumentNullException(nameof(resource)) };
+            Resources = new List<IValueProvider>(1) { resource ?? throw new ArgumentNullException(nameof(resource)) };
             StringFormat = stringFormat;
         }
 
-        public BoundExpression(IEnumerable<Resource> resources, string stringFormat)
+        public BoundExpression(IEnumerable<IValueProvider> resources, string stringFormat)
         {
             Resources = resources?.ToList() ?? throw new ArgumentNullException(nameof(resources));
             if (Resources.Count != 1)
@@ -45,11 +45,9 @@ namespace MaterialForms.Wpf.Resources
 
         public string StringFormat { get; }
 
-        public IReadOnlyList<Resource> Resources { get; }
+        public IReadOnlyList<IValueProvider> Resources { get; }
 
         public bool IsPlainString { get; }
-
-        public bool IsDynamic => Resources != null && Resources.Any(res => res.IsDynamic);
 
         public BindingBase ProvideBinding(FrameworkElement container)
         {
@@ -100,7 +98,7 @@ namespace MaterialForms.Wpf.Resources
 
         public static BoundExpression Parse(string expression, IDictionary<string, object> contextualResources)
         {
-            Resource Factory(string name, bool oneTimeBinding, string converter)
+            IValueProvider Factory(string name, bool oneTimeBinding, string converter)
             {
                 if (!contextualResources.TryGetValue(name, out var value))
                 {
@@ -139,7 +137,7 @@ namespace MaterialForms.Wpf.Resources
                             return new DeferredBindingProxyResource(lazyProxy, path, oneTimeBinding, converter);
                         case Func<FrameworkElement, StringProxy> lazyProxy:
                             return new DeferredStringProxyResource(lazyProxy, path, oneTimeBinding, converter);
-                        case Resource _:
+                        case IValueProvider _:
                             throw new InvalidOperationException("Cannot use nested paths for a resource.");
                         default:
                             return new BoundValue(value, path, oneTimeBinding, converter);
@@ -148,8 +146,8 @@ namespace MaterialForms.Wpf.Resources
 
                 switch (value)
                 {
-                    case Resource resource:
-                        return resource.Rewrap(converter);
+                    case IValueProvider valueProvider:
+                        return valueProvider.Wrap(converter);
                     case BindingProxy proxy:
                         return new BindingProxyResource(proxy, null, oneTimeBinding, converter);
                     case StringProxy proxy:
@@ -170,7 +168,7 @@ namespace MaterialForms.Wpf.Resources
             return Parse(expression, Factory);
         }
 
-        public static BoundExpression Parse(string expression, Func<string, bool, string, Resource> contextualResource)
+        public static BoundExpression Parse(string expression, Func<string, bool, string, IValueProvider> contextualResource)
         {
             if (expression == null)
             {
@@ -187,7 +185,7 @@ namespace MaterialForms.Wpf.Resources
                 return new BoundExpression(expression.Substring(1));
             }
 
-            var resources = new List<Resource>();
+            var resources = new List<IValueProvider>();
             var stringFormat = new StringBuilder();
             var resourceType = new StringBuilder();
             var resourceName = new StringBuilder();
@@ -416,7 +414,7 @@ namespace MaterialForms.Wpf.Resources
 
             addResource:
             var key = resourceName.ToString();
-            Resource resource;
+            IValueProvider resource;
             var converter = resourceConverter.ToString();
             var resourceTypeString = resourceType.ToString();
             switch (resourceTypeString)

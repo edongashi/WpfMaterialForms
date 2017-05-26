@@ -140,7 +140,7 @@ namespace MaterialForms.Wpf.Controls
             var keys = resources.Keys;
             foreach (var key in keys)
             {
-                if (key is DynamicResourceKey)
+                if (key is DynamicResourceKey || key is BindingProxyKey)
                 {
                     var proxy = (BindingProxy)resources[key];
                     proxy.Value = null;

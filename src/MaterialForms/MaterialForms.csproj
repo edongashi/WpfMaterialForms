@@ -141,7 +141,7 @@
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
-    <Compile Include="Wpf\Annotations\Value.cs" />
+    <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
     <Compile Include="Wpf\Controls\FormBindingExtension.cs" />
     <Compile Include="Wpf\Controls\IMaterialForm.cs" />
     <Compile Include="Wpf\Fields\DataFormField.cs" />
@@ -151,8 +151,8 @@
     <Compile Include="Wpf\FormDefinition\FieldValueProvider.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />
-    <Compile Include="Wpf\Resources\DeferredStringProxyResource.cs" />
     <Compile Include="Wpf\Resources\DeferredBindingProxyResource.cs" />
+    <Compile Include="Wpf\Resources\DeferredStringProxyResource.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
     <Compile Include="Wpf\Resources\IValueProvider.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\AsBoolConverter.cs" />
@@ -162,6 +162,7 @@
     <Compile Include="Wpf\Resources\ValueConverters\CoercedValueConverter.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
     <Compile Include="Wpf\Validation\IErrorStringProvider.cs" />
+    <Compile Include="Wpf\Validation\IValidatorProvider.cs" />
     <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\ExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\NotNullValidator.cs" />

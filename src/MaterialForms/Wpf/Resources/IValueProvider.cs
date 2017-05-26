@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
+using MaterialForms.Wpf.Resources.ValueConverters;
 
 namespace MaterialForms.Wpf.Resources
 {
@@ -42,6 +44,57 @@ namespace MaterialForms.Wpf.Resources
             }
 
             return proxy;
+        }
+
+        public static IValueProvider Wrap(this IValueProvider valueProvider, string valueConverter)
+        {
+            return valueConverter == null 
+                ? valueProvider 
+                : new ValueProviderWrapper(valueProvider, valueConverter);
+        }
+
+        private class ValueProviderWrapper : IValueProvider
+        {
+            private readonly IValueProvider innerProvider;
+            private readonly string valueConverter;
+
+            public ValueProviderWrapper(IValueProvider innerProvider, string valueConverter)
+            {
+                this.innerProvider = innerProvider;
+                this.valueConverter = valueConverter;
+            }
+
+            public BindingBase ProvideBinding(FrameworkElement container)
+            {
+                var bindingBase = innerProvider.ProvideBinding(container);
+                if (bindingBase is Binding binding)
+                {
+                    var converter = Resource.GetValueConverter(container, valueConverter);
+                    binding.Converter = binding.Converter == null 
+                        ? converter 
+                        : new ConverterWrapper(converter, binding.Converter);
+                }
+
+                return bindingBase;
+            }
+
+            public object ProvideValue(FrameworkElement container)
+            {
+                var value = innerProvider.ProvideValue(container);
+                var converter = Resource.GetValueConverter(container, valueConverter);
+                if (value is Binding binding)
+                {
+                    binding.Converter = binding.Converter == null
+                        ? converter
+                        : new ConverterWrapper(converter, binding.Converter);
+                }
+                else if (value is BindingBase)
+                {
+                    return value;
+                }
+
+                return converter.Convert(value, typeof(object), null, CultureInfo.CurrentCulture);
+            }
         }
     }
 }

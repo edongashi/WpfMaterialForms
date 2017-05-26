@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources.ValueConverters;
@@ -9,13 +8,6 @@ namespace MaterialForms.Wpf.Resources
 {
     public abstract class Resource : IEquatable<Resource>, IValueProvider
     {
-        public static IValueConverter GetConverter(string name)
-        {
-            return ValueConverters.TryGetValue(name, out var converter)
-                ? converter
-                : null;
-        }
-
         /// <summary>
         /// Global cache for value converters accessible from expressions.
         /// </summary>
@@ -50,24 +42,29 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract Resource Rewrap(string valueConverter);
 
-        protected internal IValueConverter GetValueConverter(FrameworkElement element)
+        protected IValueConverter GetValueConverter(FrameworkElement container)
         {
-            if (string.IsNullOrEmpty(ValueConverter))
+            return GetValueConverter(container, ValueConverter);
+        }
+
+        protected internal static IValueConverter GetValueConverter(FrameworkElement container, string valueConverter)
+        {
+            if (string.IsNullOrEmpty(valueConverter))
             {
                 return null;
             }
 
-            if (ValueConverters.TryGetValue(ValueConverter, out var c))
+            if (ValueConverters.TryGetValue(valueConverter, out var c))
             {
                 return c;
             }
 
-            if (element != null && element.TryFindResource(ValueConverter) is IValueConverter converter)
+            if (container != null && container.TryFindResource(valueConverter) is IValueConverter converter)
             {
                 return converter;
             }
 
-            throw new InvalidOperationException($"Value converter '{ValueConverter}' not found.");
+            throw new InvalidOperationException($"Value converter '{valueConverter}' not found.");
         }
 
         public override bool Equals(object obj)

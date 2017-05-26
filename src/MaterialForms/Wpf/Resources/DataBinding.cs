@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
+using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Resources
 {
@@ -12,24 +12,24 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public DataBinding(string propertyPath, BindingMode bindingMode, List<ValidationRule> validationRules)
+        public DataBinding(string propertyPath, BindingMode bindingMode, List<IValidatorProvider> validationRules)
             : this(propertyPath, bindingMode, validationRules, null)
         {
         }
 
-        public DataBinding(string propertyPath, BindingMode bindingMode, List<ValidationRule> validationRules, string valueConverter)
+        public DataBinding(string propertyPath, BindingMode bindingMode, List<IValidatorProvider> validationRules, string valueConverter)
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
             BindingMode = bindingMode;
-            ValidationRules = validationRules ?? new List<ValidationRule>();
+            ValidationRules = validationRules ?? new List<IValidatorProvider>();
         }
 
         public string PropertyPath { get; }
 
         public BindingMode BindingMode { get; }
 
-        public List<ValidationRule> ValidationRules { get; }
+        public List<IValidatorProvider> ValidationRules { get; }
 
         public override bool IsDynamic => true;
 
@@ -43,9 +43,9 @@ namespace MaterialForms.Wpf.Resources
                 Mode = BindingMode
             };
 
-            foreach (var rule in ValidationRules)
+            foreach (var validatorProvider in ValidationRules)
             {
-                binding.ValidationRules.Add(rule);
+                binding.ValidationRules.Add(validatorProvider.GetValidator(container));
             }
 
             return binding;

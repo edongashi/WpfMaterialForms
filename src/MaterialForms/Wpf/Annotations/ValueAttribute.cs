@@ -1,31 +1,32 @@
 ﻿using System;
+using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Annotations
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class Value : Attribute
+    public sealed class ValueAttribute : Attribute
     {
-        public Value(string converter, Must condition)
+        public ValueAttribute(string converter, Must condition)
             : this(converter, condition, null, false)
         {
         }
 
-        public Value(string converter, Must condition, object argument)
+        public ValueAttribute(string converter, Must condition, object argument)
             : this(converter, condition, argument, true)
         {
         }
 
-        public Value(Must condition) 
+        public ValueAttribute(Must condition) 
             : this(null, condition, null, false)
         {
         }
 
-        public Value(Must condition, object argument) 
+        public ValueAttribute(Must condition, object argument) 
             : this(null, condition, argument, true)
         {
         }
 
-        private Value(string converter, Must condition, object argument, bool hasValue)
+        private ValueAttribute(string converter, Must condition, object argument, bool hasValue)
         {
             Converter = converter;
             Condition = condition;

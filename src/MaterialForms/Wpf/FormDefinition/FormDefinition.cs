@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.Collections.Generic;
 using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf

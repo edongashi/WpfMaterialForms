@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 
 namespace MaterialForms.Wpf.Resources
@@ -23,6 +24,36 @@ namespace MaterialForms.Wpf.Resources
         protected override Freezable CreateInstanceCore()
         {
             return new BindingProxy();
+        }
+    }
+
+    internal struct BindingProxyKey : IEquatable<BindingProxyKey>
+    {
+        public BindingProxyKey(string key)
+        {
+            Key = key;
+        }
+
+        public string Key { get; }
+
+        public bool Equals(BindingProxyKey other)
+        {
+            return Key == other.Key;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is BindingProxyKey key && Equals(key);
+        }
+
+        public override int GetHashCode()
+        {
+            return Key != null ? Key.GetHashCode() : 0;
         }
     }
 }

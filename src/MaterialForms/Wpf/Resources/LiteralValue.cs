@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Data;
 
@@ -13,6 +14,11 @@ namespace MaterialForms.Wpf.Resources
         public LiteralValue(object value, string valueConverter)
             : base(valueConverter)
         {
+            if (value is BindingBase)
+            {
+                throw new ArgumentException("Value cannot be an instance of BindingBase.", nameof(value));
+            }
+
             Value = value;
         }
 
@@ -32,7 +38,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override object ProvideValue(FrameworkElement container)
         {
-            return ValueConverter != null 
+            return ValueConverter != null
                 ? ProvideBinding(container)
                 : Value;
         }
