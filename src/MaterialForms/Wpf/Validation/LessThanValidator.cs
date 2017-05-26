@@ -7,11 +7,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class LessThanValidator : ComparisonValidator
     {
-        public LessThanValidator(IProxy argument, IStringProxy errorProvider) : base(argument, errorProvider)
+        public LessThanValidator(IProxy argument, IErrorStringProvider errorProvider) : base(argument, errorProvider)
         {
         }
 
-        public LessThanValidator(IProxy argument, IStringProxy errorProvider, IValueConverter valueConverter) : base(argument, errorProvider, valueConverter)
+        public LessThanValidator(IProxy argument, IErrorStringProvider errorProvider, IValueConverter valueConverter) : base(argument, errorProvider, valueConverter)
         {
         }
 

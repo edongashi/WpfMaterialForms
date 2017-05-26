@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
+using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf
 {
@@ -10,6 +12,8 @@ namespace MaterialForms.Wpf
         {
             return null;
         }
+
+        public List<FormElement> FormElements { get; set; }
     }
 
     public class ModelDefinition

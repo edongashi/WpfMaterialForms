@@ -115,7 +115,7 @@ namespace MaterialForms.Wpf.Controls
             else if (newModel is Type type)
             {
                 // Type -> Build form, Value = new Type
-                formDefinition = TypeManager.BuildDefinition(type);
+                formDefinition = FormBuilder.Default.GetDefinition(type);
                 var instance = formDefinition.CreateInstance();
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
@@ -123,7 +123,7 @@ namespace MaterialForms.Wpf.Controls
             else
             {
                 // object -> Build form, Value = model
-                RebuildForm(TypeManager.BuildDefinition(newModel.GetType()));
+                RebuildForm(FormBuilder.Default.GetDefinition(newModel.GetType()));
                 SetValue(ValuePropertyKey, newModel);
             }
         }

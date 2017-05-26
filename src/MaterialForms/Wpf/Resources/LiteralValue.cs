@@ -30,6 +30,13 @@ namespace MaterialForms.Wpf.Resources
             };
         }
 
+        public override object ProvideValue(FrameworkElement container)
+        {
+            return ValueConverter != null 
+                ? ProvideBinding(container)
+                : Value;
+        }
+
         public override Resource Rewrap(string valueConverter)
         {
             return new LiteralValue(Value, valueConverter);

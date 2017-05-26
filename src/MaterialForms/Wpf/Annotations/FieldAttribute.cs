@@ -10,6 +10,6 @@ namespace MaterialForms.Wpf.Annotations
 
         public string Tooltip { get; set; }
 
-        public PackIconKind Icon { get; set; }
+        public object Icon { get; set; }
     }
 }

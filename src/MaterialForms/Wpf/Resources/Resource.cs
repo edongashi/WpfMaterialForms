@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources.ValueConverters;
@@ -23,11 +24,13 @@ namespace MaterialForms.Wpf.Resources
             {
                 ["IsNull"] = new IsNullConverter(),
                 ["IsNotNull"] = new IsNotNullConverter(),
+                ["AsBool"] = new AsBoolConverter(),
                 ["IsEmpty"] = new IsEmptyConverter(),
                 ["IsNotEmpty"] = new IsNotEmptyConverter(),
                 ["ToUpper"] = new ToUpperConverter(),
                 ["ToLower"] = new ToLowerConverter(),
-                ["Length"] = new LengthValueConverter()
+                ["Length"] = new LengthValueConverter(),
+                ["ToString"] = new ToStringConverter()
             };
 
         protected Resource(string valueConverter)
@@ -47,7 +50,7 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract Resource Rewrap(string valueConverter);
 
-        protected IValueConverter GetValueConverter(FrameworkElement element)
+        protected internal IValueConverter GetValueConverter(FrameworkElement element)
         {
             if (string.IsNullOrEmpty(ValueConverter))
             {

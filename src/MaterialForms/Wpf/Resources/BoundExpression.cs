@@ -51,31 +51,6 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsDynamic => Resources != null && Resources.Any(res => res.IsDynamic);
 
-        public BindingProxy GetValue(FrameworkElement container)
-        {
-            var proxy = new BindingProxy();
-            SetValue(container, proxy, BindingProxy.ValueProperty);
-            return proxy;
-        }
-
-        public StringProxy GetStringValue(FrameworkElement container)
-        {
-            var proxy = new StringProxy();
-            SetValue(container, proxy, StringProxy.ValueProperty);
-            return proxy;
-        }
-
-        public void SetValue(FrameworkElement container, DependencyObject element, DependencyProperty property)
-        {
-            if (Resources == null || Resources.Count == 0)
-            {
-                element.SetValue(property, StringFormat);
-                return;
-            }
-
-            BindingOperations.SetBinding(element, property, ProvideBinding(container));
-        }
-
         public BindingBase ProvideBinding(FrameworkElement container)
         {
             if (Resources == null || Resources.Count == 0)

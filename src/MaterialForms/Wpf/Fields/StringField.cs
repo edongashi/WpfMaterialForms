@@ -1,17 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
 {
     public class StringField : DataFormField
     {
-        public StringField(string name) : base(name, BindingMode.Default)
+        public StringField(string key) : base(key)
         {
         }
 
-        protected override IFieldValueProvider CreateValueProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
+        public IValueProvider IsMultiline { get; set; }
+
+        protected internal override void Freeze()
+        {
+            base.Freeze();
+            Resources.Add(nameof(IsMultiline), IsMultiline ?? FalseValue);
+        }
+
+        protected internal override IFieldValueProvider CreateValueProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
         {
             return new StringValue(form, Resources, formResources);
         }
