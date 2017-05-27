@@ -7,11 +7,11 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf
 {
     /// <summary>
-    /// Default implementation of <see cref="IFieldValueProvider"/>.
+    /// Default implementation of <see cref="IBindingProvider"/>.
     /// </summary>
-    public class FieldValueProvider : IFieldValueProvider
+    public class BindingProvider : IBindingProvider
     {
-        public FieldValueProvider(FrameworkElement form,
+        public BindingProvider(FrameworkElement form,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
         {

@@ -15,16 +15,18 @@ namespace MaterialForms.Wpf.Fields
         protected internal override void Freeze()
         {
             base.Freeze();
-            Resources.Add(nameof(IsMultiline), IsMultiline ?? FalseValue);
+            Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
         }
 
-        protected internal override IFieldValueProvider CreateValueProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateValueProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
         {
             return new StringValue(form, Resources, formResources);
         }
+
+        public override object GetDefaultValue() => "";
     }
 
-    public class StringValue : FieldValueProvider
+    public class StringValue : BindingProvider
     {
         public StringValue(FrameworkElement form,
             IDictionary<string, IValueProvider> fieldResources,

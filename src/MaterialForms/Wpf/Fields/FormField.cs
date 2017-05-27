@@ -38,10 +38,10 @@ namespace MaterialForms.Wpf.Fields
         /// </summary>
         protected internal override void Freeze()
         {
-            Resources.Add(nameof(IsVisible), IsVisible ?? FalseValue);
-            Resources.Add(nameof(Name), Name ?? NullValue);
-            Resources.Add(nameof(ToolTip), ToolTip ?? NullValue);
-            Resources.Add(nameof(Icon), Icon ?? NullValue);
+            Resources.Add(nameof(IsVisible), IsVisible ?? LiteralValue.False);
+            Resources.Add(nameof(Name), Name ?? LiteralValue.Null);
+            Resources.Add(nameof(ToolTip), ToolTip ?? LiteralValue.Null);
+            Resources.Add(nameof(Icon), Icon ?? LiteralValue.Null);
         }
     }
 }

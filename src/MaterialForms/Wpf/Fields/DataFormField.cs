@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
@@ -19,7 +18,7 @@ namespace MaterialForms.Wpf.Fields
         {
             base.Freeze();
             Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
-            Resources.Add("IsReadOnly", IsReadOnly ?? FalseValue);
+            Resources.Add("IsReadOnly", IsReadOnly ?? LiteralValue.False);
         }
 
         public IValueProvider IsReadOnly { get; set; }
@@ -27,5 +26,7 @@ namespace MaterialForms.Wpf.Fields
         public BindingMode BindingMode { get; set; }
 
         public List<IValidatorProvider> Validators { get; set; }
+
+        public abstract object GetDefaultValue();
     }
 }

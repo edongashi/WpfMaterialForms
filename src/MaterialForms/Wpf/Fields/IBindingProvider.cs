@@ -1,6 +1,6 @@
 namespace MaterialForms.Wpf.Fields
 {
-    public interface IFieldValueProvider
+    public interface IBindingProvider
     {
         object ProvideValue(string path);
     }

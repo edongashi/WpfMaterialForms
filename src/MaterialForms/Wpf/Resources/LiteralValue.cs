@@ -6,6 +6,12 @@ namespace MaterialForms.Wpf.Resources
 {
     public sealed class LiteralValue : Resource
     {
+        public static readonly LiteralValue Null = new LiteralValue(null);
+                      
+        public static readonly LiteralValue True = new LiteralValue(true);
+                      
+        public static readonly LiteralValue False = new LiteralValue(false);
+
         public LiteralValue(object value)
             : this(value, null)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -17,15 +18,37 @@ namespace MaterialForms.Wpf
     {
         public static readonly FormBuilder Default = new FormBuilder();
 
+        #region Config
+
         private readonly Dictionary<Type, FormDefinition> cachedDefinitions;
-        private readonly Dictionary<Type, Func<PropertyInfo, IEnumerable<FormElement>>> fieldFactories;
 
         public FormBuilder()
         {
             cachedDefinitions = new Dictionary<Type, FormDefinition>();
-            fieldFactories = new Dictionary<Type, Func<PropertyInfo, IEnumerable<FormElement>>>();
+            FieldFactories = new Dictionary<Type, Func<PropertyInfo, FormElement>>();
+            TypeDeserializers = new Dictionary<Type, Func<string, object>>
+            {
+                [typeof(DateTime)] = str => DateTime.Parse(str, CultureInfo.InvariantCulture)
+            };
+
             LoadDefaultFactories();
         }
+
+        public Dictionary<Type, Func<PropertyInfo, FormElement>> FieldFactories { get; }
+
+        /// <summary>
+        /// Stores functions to parse string representations of types.
+        /// </summary>
+        public Dictionary<Type, Func<string, object>> TypeDeserializers { get; }
+
+        public void InvalidateCache()
+        {
+            cachedDefinitions.Clear();
+        }
+
+        #endregion
+
+        #region Reflection
 
         public FormDefinition GetDefinition(Type type)
         {
@@ -47,29 +70,74 @@ namespace MaterialForms.Wpf
 
         private FormDefinition BuildDefinition(Type type)
         {
-            return null;
+            var formDefinition = new FormDefinition(type);
+            var optIn = false;
+            foreach (var attribute in type.GetCustomAttributes())
+            {
+                switch (attribute)
+                {
+                    case ResourceAttribute resource:
+                        formDefinition.Resources.Add(resource.Name, resource.Value is string expr
+                            ? (IValueProvider)BoundExpression.Parse(expr)
+                            : new LiteralValue(resource.Value));
+                        break;
+                    case MessagesAttribute messages:
+                        if (messages.Title != null)
+                        {
+                            formDefinition.TitleMessage = BoundExpression.Parse(messages.Title);
+                        }
+
+                        if (messages.Create != null)
+                        {
+                            formDefinition.CreateMessage = BoundExpression.Parse(messages.Create);
+                        }
+
+                        if (messages.Delete != null)
+                        {
+                            formDefinition.DeleteMessage = BoundExpression.Parse(messages.Delete);
+                        }
+
+                        if (messages.Details != null)
+                        {
+                            formDefinition.DetailsMessage = BoundExpression.Parse(messages.Details);
+                        }
+
+                        if (messages.Edit != null)
+                        {
+                            formDefinition.EditMessage = BoundExpression.Parse(messages.Edit);
+                        }
+
+                        break;
+                    case FormAttribute form:
+                        optIn = form.FieldGeneration == FieldGeneration.OptIn;
+                        break;
+                }
+            }
+
+            formDefinition.FormElements = GetFormElements(type, optIn);
+            return formDefinition;
         }
 
-        private List<FormElement> GetFormElements(Type type)
+        private List<FormElement> GetFormElements(Type type, bool optIn)
         {
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var elements = new List<FormElement>();
             foreach (var property in properties)
             {
-                var fields = GetFieldElements(property);
-                if (fields != null)
+                var element = GetFieldElement(property, optIn);
+                if (element != null)
                 {
-                    elements.AddRange(fields);
+                    elements.Add(element);
                 }
             }
 
             return elements;
         }
 
-        private IEnumerable<FormElement> GetFieldElements(PropertyInfo propertyInfo)
+        private FormElement GetFieldElement(PropertyInfo propertyInfo, bool optIn)
         {
             var type = propertyInfo.PropertyType;
-            if (fieldFactories.TryGetValue(type, out var factory))
+            if (FieldFactories.TryGetValue(type, out var factory))
             {
                 return factory(propertyInfo);
             }
@@ -80,16 +148,17 @@ namespace MaterialForms.Wpf
 
         private void LoadDefaultFactories()
         {
-            fieldFactories[typeof(string)] = GetStringField;
+            FieldFactories[typeof(string)] = GetStringField;
         }
 
-        private StringField[] GetStringField(PropertyInfo propertyInfo)
+        private StringField GetStringField(PropertyInfo propertyInfo)
         {
             return null;
         }
 
         private void InitializeDataField(DataFormField field, PropertyInfo propertyInfo)
         {
+            var type = propertyInfo.PropertyType;
             foreach (var attribute in propertyInfo.GetCustomAttributes())
             {
                 switch (attribute)
@@ -101,7 +170,7 @@ namespace MaterialForms.Wpf
                         field.IsReadOnly = GetResource<bool>(attr.IsReadOnly, false);
                         break;
                     case ValueAttribute attr:
-
+                        field.Validators.Add(CreateValidator(field.Key, type, attr));
                         break;
                     default:
                         continue;
@@ -113,7 +182,61 @@ namespace MaterialForms.Wpf
         {
         }
 
-        private IValidatorProvider CreateValidator(string propertyKey, ValueAttribute attribute)
+        #endregion
+
+        #region Resources
+
+        private IValueProvider GetResource<T>(object value, object defaultValue)
+        {
+            if (value == null)
+            {
+                return new LiteralValue(defaultValue);
+            }
+
+            if (value is string expression)
+            {
+                var boundExpression = BoundExpression.Parse(expression);
+                if (!boundExpression.IsSingleResource)
+                {
+                    throw new ArgumentException(
+                        $"The expression '{expression}' is not a valid resource because it does not define a single value source.",
+                        nameof(value));
+                }
+
+                return new CoercedValueProvider<T>(boundExpression.Resources[0], defaultValue);
+            }
+
+            if (value is T)
+            {
+                return new LiteralValue(value);
+            }
+
+            throw new ArgumentException(
+                $"The provided value must be a bound resource or a literal value of type '{typeof(T).FullName}'.",
+                nameof(value));
+        }
+
+        private IValueProvider GetStringResource(string expression)
+        {
+            if (expression == null)
+            {
+                return new LiteralValue(null);
+            }
+
+            var boundExpression = BoundExpression.Parse(expression);
+            if (boundExpression.IsPlainString)
+            {
+                return new LiteralValue(boundExpression.StringFormat);
+            }
+
+            return boundExpression;
+        }
+
+        #endregion
+
+        #region Validators
+
+        private IValidatorProvider CreateValidator(string propertyKey, Type propertyType, ValueAttribute attribute)
         {
             Func<FrameworkElement, IProxy> argumentProvider;
             var argument = attribute.Argument;
@@ -122,7 +245,10 @@ namespace MaterialForms.Wpf
                 var boundExpression = BoundExpression.Parse(expression);
                 if (boundExpression.IsPlainString)
                 {
-                    var literal = new PlainObject(boundExpression.StringFormat);
+                    var literal = new PlainObject(TypeDeserializers.TryGetValue(propertyType, out var func)
+                        ? func(boundExpression.StringFormat)
+                        : boundExpression.StringFormat);
+
                     argumentProvider = container => literal;
                 }
                 else if (boundExpression.StringFormat != null)
@@ -175,7 +301,6 @@ namespace MaterialForms.Wpf
                 default:
                     throw new ArgumentException(
                         "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
-
             }
 
             Func<FrameworkElement, IErrorStringProvider> errorProvider;
@@ -238,12 +363,13 @@ namespace MaterialForms.Wpf
                 }
             }
 
+            var converterName = attribute.Converter;
             IValueConverter GetConverter(FrameworkElement container)
             {
                 IValueConverter converter = null;
-                if (attribute.Converter != null)
+                if (converterName != null)
                 {
-                    converter = Resource.GetValueConverter(container, attribute.Converter);
+                    converter = Resource.GetValueConverter(container, converterName);
                 }
 
                 return converter;
@@ -270,17 +396,23 @@ namespace MaterialForms.Wpf
                     return new ValidatorProvider(container => new LessThanEqualValidator(argumentProvider(container),
                         errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeEmpty:
-                    return new ValidatorProvider(container => new EmptyValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new EmptyValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotBeEmpty:
-                    return new ValidatorProvider(container => new NotEmptyValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new NotEmptyValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeTrue:
-                    return new ValidatorProvider(container => new TrueValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new TrueValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeFalse:
-                    return new ValidatorProvider(container => new FalseValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new FalseValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.BeNull:
-                    return new ValidatorProvider(container => new NullValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new NullValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.NotBeNull:
-                    return new ValidatorProvider(container => new NotNullValidator(errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(container => new NotNullValidator(errorProvider(container),
+                        isEnforcedProvider(container), GetConverter(container)));
                 case Must.ExistIn:
                     return new ValidatorProvider(container => new ExistsInValidator(argumentProvider(container),
                         errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
@@ -298,52 +430,6 @@ namespace MaterialForms.Wpf
             }
         }
 
-        private IValueProvider GetResource<T>(object value, object defaultValue)
-        {
-            if (value == null)
-            {
-                return new LiteralValue(defaultValue);
-            }
-
-            if (value is string expression)
-            {
-                var boundExpression = BoundExpression.Parse(expression);
-                if (!boundExpression.IsSingleResource)
-                {
-                    throw new ArgumentException(
-                        $"The expression '{expression}' is not a valid resource because it does not define a single value source.",
-                        nameof(value));
-                }
-
-                return new CoercedValueProvider<T>(boundExpression.Resources[0], defaultValue);
-            }
-
-            if (value is T)
-            {
-                return new LiteralValue(value);
-            }
-
-            throw new ArgumentException(
-                $"The provided value must be a bound resource or a literal value of type '{typeof(T).FullName}'.",
-                nameof(value));
-        }
-
-        private IValueProvider GetStringResource(string expression)
-        {
-            if (expression == null)
-            {
-                return new LiteralValue(null);
-            }
-
-            var boundExpression = BoundExpression.Parse(expression);
-            if (boundExpression.IsPlainString)
-            {
-                return new LiteralValue(boundExpression.StringFormat);
-            }
-
-            return boundExpression;
-        }
-
         private class ValidatorProvider : IValidatorProvider
         {
             private readonly Func<FrameworkElement, ValidationRule> func;
@@ -358,5 +444,7 @@ namespace MaterialForms.Wpf
                 return func(container);
             }
         }
+
+        #endregion
     }
 }

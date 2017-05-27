@@ -6,12 +6,6 @@ namespace MaterialForms.Wpf.Fields
 {
     public abstract class FormElement
     {
-        protected static LiteralValue NullValue = new LiteralValue(null);
-
-        protected static LiteralValue TrueValue = new LiteralValue(true);
-
-        protected static LiteralValue FalseValue = new LiteralValue(false);
-
         protected FormElement()
         {
             Resources = new Dictionary<string, IValueProvider>();
@@ -21,7 +15,7 @@ namespace MaterialForms.Wpf.Fields
 
         protected internal abstract void Freeze();
 
-        protected internal abstract IFieldValueProvider CreateValueProvider(
+        protected internal abstract IBindingProvider CreateValueProvider(
             FrameworkElement form,
             IDictionary<string, IValueProvider> formResources);
     }

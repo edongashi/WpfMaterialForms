@@ -36,7 +36,7 @@ namespace MaterialForms.Wpf.Controls
                 return this;
             }
 
-            var field = frameworkElement.DataContext as IFieldValueProvider;
+            var field = frameworkElement.DataContext as IBindingProvider;
             if (field == null)
             {
                 throw new InvalidOperationException("No suitable DataContext exists to provide form resources.");
