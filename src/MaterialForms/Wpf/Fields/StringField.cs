@@ -18,7 +18,7 @@ namespace MaterialForms.Wpf.Fields
             Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
         }
 
-        protected internal override IBindingProvider CreateValueProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
         {
             return new StringValue(form, Resources, formResources);
         }

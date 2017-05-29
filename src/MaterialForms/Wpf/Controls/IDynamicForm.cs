@@ -1,6 +1,6 @@
 ﻿namespace MaterialForms.Wpf.Controls
 {
-    public interface IMaterialForm
+    public interface IDynamicForm
     {
         object Model { get; }
 

@@ -58,12 +58,17 @@ namespace MaterialForms.Wpf
 
         protected internal virtual void Freeze()
         {
+            if (frozen)
+            {
+                return;
+            }
+
+            Resources.Add("Title", TitleMessage ?? LiteralValue.Null);
+            Resources.Add("Details", DetailsMessage ?? LiteralValue.Null);
+            Resources.Add("Create", CreateMessage ?? LiteralValue.Null);
+            Resources.Add("Edit", EditMessage ?? LiteralValue.Null);
+            Resources.Add("Delete", DeleteMessage ?? LiteralValue.Null);
             frozen = true;
         }
-    }
-
-    public class ModelDefinition
-    {
-        
     }
 }

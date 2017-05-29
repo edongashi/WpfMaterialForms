@@ -7,54 +7,63 @@ using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf.Controls
 {
-    [MarkupExtensionReturnType(typeof(object))]
     public class FormBindingExtension : MarkupExtension
     {
-        [ConstructorArgument("path")]
-        public string Path { get; set; }
+        [ConstructorArgument("name")]
+        public string Name { get; set; }
 
         public FormBindingExtension()
         {
         }
 
-        public FormBindingExtension(string path)
+        public FormBindingExtension(string name)
         {
-            Path = path;
+            Name = name;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var pvt = serviceProvider as IProvideValueTarget;
-            if (pvt == null)
+            if (pvt?.TargetObject == null)
             {
                 return null;
             }
-
-            var frameworkElement = pvt.TargetObject as FrameworkElement;
-            if (frameworkElement == null)
+            
+            if (pvt.TargetObject is FrameworkElement frameworkElement)
             {
-                return this;
-            }
-
-            var field = frameworkElement.DataContext as IBindingProvider;
-            if (field == null)
-            {
-                throw new InvalidOperationException("No suitable DataContext exists to provide form resources.");
-            }
-
-            var value = field.ProvideValue(Path);
-            if (value is BindingBase binding)
-            {
-                if (pvt.TargetProperty is DependencyProperty dp && dp.PropertyType == typeof(BindingBase)
-                    || pvt.TargetProperty is PropertyInfo p && p.PropertyType == typeof(BindingBase))
+                var field = frameworkElement.DataContext as IBindingProvider;
+                if (field == null)
                 {
-                    return binding;
+                    return null;
                 }
 
-                return binding.ProvideValue(serviceProvider);
+                var value = field.ProvideValue(Name);
+                if (value is BindingBase binding)
+                {
+                    if (pvt.TargetProperty is DependencyProperty dp && dp.PropertyType == typeof(BindingBase)
+                        || pvt.TargetProperty is PropertyInfo p && p.PropertyType == typeof(BindingBase))
+                    {
+                        return binding;
+                    }
+
+                    return binding.ProvideValue(serviceProvider);
+                }
+
+                return value;
             }
 
-            return value;
+            if (pvt.TargetObject is TriggerBase || pvt.TargetObject is SetterBase)
+            {
+                if (pvt.TargetProperty is DependencyProperty dp2 && dp2.PropertyType == typeof(BindingBase)
+                    || pvt.TargetProperty is PropertyInfo p2 && p2.PropertyType == typeof(BindingBase))
+                {
+                    return new Binding($"[{Name}].Value");
+                }
+
+                return new Binding($"[{Name}].Value").ProvideValue(serviceProvider);
+            }
+
+            return this;
         }
     }
 }

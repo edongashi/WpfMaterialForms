@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MaterialForms.Tests
 {
-    public class DummyForm : FrameworkElement, IMaterialForm
+    public class DummyForm : FrameworkElement, IDynamicForm
     {
         public object Model { get; set; }
 

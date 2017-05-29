@@ -2,7 +2,7 @@
 
 namespace MaterialForms.Wpf.Annotations
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class MessagesAttribute : Attribute
     {
         public string Title { get; set; }

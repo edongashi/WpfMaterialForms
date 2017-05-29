@@ -26,7 +26,7 @@ namespace MaterialForms.Wpf.Resources
         public override BindingBase ProvideBinding(FrameworkElement container)
         {
             var path = FormatPath(PropertyPath);
-            return new Binding(nameof(Controls.MaterialForm.Context) + path)
+            return new Binding(nameof(Controls.DynamicForm.Context) + path)
             {
                 Source = container,
                 Converter = GetValueConverter(container),

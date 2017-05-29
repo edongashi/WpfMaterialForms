@@ -15,7 +15,7 @@ namespace MaterialForms.Wpf.Fields
 
         protected internal abstract void Freeze();
 
-        protected internal abstract IBindingProvider CreateValueProvider(
+        protected internal abstract IBindingProvider CreateBindingProvider(
             FrameworkElement form,
             IDictionary<string, IValueProvider> formResources);
     }

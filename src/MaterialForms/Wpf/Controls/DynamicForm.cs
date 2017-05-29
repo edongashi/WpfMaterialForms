@@ -6,18 +6,18 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Controls
 {
-    public class MaterialForm : Control, IMaterialForm
+    public class DynamicForm : Control, IDynamicForm
     {
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model",
             typeof(object),
-            typeof(MaterialForm),
+            typeof(DynamicForm),
             new FrameworkPropertyMetadata(null, ModelChanged));
 
         internal static readonly DependencyPropertyKey ValuePropertyKey = DependencyProperty.RegisterReadOnly(
             "Value",
             typeof(object),
-            typeof(MaterialForm),
+            typeof(DynamicForm),
             new FrameworkPropertyMetadata(null));
 
         internal static readonly DependencyPropertyKey FormDefinitionPropertyKey = DependencyProperty.RegisterReadOnly(
@@ -29,7 +29,13 @@ namespace MaterialForms.Wpf.Controls
         public static readonly DependencyProperty ContextProperty = DependencyProperty.Register(
             "Context",
             typeof(object),
-            typeof(MaterialForm),
+            typeof(DynamicForm),
+            new FrameworkPropertyMetadata(null));
+
+        public static readonly DependencyProperty ItemsPanelProperty = DependencyProperty.Register(
+            "ItemsPanel",
+            typeof(ItemsPanelTemplate),
+            typeof(DynamicForm),
             new FrameworkPropertyMetadata(null));
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
@@ -38,10 +44,10 @@ namespace MaterialForms.Wpf.Controls
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            ((MaterialForm)obj).UpdateModel(e.OldValue, e.NewValue);
+            ((DynamicForm)obj).UpdateModel(e.OldValue, e.NewValue);
         }
 
-        public MaterialForm()
+        public DynamicForm()
         {
             BindingOperations.SetBinding(this, ContextProperty, new Binding
             {
@@ -80,6 +86,12 @@ namespace MaterialForms.Wpf.Controls
         {
             get => GetValue(ContextProperty);
             set => SetValue(ContextProperty, value);
+        }
+
+        public ItemsPanelTemplate ItemsPanel
+        {
+            get => (ItemsPanelTemplate)GetValue(ItemsPanelProperty);
+            set => SetValue(ItemsPanelProperty, value);
         }
 
         private void UpdateModel(object oldModel, object newModel)

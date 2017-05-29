@@ -1,7 +1,11 @@
+using MaterialForms.Wpf.Resources;
+
 namespace MaterialForms.Wpf.Fields
 {
     public interface IBindingProvider
     {
-        object ProvideValue(string path);
+        BindingProxy this[string name] { get; }
+
+        object ProvideValue(string name);
     }
 }

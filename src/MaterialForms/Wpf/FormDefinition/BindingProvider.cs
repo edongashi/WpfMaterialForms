@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Resources;
 
@@ -9,8 +11,10 @@ namespace MaterialForms.Wpf
     /// <summary>
     /// Default implementation of <see cref="IBindingProvider"/>.
     /// </summary>
-    public class BindingProvider : IBindingProvider
+    public class BindingProvider : IBindingProvider, INotifyPropertyChanged
     {
+        private readonly Dictionary<string, BindingProxy> proxyCache;
+
         public BindingProvider(FrameworkElement form,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
@@ -18,6 +22,7 @@ namespace MaterialForms.Wpf
             Form = form;
             FieldResources = fieldResources;
             FormResources = formResources;
+            proxyCache = new Dictionary<string, BindingProxy>();
         }
 
         public FrameworkElement Form { get; }
@@ -26,19 +31,44 @@ namespace MaterialForms.Wpf
 
         public IDictionary<string, IValueProvider> FormResources { get; }
 
-        public virtual object ProvideValue(string path)
+        public BindingProxy this[string name]
         {
-            if (FieldResources.TryGetValue(path, out var resource))
+            get
             {
-                return resource.ProvideValue(Form);
-            }
+                if (proxyCache.TryGetValue(name, out var proxy))
+                {
+                    return proxy;
+                }
 
-            if (FormResources.TryGetValue(path, out resource))
-            {
-                return resource.ProvideValue(Form);
-            }
+                proxy = new BindingProxy();
+                proxyCache[name] = proxy;
+                var value = ProvideValue(name);
+                if (value is BindingBase binding)
+                {
+                    BindingOperations.SetBinding(proxy, BindingProxy.ValueProperty, binding);
+                    return proxy;
+                }
 
-            throw new InvalidOperationException($"Resource {path} not found.");
+                proxy.Value = value;
+                return proxy;
+            }
         }
+
+        public virtual object ProvideValue(string name)
+        {
+            if (FieldResources.TryGetValue(name, out var resource))
+            {
+                return resource.ProvideValue(Form);
+            }
+
+            if (FormResources.TryGetValue(name, out resource))
+            {
+                return resource.ProvideValue(Form);
+            }
+
+            throw new InvalidOperationException($"Resource {name} not found.");
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

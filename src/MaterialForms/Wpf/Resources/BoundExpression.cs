@@ -51,6 +51,21 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsSingleResource => StringFormat == null && Resources != null && Resources.Count == 1;
 
+        public IValueProvider GetValueProvider()
+        {
+            if (IsPlainString)
+            {
+                return new LiteralValue(StringFormat);
+            }
+
+            if (IsSingleResource)
+            {
+                return Resources[0];
+            }
+
+            return this;
+        }
+
         public BindingBase ProvideBinding(FrameworkElement container)
         {
             if (Resources == null || Resources.Count == 0)
