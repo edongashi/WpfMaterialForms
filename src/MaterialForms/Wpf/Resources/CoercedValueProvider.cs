@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
@@ -14,16 +13,16 @@ namespace MaterialForms.Wpf.Resources
             this.defaultValue = defaultValue;
         }
 
-        public BindingBase ProvideBinding(FrameworkElement container)
+        public BindingBase ProvideBinding(IResourceContext context)
         {
-            var binding = innerProvider.ProvideBinding(container);
+            var binding = innerProvider.ProvideBinding(context);
             binding.FallbackValue = defaultValue;
             return binding;
         }
 
-        public object ProvideValue(FrameworkElement container)
+        public object ProvideValue(IResourceContext context)
         {
-            var value = innerProvider.ProvideValue(container);
+            var value = innerProvider.ProvideValue(context);
             if (value is BindingBase binding)
             {
                 binding.FallbackValue = defaultValue;

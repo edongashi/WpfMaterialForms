@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
@@ -18,9 +17,9 @@ namespace MaterialForms.Wpf.Fields
             Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
         }
 
-        protected internal override IBindingProvider CreateBindingProvider(FrameworkElement form, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
-            return new StringValue(form, Resources, formResources);
+            return new StringValue(context, Resources, formResources);
         }
 
         public override object GetDefaultValue() => "";
@@ -28,10 +27,10 @@ namespace MaterialForms.Wpf.Fields
 
     public class StringValue : BindingProvider
     {
-        public StringValue(FrameworkElement form,
+        public StringValue(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
-            : base(form, fieldResources, formResources)
+            : base(context, fieldResources, formResources)
         {
         }
     }

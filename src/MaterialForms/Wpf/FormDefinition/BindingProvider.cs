@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Resources;
@@ -15,17 +14,17 @@ namespace MaterialForms.Wpf
     {
         private readonly Dictionary<string, BindingProxy> proxyCache;
 
-        public BindingProvider(FrameworkElement form,
+        public BindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
         {
-            Form = form;
+            Context = context;
             FieldResources = fieldResources;
             FormResources = formResources;
             proxyCache = new Dictionary<string, BindingProxy>();
         }
 
-        public FrameworkElement Form { get; }
+        public IResourceContext Context { get; }
 
         public IDictionary<string, IValueProvider> FieldResources { get; }
 
@@ -46,10 +45,12 @@ namespace MaterialForms.Wpf
                 if (value is BindingBase binding)
                 {
                     BindingOperations.SetBinding(proxy, BindingProxy.ValueProperty, binding);
-                    return proxy;
+                }
+                else
+                {
+                    proxy.Value = value;
                 }
 
-                proxy.Value = value;
                 return proxy;
             }
         }
@@ -58,12 +59,12 @@ namespace MaterialForms.Wpf
         {
             if (FieldResources.TryGetValue(name, out var resource))
             {
-                return resource.ProvideValue(Form);
+                return resource.ProvideValue(Context);
             }
 
             if (FormResources.TryGetValue(name, out resource))
             {
-                return resource.ProvideValue(Form);
+                return resource.ProvideValue(Context);
             }
 
             throw new InvalidOperationException($"Resource {name} not found.");

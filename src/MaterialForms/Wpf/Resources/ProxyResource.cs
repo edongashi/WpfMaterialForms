@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
@@ -22,20 +21,15 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => !OneTimeBinding;
 
-        public override BindingBase ProvideBinding(FrameworkElement container)
+        public override BindingBase ProvideBinding(IResourceContext context)
         {
             var path = FormatPath(PropertyPath);
             return new Binding(nameof(IProxy.Value) + path)
             {
                 Source = Proxy,
-                Converter = GetValueConverter(container),
+                Converter = GetValueConverter(context),
                 Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
             };
-        }
-
-        public override Resource Rewrap(string valueConverter)
-        {
-            return new ProxyResource(Proxy, PropertyPath, OneTimeBinding, valueConverter);
         }
 
         public override bool Equals(Resource other)

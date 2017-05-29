@@ -157,7 +157,9 @@
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />
     <Compile Include="Wpf\Resources\DeferredProxyResource.cs" />
+    <Compile Include="Wpf\Resources\FormResourceContext.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
+    <Compile Include="Wpf\Resources\IResourceContext.cs" />
     <Compile Include="Wpf\Resources\IValueProvider.cs" />
     <Compile Include="Wpf\Resources\BoolProxy.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\AsBoolConverter.cs" />

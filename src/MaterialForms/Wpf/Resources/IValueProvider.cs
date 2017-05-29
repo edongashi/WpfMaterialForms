@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources.ValueConverters;
 
@@ -7,17 +6,17 @@ namespace MaterialForms.Wpf.Resources
 {
     public interface IValueProvider
     {
-        BindingBase ProvideBinding(FrameworkElement container);
+        BindingBase ProvideBinding(IResourceContext context);
 
-        object ProvideValue(FrameworkElement container);
+        object ProvideValue(IResourceContext context);
     }
 
     public static class ValueProviderExtensions
     {
-        public static BindingProxy GetValue(this IValueProvider valueProvider, FrameworkElement container)
+        public static BindingProxy GetValue(this IValueProvider valueProvider, IResourceContext context)
         {
             var proxy = new BindingProxy();
-            var value = valueProvider.ProvideValue(container);
+            var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
             {
                 BindingOperations.SetBinding(proxy, BindingProxy.ValueProperty, binding);
@@ -30,10 +29,10 @@ namespace MaterialForms.Wpf.Resources
             return proxy;
         }
 
-        public static StringProxy GetStringValue(this IValueProvider valueProvider, FrameworkElement container)
+        public static StringProxy GetStringValue(this IValueProvider valueProvider, IResourceContext context)
         {
             var proxy = new StringProxy();
-            var value = valueProvider.ProvideValue(container);
+            var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
             {
                 BindingOperations.SetBinding(proxy, StringProxy.ValueProperty, binding);
@@ -46,10 +45,10 @@ namespace MaterialForms.Wpf.Resources
             return proxy;
         }
 
-        public static BoolProxy GetBoolValue(this IValueProvider valueProvider, FrameworkElement container)
+        public static BoolProxy GetBoolValue(this IValueProvider valueProvider, IResourceContext context)
         {
             var proxy = new BoolProxy();
-            var value = valueProvider.ProvideValue(container);
+            var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
             {
                 BindingOperations.SetBinding(proxy, BoolProxy.ValueProperty, binding);
@@ -80,12 +79,12 @@ namespace MaterialForms.Wpf.Resources
                 this.valueConverter = valueConverter;
             }
 
-            public BindingBase ProvideBinding(FrameworkElement container)
+            public BindingBase ProvideBinding(IResourceContext context)
             {
-                var bindingBase = innerProvider.ProvideBinding(container);
+                var bindingBase = innerProvider.ProvideBinding(context);
                 if (bindingBase is Binding binding)
                 {
-                    var converter = Resource.GetValueConverter(container, valueConverter);
+                    var converter = Resource.GetValueConverter(context, valueConverter);
                     binding.Converter = binding.Converter == null 
                         ? converter 
                         : new ConverterWrapper(converter, binding.Converter);
@@ -94,10 +93,10 @@ namespace MaterialForms.Wpf.Resources
                 return bindingBase;
             }
 
-            public object ProvideValue(FrameworkElement container)
+            public object ProvideValue(IResourceContext context)
             {
-                var value = innerProvider.ProvideValue(container);
-                var converter = Resource.GetValueConverter(container, valueConverter);
+                var value = innerProvider.ProvideValue(context);
+                var converter = Resource.GetValueConverter(context, valueConverter);
                 if (value is Binding binding)
                 {
                     binding.Converter = binding.Converter == null

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
@@ -16,7 +15,7 @@ namespace MaterialForms.Wpf.Fields
         protected internal abstract void Freeze();
 
         protected internal abstract IBindingProvider CreateBindingProvider(
-            FrameworkElement form,
+            IResourceContext context,
             IDictionary<string, IValueProvider> formResources);
     }
 }

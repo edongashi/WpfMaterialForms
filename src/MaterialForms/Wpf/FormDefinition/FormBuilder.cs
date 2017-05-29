@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialDesignThemes.Wpf;
@@ -238,7 +237,7 @@ namespace MaterialForms.Wpf
 
         private IValidatorProvider CreateValidator(string propertyKey, Type propertyType, ValueAttribute attribute)
         {
-            Func<FrameworkElement, IProxy> argumentProvider;
+            Func<IResourceContext, IProxy> argumentProvider;
             var argument = attribute.Argument;
             if (argument is string expression)
             {
@@ -249,41 +248,41 @@ namespace MaterialForms.Wpf
                         ? func(boundExpression.StringFormat)
                         : boundExpression.StringFormat);
 
-                    argumentProvider = container => literal;
+                    argumentProvider = context => literal;
                 }
                 else if (boundExpression.StringFormat != null)
                 {
-                    argumentProvider = container => boundExpression.GetStringValue(container);
+                    argumentProvider = context => boundExpression.GetStringValue(context);
                 }
                 else
                 {
-                    argumentProvider = container => boundExpression.GetValue(container);
+                    argumentProvider = context => boundExpression.GetValue(context);
                 }
             }
             else
             {
                 var literal = new PlainObject(argument);
-                argumentProvider = container => literal;
+                argumentProvider = context => literal;
             }
 
-            BindingProxy ValueProvider(FrameworkElement container)
+            BindingProxy ValueProvider(IResourceContext context)
             {
                 var key = new BindingProxyKey(propertyKey);
-                if (container.TryFindResource(key) is BindingProxy proxy)
+                if (context.TryFindResource(key) is BindingProxy proxy)
                 {
                     return proxy;
                 }
 
                 proxy = new BindingProxy();
-                container.Resources[key] = proxy;
+                context.AddResource(key, proxy);
                 return proxy;
             }
 
-            Func<FrameworkElement, IBoolProxy> isEnforcedProvider;
+            Func<IResourceContext, IBoolProxy> isEnforcedProvider;
             switch (attribute.When)
             {
                 case null:
-                    isEnforcedProvider = container => new PlainBool(true);
+                    isEnforcedProvider = context => new PlainBool(true);
                     break;
                 case string expr:
                     var boundExpression = BoundExpression.Parse(expr);
@@ -293,17 +292,17 @@ namespace MaterialForms.Wpf
                             "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
                     }
 
-                    isEnforcedProvider = container => boundExpression.GetBoolValue(container);
+                    isEnforcedProvider = context => boundExpression.GetBoolValue(context);
                     break;
                 case bool b:
-                    isEnforcedProvider = container => new PlainBool(b);
+                    isEnforcedProvider = context => new PlainBool(b);
                     break;
                 default:
                     throw new ArgumentException(
                         "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
             }
 
-            Func<FrameworkElement, IErrorStringProvider> errorProvider;
+            Func<IResourceContext, IErrorStringProvider> errorProvider;
             var message = attribute.Message;
             if (message == null)
             {
@@ -334,7 +333,7 @@ namespace MaterialForms.Wpf
             }
 
             {
-                var func = new Func<FrameworkElement, IProxy>(ValueProvider);
+                var func = new Func<IResourceContext, IProxy>(ValueProvider);
                 var boundExpression = BoundExpression.Parse(message, new Dictionary<string, object>
                 {
                     ["Value"] = func,
@@ -344,7 +343,7 @@ namespace MaterialForms.Wpf
                 if (boundExpression.IsPlainString)
                 {
                     var errorMessage = boundExpression.StringFormat;
-                    errorProvider = container => new PlainErrorStringProvider(errorMessage);
+                    errorProvider = context => new PlainErrorStringProvider(errorMessage);
                 }
                 else
                 {
@@ -352,24 +351,24 @@ namespace MaterialForms.Wpf
                         res => res is DeferredProxyResource resource && resource.ProxyProvider == func))
                     {
                         errorProvider =
-                            container => new ValueErrorStringProvider(boundExpression.GetStringValue(container),
-                                ValueProvider(container));
+                            context => new ValueErrorStringProvider(boundExpression.GetStringValue(context),
+                                ValueProvider(context));
                     }
                     else
                     {
                         errorProvider =
-                            container => new ErrorStringProvider(boundExpression.GetStringValue(container));
+                            context => new ErrorStringProvider(boundExpression.GetStringValue(context));
                     }
                 }
             }
 
             var converterName = attribute.Converter;
-            IValueConverter GetConverter(FrameworkElement container)
+            IValueConverter GetConverter(IResourceContext context)
             {
                 IValueConverter converter = null;
                 if (converterName != null)
                 {
-                    converter = Resource.GetValueConverter(container, converterName);
+                    converter = Resource.GetValueConverter(context, converterName);
                 }
 
                 return converter;
@@ -378,53 +377,53 @@ namespace MaterialForms.Wpf
             switch (attribute.Condition)
             {
                 case Must.BeEqualTo:
-                    return new ValidatorProvider(container => new EqualsValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new EqualsValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.NotBeEqualTo:
-                    return new ValidatorProvider(container => new NotEqualsValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NotEqualsValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeGreaterThan:
-                    return new ValidatorProvider(container => new GreaterThanValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new GreaterThanValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeGreaterThanOrEqualTo:
-                    return new ValidatorProvider(container => new GreaterThanEqualValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new GreaterThanEqualValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeLessThan:
-                    return new ValidatorProvider(container => new LessThanValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new LessThanValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeLessThanOrEqualTo:
-                    return new ValidatorProvider(container => new LessThanEqualValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new LessThanEqualValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeEmpty:
-                    return new ValidatorProvider(container => new EmptyValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new EmptyValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.NotBeEmpty:
-                    return new ValidatorProvider(container => new NotEmptyValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NotEmptyValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeTrue:
-                    return new ValidatorProvider(container => new TrueValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new TrueValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeFalse:
-                    return new ValidatorProvider(container => new FalseValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new FalseValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.BeNull:
-                    return new ValidatorProvider(container => new NullValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NullValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.NotBeNull:
-                    return new ValidatorProvider(container => new NotNullValidator(errorProvider(container),
-                        isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NotNullValidator(errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context)));
                 case Must.ExistIn:
-                    return new ValidatorProvider(container => new ExistsInValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new ExistsInValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.NotExistIn:
-                    return new ValidatorProvider(container => new NotExistsInValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NotExistsInValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.MatchPattern:
-                    return new ValidatorProvider(container => new MatchPatternValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new MatchPatternValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 case Must.NotMatchPattern:
-                    return new ValidatorProvider(container => new NotMatchPatternValidator(argumentProvider(container),
-                        errorProvider(container), isEnforcedProvider(container), GetConverter(container)));
+                    return new ValidatorProvider(context => new NotMatchPatternValidator(argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context)));
                 default:
                     throw new ArgumentException("Invalid validator condition.", nameof(attribute));
             }
@@ -432,16 +431,16 @@ namespace MaterialForms.Wpf
 
         private class ValidatorProvider : IValidatorProvider
         {
-            private readonly Func<FrameworkElement, ValidationRule> func;
+            private readonly Func<IResourceContext, ValidationRule> func;
 
-            public ValidatorProvider(Func<FrameworkElement, ValidationRule> func)
+            public ValidatorProvider(Func<IResourceContext, ValidationRule> func)
             {
                 this.func = func;
             }
 
-            public ValidationRule GetValidator(FrameworkElement container)
+            public ValidationRule GetValidator(IResourceContext context)
             {
-                return func(container);
+                return func(context);
             }
         }
 

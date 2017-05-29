@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources.ValueConverters;
 
@@ -36,18 +35,16 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract bool Equals(Resource other);
 
-        public abstract BindingBase ProvideBinding(FrameworkElement container);
+        public abstract BindingBase ProvideBinding(IResourceContext context);
 
-        public virtual object ProvideValue(FrameworkElement container) => ProvideBinding(container);
+        public virtual object ProvideValue(IResourceContext context) => ProvideBinding(context);
 
-        public abstract Resource Rewrap(string valueConverter);
-
-        protected IValueConverter GetValueConverter(FrameworkElement container)
+        protected IValueConverter GetValueConverter(IResourceContext context)
         {
-            return GetValueConverter(container, ValueConverter);
+            return GetValueConverter(context, ValueConverter);
         }
 
-        protected internal static IValueConverter GetValueConverter(FrameworkElement container, string valueConverter)
+        protected internal static IValueConverter GetValueConverter(IResourceContext context, string valueConverter)
         {
             if (string.IsNullOrEmpty(valueConverter))
             {
@@ -59,7 +56,7 @@ namespace MaterialForms.Wpf.Resources
                 return c;
             }
 
-            if (container != null && container.TryFindResource(valueConverter) is IValueConverter converter)
+            if (context != null && context.TryFindResource(valueConverter) is IValueConverter converter)
             {
                 return converter;
             }
@@ -89,7 +86,7 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract override int GetHashCode();
 
-        protected static string FormatPath(string path)
+        public static string FormatPath(string path)
         {
             if (string.IsNullOrEmpty(path))
             {

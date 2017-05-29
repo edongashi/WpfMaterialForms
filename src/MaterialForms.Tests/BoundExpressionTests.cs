@@ -1,19 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Data;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MaterialForms.Tests
 {
-    public class DummyForm : FrameworkElement, IDynamicForm
+    public class DummyForm : IDynamicForm, INotifyPropertyChanged
     {
-        public object Model { get; set; }
+        private object value;
+        private object context;
+        private object model;
 
-        public object Context { get; set; }
+        public object Model
+        {
+            get => model;
+            set
+            {
+                model = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public object Value { get; set; }
+        public object Context
+        {
+            get => context;
+            set
+            {
+                context = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public object Value
+        {
+            get => value;
+            set
+            {
+                this.value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class DummyFormContext : IResourceContext
+    {
+        private readonly DummyForm form;
+
+        public DummyFormContext(DummyForm form)
+        {
+            this.form = form;
+        }
+
+        public Binding CreateModelBinding(string path)
+        {
+            return new Binding(nameof(form.Value) + Resource.FormatPath(path))
+            {
+                Source = form
+            };
+        }
+
+        public Binding CreateContextBinding(string path)
+        {
+            return new Binding(nameof(form.Context) + Resource.FormatPath(path))
+            {
+                Source = form
+            };
+        }
+
+        public object TryFindResource(object key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object FindResource(object key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddResource(object key, object value)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [TestClass]
@@ -150,24 +228,24 @@ namespace MaterialForms.Tests
         [TestMethod]
         public void TestGetValueSingleResource()
         {
-            var form = new DummyForm
+            var context = new DummyFormContext(new DummyForm
             {
                 Value = new List<int> { 1, 2, 3 },
                 Context = new List<int> { 1, 2, 3, 4, 5 }
-            };
+            });
 
             var expression1 = BoundExpression.Parse("{Binding Count} items.");
             var expression2 = BoundExpression.Parse("{Property Count} items.");
             var expression3 = BoundExpression.Parse("{ContextBinding Count} items.");
             var expression4 = BoundExpression.Parse("{ContextProperty Count} items.");
-            var value1 = expression1.GetValue(form).Value;
-            var value2 = expression2.GetValue(form).Value;
-            var value3 = expression3.GetValue(form).Value;
-            var value4 = expression4.GetValue(form).Value;
-            var string1 = expression1.GetStringValue(form).Value;
-            var string2 = expression2.GetStringValue(form).Value;
-            var string3 = expression3.GetStringValue(form).Value;
-            var string4 = expression4.GetStringValue(form).Value;
+            var value1 = expression1.GetValue(context).Value;
+            var value2 = expression2.GetValue(context).Value;
+            var value3 = expression3.GetValue(context).Value;
+            var value4 = expression4.GetValue(context).Value;
+            var string1 = expression1.GetStringValue(context).Value;
+            var string2 = expression2.GetStringValue(context).Value;
+            var string3 = expression3.GetStringValue(context).Value;
+            var string4 = expression4.GetStringValue(context).Value;
             Assert.AreEqual(3, value1);
             Assert.AreEqual(3, value2);
             Assert.AreEqual(5, value3);
@@ -178,22 +256,22 @@ namespace MaterialForms.Tests
             Assert.AreEqual("5 items.", string4);
 
             var expression = BoundExpression.Parse("{Binding Count}");
-            Assert.AreEqual(3, expression.GetValue(form).Value);
-            Assert.AreEqual("3", expression.GetStringValue(form).Value);
+            Assert.AreEqual(3, expression.GetValue(context).Value);
+            Assert.AreEqual("3", expression.GetStringValue(context).Value);
         }
 
         [TestMethod]
         public void TestGetValueMultipleResources()
         {
-            var form = new DummyForm
+            var context = new DummyFormContext(new DummyForm
             {
                 Value = new List<int> { 1, 2, 3 },
                 Context = new List<int> { 1, 2, 3, 4, 5 }
-            };
+            });
 
             var expression = BoundExpression.Parse("{Binding Count} items from {ContextBinding Count}.");
-            Assert.IsNull(expression.GetValue(form).Value);
-            Assert.AreEqual("3 items from 5.", expression.GetStringValue(form).Value);
+            Assert.IsNull(expression.GetValue(context).Value);
+            Assert.AreEqual("3 items from 5.", expression.GetStringValue(context).Value);
         }
 
         [TestMethod]
@@ -260,20 +338,20 @@ namespace MaterialForms.Tests
         [TestMethod]
         public void TestValueConverters()
         {
-            var form = new DummyForm
+            var context = new DummyFormContext(new DummyForm
             {
                 Value = new Model
                 {
                     Name = "Test"
                 },
                 Context = new List<int> { 1, 2, 3, 4, 5 }
-            };
+            });
 
             var expression =
                 BoundExpression.Parse(
                     "Default: {Binding Name}, Uppercase: {Binding Name|ToUpper}, Lowercase: {Binding Name|ToLower}");
 
-            var str = expression.GetStringValue(form).Value;
+            var str = expression.GetStringValue(context).Value;
             Assert.AreEqual("Default: Test, Uppercase: TEST, Lowercase: test", str);
 
             expression = BoundExpression.Parse("{Binding Name|ToUpper}");

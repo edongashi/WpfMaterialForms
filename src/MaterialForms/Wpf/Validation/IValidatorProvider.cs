@@ -1,10 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Validation
 {
     public interface IValidatorProvider
     {
-        ValidationRule GetValidator(FrameworkElement container);
+        ValidationRule GetValidator(IResourceContext context);
     }
 }

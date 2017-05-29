@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
@@ -66,17 +65,17 @@ namespace MaterialForms.Wpf.Resources
             return this;
         }
 
-        public BindingBase ProvideBinding(FrameworkElement container)
+        public BindingBase ProvideBinding(IResourceContext context)
         {
             if (Resources == null || Resources.Count == 0)
             {
-                return new LiteralValue(StringFormat).ProvideBinding(container);
+                return new LiteralValue(StringFormat).ProvideBinding(context);
             }
 
             if (Resources.Count == 1)
             {
                 var resource = Resources[0];
-                var binding = resource.ProvideBinding(container);
+                var binding = resource.ProvideBinding(context);
                 if (StringFormat != null)
                 {
                     binding.StringFormat = StringFormat;
@@ -90,7 +89,7 @@ namespace MaterialForms.Wpf.Resources
                 StringFormat = StringFormat
             };
 
-            foreach (var binding in Resources.Select(resource => resource.ProvideBinding(container)))
+            foreach (var binding in Resources.Select(resource => resource.ProvideBinding(context)))
             {
                 multiBinding.Bindings.Add(binding);
             }
@@ -98,14 +97,14 @@ namespace MaterialForms.Wpf.Resources
             return multiBinding;
         }
 
-        public object ProvideValue(FrameworkElement container)
+        public object ProvideValue(IResourceContext context)
         {
             if (Resources == null || Resources.Count == 0)
             {
                 return StringFormat;
             }
 
-            return ProvideBinding(container);
+            return ProvideBinding(context);
         }
 
         public static BoundExpression Parse(string expression)
@@ -144,7 +143,7 @@ namespace MaterialForms.Wpf.Resources
                     {
                         case IProxy proxy:
                             return new ProxyResource(proxy, path, oneTimeBinding, converter);
-                        case Func<FrameworkElement, IProxy> lazyProxy:
+                        case Func<IResourceContext, IProxy> lazyProxy:
                             return new DeferredProxyResource(lazyProxy, path, oneTimeBinding, converter);
                         case IValueProvider _:
                             throw new InvalidOperationException("Cannot use nested paths for a resource.");
@@ -157,7 +156,7 @@ namespace MaterialForms.Wpf.Resources
                 {
                     case IProxy proxy:
                         return new ProxyResource(proxy, null, oneTimeBinding, converter);
-                    case Func<FrameworkElement, IProxy> lazyProxy:
+                    case Func<IResourceContext, IProxy> lazyProxy:
                         return new DeferredProxyResource(lazyProxy, null, oneTimeBinding, converter);
                     case IValueProvider valueProvider:
                         return valueProvider.Wrap(converter);

@@ -1,5 +1,4 @@
 using System;
-using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
@@ -21,19 +20,14 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => false;
 
-        public override BindingBase ProvideBinding(FrameworkElement container)
+        public override BindingBase ProvideBinding(IResourceContext context)
         {
             return new Binding
             {
-                Source = container.FindResource(ResourceKey),
-                Converter = GetValueConverter(container),
+                Source = context.FindResource(ResourceKey),
+                Converter = GetValueConverter(context),
                 Mode = BindingMode.OneTime
             };
-        }
-
-        public override Resource Rewrap(string valueConverter)
-        {
-            return new StaticResource(ResourceKey, valueConverter);
         }
 
         public override bool Equals(Resource other)

@@ -22,23 +22,18 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => true;
 
-        public override BindingBase ProvideBinding(FrameworkElement container)
+        public override BindingBase ProvideBinding(IResourceContext context)
         {
             var key = new DynamicResourceKey(ResourceKey);
-            if (container.TryFindResource(key) is BindingProxy proxy)
+            if (context.TryFindResource(key) is BindingProxy proxy)
             {
-                return CreateBinding(container, proxy);
+                return CreateBinding(context, proxy);
             }
 
             proxy = new BindingProxy();
-            container.Resources.Add(key, proxy);
-            proxy.Value = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(container));
-            return CreateBinding(container, proxy);
-        }
-
-        public override Resource Rewrap(string valueConverter)
-        {
-            return new DynamicResource(ResourceKey, valueConverter);
+            context.AddResource(key, proxy);
+            proxy.Value = new DynamicResourceExtension(ResourceKey).ProvideValue(new Target(context));
+            return CreateBinding(context, proxy);
         }
 
         public override bool Equals(Resource other)
@@ -56,13 +51,13 @@ namespace MaterialForms.Wpf.Resources
             return ResourceKey.GetHashCode();
         }
 
-        private Binding CreateBinding(FrameworkElement element, BindingProxy proxy)
+        private Binding CreateBinding(IResourceContext context, BindingProxy proxy)
         {
             return new Binding
             {
                 Source = proxy,
                 Path = new PropertyPath(BindingProxy.ValueProperty),
-                Converter = GetValueConverter(element),
+                Converter = GetValueConverter(context),
                 Mode = BindingMode.OneWay
             };
         }

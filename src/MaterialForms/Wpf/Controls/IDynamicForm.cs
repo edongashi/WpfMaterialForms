@@ -1,4 +1,6 @@
-﻿namespace MaterialForms.Wpf.Controls
+﻿using System.Windows;
+
+namespace MaterialForms.Wpf.Controls
 {
     public interface IDynamicForm
     {

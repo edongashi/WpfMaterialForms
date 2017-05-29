@@ -1,4 +1,3 @@
-using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
@@ -23,20 +22,12 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => !OneTimeBinding;
 
-        public override BindingBase ProvideBinding(FrameworkElement container)
+        public override BindingBase ProvideBinding(IResourceContext context)
         {
-            var path = FormatPath(PropertyPath);
-            return new Binding(nameof(Controls.DynamicForm.Context) + path)
-            {
-                Source = container,
-                Converter = GetValueConverter(container),
-                Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay
-            };
-        }
-
-        public override Resource Rewrap(string valueConverter)
-        {
-            return new ContextPropertyBinding(PropertyPath, OneTimeBinding, valueConverter);
+            var binding = context.CreateContextBinding(PropertyPath);
+            binding.Converter = GetValueConverter(context);
+            binding.Mode = OneTimeBinding ? BindingMode.OneTime : BindingMode.OneWay;
+            return binding;
         }
 
         public override bool Equals(Resource other)

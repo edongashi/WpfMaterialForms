@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Data;
 using MaterialForms.Wpf.Validation;
 
@@ -33,27 +32,17 @@ namespace MaterialForms.Wpf.Resources
 
         public override bool IsDynamic => true;
 
-        public override BindingBase ProvideBinding(FrameworkElement container)
+        public override BindingBase ProvideBinding(IResourceContext context)
         {
-            var path = FormatPath(PropertyPath);
-            var binding =  new Binding(nameof(Controls.DynamicForm.Value) + path)
-            {
-                Source = container,
-                Converter = GetValueConverter(container),
-                Mode = BindingMode
-            };
-
+            var binding = context.CreateModelBinding(PropertyPath);
+            binding.Converter = GetValueConverter(context);
+            binding.Mode = BindingMode;
             foreach (var validatorProvider in ValidationRules)
             {
-                binding.ValidationRules.Add(validatorProvider.GetValidator(container));
+                binding.ValidationRules.Add(validatorProvider.GetValidator(context));
             }
 
             return binding;
-        }
-
-        public override Resource Rewrap(string valueConverter)
-        {
-            return new DataBinding(PropertyPath, BindingMode, ValidationRules, valueConverter);
         }
 
         public override bool Equals(Resource other)
