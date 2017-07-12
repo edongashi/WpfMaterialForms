@@ -14,5 +14,7 @@ namespace MaterialForms.Wpf.Annotations
         public object Icon { get; set; }
 
         public object IsReadOnly { get; set; }
+
+        public object DefaultValue { get; set; }
     }
 }

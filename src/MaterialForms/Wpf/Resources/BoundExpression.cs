@@ -107,6 +107,21 @@ namespace MaterialForms.Wpf.Resources
             return ProvideBinding(context);
         }
 
+        public IValueProvider Simplified()
+        {
+            if (IsPlainString)
+            {
+                return new LiteralValue(StringFormat);
+            }
+
+            if (IsSingleResource)
+            {
+                return Resources[0];
+            }
+
+            return this;
+        }
+
         public static BoundExpression Parse(string expression)
         {
             return Parse(expression, contextualResource: null);

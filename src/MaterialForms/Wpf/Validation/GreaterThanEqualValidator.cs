@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -7,8 +8,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class GreaterThanEqualValidator : ComparisonValidator
     {
-        public GreaterThanEqualValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
-            : base(argument, errorProvider, isEnforced, valueConverter)
+        public GreaterThanEqualValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+            IValueConverter valueConverter, ValidationStep validationStep, bool validatesOnTargetUpdated)
+            : base(argument, errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
         {
         }
 

@@ -20,6 +20,10 @@ namespace MaterialForms.Wpf.Resources
 
         public string BasePath { get; }
 
+        public object GetModelInstance() => Form.Value;
+
+        public object GetContextInstance() => Form.Context;
+
         public Binding CreateModelBinding(string path)
         {
             return new Binding(nameof(Form.Value) + BasePath + Resource.FormatPath(path))

@@ -33,6 +33,16 @@ namespace MaterialForms.Wpf.Fields
         public IValueProvider Icon { get; set; }
 
         /// <summary>
+        /// Gets or sets the default value for this field.
+        /// </summary>
+        public IValueProvider DefaultValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider for the read only flag.
+        /// </summary>
+        public IValueProvider IsReadOnly { get; set; }
+
+        /// <summary>
         /// Finalizes the field state by adding all appropriate values as resources.
         /// Changing properties after this method has been called is strongly discouraged.
         /// </summary>
@@ -42,6 +52,8 @@ namespace MaterialForms.Wpf.Fields
             Resources.Add(nameof(Name), Name ?? LiteralValue.Null);
             Resources.Add(nameof(ToolTip), ToolTip ?? LiteralValue.Null);
             Resources.Add(nameof(Icon), Icon ?? LiteralValue.Null);
+            Resources.Add(nameof(DefaultValue), DefaultValue ?? LiteralValue.Null);
+            Resources.Add(nameof(IsReadOnly), IsReadOnly ?? LiteralValue.False);
         }
     }
 }

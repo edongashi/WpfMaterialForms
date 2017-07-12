@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 
 namespace MaterialForms.Wpf.Annotations
 {
@@ -31,6 +32,8 @@ namespace MaterialForms.Wpf.Annotations
             Condition = condition;
             Argument = argument;
             HasValue = hasValue;
+            ValidationStep = ValidationStep.RawProposedValue;
+            ValidatesOnTargetUpdated = false;
         }
 
         public string Converter { get; }
@@ -44,5 +47,9 @@ namespace MaterialForms.Wpf.Annotations
         public string Message { get; set; }
 
         public object When { get; set; }
+
+        public ValidationStep ValidationStep { get; set; }
+
+        public bool ValidatesOnTargetUpdated { get; set; }
     }
 }

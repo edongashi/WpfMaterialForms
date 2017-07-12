@@ -40,6 +40,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FastMember.1.1.0\lib\net40\FastMember.dll</HintPath>
+    </Reference>
     <Reference Include="Humanizer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
     </Reference>
@@ -140,23 +143,31 @@
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
+    <Compile Include="Wpf\Annotations\FieldTypeAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\GroupAttribute.cs" />
+    <Compile Include="Wpf\Annotations\HeadingAttribute.cs" />
     <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
-    <Compile Include="Wpf\Controls\FormBindingExtension.cs" />
+    <Compile Include="Wpf\Fields\FormBindingExtension.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
     <Compile Include="Wpf\Fields\DataFormField.cs" />
     <Compile Include="Wpf\Fields\FormElement.cs" />
     <Compile Include="Wpf\Fields\IBindingProvider.cs" />
-    <Compile Include="Wpf\Fields\StringField.cs" />
-    <Compile Include="Wpf\FormDefinition\BindingProvider.cs" />
+    <Compile Include="Wpf\Fields\Implementations\SelectionField.cs" />
+    <Compile Include="Wpf\Fields\Implementations\StringField.cs" />
+    <Compile Include="Wpf\Fields\BindingProvider.cs" />
+    <Compile Include="Wpf\FormBuilder\Fluent.cs" />
+    <Compile Include="Wpf\Models\Model.cs" />
+    <Compile Include="Wpf\Models\Snapshot.cs" />
+    <Compile Include="Wpf\Models\ModelState.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />
     <Compile Include="Wpf\Resources\DeferredProxyResource.cs" />
+    <Compile Include="Wpf\Resources\EnumerableValueProvider.cs" />
     <Compile Include="Wpf\Resources\FormResourceContext.cs" />
     <Compile Include="Wpf\Resources\IProxy.cs" />
     <Compile Include="Wpf\Resources\IResourceContext.cs" />
@@ -170,6 +181,7 @@
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
     <Compile Include="Wpf\Validation\IErrorStringProvider.cs" />
     <Compile Include="Wpf\Validation\IValidatorProvider.cs" />
+    <Compile Include="Wpf\Validation\MethodInvocationValidator.cs" />
     <Compile Include="Wpf\Validation\NotExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\ExistsInValidator.cs" />
     <Compile Include="Wpf\Validation\NotNullValidator.cs" />
@@ -191,7 +203,7 @@
     <Compile Include="Wpf\Resources\ProxyResource.cs" />
     <Compile Include="Wpf\Resources\Resource.cs" />
     <Compile Include="Wpf\Resources\StaticResource.cs" />
-    <Compile Include="Wpf\FormDefinition\SelectionType.cs" />
+    <Compile Include="Wpf\Annotations\SelectionType.cs" />
     <Compile Include="Wpf\Controls\DynamicForm.cs" />
     <Compile Include="Old\PasswordHelpers.cs" />
     <Compile Include="Old\ProgressBarSmoother.cs" />
@@ -225,7 +237,7 @@
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wpf\Resources\BindingProxy.cs" />
-    <Compile Include="Wpf\FormDefinition\FormBuilder.cs" />
+    <Compile Include="Wpf\FormBuilder\FormBuilder.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsNotEmptyConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsEmptyConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsNotNullConverter.cs" />
@@ -240,6 +252,7 @@
     <Compile Include="Wpf\Validation\FalseValidator.cs" />
     <Compile Include="Wpf\Validation\NotMatchPatternValidator.cs" />
     <Compile Include="Wpf\Validation\MatchPatternValidator.cs" />
+    <Compile Include="Wpf\Validation\ValidationContext.cs" />
     <Compile Include="Wpf\Validation\TrueValidator.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>

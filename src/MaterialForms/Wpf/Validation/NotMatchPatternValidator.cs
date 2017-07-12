@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -7,7 +8,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class NotMatchPatternValidator : ComparisonValidator
     {
-        public NotMatchPatternValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter) : base(argument, errorProvider, isEnforced, valueConverter)
+        public NotMatchPatternValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+            IValueConverter valueConverter, ValidationStep validationStep, bool validatesOnTargetUpdated)
+            : base(argument, errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
         {
         }
 

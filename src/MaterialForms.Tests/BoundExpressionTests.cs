@@ -62,6 +62,10 @@ namespace MaterialForms.Tests
             this.form = form;
         }
 
+        public object GetModelInstance() => form.Value;
+
+        public object GetContextInstance() => form.Context;
+
         public Binding CreateModelBinding(string path)
         {
             return new Binding(nameof(form.Value) + Resource.FormatPath(path))

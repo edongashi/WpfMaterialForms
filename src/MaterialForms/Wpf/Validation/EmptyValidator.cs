@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -8,8 +9,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class EmptyValidator : FieldValidator
     {
-        public EmptyValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
-            : base(errorProvider, isEnforced, valueConverter)
+        public EmptyValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter,
+            ValidationStep validationStep, bool validatesOnTargetUpdated)
+            : base(errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
         {
         }
 

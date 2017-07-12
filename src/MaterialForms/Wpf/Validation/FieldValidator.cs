@@ -7,18 +7,20 @@ namespace MaterialForms.Wpf.Validation
 {
     public abstract class FieldValidator : ValidationRule
     {
-        public IValueConverter ValueConverter { get; }
-
-        public IErrorStringProvider ErrorProvider { get; }
-
-        public IBoolProxy IsEnforced { get; }
-
-        protected FieldValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
+        protected FieldValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+            IValueConverter valueConverter, ValidationStep validationStep, bool validatesOnTargetUpdated)
+            : base(validationStep, validatesOnTargetUpdated)
         {
             ErrorProvider = errorProvider;
             ValueConverter = valueConverter;
             IsEnforced = isEnforced;
         }
+
+        public IValueConverter ValueConverter { get; }
+
+        public IErrorStringProvider ErrorProvider { get; }
+
+        public IBoolProxy IsEnforced { get; }
 
         public sealed override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

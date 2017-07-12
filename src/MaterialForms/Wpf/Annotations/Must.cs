@@ -87,6 +87,21 @@
         /// <summary>
         /// Property must not match a regex pattern.
         /// </summary>
-        NotMatchPattern
+        NotMatchPattern,
+
+        /// <summary>
+        /// Property value must satisfy model method.
+        /// </summary>
+        SatisfyMethod,
+
+        /// <summary>
+        /// Property value must satisfy context method.
+        /// </summary>
+        SatisfyContextMethod,
+
+        /// <summary>
+        /// Property value must satisfy static method. Name must be fully qualified. 
+        /// </summary>
+        SatisfyStaticMethod
     }
 }

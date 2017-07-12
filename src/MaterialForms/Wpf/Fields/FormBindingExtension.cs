@@ -3,10 +3,12 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using MaterialForms.Wpf.Fields;
 
-namespace MaterialForms.Wpf.Controls
+namespace MaterialForms.Wpf.Fields
 {
+    /// <summary>
+    /// Markup extension for creating deferred bindings.
+    /// </summary>
     public class FormBindingExtension : MarkupExtension
     {
         [ConstructorArgument("name")]

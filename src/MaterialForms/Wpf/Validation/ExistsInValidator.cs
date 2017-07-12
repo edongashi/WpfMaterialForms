@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -8,8 +9,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class ExistsInValidator : ComparisonValidator
     {
-        public ExistsInValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter)
-            : base(argument, errorProvider, isEnforced, valueConverter)
+        public ExistsInValidator(IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+            IValueConverter valueConverter, ValidationStep validationStep, bool validatesOnTargetUpdated)
+            : base(argument, errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
         {
         }
 

@@ -2,8 +2,7 @@ using System;
 
 namespace MaterialForms.Wpf.Annotations
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class SelectFromAttribute : Attribute
+    public sealed class SelectFromAttribute : FieldTypeAttribute
     {
         public SelectFromAttribute(object itemsSource)
         {
@@ -18,6 +17,6 @@ namespace MaterialForms.Wpf.Annotations
 
         public string ItemStringFormat { get; set; }
 
-        public SelectionType Type { get; set; }
+        public object SelectionType { get; set; }
     }
 }

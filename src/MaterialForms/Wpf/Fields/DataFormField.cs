@@ -6,6 +6,9 @@ using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Fields
 {
+    /// <summary>
+    /// Abstract base class for all input fields.
+    /// </summary>
     public abstract class DataFormField : FormField
     {
         protected DataFormField(string key)

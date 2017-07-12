@@ -15,6 +15,8 @@ namespace MaterialForms.Wpf.Resources
                 typeof(BindingProxy),
                 new UIPropertyMetadata(null));
 
+        public object Key { get; set; }
+
         public object Value
         {
             get => GetValue(ValueProperty);
