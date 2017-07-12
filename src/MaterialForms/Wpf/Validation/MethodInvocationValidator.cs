@@ -8,9 +8,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class MethodInvocationValidator : FieldValidator
     {
-        private readonly Func<object, CultureInfo, bool> method;
+        private readonly Func<object, CultureInfo, ValidationStep, bool> method;
 
-        public MethodInvocationValidator(Func<object, CultureInfo, bool> method, IErrorStringProvider errorProvider,
+        public MethodInvocationValidator(Func<object, CultureInfo, ValidationStep, bool> method, IErrorStringProvider errorProvider,
             IBoolProxy isEnforced, IValueConverter valueConverter, ValidationStep validationStep, bool validatesOnTargetUpdated)
             : base(errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
         {
@@ -19,7 +19,7 @@ namespace MaterialForms.Wpf.Validation
 
         protected override bool ValidateValue(object value, CultureInfo cultureInfo)
         {
-            return method(value, cultureInfo);
+            return method(value, cultureInfo, ValidationStep);
         }
     }
 }

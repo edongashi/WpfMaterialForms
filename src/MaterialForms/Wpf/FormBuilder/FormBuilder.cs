@@ -129,13 +129,13 @@ namespace MaterialForms.Wpf
             return formDefinition;
         }
 
-        private List<FormElement> GetFormElements(Type type, bool optIn)
+        private List<FormElement> GetFormElements(Type modelType, bool optIn)
         {
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var elements = new List<FormElement>();
             foreach (var property in properties)
             {
-                var element = GetFieldElement(property, optIn);
+                var element = GetFieldElement(modelType, property, optIn);
                 if (element != null)
                 {
                     elements.Add(element);
@@ -145,7 +145,7 @@ namespace MaterialForms.Wpf
             return elements;
         }
 
-        private FormElement GetFieldElement(PropertyInfo propertyInfo, bool optIn)
+        private FormElement GetFieldElement(Type modelType, PropertyInfo propertyInfo, bool optIn)
         {
             var type = propertyInfo.PropertyType;
             var add = !optIn;
@@ -172,7 +172,7 @@ namespace MaterialForms.Wpf
 
             if (selectFrom != null)
             {
-                return GetSelectionField(propertyInfo, selectFrom);
+                return GetSelectionField(modelType, propertyInfo, selectFrom);
             }
             if (fieldFactories.TryGetValue(type, out var factory))
             {
@@ -182,11 +182,11 @@ namespace MaterialForms.Wpf
             return null;
         }
 
-        private FormElement GetSelectionField(PropertyInfo propertyInfo, SelectFromAttribute selectFrom)
+        private FormElement GetSelectionField(Type modelType, PropertyInfo propertyInfo, SelectFromAttribute selectFrom)
         {
             var type = propertyInfo.PropertyType;
             var field = new SelectionField(propertyInfo.Name);
-            InitializeField(field, propertyInfo, null);
+            InitializeField(modelType, field, propertyInfo, null);
             if (selectFrom.DisplayPath != null)
             {
                 field.DisplayPath = BoundExpression.Parse(selectFrom.DisplayPath).Simplified();
@@ -258,10 +258,9 @@ namespace MaterialForms.Wpf
 
         private void LoadDefaultFactories()
         {
-            fieldFactories[typeof(string)] = DefaultFields.GetStringField;
         }
 
-        private void InitializeField(FormElement element, PropertyInfo propertyInfo,
+        private void InitializeField(Type modelType, FormElement element, PropertyInfo propertyInfo,
             Action<Attribute> attributeInitializer)
         {
             var type = propertyInfo.PropertyType;
@@ -284,7 +283,7 @@ namespace MaterialForms.Wpf
                     case ValueAttribute attr:
                         if (element is DataFormField dataField)
                         {
-                            dataField.Validators.Add(CreateValidator(dataField.Key, type, attr));
+                            dataField.Validators.Add(CreateValidator(modelType, dataField.Key, type, attr));
                         }
                         break;
                     default:
@@ -298,7 +297,7 @@ namespace MaterialForms.Wpf
 
         #region Resources
 
-        private IValueProvider GetResource<T>(object value, object defaultValue)
+        private static IValueProvider GetResource<T>(object value, object defaultValue)
         {
             if (value == null)
             {
@@ -328,21 +327,16 @@ namespace MaterialForms.Wpf
                 nameof(value));
         }
 
-        private IValueProvider GetStringResource(string expression)
+        private static IValueProvider GetStringResource(string expression)
         {
-            if (expression == null)
-            {
-                return new LiteralValue(null);
-            }
-
-            return BoundExpression.Parse(expression).Simplified();
+            return expression == null ? new LiteralValue(null) : BoundExpression.Parse(expression).Simplified();
         }
 
         #endregion
 
         #region Validators
 
-        private IValidatorProvider CreateValidator(string propertyKey, Type propertyType, ValueAttribute attribute)
+        private IValidatorProvider CreateValidator(Type modelType, string propertyKey, Type propertyType, ValueAttribute attribute)
         {
             Func<IResourceContext, IProxy> argumentProvider;
             var argument = attribute.Argument;
@@ -550,22 +544,19 @@ namespace MaterialForms.Wpf
                     return new ValidatorProvider(context => new NotMatchPatternValidator(argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
                         validateOnTargetUpdated));
-                case Must.SatisfyMethod:
-                    var methodName = GetMethodName(attribute.Argument, propertyKey);
-                    return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetModelMethodValidator(context, methodName),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                            validateOnTargetUpdated));
                 case Must.SatisfyContextMethod:
-                    methodName = GetMethodName(attribute.Argument, propertyKey);
+                    var methodName = GetMethodName(attribute.Argument, propertyKey);
+                    var propertyName = propertyKey;
                     return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetContextMethodValidator(context, methodName),
+                        context => new MethodInvocationValidator(GetContextMethodValidator(propertyName, methodName, context),
                             errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
                             validateOnTargetUpdated));
-                case Must.SatisfyStaticMethod:
+                case Must.SatisfyMethod:
+                    var type = modelType;
                     methodName = GetMethodName(attribute.Argument, propertyKey);
+                    propertyName = propertyKey;
                     return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetStaticMethodValidator(context, methodName),
+                        context => new MethodInvocationValidator(GetModelMethodValidator(type, propertyName, methodName, context),
                             errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
                             validateOnTargetUpdated));
                 default:
@@ -585,24 +576,107 @@ namespace MaterialForms.Wpf
                 $"Validator for property {propertyKey} does not specify a valid method name. Value must be a nonempty string.");
         }
 
-        private static Func<object, CultureInfo, bool> GetModelMethodValidator(IResourceContext context, string methodName)
+        // Called on binding -> not performance critical.
+        private static Func<object, CultureInfo, ValidationStep, bool> GetModelMethodValidator(Type modelType, string propertyName, string methodName, IResourceContext context)
         {
+            var method = GetMethod(modelType, methodName);
+            if (method == null)
+            {
+                throw new InvalidOperationException(
+                    $"Type hierarchy of {modelType.FullName} does not include a static method named {methodName}.");
+            }
 
+            // Called on validation -> performance critical.
+            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            {
+                return method(new ValidationContext(
+                    context.GetModelInstance(),
+                    context.GetContextInstance(),
+                    propertyName,
+                    value,
+                    cultureInfo,
+                    validationStep));
+            }
+
+            return Validate;
         }
 
-        private static Func<object, CultureInfo, bool> GetContextMethodValidator(IResourceContext context, string methodName)
+        // Called on binding = not performance critical.
+        private static Func<object, CultureInfo, ValidationStep, bool> GetContextMethodValidator(string propertyName, string methodName, IResourceContext context)
         {
+            Type currentType = null;
+            Func<ValidationContext, bool> method = null;
 
+            // Called on validation -> performance critical.
+            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            {
+                // Context type may change in runtime. Change delegate only when necessary.
+                var contextInstance = context.GetContextInstance();
+                var contextType = contextInstance?.GetType();
+                if (contextType != currentType)
+                {
+                    method = GetMethod(contextType, methodName);
+                    currentType = contextType;
+                }
+
+                if (method == null)
+                {
+                    return true;
+                }
+
+                return method(new ValidationContext(
+                    context.GetModelInstance(),
+                    contextInstance,
+                    propertyName,
+                    value,
+                    cultureInfo,
+                    validationStep));
+            }
+
+            return Validate;
         }
 
-        private static Func<object, CultureInfo, bool> GetStaticMethodValidator(IResourceContext context, string methodName)
+        private static Func<ValidationContext, bool> GetMethod(Type type, string methodName)
         {
+            var delegateType = typeof(Func<ValidationContext, bool>);
+            bool IsMatch(MethodInfo methodInfo)
+            {
+                if (methodInfo.Name != methodName)
+                {
+                    return false;
+                }
 
-        }
+                if (methodInfo.ReturnType != typeof(bool))
+                {
+                    return false;
+                }
 
-        private static Func<object, CultureInfo, bool> GetObjectMethod(object obj, string methodName)
-        {
-            return null;
+                var parameters = methodInfo.GetParameters();
+                if (parameters.Length != 1)
+                {
+                    return false;
+                }
+
+                return parameters[0].ParameterType == typeof(ValidationContext);
+            }
+
+            var method = type
+                .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy)
+                .FirstOrDefault(IsMatch);
+
+            if (method == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return (Func<ValidationContext, bool>)Delegate.CreateDelegate(delegateType, method);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private class ValidatorProvider : IValidatorProvider

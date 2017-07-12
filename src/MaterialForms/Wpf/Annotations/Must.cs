@@ -1,4 +1,6 @@
-﻿namespace MaterialForms.Wpf.Annotations
+﻿using MaterialForms.Wpf.Validation;
+
+namespace MaterialForms.Wpf.Annotations
 {
     /// <summary>
     /// Specifies validation type.
@@ -90,18 +92,15 @@
         NotMatchPattern,
 
         /// <summary>
-        /// Property value must satisfy model method.
+        /// Property value must satisfy model's static method of signature: public static bool &lt;Argument&gt;(<see cref="ValidationContext"/> context).
+        /// Throws if no such method is found.
         /// </summary>
         SatisfyMethod,
 
         /// <summary>
-        /// Property value must satisfy context method.
+        /// Property value must satisfy context's static method of signature: public static bool &lt;Argument&gt;(<see cref="ValidationContext"/> context).
+        /// Does nothing if no such method is found.
         /// </summary>
-        SatisfyContextMethod,
-
-        /// <summary>
-        /// Property value must satisfy static method. Name must be fully qualified. 
-        /// </summary>
-        SatisfyStaticMethod
+        SatisfyContextMethod
     }
 }
