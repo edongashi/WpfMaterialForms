@@ -2,7 +2,7 @@
 using System.Reflection;
 using MaterialForms.Wpf.Fields;
 
-namespace MaterialForms.Wpf
+namespace MaterialForms.Wpf.FormBuilding
 {
     internal class PropertyContext
     {

@@ -13,7 +13,7 @@ using MaterialForms.Wpf.Fields.Implementations;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
 
-namespace MaterialForms.Wpf
+namespace MaterialForms.Wpf.FormBuilding
 {
     public class FormBuilder
     {
@@ -63,8 +63,7 @@ namespace MaterialForms.Wpf
                 throw new ArgumentNullException(nameof(type));
             }
 
-            FormDefinition formDefinition;
-            if (cachedDefinitions.TryGetValue(type, out formDefinition))
+            if (cachedDefinitions.TryGetValue(type, out var formDefinition))
             {
                 return formDefinition;
             }
@@ -77,7 +76,7 @@ namespace MaterialForms.Wpf
         private FormDefinition BuildDefinition(Type type)
         {
             var formDefinition = new FormDefinition(type);
-            var optIn = false;
+            var mode = DefaultFields.AllExcludingReadonly;
             foreach (var attribute in type.GetCustomAttributes())
             {
                 switch (attribute)
@@ -87,35 +86,8 @@ namespace MaterialForms.Wpf
                             ? (IValueProvider)BoundExpression.Parse(expr)
                             : new LiteralValue(resource.Value));
                         break;
-                    case MessagesAttribute messages:
-                        if (messages.Title != null)
-                        {
-                            formDefinition.TitleMessage = BoundExpression.Parse(messages.Title);
-                        }
-
-                        if (messages.Create != null)
-                        {
-                            formDefinition.CreateMessage = BoundExpression.Parse(messages.Create);
-                        }
-
-                        if (messages.Delete != null)
-                        {
-                            formDefinition.DeleteMessage = BoundExpression.Parse(messages.Delete);
-                        }
-
-                        if (messages.Details != null)
-                        {
-                            formDefinition.DetailsMessage = BoundExpression.Parse(messages.Details);
-                        }
-
-                        if (messages.Edit != null)
-                        {
-                            formDefinition.EditMessage = BoundExpression.Parse(messages.Edit);
-                        }
-
-                        break;
                     case FormAttribute form:
-                        optIn = form.FieldGeneration == FieldGeneration.OptIn;
+                        mode = form.Mode;
                         break;
                 }
             }
@@ -125,8 +97,15 @@ namespace MaterialForms.Wpf
                 formDefinition.TitleMessage = new LiteralValue(type.Name.Humanize());
             }
 
-            formDefinition.FormElements = GetFormElements(type, optIn);
+            var properties = TypeUtilities.GetProperties(type, mode);
             return formDefinition;
+        }
+
+        public string Test { get; set; }
+
+        private List<FormElement> GetFormElements(Type type, PropertyInfo property)
+        {
+            throw new NotImplementedException();
         }
 
         private List<FormElement> GetFormElements(Type modelType, bool optIn)
@@ -285,6 +264,7 @@ namespace MaterialForms.Wpf
                         {
                             dataField.Validators.Add(CreateValidator(modelType, dataField.Key, type, attr));
                         }
+
                         break;
                     default:
                         attributeInitializer?.Invoke(attribute);

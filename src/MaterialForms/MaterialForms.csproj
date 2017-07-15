@@ -140,17 +140,16 @@
     <Compile Include="Old\Extensions\InitializerExtensions.cs" />
     <Compile Include="Old\IViewProvider.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Wpf\Annotations\DefaultFields.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\FieldTypeAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
-    <Compile Include="Wpf\Annotations\GroupAttribute.cs" />
-    <Compile Include="Wpf\Annotations\HeadingAttribute.cs" />
-    <Compile Include="Wpf\Annotations\MessagesAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
+    <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
     <Compile Include="Wpf\Fields\FormBindingExtension.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
@@ -160,7 +159,9 @@
     <Compile Include="Wpf\Fields\Implementations\SelectionField.cs" />
     <Compile Include="Wpf\Fields\Implementations\StringField.cs" />
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
-    <Compile Include="Wpf\FormBuilder\Fluent.cs" />
+    <Compile Include="Wpf\FormBuilding\Fluent.cs" />
+    <Compile Include="Wpf\FormBuilding\TypeUtilities.cs" />
+    <Compile Include="Wpf\FormContext.cs" />
     <Compile Include="Wpf\Models\Model.cs" />
     <Compile Include="Wpf\Models\Snapshot.cs" />
     <Compile Include="Wpf\Models\ModelState.cs" />
@@ -237,7 +238,7 @@
       <DependentUpon>FormView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wpf\Resources\BindingProxy.cs" />
-    <Compile Include="Wpf\FormBuilder\FormBuilder.cs" />
+    <Compile Include="Wpf\FormBuilding\FormBuilder.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsNotEmptyConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsEmptyConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\IsNotNullConverter.cs" />

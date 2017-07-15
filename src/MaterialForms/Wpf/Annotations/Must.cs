@@ -39,15 +39,15 @@ namespace MaterialForms.Wpf.Annotations
 
         /// <summary>
         /// Property must be empty.
-        /// A string is empty if it's null or has length 0.
-        /// A collection is empty if it's null or has 0 elements.
+        /// A string is empty if it is null or has length 0.
+        /// A collection is empty if it is null or has 0 elements.
         /// </summary>
         BeEmpty,
 
         /// <summary>
         /// Property must not be empty.
-        /// A string is empty if it's null or has length 0.
-        /// A collection is empty if it's null or has 0 elements.
+        /// A string is empty if it is null or has length 0.
+        /// A collection is empty if it is null or has 0 elements.
         /// </summary>
         NotBeEmpty,
 

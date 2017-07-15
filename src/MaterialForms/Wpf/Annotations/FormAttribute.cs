@@ -2,20 +2,20 @@
 
 namespace MaterialForms.Wpf.Annotations
 {
+    /// <summary>
+    /// Allows configuring generated forms.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class FormAttribute : Attribute
+    public sealed class FormAttribute : Attribute
     {
-        public FormAttribute(FieldGeneration fieldGeneration)
-        {
-            FieldGeneration = fieldGeneration;
-        }
+        /// <summary>
+        /// Specifies default field generation behavior.
+        /// </summary>
+        public DefaultFields Mode { get; set; }
 
-        public FieldGeneration FieldGeneration { get; }
-    }
-
-    public enum FieldGeneration
-    {
-        OptOut,
-        OptIn
+        /// <summary>
+        /// Specifies grid column widths. Positive values indicate star widths, negative values indicate pixel widths.
+        /// </summary>
+        public double[] Grid { get; set; }
     }
 }
