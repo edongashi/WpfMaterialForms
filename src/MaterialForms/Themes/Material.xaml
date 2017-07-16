@@ -41,6 +41,9 @@
                      Grid.Column="1"
                      Margin="0,-14,0,0"
                      VerticalAlignment="Center"
+                     Text="{fields:FormBinding Value}"
+                     ToolTip="{fields:FormBinding ToolTip}"
+                     IsReadOnly="{fields:FormBinding IsReadOnly}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{fields:FormBinding Name}"/>
         </Grid>

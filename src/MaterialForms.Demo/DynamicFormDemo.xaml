@@ -1,18 +1,51 @@
-﻿<Window x:Class="MaterialForms.Demo.DynamicFormDemo"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:MaterialForms.Wpf.Controls;assembly=MaterialForms"
-        mc:Ignorable="d"
-        FontSize="18"
-        Title="DynamicFormDemo" Height="300" Width="400">
-    <Grid>
+﻿<Window
+    x:Class="MaterialForms.Demo.DynamicFormDemo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MaterialForms.Wpf.Controls;assembly=MaterialForms"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="DynamicFormDemo"
+    Width="800"
+    Height="600"
+    mc:Ignorable="d">
+    <Grid Margin="16">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" x:Name="ModelsList"></ListBox>
-        <controls:DynamicForm Grid.Column="1" Margin="16" Model="{Binding SelectedItem, ElementName=ModelsList}" />
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ListBox
+            x:Name="ModelsList"
+            Grid.Row="0"
+            Grid.Column="0" />
+        <TextBox
+            x:Name="JsonTextBox"
+            Grid.Row="2"
+            Grid.Column="0"
+            IsReadOnly="True" />
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Click="Serialize"
+            Content="Serialize current model" />
+        <GridSplitter
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="3"
+            Margin="2,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch" />
+        <controls:DynamicForm
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Margin="16"
+            Model="{Binding SelectedItem, ElementName=ModelsList}" />
     </Grid>
 </Window>

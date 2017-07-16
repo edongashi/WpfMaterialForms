@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using MaterialForms.Demo.Models;
+using Newtonsoft.Json;
 
 namespace MaterialForms.Demo
 {
@@ -19,6 +20,18 @@ namespace MaterialForms.Demo
         private IEnumerable<object> GetModels()
         {
             yield return new Person();
+        }
+
+        private void Serialize(object sender, RoutedEventArgs e)
+        {
+            var model = ModelsList.SelectedItem;
+            if (model == null)
+            {
+                JsonTextBox.Text = "";
+                return;
+            }
+
+            JsonTextBox.Text = JsonConvert.SerializeObject(model, Formatting.Indented);
         }
     }
 }
