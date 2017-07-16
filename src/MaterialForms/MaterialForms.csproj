@@ -154,18 +154,21 @@
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
+    <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
     <Compile Include="Wpf\Fields\FormBindingExtension.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
     <Compile Include="Wpf\Fields\DataFormField.cs" />
     <Compile Include="Wpf\Fields\FormElement.cs" />
     <Compile Include="Wpf\Fields\FormRow.cs" />
     <Compile Include="Wpf\Fields\IBindingProvider.cs" />
-    <Compile Include="Wpf\Fields\Implementations\SelectionField.cs" />
-    <Compile Include="Wpf\Fields\Implementations\StringField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\SelectionField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\StringField.cs" />
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\FieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\ValidatorInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Properties\SelectFromBuilder.cs" />
+    <Compile Include="Wpf\FormBuilding\Defaults\Types\DefaultTypeBuilders.cs" />
+    <Compile Include="Wpf\FormBuilding\Defaults\Types\TypeBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Deserializers.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldBuilder.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="Wpf\Models\Snapshot.cs" />
     <Compile Include="Wpf\Models\ModelState.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
+    <Compile Include="Wpf\Resources\DirectBinding.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />
     <Compile Include="Wpf\Resources\DeferredProxyResource.cs" />
     <Compile Include="Wpf\Resources\EnumerableValueProvider.cs" />
@@ -359,6 +363,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Material.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -390,7 +398,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Wpf\FormBuilding\Defaults\Types\" />
+    <Folder Include="Wpf\Annotations\DisplayStyle\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

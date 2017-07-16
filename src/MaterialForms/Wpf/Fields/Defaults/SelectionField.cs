@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MaterialForms.Wpf.Resources;
 
-namespace MaterialForms.Wpf.Fields.Implementations
+namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class SelectionField : DataFormField
     {
@@ -21,11 +21,6 @@ namespace MaterialForms.Wpf.Fields.Implementations
         public IValueProvider SelectionType { get; set; }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object GetDefaultValue()
         {
             throw new NotImplementedException();
         }

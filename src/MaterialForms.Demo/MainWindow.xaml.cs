@@ -4,7 +4,7 @@ using MaterialDesignThemes.Wpf;
 using MaterialForms.Extensions;
 using MaterialForms.Tasks;
 
-namespace MaterialForms.WpfDemo
+namespace MaterialForms.Demo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

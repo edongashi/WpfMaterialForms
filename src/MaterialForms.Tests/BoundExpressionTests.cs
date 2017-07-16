@@ -66,6 +66,14 @@ namespace MaterialForms.Tests
 
         public object GetContextInstance() => form.Context;
 
+        public Binding CreateDirectModelBinding()
+        {
+            return new Binding(nameof(form.Model))
+            {
+                Source = form
+            };
+        }
+
         public Binding CreateModelBinding(string path)
         {
             return new Binding(nameof(form.Value) + Resource.FormatPath(path))

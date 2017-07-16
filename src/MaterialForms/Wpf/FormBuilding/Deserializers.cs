@@ -47,7 +47,23 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static object Int64(string expression)
         {
-            return System.Int16.Parse(expression, CultureInfo.InvariantCulture);
+            return System.Int64.Parse(expression, CultureInfo.InvariantCulture);
+        }
+
+
+        public static object UInt16(string expression)
+        {
+            return System.UInt16.Parse(expression, CultureInfo.InvariantCulture);
+        }
+
+        public static object UInt32(string expression)
+        {
+            return System.UInt32.Parse(expression, CultureInfo.InvariantCulture);
+        }
+
+        public static object UInt64(string expression)
+        {
+            return System.UInt64.Parse(expression, CultureInfo.InvariantCulture);
         }
 
         public static object Single(string expression)

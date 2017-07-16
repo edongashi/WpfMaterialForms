@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
 {
@@ -13,6 +14,8 @@ namespace MaterialForms.Wpf.Fields
     {
         [ConstructorArgument("name")]
         public string Name { get; set; }
+
+        public string Converter { get; set; }
 
         public FormBindingExtension()
         {
@@ -42,6 +45,15 @@ namespace MaterialForms.Wpf.Fields
                 var value = field.ProvideValue(Name);
                 if (value is BindingBase binding)
                 {
+                    if (value is Binding dataBinding)
+                    {
+                        var converter = GetConverter();
+                        if (converter != null)
+                        {
+                            
+                        }
+                    }
+
                     if (pvt.TargetProperty is DependencyProperty dp && dp.PropertyType == typeof(BindingBase)
                         || pvt.TargetProperty is PropertyInfo p && p.PropertyType == typeof(BindingBase))
                     {
@@ -59,13 +71,29 @@ namespace MaterialForms.Wpf.Fields
                 if (pvt.TargetProperty is DependencyProperty dp2 && dp2.PropertyType == typeof(BindingBase)
                     || pvt.TargetProperty is PropertyInfo p2 && p2.PropertyType == typeof(BindingBase))
                 {
-                    return new Binding($"[{Name}].Value");
+                    return new Binding($"[{Name}].Value")
+                    {
+                        Converter = GetConverter()
+                    };
                 }
 
-                return new Binding($"[{Name}].Value").ProvideValue(serviceProvider);
+                return new Binding($"[{Name}].Value")
+                {
+                    Converter = GetConverter()
+                }.ProvideValue(serviceProvider);
             }
 
             return this;
+        }
+
+        private IValueConverter GetConverter()
+        {
+            if (Converter == null)
+            {
+                return null;
+            }
+
+            return Resource.GetValueConverter(null, Converter);
         }
     }
 }

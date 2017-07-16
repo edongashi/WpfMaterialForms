@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MaterialForms.Wpf.Resources;
 
-namespace MaterialForms.Wpf.Fields.Implementations
+namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class StringField : DataFormField
     {
@@ -19,18 +19,13 @@ namespace MaterialForms.Wpf.Fields.Implementations
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
-            return new StringValue(context, Resources, formResources);
-        }
-
-        public override object GetDefaultValue()
-        {
-            return "";
+            return new StringBindingProvider(context, Resources, formResources);
         }
     }
 
-    public class StringValue : BindingProvider
+    public class StringBindingProvider : BindingProvider
     {
-        public StringValue(IResourceContext context,
+        public StringBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)

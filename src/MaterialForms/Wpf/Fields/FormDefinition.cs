@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
@@ -25,7 +26,7 @@ namespace MaterialForms.Wpf.Fields
 
         public List<FormRow> FormRows { get; set; }
 
-        public object CreateInstance()
+        public object CreateInstance(IResourceContext context)
         {
             if (ModelType != null)
             {
@@ -39,9 +40,12 @@ namespace MaterialForms.Wpf.Fields
 
             var expando = new ExpandoObject();
             IDictionary<string, object> dictionary = expando;
-            foreach (var dataField in FormElements.OfType<DataFormField>())
+            foreach (var dataField in FormRows
+                .SelectMany(row => row.Elements
+                    .Select(c => c.Element)
+                    .OfType<DataFormField>()))
             {
-                dictionary[dataField.Key] = dataField.GetDefaultValue();
+                dictionary[dataField.Key] = dataField.GetDefaultValue(context);
             }
 
             return expando;

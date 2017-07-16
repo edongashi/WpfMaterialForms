@@ -12,7 +12,7 @@ using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 {
-    public class ValidatorInitializer : IFieldInitializer
+    internal class ValidatorInitializer : IFieldInitializer
     {
         public void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer)
         {

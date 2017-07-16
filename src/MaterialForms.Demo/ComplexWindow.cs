@@ -4,7 +4,7 @@ using System.Windows;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Tasks;
 
-namespace MaterialForms.WpfDemo
+namespace MaterialForms.Demo
 {
     partial class MainWindow
     {

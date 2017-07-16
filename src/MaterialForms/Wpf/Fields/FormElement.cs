@@ -12,10 +12,18 @@ namespace MaterialForms.Wpf.Fields
         {
             Resources = new Dictionary<string, IValueProvider>();
         }
-        
+
         public IDictionary<string, IValueProvider> Resources { get; set; }
 
-        protected internal abstract void Freeze();
+        /// <summary>
+        /// Gets or sets the bool resource that determines whether this element will be visible.
+        /// </summary>
+        public IValueProvider IsVisible { get; set; }
+
+        protected internal virtual void Freeze()
+        {
+            Resources.Add(nameof(IsVisible), IsVisible ?? LiteralValue.True);
+        }
 
         protected internal abstract IBindingProvider CreateBindingProvider(
             IResourceContext context,

@@ -7,7 +7,7 @@ using MaterialForms.Wpf.Validation;
 namespace MaterialForms.Wpf.Fields
 {
     /// <summary>
-    /// Abstract base class for all input fields.
+    /// Base class for all input fields.
     /// </summary>
     public abstract class DataFormField : FormField
     {
@@ -20,16 +20,35 @@ namespace MaterialForms.Wpf.Fields
         protected internal override void Freeze()
         {
             base.Freeze();
-            Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
-            Resources.Add("IsReadOnly", IsReadOnly ?? LiteralValue.False);
+            if (CreateDirectBinding)
+            {
+                Resources.Add("Value", new DirectBinding(BindingMode, Validators));
+            }
+            else
+            {
+                Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
+            }
+
+            Resources.Add(nameof(IsReadOnly), IsReadOnly ?? LiteralValue.False);
+            Resources.Add(nameof(DefaultValue), DefaultValue ?? new LiteralValue(null));
         }
 
         public IValueProvider IsReadOnly { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default value for this field.
+        /// </summary>
+        public IValueProvider DefaultValue { get; set; }
 
         public BindingMode BindingMode { get; set; }
 
         public List<IValidatorProvider> Validators { get; set; }
 
-        public abstract object GetDefaultValue();
+        public bool CreateDirectBinding { get; set; }
+
+        public virtual object GetDefaultValue(IResourceContext context)
+        {
+            return DefaultValue?.GetValue(context).Value;
+        }
     }
 }

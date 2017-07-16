@@ -8,39 +8,46 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 {
-    public class FieldInitializer : IFieldInitializer
+    internal class FieldInitializer : IFieldInitializer
     {
         public void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer)
         {
             var attr = property.GetCustomAttribute<FieldAttribute>();
             if (attr == null)
             {
+                if (element is FormField formField && formField.Name == null)
+                {
+                    formField.Name = new LiteralValue(property.Name.Humanize());
+                }
+
                 return;
             }
 
-            if (!(element is FormField field))
+            if (element is FormField field)
             {
-                return;
+                field.Name = attr.HasName
+                    ? TypeUtilities.GetStringResource(attr.Name)
+                    : new LiteralValue(property.Name.Humanize());
+                field.ToolTip = TypeUtilities.GetStringResource(attr.ToolTip);
+                field.Icon = TypeUtilities.GetResource<PackIconKind>(attr.Icon, null, Deserializers.Enum<PackIconKind>());
             }
 
-            field.Name = attr.HasName
-                ? TypeUtilities.GetStringResource(attr.Name)
-                : new LiteralValue(property.Name.Humanize());
-
-            field.ToolTip = TypeUtilities.GetStringResource(attr.ToolTip);
-
-            field.Icon = TypeUtilities.GetResource<PackIconKind>(attr.Icon, null, Deserializers.Enum<PackIconKind>());
-
-            if (property.CanWrite && property.GetSetMethod(true).IsPublic)
+            if (element is DataFormField dataField)
             {
-                field.IsReadOnly = TypeUtilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
-            }
-            else
-            {
-                field.IsReadOnly = new LiteralValue(true);
-            }
+                if (property.CanWrite && property.GetSetMethod(true).IsPublic)
+                {
+                    dataField.IsReadOnly = TypeUtilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
+                }
+                else
+                {
+                    dataField.IsReadOnly = new LiteralValue(true);
+                }
 
-            field.DefaultValue = TypeUtilities.GetResource<object>(attr.DefaultValue, null, deserializer);
+                if (attr.DefaultValue != null || !property.PropertyType.IsValueType)
+                {
+                    dataField.DefaultValue = TypeUtilities.GetResource<object>(attr.DefaultValue, null, deserializer);
+                }
+            }
         }
     }
 }

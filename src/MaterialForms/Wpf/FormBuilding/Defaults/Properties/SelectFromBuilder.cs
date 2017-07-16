@@ -5,7 +5,7 @@ using System.Reflection;
 using Humanizer;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
-using MaterialForms.Wpf.Fields.Implementations;
+using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties

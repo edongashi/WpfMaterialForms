@@ -24,6 +24,14 @@ namespace MaterialForms.Wpf.Resources
 
         public object GetContextInstance() => Form.Context;
 
+        public Binding CreateDirectModelBinding()
+        {
+            return new Binding(nameof(Form.Model))
+            {
+                Source = Form
+            };
+        }
+
         public Binding CreateModelBinding(string path)
         {
             return new Binding(nameof(Form.Value) + BasePath + Resource.FormatPath(path))

@@ -18,6 +18,12 @@ namespace MaterialForms.Wpf.Resources
         object GetContextInstance();
 
         /// <summary>
+        /// Creates a binding to the raw model.
+        /// </summary>
+        /// <returns></returns>
+        Binding CreateDirectModelBinding();
+
+        /// <summary>
         /// Creates a new binding to the form model object.
         /// </summary>
         /// <param name="path">Object property path.</param>

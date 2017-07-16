@@ -4,12 +4,26 @@ using System.Linq;
 using System.Reflection;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.FormBuilding.Defaults.Initializers;
+using MaterialForms.Wpf.FormBuilding.Defaults.Properties;
+using MaterialForms.Wpf.FormBuilding.Defaults.Types;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.FormBuilding
 {
-    public class FormBuilder
+    public interface IFormBuilder
     {
+        FormDefinition GetDefinition(Type type);
+    }
+
+    /// <summary>
+    /// Configurable object responsible for creating form definitions from types.
+    /// </summary>
+    public class FormBuilder : IFormBuilder
+    {
+        /// <summary>
+        /// Default instance of <see cref="FormBuilder" />.
+        /// </summary>
         public static readonly FormBuilder Default = new FormBuilder();
 
         private readonly Dictionary<Type, FormDefinition> cachedDefinitions;
@@ -17,10 +31,64 @@ namespace MaterialForms.Wpf.FormBuilding
         public FormBuilder()
         {
             cachedDefinitions = new Dictionary<Type, FormDefinition>();
-            PropertyBuilders = new List<IFieldBuilder>();
-            TypeBuilders = new Dictionary<Type, List<IFieldBuilder>>();
-            FieldInitializers = new List<IFieldInitializer>();
-            TypeDeserializers = new Dictionary<Type, Func<string, object>>();
+            PropertyBuilders = new List<IFieldBuilder>
+            {
+                // Default property builders.
+                new SelectFromBuilder()
+            };
+
+            List<IFieldBuilder> AsList(IFieldBuilder builder)
+            {
+                return new List<IFieldBuilder> { builder };
+            }
+
+            TypeBuilders = new Dictionary<Type, List<IFieldBuilder>>
+            {
+                // Default type builders.
+                [typeof(string)] = AsList(new StringFieldBuilder()),
+                [typeof(DateTime)] = AsList(new DateTimeFieldBuilder()),
+                [typeof(bool)] = AsList(new BooleanFieldBuilder()),
+                [typeof(char)] = AsList(new CharFieldBuilder()),
+                [typeof(byte)] = AsList(new ByteFieldBuilder()),
+                [typeof(sbyte)] = AsList(new SByteFieldBuilder()),
+                [typeof(short)] = AsList(new Int16FieldBuilder()),
+                [typeof(int)] = AsList(new Int32FieldBuilder()),
+                [typeof(long)] = AsList(new Int64FieldBuilder()),
+                [typeof(ushort)] = AsList(new UInt16FieldBuilder()),
+                [typeof(uint)] = AsList(new UInt32FieldBuilder()),
+                [typeof(ulong)] = AsList(new UInt64FieldBuilder()),
+                [typeof(float)] = AsList(new SingleFieldBuilder()),
+                [typeof(double)] = AsList(new DoubleFieldBuilder()),
+                [typeof(decimal)] = AsList(new DecimalFieldBuilder())
+            };
+
+            FieldInitializers = new List<IFieldInitializer>
+            {
+                // Default initializers.
+                new FieldInitializer(),
+                new ValidatorInitializer()
+            };
+
+            TypeDeserializers = new Dictionary<Type, Func<string, object>>
+            {
+                // Default deserializers.
+                [typeof(object)] = Deserializers.String,
+                [typeof(string)] = Deserializers.String,
+                [typeof(DateTime)] = Deserializers.DateTime,
+                [typeof(bool)] = Deserializers.Boolean,
+                [typeof(char)] = Deserializers.Char,
+                [typeof(byte)] = Deserializers.Byte,
+                [typeof(sbyte)] = Deserializers.SByte,
+                [typeof(short)] = Deserializers.Int16,
+                [typeof(int)] = Deserializers.Int32,
+                [typeof(long)] = Deserializers.Int64,
+                [typeof(ushort)] = Deserializers.UInt16,
+                [typeof(uint)] = Deserializers.UInt32,
+                [typeof(ulong)] = Deserializers.UInt64,
+                [typeof(float)] = Deserializers.Single,
+                [typeof(double)] = Deserializers.Double,
+                [typeof(decimal)] = Deserializers.Decimal
+            };
         }
 
         /// <summary>
@@ -40,23 +108,6 @@ namespace MaterialForms.Wpf.FormBuilding
         public Dictionary<Type, Func<string, object>> TypeDeserializers { get; }
 
         public List<IFieldInitializer> FieldInitializers { get; }
-
-        /// <summary>
-        /// Clears cached form definitions.
-        /// This may be necessary when current configuration has changed.
-        /// </summary>
-        public void ClearCache()
-        {
-            cachedDefinitions.Clear();
-        }
-
-        /// <summary>
-        /// Removes a single type from the form definition cache.
-        /// </summary>
-        public bool ClearCached<T>()
-        {
-            return cachedDefinitions.Remove(typeof(T));
-        }
 
         /// <summary>
         /// Gets the <see cref="FormDefinition" /> for the provided type.
@@ -81,6 +132,23 @@ namespace MaterialForms.Wpf.FormBuilding
             formDefinition = BuildDefinition(type);
             cachedDefinitions[type] = formDefinition;
             return formDefinition;
+        }
+
+        /// <summary>
+        /// Clears cached form definitions.
+        /// This may be necessary when current configuration has changed.
+        /// </summary>
+        public void ClearCache()
+        {
+            cachedDefinitions.Clear();
+        }
+
+        /// <summary>
+        /// Removes a single type from the form definition cache.
+        /// </summary>
+        public bool ClearCached<T>()
+        {
+            return cachedDefinitions.Remove(typeof(T));
         }
 
         private FormDefinition BuildDefinition(Type type)
@@ -118,7 +186,7 @@ namespace MaterialForms.Wpf.FormBuilding
             var elements = new List<ElementWrapper>();
             foreach (var property in properties)
             {
-                TypeDeserializers.TryGetValue(property.PropertyType, out var deserializer);
+                var deserializer = TryGetDeserializer(property.PropertyType);
                 // Query property builders.
                 var element = Build(property, deserializer, PropertyBuilders);
                 if (element == null && TypeBuilders.TryGetValue(property.PropertyType, out var builders))
@@ -149,6 +217,8 @@ namespace MaterialForms.Wpf.FormBuilding
                     wrapper.Column = attr.Column;
                     wrapper.ColumnSpan = attr.ColumnSpan;
                 }
+
+                elements.Add(wrapper);
             }
 
             // Pass four - order elements.
@@ -200,7 +270,23 @@ namespace MaterialForms.Wpf.FormBuilding
             // Wrap up everything.
             formDefinition.Grid = grid;
             formDefinition.FormRows = rows;
+            formDefinition.Freeze();
+            foreach (var element in formDefinition.FormRows.SelectMany(r => r.Elements).Select(c => c.Element))
+            {
+                element.Freeze();
+            }
+
             return formDefinition;
+        }
+
+        private Func<string, object> TryGetDeserializer(Type type)
+        {
+            if (TypeDeserializers.TryGetValue(type, out var deserializer))
+            {
+                return deserializer;
+            }
+
+            return type.IsEnum ? Deserializers.Enum(type) : null;
         }
 
         private static FormRow CreateRow(FormElement element, int gridLength)
@@ -383,10 +469,10 @@ namespace MaterialForms.Wpf.FormBuilding
 
         private class ElementWrapper
         {
+            public readonly FormElement Element;
             public readonly PropertyInfo PropertyInfo;
             public int Column;
             public int ColumnSpan;
-            public readonly FormElement Element;
             public int Position;
             public string Row;
 
@@ -400,7 +486,6 @@ namespace MaterialForms.Wpf.FormBuilding
         private class ElementRow
         {
             public readonly List<ElementWrapper> Elements;
-
             public readonly string RowName;
             public int ColumnSpan;
             public bool Sealed;

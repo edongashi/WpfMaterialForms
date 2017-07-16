@@ -6,7 +6,7 @@ namespace MaterialForms.Wpf.Annotations
     /// Specifies that a field can have values from a collection.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public sealed class SelectFromAttribute : FieldTypeAttribute
+    public sealed class SelectFromAttribute : Attribute
     {
         public SelectFromAttribute(object itemsSource)
         {
