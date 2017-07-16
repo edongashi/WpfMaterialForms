@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Resources;
 
-namespace MaterialForms.Wpf
+namespace MaterialForms.Wpf.Fields
 {
     public class FormDefinition
     {
@@ -15,24 +13,17 @@ namespace MaterialForms.Wpf
         {
             ModelType = modelType;
             Resources = new Dictionary<string, IValueProvider>();
-            FormElements = new List<FormElement>();
+            Grid = new[] { 1d };
+            FormRows = new List<FormRow>();
         }
 
         public Type ModelType { get; }
 
         public IDictionary<string, IValueProvider> Resources { get; set; }
-        
-        public List<FormElement> FormElements { get; set; }
 
-        public IValueProvider TitleMessage { get; set; }
+        public double[] Grid { get; set; }
 
-        public IValueProvider DetailsMessage { get; set; }
-
-        public IValueProvider CreateMessage { get; set; }
-
-        public IValueProvider EditMessage { get; set; }
-
-        public IValueProvider DeleteMessage { get; set; }
+        public List<FormRow> FormRows { get; set; }
 
         public object CreateInstance()
         {
@@ -63,11 +54,6 @@ namespace MaterialForms.Wpf
                 return;
             }
 
-            Resources.Add("Title", TitleMessage ?? LiteralValue.Null);
-            Resources.Add("Details", DetailsMessage ?? LiteralValue.Null);
-            Resources.Add("Create", CreateMessage ?? LiteralValue.Null);
-            Resources.Add("Edit", EditMessage ?? LiteralValue.Null);
-            Resources.Add("Delete", DeleteMessage ?? LiteralValue.Null);
             frozen = true;
         }
     }

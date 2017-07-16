@@ -12,9 +12,7 @@ namespace MaterialForms.Wpf.Fields
         {
             Resources = new Dictionary<string, IValueProvider>();
         }
-
-        public string GroupKey { get; set; }
-
+        
         public IDictionary<string, IValueProvider> Resources { get; set; }
 
         protected internal abstract void Freeze();

@@ -13,13 +13,13 @@ namespace MaterialForms.Tests
     public class User
     {
         [Field(Name = "First Name",
-            Tooltip = "Enter your first name here.",
+            ToolTip = "Enter your first name here.",
             Icon = PackIconKind.Account)]
         [Value(Must.NotBeEmpty)]
         public string FirstName { get; set; }
 
         [Field(Name = "Last Name",
-            Tooltip = "Enter your last name here.")]
+            ToolTip = "Enter your last name here.")]
         [Value(Must.NotBeEmpty)]
         public string LastName { get; set; }
 

@@ -9,15 +9,26 @@ namespace MaterialForms.Wpf.Annotations
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class FieldAttribute : Attribute
     {
+        private string name;
+        internal bool HasName;
+
         /// <summary>
         /// The display name of the field. Accepts a string or a dynamic expression.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => name;
+            set
+            {
+                name = value;
+                HasName = true;
+            }
+        }
 
         /// <summary>
         /// The tooltip of the field which shows on hover. Accepts a string or a dynamic expression.
         /// </summary>
-        public string Tooltip { get; set; }
+        public string ToolTip { get; set; }
 
         /// <summary>
         /// The icon associated with the field. Not all field types may support icons.
@@ -45,15 +56,15 @@ namespace MaterialForms.Wpf.Annotations
         /// <summary>
         /// Specifies the row name. Fields sharing the same row name will be aligned in columns when possible.
         /// </summary>
-        public string RowName { get; set; }
+        public string Row { get; set; }
 
         /// <summary>
-        /// Specifies the column number. Applicable only when <see cref="RowName"/> is set.
+        /// Specifies the column number. Applicable only when <see cref="Row"/> is set.
         /// </summary>
         public int Column { get; set; }
 
         /// <summary>
-        /// Specifies the column span. Applicable only when <see cref="RowName"/> is set.
+        /// Specifies the column span. Applicable only when <see cref="Row"/> is set.
         /// </summary>
         public int ColumnSpan { get; set; } = 1;
     }

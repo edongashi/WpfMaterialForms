@@ -122,6 +122,11 @@ namespace MaterialForms.Wpf.Resources
             return this;
         }
 
+        public static IValueProvider ParseSimplified(string expression)
+        {
+            return Parse(expression).Simplified();
+        }
+
         public static BoundExpression Parse(string expression)
         {
             return Parse(expression, contextualResource: null);

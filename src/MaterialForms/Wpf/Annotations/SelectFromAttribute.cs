@@ -14,7 +14,7 @@ namespace MaterialForms.Wpf.Annotations
         }
 
         /// <summary>
-        /// Selection items source. Accepts an enumerable or a dynamic resource.
+        /// Selection items source. Accepts an array, an enum type, or a dynamic resource.
         /// </summary>
         public object ItemsSource { get; set; }
 

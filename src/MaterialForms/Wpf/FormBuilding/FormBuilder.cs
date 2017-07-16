@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Controls;
-using System.Windows.Data;
-using Humanizer;
-using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
-using MaterialForms.Wpf.Fields.Implementations;
 using MaterialForms.Wpf.Resources;
-using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.FormBuilding
 {
@@ -19,43 +12,60 @@ namespace MaterialForms.Wpf.FormBuilding
     {
         public static readonly FormBuilder Default = new FormBuilder();
 
-        #region Config
-
         private readonly Dictionary<Type, FormDefinition> cachedDefinitions;
-
-        private readonly Dictionary<Type, Func<FormBuilder, PropertyInfo, FormElement>> fieldFactories;
-
-        /// <summary>
-        /// Stores functions to parse string representations of types.
-        /// </summary>
-        private readonly Dictionary<Type, Func<string, object>> typeDeserializers;
 
         public FormBuilder()
         {
             cachedDefinitions = new Dictionary<Type, FormDefinition>();
-            fieldFactories = new Dictionary<Type, Func<FormBuilder, PropertyInfo, FormElement>>();
-            typeDeserializers = new Dictionary<Type, Func<string, object>>
-            {
-                [typeof(DateTime)] = str => DateTime.Parse(str, CultureInfo.InvariantCulture)
-            };
-
-            LoadDefaultFactories();
+            PropertyBuilders = new List<IFieldBuilder>();
+            TypeBuilders = new Dictionary<Type, List<IFieldBuilder>>();
+            FieldInitializers = new List<IFieldInitializer>();
+            TypeDeserializers = new Dictionary<Type, Func<string, object>>();
         }
 
-        public ForPropertySyntax ForProperty<TProperty>()
-        {
-            return new ForPropertySyntax(this, typeof(TProperty));
-        }
+        /// <summary>
+        /// Gets the list of registered field builders which are queried first.
+        /// </summary>
+        public List<IFieldBuilder> PropertyBuilders { get; }
 
-        public void InvalidateCache()
+        /// <summary>
+        /// Gets the mapping of types to respective field builders.
+        /// These are queried if no field builder from <see cref="PropertyBuilders" /> succeeds in creating an element.
+        /// </summary>
+        public Dictionary<Type, List<IFieldBuilder>> TypeBuilders { get; }
+
+        /// <summary>
+        /// Stores functions to parse string representations of types.
+        /// </summary>
+        public Dictionary<Type, Func<string, object>> TypeDeserializers { get; }
+
+        public List<IFieldInitializer> FieldInitializers { get; }
+
+        /// <summary>
+        /// Clears cached form definitions.
+        /// This may be necessary when current configuration has changed.
+        /// </summary>
+        public void ClearCache()
         {
             cachedDefinitions.Clear();
         }
 
-        #endregion
+        /// <summary>
+        /// Removes a single type from the form definition cache.
+        /// </summary>
+        public bool ClearCached<T>()
+        {
+            return cachedDefinitions.Remove(typeof(T));
+        }
 
-        #region Reflection
-
+        /// <summary>
+        /// Gets the <see cref="FormDefinition" /> for the provided type.
+        /// The cache is looked up first before generating the form.
+        /// </summary>
+        /// <remarks>
+        /// If current <see cref="FormBuilder" /> configuration has changed,
+        /// clearing the cache using <see cref="ClearCache" /> may be necessary.
+        /// </remarks>
         public FormDefinition GetDefinition(Type type)
         {
             if (type == null)
@@ -77,6 +87,7 @@ namespace MaterialForms.Wpf.FormBuilding
         {
             var formDefinition = new FormDefinition(type);
             var mode = DefaultFields.AllExcludingReadonly;
+            var grid = new[] { 1d };
             foreach (var attribute in type.GetCustomAttributes())
             {
                 switch (attribute)
@@ -88,592 +99,323 @@ namespace MaterialForms.Wpf.FormBuilding
                         break;
                     case FormAttribute form:
                         mode = form.Mode;
+                        grid = form.Grid;
+                        if (grid == null || grid.Length < 1)
+                        {
+                            grid = new[] { 1d };
+                        }
+
                         break;
                 }
             }
 
-            if (formDefinition.TitleMessage == null)
-            {
-                formDefinition.TitleMessage = new LiteralValue(type.Name.Humanize());
-            }
+            var gridLength = grid.Length;
 
+            // Pass one - get list of valid properties.
             var properties = TypeUtilities.GetProperties(type, mode);
-            return formDefinition;
-        }
 
-        public string Test { get; set; }
-
-        private List<FormElement> GetFormElements(Type type, PropertyInfo property)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<FormElement> GetFormElements(Type modelType, bool optIn)
-        {
-            var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var elements = new List<FormElement>();
+            // Pass two - build form elements.
+            var elements = new List<ElementWrapper>();
             foreach (var property in properties)
             {
-                var element = GetFieldElement(modelType, property, optIn);
-                if (element != null)
+                TypeDeserializers.TryGetValue(property.PropertyType, out var deserializer);
+                // Query property builders.
+                var element = Build(property, deserializer, PropertyBuilders);
+                if (element == null && TypeBuilders.TryGetValue(property.PropertyType, out var builders))
                 {
-                    elements.Add(element);
+                    // Query type builders if no property builder succeeds.
+                    element = Build(property, deserializer, builders);
+                }
+
+                if (element == null)
+                {
+                    // Unhandled properties are ignored.
+                    continue;
+                }
+
+                // Pass three - initialize elements.
+                foreach (var initializer in FieldInitializers)
+                {
+                    initializer.Initialize(element, property, deserializer);
+                }
+
+                var wrapper = new ElementWrapper(element, property);
+                // Set layout.
+                var attr = property.GetCustomAttribute<FieldAttribute>();
+                if (attr != null)
+                {
+                    wrapper.Position = attr.Position;
+                    wrapper.Row = attr.Row;
+                    wrapper.Column = attr.Column;
+                    wrapper.ColumnSpan = attr.ColumnSpan;
                 }
             }
 
-            return elements;
-        }
+            // Pass four - order elements.
+            elements = elements.OrderBy(element => element.Position).ToList();
 
-        private FormElement GetFieldElement(Type modelType, PropertyInfo propertyInfo, bool optIn)
-        {
-            var type = propertyInfo.PropertyType;
-            var add = !optIn;
-            SelectFromAttribute selectFrom = null;
-            foreach (var attribute in propertyInfo.GetCustomAttributes())
+            // Pass five - group rows and calculate layout.
+            var layout = PerformLayout(grid, elements);
+
+            // Pass six - add attached elements.
+            var rows = new List<FormRow>();
+            for (var i = 0; i < layout.Count; i++)
             {
-                switch (attribute)
+                var row = layout[i];
+                var before = new List<(FormElement element, int position)>();
+                var after = new List<(FormElement element, int position)>();
+                foreach (var element in row.Elements)
                 {
-                    case FieldAttribute _:
-                        add = true;
-                        break;
-                    case SelectFromAttribute attr:
-                        selectFrom = attr;
-                        break;
-                    case FieldIgnoreAtribute _:
-                        return null;
-                }
-            }
-
-            if (!add)
-            {
-                return null;
-            }
-
-            if (selectFrom != null)
-            {
-                return GetSelectionField(modelType, propertyInfo, selectFrom);
-            }
-            if (fieldFactories.TryGetValue(type, out var factory))
-            {
-                return factory(this, propertyInfo);
-            }
-            // TODO: handle nested types.
-            return null;
-        }
-
-        private FormElement GetSelectionField(Type modelType, PropertyInfo propertyInfo, SelectFromAttribute selectFrom)
-        {
-            var type = propertyInfo.PropertyType;
-            var field = new SelectionField(propertyInfo.Name);
-            InitializeField(modelType, field, propertyInfo, null);
-            if (selectFrom.DisplayPath != null)
-            {
-                field.DisplayPath = BoundExpression.Parse(selectFrom.DisplayPath).Simplified();
-            }
-
-            if (selectFrom.ValuePath != null)
-            {
-                field.ValuePath = BoundExpression.Parse(selectFrom.ValuePath).Simplified();
-            }
-
-            if (selectFrom.ItemStringFormat != null)
-            {
-                field.ItemStringFormat = BoundExpression.Parse(selectFrom.ItemStringFormat).Simplified();
-            }
-
-            field.SelectionType = GetResource<SelectionType>(selectFrom.SelectionType, SelectionType.ComboBox);
-
-            switch (selectFrom.ItemsSource)
-            {
-                case string expr:
-                    var value = BoundExpression.Parse(expr);
-                    if (!value.IsSingleResource)
+                    var property = element.PropertyInfo;
+                    foreach (var attr in property.GetCustomAttributes<FormContentAttribute>())
                     {
-                        throw new InvalidOperationException("ItemsSource must be a single resource reference.");
-                    }
-
-                    field.ItemsSource = value.Resources[0];
-                    break;
-                case IEnumerable<object> enumerable:
-                    field.ItemsSource = new LiteralValue(enumerable.ToList());
-                    break;
-                case Type enumType:
-                    if (!enumType.IsEnum)
-                    {
-                        throw new InvalidOperationException("A type argument for ItemsSource must be an enum.");
-                    }
-
-                    var values = Enum.GetValues(enumType);
-                    var collection = new List<KeyValuePair<ValueType, IValueProvider>>();
-                    foreach (Enum enumValue in values)
-                    {
-                        var enumName = enumValue.ToString();
-                        var memInfo = enumType.GetMember(enumName);
-                        var attributes = memInfo[0].GetCustomAttributes(typeof(EnumDisplayAttribute), false);
-                        IValueProvider name;
-                        if (attributes.Length > 0)
+                        var content = (attr.CreateElement(property), attr.Position);
+                        if (attr.InsertAfter)
                         {
-                            var attr = (EnumDisplayAttribute)attributes[0];
-                            name = BoundExpression.Parse(attr.Name).Simplified();
+                            after.Add(content);
                         }
                         else
                         {
-                            name = new LiteralValue(enumName.Humanize());
+                            before.Add(content);
                         }
-
-                        collection.Add(new KeyValuePair<ValueType, IValueProvider>(enumValue, name));
                     }
-
-                    field.ItemsSource = new EnumerableStringValueProvider(collection);
-                    field.DisplayPath = new LiteralValue(nameof(StringProxy.Value));
-                    field.ValuePath = new LiteralValue(type == typeof(string)
-                        ? nameof(StringProxy.Value)
-                        : nameof(StringProxy.Key));
-                    break;
-            }
-
-            return field;
-        }
-
-        private void LoadDefaultFactories()
-        {
-        }
-
-        private void InitializeField(Type modelType, FormElement element, PropertyInfo propertyInfo,
-            Action<Attribute> attributeInitializer)
-        {
-            var type = propertyInfo.PropertyType;
-            foreach (var attribute in propertyInfo.GetCustomAttributes())
-            {
-                switch (attribute)
-                {
-                    case FieldAttribute attr:
-                        if (element is FormField field)
-                        {
-                            field.Name = GetStringResource(attr.Name);
-                            field.ToolTip = GetStringResource(attr.Tooltip);
-                            field.Icon = GetResource<PackIconKind>(attr.Icon, null);
-                            field.IsReadOnly = GetResource<bool>(attr.IsReadOnly, false);
-                            field.DefaultValue = GetResource<object>(attr.DefaultValue, null);
-                        }
-
-                        element.GroupKey = attr.Group;
-                        break;
-                    case ValueAttribute attr:
-                        if (element is DataFormField dataField)
-                        {
-                            dataField.Validators.Add(CreateValidator(modelType, dataField.Key, type, attr));
-                        }
-
-                        break;
-                    default:
-                        attributeInitializer?.Invoke(attribute);
-                        break;
-                }
-            }
-        }
-
-        #endregion
-
-        #region Resources
-
-        private static IValueProvider GetResource<T>(object value, object defaultValue)
-        {
-            if (value == null)
-            {
-                return new LiteralValue(defaultValue);
-            }
-
-            if (value is string expression)
-            {
-                var boundExpression = BoundExpression.Parse(expression);
-                if (!boundExpression.IsSingleResource)
-                {
-                    throw new ArgumentException(
-                        $"The expression '{expression}' is not a valid resource because it does not define a single value source.",
-                        nameof(value));
                 }
 
-                return new CoercedValueProvider<T>(boundExpression.Resources[0], defaultValue);
+                before.Sort((a, b) => a.position.CompareTo(b.position));
+                after.Sort((a, b) => a.position.CompareTo(b.position));
+
+                // Before element.
+                rows.AddRange(before.Select(t => CreateRow(t.element, gridLength)));
+
+                // Field row.
+                var formRow = new FormRow();
+                formRow.Elements.AddRange(
+                    row.Elements.Select(w => new FormElementContainer(w.Column, w.ColumnSpan, w.Element)));
+                rows.Add(formRow);
+
+                // After element.
+                rows.AddRange(after.Select(t => CreateRow(t.element, gridLength)));
             }
 
-            if (value is T)
-            {
-                return new LiteralValue(value);
-            }
-
-            throw new ArgumentException(
-                $"The provided value must be a bound resource or a literal value of type '{typeof(T).FullName}'.",
-                nameof(value));
+            // Wrap up everything.
+            formDefinition.Grid = grid;
+            formDefinition.FormRows = rows;
+            return formDefinition;
         }
 
-        private static IValueProvider GetStringResource(string expression)
+        private static FormRow CreateRow(FormElement element, int gridLength)
         {
-            return expression == null ? new LiteralValue(null) : BoundExpression.Parse(expression).Simplified();
+            var row = new FormRow();
+            row.Elements.Add(new FormElementContainer(0, gridLength, element));
+            return row;
         }
 
-        #endregion
-
-        #region Validators
-
-        private IValidatorProvider CreateValidator(Type modelType, string propertyKey, Type propertyType, ValueAttribute attribute)
+        private static List<ElementRow> PerformLayout(double[] grid, List<ElementWrapper> elements)
         {
-            Func<IResourceContext, IProxy> argumentProvider;
-            var argument = attribute.Argument;
-            if (argument is string expression)
+            var gridLength = grid.Length;
+            var layout = new List<ElementRow>();
+            foreach (var element in elements)
             {
-                var boundExpression = BoundExpression.Parse(expression);
-                if (boundExpression.IsPlainString)
+                if (element.Column < 0)
                 {
-                    var literal = new PlainObject(typeDeserializers.TryGetValue(propertyType, out var func)
-                        ? func(boundExpression.StringFormat)
-                        : boundExpression.StringFormat);
-
-                    argumentProvider = context => literal;
+                    element.Column = 0;
                 }
-                else if (boundExpression.StringFormat != null)
+                else if (element.Column >= gridLength)
                 {
-                    argumentProvider = context => boundExpression.GetStringValue(context);
+                    element.Column = gridLength - 1;
+                }
+
+                if (element.ColumnSpan < 1)
+                {
+                    element.ColumnSpan = 1;
+                }
+                else if (element.ColumnSpan > gridLength)
+                {
+                    element.ColumnSpan = gridLength;
+                }
+
+                if (element.Row == null)
+                {
+                    layout.Add(new ElementRow(null, element));
                 }
                 else
                 {
-                    argumentProvider = context => boundExpression.GetValue(context);
-                }
-            }
-            else
-            {
-                var literal = new PlainObject(argument);
-                argumentProvider = context => literal;
-            }
-
-            BindingProxy ValueProvider(IResourceContext context)
-            {
-                var key = new BindingProxyKey(propertyKey);
-                if (context.TryFindResource(key) is BindingProxy proxy)
-                {
-                    return proxy;
-                }
-
-                proxy = new BindingProxy();
-                context.AddResource(key, proxy);
-                return proxy;
-            }
-
-            Func<IResourceContext, IBoolProxy> isEnforcedProvider;
-            switch (attribute.When)
-            {
-                case null:
-                    isEnforcedProvider = context => new PlainBool(true);
-                    break;
-                case string expr:
-                    var boundExpression = BoundExpression.Parse(expr);
-                    if (!boundExpression.IsSingleResource)
+                    var rowName = element.Row;
+                    var added = false;
+                    for (var i = 0; i < layout.Count; i++)
                     {
-                        throw new ArgumentException(
-                            "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
+                        var row = layout[i];
+                        if (row.RowName != rowName)
+                        {
+                            continue;
+                        }
+
+                        if (row.Sealed)
+                        {
+                            // Bad scenario - too many elements in one row.
+                            // Search for next row with the same name.
+                            // If none exists, insert a new one in the cluster.
+                            var found = false;
+                            int j;
+                            for (j = i + 1; j < layout.Count; j++)
+                            {
+                                var nextRow = layout[j];
+                                if (nextRow.RowName != rowName)
+                                {
+                                    break;
+                                }
+
+                                if (nextRow.Sealed)
+                                {
+                                    continue;
+                                }
+
+                                row = nextRow;
+                                found = true;
+                                break;
+                            }
+
+                            if (!found)
+                            {
+                                row = new ElementRow(rowName);
+                                layout.Insert(j, row);
+                            }
+                        }
+
+                        row.Elements.Add(element);
+                        row.ColumnSpan += element.ColumnSpan;
+                        if (row.ColumnSpan >= gridLength)
+                        {
+                            row.Sealed = true;
+                        }
+
+                        added = true;
                     }
 
-                    isEnforcedProvider = context => boundExpression.GetBoolValue(context);
-                    break;
-                case bool b:
-                    isEnforcedProvider = context => new PlainBool(b);
-                    break;
-                default:
-                    throw new ArgumentException(
-                        "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
-            }
-
-            Func<IResourceContext, IErrorStringProvider> errorProvider;
-            var message = attribute.Message;
-            if (message == null)
-            {
-                switch (attribute.Condition)
-                {
-                    case Must.BeGreaterThan:
-                        message = "Value must be greater than {Argument}.";
-                        break;
-                    case Must.BeGreaterThanOrEqualTo:
-                        message = "Value must be greater than or equal to {Argument}.";
-                        break;
-                    case Must.BeLessThan:
-                        message = "Value must be less than {Argument}.";
-                        break;
-                    case Must.BeLessThanOrEqualTo:
-                        message = "Value must be less than or equal to {Argument}.";
-                        break;
-                    case Must.BeEmpty:
-                        message = "@Field must be empty.";
-                        break;
-                    case Must.NotBeEmpty:
-                        message = "@Field cannot be empty.";
-                        break;
-                    default:
-                        message = "@Invalid value.";
-                        break;
+                    if (!added)
+                    {
+                        layout.Add(new ElementRow(rowName, element));
+                    }
                 }
             }
 
+            foreach (var row in layout)
             {
-                var func = new Func<IResourceContext, IProxy>(ValueProvider);
-                var boundExpression = BoundExpression.Parse(message, new Dictionary<string, object>
+                if (row.RowName == null)
                 {
-                    ["Value"] = func,
-                    ["Argument"] = argumentProvider
-                });
+                    var element = row.Elements[0];
+                    if (element.Column >= gridLength)
+                    {
+                        element.Column = gridLength - 1;
+                    }
 
-                if (boundExpression.IsPlainString)
-                {
-                    var errorMessage = boundExpression.StringFormat;
-                    errorProvider = context => new PlainErrorStringProvider(errorMessage);
+                    row.Elements[0].ColumnSpan = gridLength - element.Column;
                 }
                 else
                 {
-                    if (boundExpression.Resources.Any(
-                        res => res is DeferredProxyResource resource && resource.ProxyProvider == func))
+                    row.Elements.Sort((a, b) => a.Column.CompareTo(b.Column));
+                    var rowElements = row.Elements;
+                    var count = 0;
+                    var gaps = new int[rowElements.Count];
+                    for (var i = 0; i < rowElements.Count; i++)
                     {
-                        errorProvider =
-                            context => new ValueErrorStringProvider(boundExpression.GetStringValue(context),
-                                ValueProvider(context));
+                        var element = rowElements[i];
+                        if (element.Column > count)
+                        {
+                            gaps[i] = element.Column - count;
+                            count = element.Column;
+                        }
+
+                        if (count > element.Column)
+                        {
+                            element.Column = count;
+                        }
+
+                        count += element.ColumnSpan;
                     }
-                    else
+
+                    if (count > gridLength)
                     {
-                        errorProvider =
-                            context => new ErrorStringProvider(boundExpression.GetStringValue(context));
+                        // Overflow - close gaps starting from right.
+                        var delta = count - gridLength;
+                        for (var i = gaps.Length - 1; i >= 0; i--)
+                        {
+                            if (delta == 0)
+                            {
+                                break;
+                            }
+
+                            var gap = gaps[i];
+                            if (gap == 0)
+                            {
+                                continue;
+                            }
+
+                            var subtraction = Math.Min(delta, gap);
+                            for (var j = i; j < gaps.Length; j++)
+                            {
+                                rowElements[j].Column -= subtraction;
+                            }
+
+                            delta -= subtraction;
+                        }
                     }
                 }
             }
 
-            var converterName = attribute.Converter;
-
-            IValueConverter GetConverter(IResourceContext context)
-            {
-                IValueConverter converter = null;
-                if (converterName != null)
-                {
-                    converter = Resource.GetValueConverter(context, converterName);
-                }
-
-                return converter;
-            }
-
-            var validationStep = attribute.ValidationStep;
-            var validateOnTargetUpdated = attribute.ValidatesOnTargetUpdated;
-            switch (attribute.Condition)
-            {
-                case Must.BeEqualTo:
-                    return new ValidatorProvider(context => new EqualsValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.NotBeEqualTo:
-                    return new ValidatorProvider(context => new NotEqualsValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeGreaterThan:
-                    return new ValidatorProvider(context => new GreaterThanValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeGreaterThanOrEqualTo:
-                    return new ValidatorProvider(context => new GreaterThanEqualValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeLessThan:
-                    return new ValidatorProvider(context => new LessThanValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeLessThanOrEqualTo:
-                    return new ValidatorProvider(context => new LessThanEqualValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeEmpty:
-                    return new ValidatorProvider(context => new EmptyValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.NotBeEmpty:
-                    return new ValidatorProvider(context => new NotEmptyValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeTrue:
-                    return new ValidatorProvider(context => new TrueValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeFalse:
-                    return new ValidatorProvider(context => new FalseValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.BeNull:
-                    return new ValidatorProvider(context => new NullValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.NotBeNull:
-                    return new ValidatorProvider(context => new NotNullValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.ExistIn:
-                    return new ValidatorProvider(context => new ExistsInValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.NotExistIn:
-                    return new ValidatorProvider(context => new NotExistsInValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.MatchPattern:
-                    return new ValidatorProvider(context => new MatchPatternValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.NotMatchPattern:
-                    return new ValidatorProvider(context => new NotMatchPatternValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                        validateOnTargetUpdated));
-                case Must.SatisfyContextMethod:
-                    var methodName = GetMethodName(attribute.Argument, propertyKey);
-                    var propertyName = propertyKey;
-                    return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetContextMethodValidator(propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                            validateOnTargetUpdated));
-                case Must.SatisfyMethod:
-                    var type = modelType;
-                    methodName = GetMethodName(attribute.Argument, propertyKey);
-                    propertyName = propertyKey;
-                    return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetModelMethodValidator(type, propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
-                            validateOnTargetUpdated));
-                default:
-                    throw new ArgumentException($"Invalid validator condition for property {propertyKey}.",
-                        nameof(attribute));
-            }
+            return layout;
         }
 
-        private static string GetMethodName(object argument, string propertyKey)
+        private static FormElement Build(PropertyInfo property, Func<string, object> deserializer,
+            List<IFieldBuilder> builders)
         {
-            if (argument is string methodName && !string.IsNullOrWhiteSpace(methodName))
+            foreach (var builder in builders)
             {
-                return methodName;
+                var element = builder.TryBuild(property, deserializer);
+                if (element != null)
+                {
+                    return element;
+                }
             }
 
-            throw new InvalidOperationException(
-                $"Validator for property {propertyKey} does not specify a valid method name. Value must be a nonempty string.");
+            return null;
         }
 
-        // Called on binding -> not performance critical.
-        private static Func<object, CultureInfo, ValidationStep, bool> GetModelMethodValidator(Type modelType, string propertyName, string methodName, IResourceContext context)
+        private class ElementWrapper
         {
-            var method = GetMethod(modelType, methodName);
-            if (method == null)
-            {
-                throw new InvalidOperationException(
-                    $"Type hierarchy of {modelType.FullName} does not include a static method named {methodName}.");
-            }
+            public readonly PropertyInfo PropertyInfo;
+            public int Column;
+            public int ColumnSpan;
+            public readonly FormElement Element;
+            public int Position;
+            public string Row;
 
-            // Called on validation -> performance critical.
-            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            public ElementWrapper(FormElement element, PropertyInfo propertyInfo)
             {
-                return method(new ValidationContext(
-                    context.GetModelInstance(),
-                    context.GetContextInstance(),
-                    propertyName,
-                    value,
-                    cultureInfo,
-                    validationStep));
+                Element = element;
+                PropertyInfo = propertyInfo;
             }
-
-            return Validate;
         }
 
-        // Called on binding = not performance critical.
-        private static Func<object, CultureInfo, ValidationStep, bool> GetContextMethodValidator(string propertyName, string methodName, IResourceContext context)
+        private class ElementRow
         {
-            Type currentType = null;
-            Func<ValidationContext, bool> method = null;
+            public readonly List<ElementWrapper> Elements;
 
-            // Called on validation -> performance critical.
-            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            public readonly string RowName;
+            public int ColumnSpan;
+            public bool Sealed;
+
+            public ElementRow(string rowName = null, ElementWrapper element = null)
             {
-                // Context type may change in runtime. Change delegate only when necessary.
-                var contextInstance = context.GetContextInstance();
-                var contextType = contextInstance?.GetType();
-                if (contextType != currentType)
+                Elements = new List<ElementWrapper>();
+                if (element != null)
                 {
-                    method = GetMethod(contextType, methodName);
-                    currentType = contextType;
+                    Elements.Add(element);
+                    ColumnSpan = element.ColumnSpan;
                 }
 
-                if (method == null)
-                {
-                    return true;
-                }
-
-                return method(new ValidationContext(
-                    context.GetModelInstance(),
-                    contextInstance,
-                    propertyName,
-                    value,
-                    cultureInfo,
-                    validationStep));
-            }
-
-            return Validate;
-        }
-
-        private static Func<ValidationContext, bool> GetMethod(Type type, string methodName)
-        {
-            var delegateType = typeof(Func<ValidationContext, bool>);
-            bool IsMatch(MethodInfo methodInfo)
-            {
-                if (methodInfo.Name != methodName)
-                {
-                    return false;
-                }
-
-                if (methodInfo.ReturnType != typeof(bool))
-                {
-                    return false;
-                }
-
-                var parameters = methodInfo.GetParameters();
-                if (parameters.Length != 1)
-                {
-                    return false;
-                }
-
-                return parameters[0].ParameterType == typeof(ValidationContext);
-            }
-
-            var method = type
-                .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy)
-                .FirstOrDefault(IsMatch);
-
-            if (method == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                return (Func<ValidationContext, bool>)Delegate.CreateDelegate(delegateType, method);
-            }
-            catch
-            {
-                return null;
+                RowName = rowName;
             }
         }
-
-        private class ValidatorProvider : IValidatorProvider
-        {
-            private readonly Func<IResourceContext, ValidationRule> func;
-
-            public ValidatorProvider(Func<IResourceContext, ValidationRule> func)
-            {
-                this.func = func;
-            }
-
-            public ValidationRule GetValidator(IResourceContext context)
-            {
-                return func(context);
-            }
-        }
-
-        #endregion
     }
 }
