@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
@@ -15,7 +16,13 @@ namespace MaterialForms.Wpf.Validation
 
         protected override bool ValidateValue(object value, CultureInfo cultureInfo)
         {
-            return Equals(Argument.Value, value);
+            var comparand = Argument.Value;
+            if (value.GetType() != comparand.GetType() && comparand is IConvertible)
+            {
+                comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
+            }
+
+            return Equals(comparand, value);
         }
     }
 }

@@ -35,7 +35,16 @@ namespace MaterialForms.Wpf.Annotations
             Condition = condition;
             Argument = argument;
             HasValue = hasValue;
-            ValidationStep = ValidationStep.ConvertedProposedValue;
+            var step = ValidationStep.ConvertedProposedValue;
+            switch (condition)
+            {
+                case Must.BeEmpty:
+                case Must.NotBeEmpty:
+                    step = ValidationStep.RawProposedValue;
+                    break;
+            }
+
+            ValidationStep = step;
             ValidatesOnTargetUpdated = false;
         }
 

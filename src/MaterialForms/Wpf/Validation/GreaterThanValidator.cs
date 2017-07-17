@@ -27,6 +27,11 @@ namespace MaterialForms.Wpf.Validation
                 return false;
             }
 
+            if (value.GetType() != comparand.GetType() && comparand is IConvertible)
+            {
+                comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
+            }
+
             if (value is IComparable c)
             {
                 return c.CompareTo(comparand) > 0;
