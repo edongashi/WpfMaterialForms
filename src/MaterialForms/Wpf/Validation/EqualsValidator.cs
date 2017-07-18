@@ -17,7 +17,7 @@ namespace MaterialForms.Wpf.Validation
         protected override bool ValidateValue(object value, CultureInfo cultureInfo)
         {
             var comparand = Argument.Value;
-            if (value.GetType() != comparand.GetType() && comparand is IConvertible)
+            if (value != null && comparand is IConvertible && value.GetType() != comparand.GetType())
             {
                 comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
             }
