@@ -45,15 +45,6 @@ namespace MaterialForms.Wpf.Fields
                 var value = field.ProvideValue(Name);
                 if (value is BindingBase binding)
                 {
-                    if (value is Binding dataBinding)
-                    {
-                        var converter = GetConverter();
-                        if (converter != null)
-                        {
-                            
-                        }
-                    }
-
                     if (pvt.TargetProperty is DependencyProperty dp && dp.PropertyType == typeof(BindingBase)
                         || pvt.TargetProperty is PropertyInfo p && p.PropertyType == typeof(BindingBase))
                     {

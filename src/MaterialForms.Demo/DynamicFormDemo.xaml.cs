@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using MaterialForms.Demo.Models;
@@ -11,6 +12,15 @@ namespace MaterialForms.Demo
     /// </summary>
     public partial class DynamicFormDemo : Window
     {
+        static DynamicFormDemo()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                MessageBox.Show("An unhandled exception occured. Exception details copied to clipboard.");
+                Clipboard.SetText(e.ExceptionObject.ToString());
+            };
+        }
+
         public DynamicFormDemo()
         {
             InitializeComponent();

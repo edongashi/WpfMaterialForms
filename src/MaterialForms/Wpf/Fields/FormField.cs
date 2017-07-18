@@ -37,8 +37,9 @@ namespace MaterialForms.Wpf.Fields
         {
             Resources.Add(nameof(Name), Name ?? LiteralValue.Null);
             Resources.Add(nameof(ToolTip), ToolTip ?? LiteralValue.Null);
-            Resources.Add(nameof(Icon), Icon ?? new LiteralValue(default(PackIconKind)));
-            Resources.Add("IconVisibility", new LiteralValue(Icon != null ? Visibility.Visible : Visibility.Collapsed));
+            var hasIcon = Icon != null && !(Icon is LiteralValue v && v.Value == null);
+            Resources.Add(nameof(Icon), hasIcon ? Icon : new LiteralValue(default(PackIconKind)));
+            Resources.Add("IconVisibility", new LiteralValue(hasIcon ? Visibility.Visible : Visibility.Collapsed));
         }
     }
 }
