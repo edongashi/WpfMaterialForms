@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Data;
 using MaterialForms.Wpf.Validation;
 
@@ -6,24 +7,24 @@ namespace MaterialForms.Wpf.Resources
 {
     public sealed class DirectBinding : Resource
     {
-        public DirectBinding(BindingMode bindingMode)
-            : this(bindingMode, null, null)
+        public DirectBinding(BindingOptions bindingOptions)
+            : this(bindingOptions, null, null)
         {
         }
 
-        public DirectBinding(BindingMode bindingMode, List<IValidatorProvider> validationRules)
-            : this(bindingMode, validationRules, null)
+        public DirectBinding(BindingOptions bindingOptions, List<IValidatorProvider> validationRules)
+            : this(bindingOptions, validationRules, null)
         {
         }
 
-        public DirectBinding(BindingMode bindingMode, List<IValidatorProvider> validationRules, string valueConverter)
+        public DirectBinding(BindingOptions bindingOptions, List<IValidatorProvider> validationRules, string valueConverter)
             : base(valueConverter)
         {
-            BindingMode = bindingMode;
+            BindingOptions = bindingOptions ?? throw new ArgumentNullException(nameof(bindingOptions));
             ValidationRules = validationRules ?? new List<IValidatorProvider>();
         }
 
-        public BindingMode BindingMode { get; }
+        public BindingOptions BindingOptions { get; }
 
         public List<IValidatorProvider> ValidationRules { get; }
 
@@ -33,7 +34,7 @@ namespace MaterialForms.Wpf.Resources
         {
             var binding = context.CreateDirectModelBinding();
             binding.Converter = GetValueConverter(context);
-            binding.Mode = BindingMode;
+            BindingOptions.Apply(binding);
             foreach (var validatorProvider in ValidationRules)
             {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context));
@@ -49,7 +50,7 @@ namespace MaterialForms.Wpf.Resources
 
         public override int GetHashCode()
         {
-            return BindingMode.GetHashCode();
+            return BindingOptions.GetHashCode();
         }
     }
 }

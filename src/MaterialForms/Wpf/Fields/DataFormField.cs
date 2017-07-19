@@ -15,6 +15,7 @@ namespace MaterialForms.Wpf.Fields
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             Validators = new List<IValidatorProvider>();
+            BindingOptions = new BindingOptions();
         }
 
         protected internal override void Freeze()
@@ -24,11 +25,11 @@ namespace MaterialForms.Wpf.Fields
             {
                 if (IsDirectBinding)
                 {
-                    Resources.Add("Value", new DirectBinding(BindingMode, Validators));
+                    Resources.Add("Value", new DirectBinding(BindingOptions, Validators));
                 }
                 else
                 {
-                    Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
+                    Resources.Add("Value", new DataBinding(Key, BindingOptions, Validators));
                 }
             }
 
@@ -43,7 +44,7 @@ namespace MaterialForms.Wpf.Fields
         /// </summary>
         public IValueProvider DefaultValue { get; set; }
 
-        public BindingMode BindingMode { get; set; }
+        public BindingOptions BindingOptions { get; }
 
         public List<IValidatorProvider> Validators { get; set; }
 

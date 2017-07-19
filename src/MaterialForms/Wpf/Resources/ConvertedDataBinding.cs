@@ -9,12 +9,12 @@ namespace MaterialForms.Wpf.Resources
 {
     public sealed class ConvertedDataBinding : IValueProvider
     {
-        public ConvertedDataBinding(string propertyPath, BindingMode bindingMode,
+        public ConvertedDataBinding(string propertyPath, BindingOptions bindingOptions,
             List<IValidatorProvider> validationRules, Func<string, CultureInfo, object> deserializer,
             Func<IResourceContext, IErrorStringProvider> conversionErrorStringProvider)
         {
             PropertyPath = propertyPath;
-            BindingMode = bindingMode;
+            BindingOptions = bindingOptions ?? throw new ArgumentNullException(nameof(bindingOptions));
             Deserializer = deserializer;
             ValidationRules = validationRules ?? new List<IValidatorProvider>();
             ConversionErrorStringProvider = conversionErrorStringProvider;
@@ -22,7 +22,7 @@ namespace MaterialForms.Wpf.Resources
 
         public string PropertyPath { get; }
 
-        public BindingMode BindingMode { get; }
+        public BindingOptions BindingOptions { get; }
 
         public List<IValidatorProvider> ValidationRules { get; }
 
@@ -33,9 +33,9 @@ namespace MaterialForms.Wpf.Resources
         public BindingBase ProvideBinding(IResourceContext context)
         {
             var binding = context.CreateModelBinding(PropertyPath);
-            binding.Mode = BindingMode;
+            BindingOptions.Apply(binding);
             binding.Converter = new StringTypeConverter(Deserializer);
-            binding.ValidationRules.Add(new ConversionValidator(Deserializer, ConversionErrorStringProvider(context)));
+            binding.ValidationRules.Add(new ConversionValidator(Deserializer, ConversionErrorStringProvider(context), binding.ConverterCulture));
             foreach (var validatorProvider in ValidationRules)
             {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context));

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Fields
 {

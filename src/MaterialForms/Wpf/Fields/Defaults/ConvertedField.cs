@@ -24,7 +24,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             base.Freeze();
 
             Resources.Add("Value",
-                new ConvertedDataBinding(Key, BindingMode, Validators, Deserializer,
+                new ConvertedDataBinding(Key, BindingOptions, Validators, Deserializer,
                     // TODO: This is temporary.
                     context => ConversionErrorMessage ?? new PlainErrorStringProvider("Invalid value.")));
         }

@@ -4,23 +4,25 @@ using System.Windows.Controls;
 
 namespace MaterialForms.Wpf.Validation
 {
-    public class ConversionValidator : ValidationRule
+    public sealed class ConversionValidator : ValidationRule
     {
         private readonly Func<string, CultureInfo, object> deserializer;
         private readonly IErrorStringProvider errorProvider;
+        private readonly CultureInfo overrideCulture;
 
-        public ConversionValidator(Func<string, CultureInfo, object> deserializer, IErrorStringProvider errorProvider)
+        public ConversionValidator(Func<string, CultureInfo, object> deserializer, IErrorStringProvider errorProvider, CultureInfo overrideCulture)
             : base(ValidationStep.RawProposedValue, false)
         {
             this.deserializer = deserializer;
             this.errorProvider = errorProvider;
+            this.overrideCulture = overrideCulture;
         }
 
-        public sealed override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             try
             {
-                deserializer(value as string, cultureInfo);
+                deserializer(value as string, overrideCulture ?? cultureInfo);
                 return new ValidationResult(true, null);
             }
             catch

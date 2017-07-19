@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Data;
 using MaterialForms.Wpf.Validation;
 
@@ -6,27 +7,27 @@ namespace MaterialForms.Wpf.Resources
 {
     public sealed class DataBinding : Resource
     {
-        public DataBinding(string propertyPath, BindingMode bindingMode)
-            : this(propertyPath, bindingMode, null, null)
+        public DataBinding(string propertyPath, BindingOptions bindingOptions)
+            : this(propertyPath, bindingOptions, null, null)
         {
         }
 
-        public DataBinding(string propertyPath, BindingMode bindingMode, List<IValidatorProvider> validationRules)
-            : this(propertyPath, bindingMode, validationRules, null)
+        public DataBinding(string propertyPath, BindingOptions bindingOptions, List<IValidatorProvider> validationRules)
+            : this(propertyPath, bindingOptions, validationRules, null)
         {
         }
 
-        public DataBinding(string propertyPath, BindingMode bindingMode, List<IValidatorProvider> validationRules, string valueConverter)
+        public DataBinding(string propertyPath, BindingOptions bindingOptions, List<IValidatorProvider> validationRules, string valueConverter)
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
-            BindingMode = bindingMode;
+            BindingOptions = bindingOptions ?? throw new ArgumentNullException(nameof(bindingOptions));
             ValidationRules = validationRules ?? new List<IValidatorProvider>();
         }
 
         public string PropertyPath { get; }
 
-        public BindingMode BindingMode { get; }
+        public BindingOptions BindingOptions { get; }
 
         public List<IValidatorProvider> ValidationRules { get; }
 
@@ -36,7 +37,7 @@ namespace MaterialForms.Wpf.Resources
         {
             var binding = context.CreateModelBinding(PropertyPath);
             binding.Converter = GetValueConverter(context);
-            binding.Mode = BindingMode;
+            BindingOptions.Apply(binding);
             foreach (var validatorProvider in ValidationRules)
             {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context));

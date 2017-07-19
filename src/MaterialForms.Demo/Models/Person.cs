@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using MaterialForms.Wpf.Annotations;
+﻿using MaterialForms.Wpf.Annotations;
 
 namespace MaterialForms.Demo.Models
 {
