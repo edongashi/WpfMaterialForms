@@ -412,11 +412,17 @@ namespace MaterialForms.Wpf.FormBuilding
                         }
 
                         added = true;
+                        break;
                     }
 
                     if (!added)
                     {
-                        layout.Add(new ElementRow(rowName, element));
+                        var row = new ElementRow(rowName, element);
+                        layout.Add(row);
+                        if (row.ColumnSpan >= gridLength)
+                        {
+                            row.Sealed = true;
+                        }
                     }
                 }
             }

@@ -53,6 +53,7 @@ namespace MaterialForms.Wpf.Controls
 
         public DynamicForm()
         {
+            IsTabStop = false;
             resourceContext = new FormResourceContext(this);
             columns = new double[0];
             currentElements = new List<FormContentPresenter>();
@@ -100,6 +101,11 @@ namespace MaterialForms.Wpf.Controls
         {
             get => GetValue(ContextProperty);
             set => SetValue(ContextProperty, value);
+        }
+
+        public void ReloadElements()
+        {
+            FillGrid();
         }
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
@@ -187,6 +193,7 @@ namespace MaterialForms.Wpf.Controls
                 return;
             }
 
+            itemsGrid.Children.Clear();
             itemsGrid.RowDefinitions.Clear();
             itemsGrid.ColumnDefinitions.Clear();
             for (var i = 0; i < rows; i++)

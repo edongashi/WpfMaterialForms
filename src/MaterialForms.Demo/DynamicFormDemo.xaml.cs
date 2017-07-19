@@ -44,5 +44,39 @@ namespace MaterialForms.Demo
 
             JsonTextBox.Text = JsonConvert.SerializeObject(model, Formatting.Indented);
         }
+
+        private void FormThemeChanged(object sender, RoutedEventArgs e)
+        {
+            if (!IsLoaded)
+            {
+                return;
+            }
+
+            Application.Current.Resources.MergedDictionaries.Clear();
+            string source;
+            if (MaterialDesignTheme.IsChecked == true)
+            {
+                source = "Themes/Material.xaml";
+            }
+            else if (MahappsMetroTheme.IsChecked == true)
+            {
+                source = "Themes/Metro.xaml";
+            }
+            else if (WpfTheme.IsChecked == true)
+            {
+                source = "Themes/Wpf.xaml";
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri(source, UriKind.Relative)
+            });
+
+            Form.ReloadElements();
+        }
     }
 }

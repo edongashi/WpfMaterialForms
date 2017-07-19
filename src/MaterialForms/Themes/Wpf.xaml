@@ -1,36 +1,33 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls1="clr-namespace:MaterialForms.Wpf.Controls"
     xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
     xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
+    xmlns:forms="clr-namespace:MaterialForms.Wpf.Controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
     <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
-        <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
+        <Setter Property="Foreground" Value="{Binding Foreground, ElementName=ValueHolderControl}" />
         <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding ElementName=ValueHolderControl, Path=IsFocused}" Value="True" />
-                    <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}" Value="False" />
-                </MultiDataTrigger.Conditions>
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
-            </MultiDataTrigger>
+            <DataTrigger Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}" Value="True">
+                <Setter Property="Foreground" Value="#FFDB000C" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
     <DataTemplate DataType="{x:Type defaults:StringBindingProvider}">
-        <Grid Margin="8,16">
+        <Grid Margin="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <materialDesign:PackIcon
                 x:Name="Icon"
+                Grid.Row="1"
                 Grid.Column="0"
                 Width="24"
                 Height="24"
@@ -40,28 +37,36 @@
                 Kind="{fields:FormBinding Icon}"
                 Style="{StaticResource ColoredIconStyle}"
                 Visibility="{fields:FormBinding IconVisibility}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="2,0,0,4"
+                Style="{x:Null}"
+                Text="{fields:FormBinding Name}" />
             <TextBox
                 x:Name="ValueHolderControl"
+                Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,-14,0,0"
-                VerticalAlignment="Center"
-                controls1:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
-                materialDesign:HintAssist.Hint="{fields:FormBinding Name}"
+                forms:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
                 IsReadOnly="{fields:FormBinding IsReadOnly}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 Text="{fields:FormBinding Value}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type defaults:ConvertedFieldBindingProvider}">
-        <Grid Margin="8,16">
+        <Grid Margin="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <materialDesign:PackIcon
                 x:Name="Icon"
+                Grid.Row="1"
                 Grid.Column="0"
                 Width="24"
                 Height="24"
@@ -71,15 +76,18 @@
                 Kind="{fields:FormBinding Icon}"
                 Style="{StaticResource ColoredIconStyle}"
                 Visibility="{fields:FormBinding IconVisibility}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="2,0,0,4"
+                Style="{x:Null}"
+                Text="{fields:FormBinding Name}" />
             <TextBox
                 x:Name="ValueHolderControl"
+                Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,-14,0,0"
-                VerticalAlignment="Center"
-                controls1:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
-                materialDesign:HintAssist.Hint="{fields:FormBinding Name}"
+                forms:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
                 IsReadOnly="{fields:FormBinding IsReadOnly}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 Text="{fields:FormBinding Value}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>

@@ -35,6 +35,7 @@ namespace MaterialForms.Wpf.Fields
 
             Resources.Add(nameof(IsReadOnly), IsReadOnly ?? LiteralValue.False);
             Resources.Add(nameof(DefaultValue), DefaultValue ?? new LiteralValue(null));
+            Resources.Add(nameof(SelectOnFocus), SelectOnFocus ?? LiteralValue.True);
         }
 
         public IValueProvider IsReadOnly { get; set; }
@@ -47,6 +48,8 @@ namespace MaterialForms.Wpf.Fields
         public BindingOptions BindingOptions { get; }
 
         public List<IValidatorProvider> Validators { get; set; }
+
+        public IValueProvider SelectOnFocus { get; set; }
 
         protected bool IsDirectBinding { get; set; }
 

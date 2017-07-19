@@ -155,6 +155,7 @@
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
+    <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
     <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
@@ -373,6 +374,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Material.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Metro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Wpf.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
