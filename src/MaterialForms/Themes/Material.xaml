@@ -22,7 +22,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type defaults:StringBindingProvider}">
-        <Grid Margin="0,16,0,8">
+        <Grid Margin="8,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
@@ -48,5 +48,33 @@
                      materialDesign:HintAssist.Hint="{fields:FormBinding Name}"/>
         </Grid>
     </DataTemplate>
-    
+
+    <DataTemplate DataType="{x:Type defaults:ConvertedFieldBindingProvider}">
+        <Grid Margin="8,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon x:Name="Icon"
+                                     Grid.Column="0"
+                                     Width="24"
+                                     Height="24"
+                                     Margin="0,0,16,0"
+                                     HorizontalAlignment="Center"
+                                     Kind="{fields:FormBinding Icon}"
+                                     Visibility="{fields:FormBinding IconVisibility}"
+                                     VerticalAlignment="Center"
+                                     Style="{StaticResource ColoredIconStyle}" />
+            <TextBox x:Name="ValueHolderControl"
+                     Grid.Column="1"
+                     Margin="0,-14,0,0"
+                     VerticalAlignment="Center"
+                     Text="{fields:FormBinding Value}"
+                     ToolTip="{fields:FormBinding ToolTip}"
+                     IsReadOnly="{fields:FormBinding IsReadOnly}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{fields:FormBinding Name}"/>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

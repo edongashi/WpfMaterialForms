@@ -20,13 +20,16 @@ namespace MaterialForms.Wpf.Fields
         protected internal override void Freeze()
         {
             base.Freeze();
-            if (CreateDirectBinding)
+            if (CreateBinding)
             {
-                Resources.Add("Value", new DirectBinding(BindingMode, Validators));
-            }
-            else
-            {
-                Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
+                if (IsDirectBinding)
+                {
+                    Resources.Add("Value", new DirectBinding(BindingMode, Validators));
+                }
+                else
+                {
+                    Resources.Add("Value", new DataBinding(Key, BindingMode, Validators));
+                }
             }
 
             Resources.Add(nameof(IsReadOnly), IsReadOnly ?? LiteralValue.False);
@@ -44,7 +47,9 @@ namespace MaterialForms.Wpf.Fields
 
         public List<IValidatorProvider> Validators { get; set; }
 
-        public bool CreateDirectBinding { get; set; }
+        protected bool IsDirectBinding { get; set; }
+
+        protected bool CreateBinding { get; set; } = true;
 
         public virtual object GetDefaultValue(IResourceContext context)
         {

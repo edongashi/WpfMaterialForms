@@ -37,29 +37,47 @@ namespace MaterialForms.Wpf.FormBuilding
                 new SelectFromBuilder()
             };
 
-            List<IFieldBuilder> AsList(IFieldBuilder builder)
+            List<IFieldBuilder> AsList(params IFieldBuilder[] builders)
             {
-                return new List<IFieldBuilder> { builder };
+                return builders.ToList();
             }
 
             TypeBuilders = new Dictionary<Type, List<IFieldBuilder>>
             {
                 // Default type builders.
+
+                // Native controls
                 [typeof(string)] = AsList(new StringFieldBuilder()),
                 [typeof(DateTime)] = AsList(new DateTimeFieldBuilder()),
                 [typeof(bool)] = AsList(new BooleanFieldBuilder()),
-                [typeof(char)] = AsList(new CharFieldBuilder()),
-                [typeof(byte)] = AsList(new ByteFieldBuilder()),
-                [typeof(sbyte)] = AsList(new SByteFieldBuilder()),
-                [typeof(short)] = AsList(new Int16FieldBuilder()),
-                [typeof(int)] = AsList(new Int32FieldBuilder()),
-                [typeof(long)] = AsList(new Int64FieldBuilder()),
-                [typeof(ushort)] = AsList(new UInt16FieldBuilder()),
-                [typeof(uint)] = AsList(new UInt32FieldBuilder()),
-                [typeof(ulong)] = AsList(new UInt64FieldBuilder()),
-                [typeof(float)] = AsList(new SingleFieldBuilder()),
-                [typeof(double)] = AsList(new DoubleFieldBuilder()),
-                [typeof(decimal)] = AsList(new DecimalFieldBuilder())
+
+                // Converted non-nullable
+                [typeof(char)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantChar)),
+                [typeof(byte)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantByte)),
+                [typeof(sbyte)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantSByte)),
+                [typeof(short)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantInt16)),
+                [typeof(int)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantInt32)),
+                [typeof(long)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantInt64)),
+                [typeof(ushort)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantUInt16)),
+                [typeof(uint)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantUInt32)),
+                [typeof(ulong)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantUInt64)),
+                [typeof(float)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantSingle)),
+                [typeof(double)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantDouble)),
+                [typeof(decimal)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantDecimal)),
+                
+                // Converted nullable
+                [typeof(char?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableChar)),
+                [typeof(byte?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableByte)),
+                [typeof(sbyte?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableSByte)),
+                [typeof(short?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableInt16)),
+                [typeof(int?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableInt32)),
+                [typeof(long?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableInt64)),
+                [typeof(ushort?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableUInt16)),
+                [typeof(uint?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableUInt32)),
+                [typeof(ulong?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableUInt64)),
+                [typeof(float?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableSingle)),
+                [typeof(double?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableDouble)),
+                [typeof(decimal?)] = AsList(new ConvertedFieldBuilder(Deserializers.CultureInvariantNullableDecimal)),
             };
 
             FieldInitializers = new List<IFieldInitializer>
@@ -71,7 +89,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
             TypeDeserializers = new Dictionary<Type, Func<string, object>>
             {
-                // Default deserializers.
+                // Default deserializers - culture invariant.
                 [typeof(object)] = Deserializers.String,
                 [typeof(string)] = Deserializers.String,
                 [typeof(DateTime)] = Deserializers.DateTime,
@@ -87,7 +105,21 @@ namespace MaterialForms.Wpf.FormBuilding
                 [typeof(ulong)] = Deserializers.UInt64,
                 [typeof(float)] = Deserializers.Single,
                 [typeof(double)] = Deserializers.Double,
-                [typeof(decimal)] = Deserializers.Decimal
+                [typeof(decimal)] = Deserializers.Decimal,
+                [typeof(DateTime?)] = Deserializers.NullableDateTime,
+                [typeof(bool?)] = Deserializers.NullableBoolean,
+                [typeof(char?)] = Deserializers.NullableChar,
+                [typeof(byte?)] = Deserializers.NullableByte,
+                [typeof(sbyte?)] = Deserializers.NullableSByte,
+                [typeof(short?)] = Deserializers.NullableInt16,
+                [typeof(int?)] = Deserializers.NullableInt32,
+                [typeof(long?)] = Deserializers.NullableInt64,
+                [typeof(ushort?)] = Deserializers.NullableUInt16,
+                [typeof(uint?)] = Deserializers.NullableUInt32,
+                [typeof(ulong?)] = Deserializers.NullableUInt64,
+                [typeof(float?)] = Deserializers.NullableSingle,
+                [typeof(double?)] = Deserializers.NullableDouble,
+                [typeof(decimal?)] = Deserializers.NullableDecimal
             };
         }
 

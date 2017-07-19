@@ -11,7 +11,7 @@ namespace MaterialForms.Demo.Models
         public string FirstName { get; set; }
 
         [Field(Row = "1")]
-        [Value("Length", Must.BeGreaterThan, 5)]
+        [Value("Length", Must.BeGreaterThanOrEqualTo, 5, Message = "Must have at least {Argument} characters.")]
         public string LastName { get; set; }
     }
 }

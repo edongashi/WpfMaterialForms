@@ -26,7 +26,7 @@ namespace MaterialForms.Wpf.Resources
 
         public Binding CreateDirectModelBinding()
         {
-            return new Binding(nameof(Form.Model))
+            return new Binding(nameof(Form.Model) + BasePath)
             {
                 Source = Form
             };

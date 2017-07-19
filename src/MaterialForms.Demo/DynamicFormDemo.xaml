@@ -8,8 +8,15 @@
     Title="DynamicFormDemo"
     Width="800"
     Height="600"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="16"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <Grid Margin="16">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition />
@@ -35,17 +42,19 @@
             Content="Serialize current model" />
         <GridSplitter
             Grid.Row="0"
+            Panel.ZIndex="999"
             Grid.RowSpan="3"
             Grid.Column="1"
             Width="3"
             Margin="2,0,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Stretch" />
-        <controls:DynamicForm
+        <ScrollViewer
             Grid.Row="0"
             Grid.RowSpan="3"
             Grid.Column="1"
-            Margin="16"
-            Model="{Binding SelectedItem, ElementName=ModelsList}" />
+            Padding="16">
+            <controls:DynamicForm Model="{Binding SelectedItem, ElementName=ModelsList}" />
+        </ScrollViewer>
     </Grid>
 </Window>

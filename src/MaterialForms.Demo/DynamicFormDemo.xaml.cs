@@ -12,14 +12,14 @@ namespace MaterialForms.Demo
     /// </summary>
     public partial class DynamicFormDemo : Window
     {
-        static DynamicFormDemo()
-        {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-            {
-                MessageBox.Show("An unhandled exception occured. Exception details copied to clipboard.");
-                Clipboard.SetText(e.ExceptionObject.ToString());
-            };
-        }
+        //static DynamicFormDemo()
+        //{
+        //    AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        //    {
+        //        MessageBox.Show("An unhandled exception occured. Exception details copied to clipboard.");
+        //        Clipboard.SetText(e.ExceptionObject.ToString());
+        //    };
+        //}
 
         public DynamicFormDemo()
         {
@@ -30,6 +30,7 @@ namespace MaterialForms.Demo
         private IEnumerable<object> GetModels()
         {
             yield return new Person();
+            yield return new DataTypes();
         }
 
         private void Serialize(object sender, RoutedEventArgs e)
