@@ -170,6 +170,11 @@ namespace MaterialForms.Wpf.Controls
         private void RebuildForm(IFormDefinition formDefinition)
         {
             ClearForm();
+            if (formDefinition == null)
+            {
+                return;
+            }
+
             rows = formDefinition.FormRows.Count;
             columns = formDefinition.Grid;
             currentElements.Clear();

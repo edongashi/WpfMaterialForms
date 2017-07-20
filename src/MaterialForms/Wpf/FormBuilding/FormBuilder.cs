@@ -190,6 +190,13 @@ namespace MaterialForms.Wpf.FormBuilding
 
         private FormDefinition BuildDefinition(Type type)
         {
+            // Only classes are allowed.
+            // Primitives should be retrieved from prebuilt definitions.
+            if (!type.IsClass || typeof(MulticastDelegate).IsAssignableFrom(type.BaseType))
+            {
+                return null;
+            }
+
             var formDefinition = new FormDefinition(type);
             var mode = DefaultFields.AllExcludingReadonly;
             var grid = new[] { 1d };
