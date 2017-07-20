@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows.Controls;
 
 namespace MaterialForms.Wpf.Validation
 {
@@ -11,14 +10,14 @@ namespace MaterialForms.Wpf.Validation
         /// <summary>
         /// Creates a new <see cref="ValidationContext"/>.
         /// </summary>
-        public ValidationContext(object model, object modelContext, string propertyName, object propertyValue, CultureInfo cultureInfo, ValidationStep validationStep)
+        public ValidationContext(object model, object modelContext, string propertyName, object propertyValue, CultureInfo cultureInfo, bool willCommit)
         {
             Model = model;
             ModelContext = modelContext;
             PropertyName = propertyName;
             PropertyValue = propertyValue;
             CultureInfo = cultureInfo;
-            ValidationStep = validationStep;
+            WillCommit = willCommit;
         }
 
         /// <summary>
@@ -47,8 +46,9 @@ namespace MaterialForms.Wpf.Validation
         public CultureInfo CultureInfo { get; }
 
         /// <summary>
-        /// Gets the <see cref="ValidationStep"/> in which this validation is performed.
+        /// Gets whether the value will be written to the
+        /// property regardless of validation result.
         /// </summary>
-        public ValidationStep ValidationStep { get; }
+        public bool WillCommit { get; }
     }
 }

@@ -279,6 +279,7 @@
     <Compile Include="Wpf\Validation\MatchPatternValidator.cs" />
     <Compile Include="Wpf\Validation\ValidationContext.cs" />
     <Compile Include="Wpf\Validation\TrueValidator.cs" />
+    <Compile Include="Wpf\Validation\ValidationPipe.cs" />
     <Page Include="Old\Controls\ButtonControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

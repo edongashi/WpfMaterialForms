@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
 
 namespace MaterialForms.Wpf.Annotations
 {
@@ -35,7 +34,6 @@ namespace MaterialForms.Wpf.Annotations
             Condition = condition;
             Argument = argument;
             HasValue = hasValue;
-            ValidationStep = ValidationStep.ConvertedProposedValue;
             ValidatesOnTargetUpdated = false;
         }
 
@@ -69,9 +67,10 @@ namespace MaterialForms.Wpf.Annotations
         public object When { get; set; }
 
         /// <summary>
-        /// Determines the <see cref="ValidationStep"/> or the created validator.
+        /// If set to true, values that don't pass validation
+        /// are prevented from being written to the property.
         /// </summary>
-        public ValidationStep ValidationStep { get; set; }
+        public bool StrictValidation { get; set; }
 
         /// <summary>
         /// Determines whether property changes cause validation.

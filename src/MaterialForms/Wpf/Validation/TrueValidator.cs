@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -7,9 +6,9 @@ namespace MaterialForms.Wpf.Validation
 {
     public class TrueValidator : FieldValidator
     {
-        public TrueValidator(IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter,
-            ValidationStep validationStep, bool validatesOnTargetUpdated)
-            : base(errorProvider, isEnforced, valueConverter, validationStep, validatesOnTargetUpdated)
+        public TrueValidator(ValidationPipe pipe, IErrorStringProvider errorProvider, IBoolProxy isEnforced, IValueConverter valueConverter,
+            bool strictValidation, bool validatesOnTargetUpdated)
+            : base(pipe, errorProvider, isEnforced, valueConverter, strictValidation, validatesOnTargetUpdated)
         {
         }
 

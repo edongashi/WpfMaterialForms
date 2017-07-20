@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
@@ -174,88 +173,88 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 return converter;
             }
 
-            var validationStep = attribute.ValidationStep;
+            var strictValidation = attribute.StrictValidation;
             var validateOnTargetUpdated = attribute.ValidatesOnTargetUpdated;
             switch (attribute.Condition)
             {
                 case Must.BeEqualTo:
-                    return new ValidatorProvider(context => new EqualsValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new EqualsValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotBeEqualTo:
-                    return new ValidatorProvider(context => new NotEqualsValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NotEqualsValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeGreaterThan:
-                    return new ValidatorProvider(context => new GreaterThanValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new GreaterThanValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeGreaterThanOrEqualTo:
-                    return new ValidatorProvider(context => new GreaterThanEqualValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new GreaterThanEqualValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeLessThan:
-                    return new ValidatorProvider(context => new LessThanValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new LessThanValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeLessThanOrEqualTo:
-                    return new ValidatorProvider(context => new LessThanEqualValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new LessThanEqualValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeEmpty:
-                    return new ValidatorProvider(context => new EmptyValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new EmptyValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotBeEmpty:
-                    return new ValidatorProvider(context => new NotEmptyValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NotEmptyValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeTrue:
-                    return new ValidatorProvider(context => new TrueValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new TrueValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeFalse:
-                    return new ValidatorProvider(context => new FalseValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new FalseValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeNull:
-                    return new ValidatorProvider(context => new NullValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NullValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotBeNull:
-                    return new ValidatorProvider(context => new NotNullValidator(errorProvider(context),
-                        isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NotNullValidator(pipe, errorProvider(context),
+                        isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.ExistIn:
-                    return new ValidatorProvider(context => new ExistsInValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new ExistsInValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotExistIn:
-                    return new ValidatorProvider(context => new NotExistsInValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NotExistsInValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.MatchPattern:
-                    return new ValidatorProvider(context => new MatchPatternValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new MatchPatternValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotMatchPattern:
-                    return new ValidatorProvider(context => new NotMatchPatternValidator(argumentProvider(context),
-                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                    return new ValidatorProvider((context, pipe) => new NotMatchPatternValidator(pipe, argumentProvider(context),
+                        errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.SatisfyContextMethod:
                     var methodName = GetMethodName(attribute.Argument, propertyKey);
                     var propertyName = propertyKey;
                     return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetContextMethodValidator(propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                        (context, pipe) => new MethodInvocationValidator(pipe, GetContextMethodValidator(propertyName, methodName, context),
+                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                             validateOnTargetUpdated));
                 case Must.SatisfyMethod:
                     var type = modelType;
                     methodName = GetMethodName(attribute.Argument, propertyKey);
                     propertyName = propertyKey;
                     return new ValidatorProvider(
-                        context => new MethodInvocationValidator(GetModelMethodValidator(type, propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), validationStep,
+                        (context, pipe) => new MethodInvocationValidator(pipe, GetModelMethodValidator(type, propertyName, methodName, context),
+                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                             validateOnTargetUpdated));
                 default:
                     throw new ArgumentException($"Invalid validator condition for property {propertyKey}.",
@@ -275,7 +274,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
         }
 
         // Called on binding -> not performance critical.
-        private static Func<object, CultureInfo, ValidationStep, bool> GetModelMethodValidator(Type modelType, string propertyName, string methodName, IResourceContext context)
+        private static Func<object, CultureInfo, bool, bool> GetModelMethodValidator(Type modelType, string propertyName, string methodName, IResourceContext context)
         {
             var method = GetMethod(modelType, methodName);
             if (method == null)
@@ -285,7 +284,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             }
 
             // Called on validation -> performance critical.
-            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            bool Validate(object value, CultureInfo cultureInfo, bool strictValidation)
             {
                 return method(new ValidationContext(
                     context.GetModelInstance(),
@@ -293,20 +292,20 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                     propertyName,
                     value,
                     cultureInfo,
-                    validationStep));
+                    !strictValidation));
             }
 
             return Validate;
         }
 
         // Called on binding = not performance critical.
-        private static Func<object, CultureInfo, ValidationStep, bool> GetContextMethodValidator(string propertyName, string methodName, IResourceContext context)
+        private static Func<object, CultureInfo, bool, bool> GetContextMethodValidator(string propertyName, string methodName, IResourceContext context)
         {
             Type currentType = null;
             Func<ValidationContext, bool> method = null;
 
             // Called on validation -> performance critical.
-            bool Validate(object value, CultureInfo cultureInfo, ValidationStep validationStep)
+            bool Validate(object value, CultureInfo cultureInfo, bool strictValidation)
             {
                 // Context type may change in runtime. Change delegate only when necessary.
                 var contextInstance = context.GetContextInstance();
@@ -328,7 +327,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                     propertyName,
                     value,
                     cultureInfo,
-                    validationStep));
+                    !strictValidation));
             }
 
             return Validate;

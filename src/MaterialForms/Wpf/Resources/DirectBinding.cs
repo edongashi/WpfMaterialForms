@@ -35,11 +35,13 @@ namespace MaterialForms.Wpf.Resources
             var binding = context.CreateDirectModelBinding();
             binding.Converter = GetValueConverter(context);
             BindingOptions.Apply(binding);
+            var pipe = new ValidationPipe();
             foreach (var validatorProvider in ValidationRules)
             {
-                binding.ValidationRules.Add(validatorProvider.GetValidator(context));
+                binding.ValidationRules.Add(validatorProvider.GetValidator(context, pipe));
             }
 
+            binding.ValidationRules.Add(pipe);
             return binding;
         }
 

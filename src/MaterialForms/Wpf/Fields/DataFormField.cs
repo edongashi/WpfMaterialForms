@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
 
