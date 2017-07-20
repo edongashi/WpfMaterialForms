@@ -92,5 +92,34 @@
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type defaults:CheckBoxBindingProvider}">
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon
+                x:Name="Icon"
+                Grid.Column="0"
+                Width="24"
+                Height="24"
+                Margin="0,0,16,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="{fields:FormBinding Icon}"
+                Style="{StaticResource ColoredIconStyle}"
+                Visibility="{fields:FormBinding IconVisibility}" />
+            <CheckBox
+                x:Name="ValueHolderControl"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="{fields:FormBinding Name}"
+                IsChecked="{fields:FormBinding Value}"
+                ToolTip="{fields:FormBinding ToolTip}" />
+        </Grid>
+    </DataTemplate>
 
 </ResourceDictionary>

@@ -13,7 +13,7 @@ namespace MaterialForms.Wpf.FormBuilding
 {
     public interface IFormBuilder
     {
-        FormDefinition GetDefinition(Type type);
+        IFormDefinition GetDefinition(Type type);
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ namespace MaterialForms.Wpf.FormBuilding
                 // Temporarily converted.
                 [typeof(DateTime)] = AsList(new ConvertedFieldBuilder(Deserializers.DateTime)),
                 [typeof(DateTime?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableDateTime)),
-                [typeof(bool)] = AsList(new ConvertedFieldBuilder(Deserializers.Boolean)),
-                [typeof(bool?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableBoolean)),
+                [typeof(bool)] = AsList(new BooleanFieldBuilder()),
+                [typeof(bool?)] = AsList(new BooleanFieldBuilder()),
 
                 // Converted non-nullable
                 [typeof(char)] = AsList(new ConvertedFieldBuilder(Deserializers.Char)),
@@ -88,6 +88,7 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 // Default initializers.
                 new FieldInitializer(),
+                new BindingInitializer(),
                 new ValidatorInitializer()
             };
 
@@ -153,7 +154,7 @@ namespace MaterialForms.Wpf.FormBuilding
         /// If current <see cref="FormBuilder" /> configuration has changed,
         /// clearing the cache using <see cref="ClearCache" /> may be necessary.
         /// </remarks>
-        public FormDefinition GetDefinition(Type type)
+        public IFormDefinition GetDefinition(Type type)
         {
             if (type == null)
             {

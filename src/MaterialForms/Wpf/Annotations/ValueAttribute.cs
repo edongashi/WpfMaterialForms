@@ -35,8 +35,7 @@ namespace MaterialForms.Wpf.Annotations
             Condition = condition;
             Argument = argument;
             HasValue = hasValue;
-            var step = ValidationStep.ConvertedProposedValue;
-            ValidationStep = step;
+            ValidationStep = ValidationStep.ConvertedProposedValue;
             ValidatesOnTargetUpdated = false;
         }
 

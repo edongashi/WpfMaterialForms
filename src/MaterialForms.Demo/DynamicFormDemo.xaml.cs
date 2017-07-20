@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Demo.Models;
 using Newtonsoft.Json;
 
@@ -29,7 +31,7 @@ namespace MaterialForms.Demo
 
         private IEnumerable<object> GetModels()
         {
-            yield return new Person();
+            yield return new User();
             yield return new DataTypes();
         }
 

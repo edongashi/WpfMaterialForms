@@ -10,7 +10,7 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Controls
 {
     [TemplatePart(Name = "PART_ItemsGrid", Type = typeof(Grid))]
-    public class DynamicForm : Control, IDynamicForm
+    public sealed class DynamicForm : Control, IDynamicForm
     {
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model",
@@ -76,7 +76,7 @@ namespace MaterialForms.Wpf.Controls
 
         /// <summary>
         /// Gets or sets the model associated with this form.
-        /// If the value is a MaterialFormDefinition, a form will be built based on that definition.
+        /// If the value is a IFormDefinition, a form will be built based on that definition.
         /// If the value is a Type, a form will be built and bound to a new instance of that type.
         /// If the value is a simple object, a single field bound to this property will be displayed.
         /// If the value is a complex object, a form will be built and bound to properties of that instance.
@@ -136,9 +136,9 @@ namespace MaterialForms.Wpf.Controls
                 // Same type -> update values only.
                 SetValue(ValuePropertyKey, newModel);
             }
-            else if (newModel is FormDefinition formDefinition)
+            else if (newModel is IFormDefinition formDefinition)
             {
-                // MaterialFormDefinition -> Build form
+                // IFormDefinition -> Build form
                 var instance = formDefinition.CreateInstance(resourceContext);
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
@@ -167,7 +167,7 @@ namespace MaterialForms.Wpf.Controls
             FillGrid();
         }
 
-        private void RebuildForm(FormDefinition formDefinition)
+        private void RebuildForm(IFormDefinition formDefinition)
         {
             ClearForm();
             rows = formDefinition.FormRows.Count;

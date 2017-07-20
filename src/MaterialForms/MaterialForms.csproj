@@ -46,15 +46,14 @@
     <Reference Include="Humanizer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors">
       <HintPath>..\..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf">
-      <HintPath>..\..\packages\MaterialDesignThemes.2.2.1.750\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.0.823, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -62,7 +61,7 @@
       <HintPath>..\..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MahApps.Metro.1.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -150,6 +149,7 @@
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormContentAttribute.cs" />
+    <Compile Include="Wpf\Annotations\IsToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
@@ -157,6 +157,7 @@
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
     <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
     <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
+    <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\FormBindingExtension.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Wpf\Fields\Defaults\SelectionField.cs" />
     <Compile Include="Wpf\Fields\Defaults\StringField.cs" />
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
+    <Compile Include="Wpf\Fields\IFormDefinition.cs" />
     <Compile Include="Wpf\Fields\StringTypeConverter.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\BindingInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\FieldInitializer.cs" />
@@ -201,7 +203,6 @@
     <Compile Include="Wpf\Resources\ValueConverters\ConverterWrapper.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\ToStringConverter.cs" />
-    <Compile Include="Wpf\Resources\ValueConverters\CoercedValueConverter.cs" />
     <Compile Include="Wpf\Validation\ComparisonValidator.cs" />
     <Compile Include="Wpf\Validation\ConversionValidator.cs" />
     <Compile Include="Wpf\Validation\IErrorStringProvider.cs" />
@@ -415,9 +416,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Wpf\Annotations\DisplayStyle\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

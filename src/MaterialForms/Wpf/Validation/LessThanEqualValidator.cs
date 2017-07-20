@@ -24,10 +24,10 @@ namespace MaterialForms.Wpf.Validation
 
             if (value == null)
             {
-                return false;
+                return true;
             }
 
-            if (value != null && comparand is IConvertible && value.GetType() != comparand.GetType())
+            if (/*value != null &&*/ comparand is IConvertible && value.GetType() != comparand.GetType())
             {
                 comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
             }

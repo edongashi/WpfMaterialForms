@@ -6,7 +6,7 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
 {
-    public class FormDefinition
+    public class FormDefinition : IFormDefinition
     {
         private bool frozen;
 
@@ -25,6 +25,8 @@ namespace MaterialForms.Wpf.Fields
         public double[] Grid { get; set; }
 
         public List<FormRow> FormRows { get; set; }
+
+        IReadOnlyList<FormRow> IFormDefinition.FormRows => FormRows;
 
         public object CreateInstance(IResourceContext context)
         {

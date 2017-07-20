@@ -6,7 +6,7 @@ using MaterialForms.Wpf.Validation;
 
 namespace MaterialForms.Wpf.Fields.Defaults
 {
-    public sealed class ConvertedField : DataFormField
+    public class ConvertedField : DataFormField
     {
         public ConvertedField(string key, Func<string, CultureInfo, object> deserializer) : base(key)
         {
@@ -16,17 +16,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public Func<string, CultureInfo, object> Deserializer { get; }
 
-        // TODO: replace with provider
-        public IErrorStringProvider ConversionErrorMessage { get; set; }
+        public Func<IResourceContext, IErrorStringProvider> ConversionErrorMessage { get; set; }
 
         protected internal override void Freeze()
         {
             base.Freeze();
-
             Resources.Add("Value",
                 new ConvertedDataBinding(Key, BindingOptions, Validators, Deserializer,
-                    // TODO: This is temporary.
-                    context => ConversionErrorMessage ?? new PlainErrorStringProvider("Invalid value.")));
+                    ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,

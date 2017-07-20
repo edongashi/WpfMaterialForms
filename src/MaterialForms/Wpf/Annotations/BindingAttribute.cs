@@ -19,6 +19,8 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public string ConverterCulture { get; set; } = "";
 
+        public string ConversionErrorMessage { get; set; }
+
         public string StringFormat { get; set; }
 
         public UpdateSourceTrigger UpdateSourceTrigger { get; set; }
@@ -30,21 +32,6 @@ namespace MaterialForms.Wpf.Annotations
         public bool ValidatesOnExceptions { get; set; } = false;
 
         public bool ValidatesOnNotifyDataErrors { get; set; } = true;
-
-        internal BindingOptions GetBindingOptions()
-        {
-            return new BindingOptions
-            {
-                StringFormat = StringFormat,
-                ConverterCulture = ConverterCulture != null
-                    ? CultureInfo.GetCultureInfo(ConverterCulture)
-                    : null,
-                Delay = Delay,
-                ValidatesOnExceptions = ValidatesOnExceptions,
-                ValidatesOnDataErrors = ValidatesOnDataErrors,
-                ValidatesOnNotifyDataErrors = ValidatesOnNotifyDataErrors
-            };
-        }
 
         internal void Apply(BindingOptions bindingOptions)
         {

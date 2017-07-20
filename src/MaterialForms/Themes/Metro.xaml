@@ -8,6 +8,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Textbox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.CheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ToggleSwitch.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
@@ -79,7 +81,87 @@
                 Text="{fields:FormBinding Value}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
+    </DataTemplate>
 
+    <DataTemplate DataType="{x:Type defaults:CheckBoxBindingProvider}">
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon
+                x:Name="Icon"
+                Grid.Column="0"
+                Width="24"
+                Height="24"
+                Margin="0,0,8,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="{fields:FormBinding Icon}"
+                Style="{StaticResource ColoredIconStyle}"
+                Visibility="{fields:FormBinding IconVisibility}" />
+            <CheckBox
+                x:Name="ValueHolderControl"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="{fields:FormBinding Name}"
+                IsChecked="{fields:FormBinding Value}"
+                Style="{StaticResource MetroCheckBox}"
+                ToolTip="{fields:FormBinding ToolTip}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type defaults:SwitchBindingProvider}">
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon
+                x:Name="Icon"
+                Grid.Column="0"
+                Width="24"
+                Height="24"
+                Margin="0,0,8,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="{fields:FormBinding Icon}"
+                Visibility="{fields:FormBinding IconVisibility}">
+                <materialDesign:PackIcon.Style>
+                    <Style TargetType="{x:Type materialDesign:PackIcon}">
+                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </materialDesign:PackIcon.Style>
+            </materialDesign:PackIcon>
+            <TextBlock
+                x:Name="HintText"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Text="{fields:FormBinding Name}"
+                ToolTip="{fields:FormBinding ToolTip}" />
+            <controls:ToggleSwitch
+                x:Name="ValueHolderControl"
+                Grid.Column="2"
+                Margin="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsChecked="{fields:FormBinding Value}"
+                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

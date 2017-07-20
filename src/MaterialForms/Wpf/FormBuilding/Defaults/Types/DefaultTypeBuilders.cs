@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
 
@@ -13,10 +14,14 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
         }
     }
 
-    internal class BooleanFieldBuilder : TypeBuilder<Boolean> {
-        protected override FormElement Build(PropertyInfo property, Func<string, object> deserializer)
+    internal class BooleanFieldBuilder : IFieldBuilder {
+        public FormElement TryBuild(PropertyInfo property, Func<string, object> deserializer)
         {
-            return new StringField(property.Name);
+            var isSwitch = property.GetCustomAttribute<Display.ToggleAttribute>() != null;
+            return new BooleanField(property.Name)
+            {
+                IsSwitch = isSwitch
+            };
         }
     }
 
