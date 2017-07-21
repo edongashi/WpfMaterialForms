@@ -78,7 +78,7 @@ namespace MaterialForms.Wpf.Annotations
         public bool ValidatesOnTargetUpdated { get; set; }
 
         /// <summary>
-        /// Determines whether argument changes cause validation.
+        /// Specifies what happens when argument values change.
         /// </summary>
         public ValidationAction ArgumentUpdatedAction { get; set; }
     }
