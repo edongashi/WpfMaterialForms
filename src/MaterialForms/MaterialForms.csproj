@@ -149,7 +149,7 @@
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormContentAttribute.cs" />
-    <Compile Include="Wpf\Annotations\IsToggleAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Display.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
@@ -169,8 +169,10 @@
     <Compile Include="Wpf\Fields\Defaults\SelectionField.cs" />
     <Compile Include="Wpf\Fields\Defaults\StringField.cs" />
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
+    <Compile Include="Wpf\Fields\IDataBindingProvider.cs" />
     <Compile Include="Wpf\Fields\IFormDefinition.cs" />
     <Compile Include="Wpf\Fields\StringTypeConverter.cs" />
+    <Compile Include="Wpf\Fields\ValueBindingProvider.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\BindingInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\FieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\ValidatorInitializer.cs" />

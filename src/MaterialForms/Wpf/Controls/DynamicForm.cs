@@ -43,9 +43,13 @@ namespace MaterialForms.Wpf.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm), new FrameworkPropertyMetadata(typeof(DynamicForm)));
         }
 
-        private readonly IResourceContext resourceContext;
+        internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
+
+        internal readonly IResourceContext ResourceContext;
 
         private readonly List<FormContentPresenter> currentElements;
+        internal readonly Dictionary<string, DataFormField> DataFields;
+        internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
         private double[] columns;
         private int rows;
 
@@ -54,15 +58,31 @@ namespace MaterialForms.Wpf.Controls
         public DynamicForm()
         {
             IsTabStop = false;
-            resourceContext = new FormResourceContext(this);
+            ResourceContext = new FormResourceContext(this);
             columns = new double[0];
             currentElements = new List<FormContentPresenter>();
+            DataFields = new Dictionary<string, DataFormField>();
+            DataBindingProviders = new Dictionary<string, IDataBindingProvider>();
             BindingOperations.SetBinding(this, ContextProperty, new Binding
             {
                 Source = this,
                 Path = new PropertyPath(DataContextProperty),
                 Mode = BindingMode.OneWay
             });
+
+            Loaded += (s, e) =>
+            {
+                ActiveForms.Add(this);
+                // Clear bindings for good measure.
+                DetachBindings();
+                FillGrid();
+            };
+
+            Unloaded += (s, e) =>
+            {
+                ActiveForms.Remove(this);
+                DetachBindings();
+            };
         }
 
         /// <summary>
@@ -105,6 +125,7 @@ namespace MaterialForms.Wpf.Controls
 
         public void ReloadElements()
         {
+            DetachBindings();
             FillGrid();
         }
 
@@ -139,7 +160,7 @@ namespace MaterialForms.Wpf.Controls
             else if (newModel is IFormDefinition formDefinition)
             {
                 // IFormDefinition -> Build form
-                var instance = formDefinition.CreateInstance(resourceContext);
+                var instance = formDefinition.CreateInstance(ResourceContext);
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
             }
@@ -147,7 +168,7 @@ namespace MaterialForms.Wpf.Controls
             {
                 // Type -> Build form, Value = new Type
                 formDefinition = FormBuilder.GetDefinition(type);
-                var instance = formDefinition.CreateInstance(resourceContext);
+                var instance = formDefinition.CreateInstance(ResourceContext);
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
             }
@@ -162,6 +183,7 @@ namespace MaterialForms.Wpf.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            DetachBindings();
             itemsGrid?.Children.Clear();
             itemsGrid = Template.FindName("PART_ItemsGrid", this) as Grid;
             FillGrid();
@@ -178,13 +200,21 @@ namespace MaterialForms.Wpf.Controls
             rows = formDefinition.FormRows.Count;
             columns = formDefinition.Grid;
             currentElements.Clear();
+            DataBindingProviders.Clear();
+            DataFields.Clear();
             for (var i = 0; i < rows; i++)
             {
                 var row = formDefinition.FormRows[i];
                 foreach (var element in row.Elements)
                 {
-                    currentElements.Add(new FormContentPresenter(i, element.Column, element.ColumnSpan,
-                        element.Element.CreateBindingProvider(resourceContext, formDefinition.Resources)));
+                    var provider = element.Element.CreateBindingProvider(ResourceContext, formDefinition.Resources);
+                    currentElements.Add(new FormContentPresenter(i, element.Column, element.ColumnSpan, provider));
+                    if (element.Element is DataFormField field &&
+                        provider is IDataBindingProvider dataBindingProvider)
+                    {
+                        DataBindingProviders[field.Key] = dataBindingProvider;
+                        DataFields[field.Key] = field;
+                    }
                 }
             }
 
@@ -233,6 +263,7 @@ namespace MaterialForms.Wpf.Controls
 
         private void ClearForm()
         {
+            DetachBindings();
             itemsGrid?.Children.Clear();
             var resources = Resources;
             var keys = resources.Keys;
@@ -244,6 +275,14 @@ namespace MaterialForms.Wpf.Controls
                     proxy.Value = null;
                     resources.Remove(key);
                 }
+            }
+        }
+
+        private void DetachBindings()
+        {
+            foreach (var provider in DataBindingProviders.Values)
+            {
+                provider.ClearBindings();
             }
         }
     }

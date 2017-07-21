@@ -93,7 +93,10 @@
             Grid.RowSpan="3"
             Grid.Column="1"
             Padding="16">
-            <controls:DynamicForm x:Name="Form" Model="{Binding SelectedItem, ElementName=ModelsList}" />
+            <StackPanel>
+                <controls:DynamicForm x:Name="Form" Model="{Binding SelectedItem, ElementName=ModelsList}" />
+                <Button Click="OnResetClick" HorizontalAlignment="Right" Content="RESET FIELDS" Width="Auto" Height="Auto"></Button>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>

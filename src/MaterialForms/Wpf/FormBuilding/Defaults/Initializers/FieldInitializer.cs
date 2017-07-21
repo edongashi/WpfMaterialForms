@@ -51,9 +51,19 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                     dataField.IsReadOnly = new LiteralValue(true);
                 }
 
-                if (attr.DefaultValue != null || !property.PropertyType.IsValueType)
+                var type = property.PropertyType;
+                if (attr.DefaultValue != null)
                 {
                     dataField.DefaultValue = TypeUtilities.GetResource<object>(attr.DefaultValue, null, deserializer);
+                }
+                else if (!type.IsValueType)
+                {
+                    // Null for reference types and nullables.
+                    dataField.DefaultValue = LiteralValue.Null;
+                } else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    // Same for nullables.
+                    dataField.DefaultValue = LiteralValue.Null;
                 }
             }
         }

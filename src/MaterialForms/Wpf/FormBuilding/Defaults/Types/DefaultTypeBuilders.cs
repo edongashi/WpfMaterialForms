@@ -43,7 +43,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 
         public FormElement TryBuild(PropertyInfo property, Func<string, object> deserializer)
         {
-            return new ConvertedField(property.Name, Deserializer);
+            return new ConvertedField(property.Name, property.PropertyType, Deserializer);
         }
     }
 

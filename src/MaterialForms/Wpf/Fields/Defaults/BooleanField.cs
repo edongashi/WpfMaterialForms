@@ -5,7 +5,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class BooleanField : DataFormField
     {
-        public BooleanField(string key) : base(key)
+        public BooleanField(string key) : base(key, typeof(bool))
         {
         }
 
@@ -22,7 +22,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class CheckBoxBindingProvider : BindingProvider
+    public class CheckBoxBindingProvider : ValueBindingProvider
     {
         public CheckBoxBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
@@ -32,7 +32,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class SwitchBindingProvider : BindingProvider
+    public class SwitchBindingProvider : ValueBindingProvider
     {
         public SwitchBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,

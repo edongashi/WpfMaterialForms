@@ -100,6 +100,10 @@ namespace MaterialForms.Wpf.Fields
             return null;
         }
 
+        public virtual void BindingCreated(BindingExpressionBase expression, string resource)
+        {
+        }
+
         /// <summary>
         /// This event will never fire from the base class.
         /// </summary>

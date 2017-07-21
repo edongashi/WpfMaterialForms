@@ -51,7 +51,13 @@ namespace MaterialForms.Wpf.Fields
                         return binding;
                     }
 
-                    return binding.ProvideValue(serviceProvider);
+                    var providedValue = binding.ProvideValue(serviceProvider);
+                    if (providedValue is BindingExpressionBase expression)
+                    {
+                        field.BindingCreated(expression, Name);
+                    }
+
+                    return providedValue;
                 }
 
                 return value;

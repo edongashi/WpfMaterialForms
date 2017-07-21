@@ -6,7 +6,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class SelectionField : DataFormField
     {
-        public SelectionField(string key) : base(key)
+        public SelectionField(string key, Type propertyType) : base(key, propertyType)
         {
         }
 

@@ -8,7 +8,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class ConvertedField : DataFormField
     {
-        public ConvertedField(string key, Func<string, CultureInfo, object> deserializer) : base(key)
+        public ConvertedField(string key, Type propertyType, Func<string, CultureInfo, object> deserializer) : base(key, propertyType)
         {
             Deserializer = deserializer;
             CreateBinding = false;
@@ -33,7 +33,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class ConvertedFieldBindingProvider : BindingProvider
+    public class ConvertedFieldBindingProvider : ValueBindingProvider
     {
         public ConvertedFieldBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,

@@ -6,7 +6,7 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Annotations
 {
     /// <summary>
-    /// Specifies additional information about this field's data binding.
+    /// Specifies additional information about a field's data binding.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class BindingAttribute : Attribute

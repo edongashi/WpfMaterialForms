@@ -10,9 +10,10 @@ namespace MaterialForms.Wpf.Fields
     /// </summary>
     public abstract class DataFormField : FormField
     {
-        protected DataFormField(string key)
+        protected DataFormField(string key, Type propertyType)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
+            PropertyType = propertyType;
             Validators = new List<IValidatorProvider>();
             BindingOptions = new BindingOptions();
         }
@@ -36,6 +37,8 @@ namespace MaterialForms.Wpf.Fields
             Resources.Add(nameof(DefaultValue), DefaultValue ?? new LiteralValue(null));
             Resources.Add(nameof(SelectOnFocus), SelectOnFocus ?? LiteralValue.True);
         }
+
+        public Type PropertyType { get; }
 
         public IValueProvider IsReadOnly { get; set; }
 

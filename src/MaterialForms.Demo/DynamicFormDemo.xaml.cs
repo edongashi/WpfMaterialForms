@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Demo.Models;
+using MaterialForms.Wpf.Models;
 using Newtonsoft.Json;
 
 namespace MaterialForms.Demo
@@ -77,8 +78,17 @@ namespace MaterialForms.Demo
             {
                 Source = new Uri(source, UriKind.Relative)
             });
+        }
 
-            Form.ReloadElements();
+        private void OnResetClick(object sender, RoutedEventArgs e)
+        {
+            var currentModel = Form.Model;
+            if (currentModel == null || currentModel is ValueType)
+            {
+                return;
+            }
+
+            ModelState.Reset(currentModel);
         }
     }
 }

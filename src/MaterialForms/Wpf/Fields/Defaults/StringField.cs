@@ -5,7 +5,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class StringField : DataFormField
     {
-        public StringField(string key) : base(key)
+        public StringField(string key) : base(key, typeof(string))
         {
         }
 
@@ -23,7 +23,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class StringBindingProvider : BindingProvider
+    public class StringBindingProvider : ValueBindingProvider
     {
         public StringBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,

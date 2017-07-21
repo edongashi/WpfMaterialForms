@@ -4,7 +4,7 @@ namespace MaterialForms.Wpf.Annotations
 {
     /// <summary>
     /// Allows attaching custom resources to fields or to the model.
-    /// These resources become available from generated controls.
+    /// These resources become available to generated controls.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class ResourceAttribute : Attribute

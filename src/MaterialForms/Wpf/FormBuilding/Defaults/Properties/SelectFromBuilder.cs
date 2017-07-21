@@ -21,7 +21,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
             }
 
             var type = property.PropertyType;
-            var field = new SelectionField(property.Name);
+            var field = new SelectionField(property.Name, property.PropertyType);
             if (selectFrom.DisplayPath != null)
             {
                 field.DisplayPath = BoundExpression.ParseSimplified(selectFrom.DisplayPath);

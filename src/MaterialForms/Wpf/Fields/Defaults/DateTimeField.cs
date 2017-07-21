@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class DateTimeField : DataFormField
     {
-        public DateTimeField(string key) : base(key)
+        public DateTimeField(string key, bool nullable) : base(key, nullable ? typeof(DateTime?) : typeof(DateTime))
         {
         }
 
@@ -20,7 +21,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class DateTimeBindingProvider : BindingProvider
+    public class DateTimeBindingProvider : ValueBindingProvider
     {
         public DateTimeBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
