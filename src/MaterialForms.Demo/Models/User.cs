@@ -41,7 +41,8 @@ namespace MaterialForms.Demo.Models
 
         [Field(Icon = "Empty")]
         [Value(Must.BeEqualTo, "{Binding Password}",
-            Message = "The entered passwords do not match.")]
+            Message = "The entered passwords do not match.",
+            ArgumentUpdatedAction = ValidationAction.ClearErrors)]
         [Value(Must.NotBeEmpty)]
         public string ConfirmPassword { get; set; }
 

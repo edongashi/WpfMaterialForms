@@ -1,8 +1,12 @@
-﻿namespace MaterialForms.Wpf.Resources
+﻿using System;
+
+namespace MaterialForms.Wpf.Resources
 {
     public interface IProxy
     {
         object Value { get; }
+
+        Action ValueChanged { get; set; }
     }
 
     public interface IStringProxy
@@ -23,6 +27,8 @@
         }
 
         public object Value { get; }
+
+        public Action ValueChanged { get; set; }
     }
 
     internal class PlainBool : IBoolProxy

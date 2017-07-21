@@ -150,6 +150,29 @@ namespace MaterialForms.Wpf.Models
             }
         }
 
+
+        /// <summary>
+        /// Clear validation errors from source properties.
+        /// </summary>
+        public static void ClearValidationErrors(object model)
+        {
+            foreach (var expression in GetBindings(model))
+            {
+                System.Windows.Controls.Validation.ClearInvalid(expression);
+            }
+        }
+
+        /// <summary>
+        /// Clear validation errors from properties.
+        /// </summary>
+        public static void ClearValidationErrors(object model, params string[] properties)
+        {
+            foreach (var expression in GetBindings(model, properties))
+            {
+                System.Windows.Controls.Validation.ClearInvalid(expression);
+            }
+        }
+
         /// <summary>
         /// Validates source by flushing bindings.
         /// </summary>

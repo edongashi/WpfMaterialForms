@@ -154,6 +154,7 @@
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
+    <Compile Include="Wpf\Annotations\ValidationAction.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
     <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
     <Compile Include="Wpf\Controls\FormContentPresenter.cs" />

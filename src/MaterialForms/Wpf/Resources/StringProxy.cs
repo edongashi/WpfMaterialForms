@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 
 namespace MaterialForms.Wpf.Resources
@@ -12,7 +13,12 @@ namespace MaterialForms.Wpf.Resources
                 nameof(Value),
                 typeof(string),
                 typeof(StringProxy),
-                new UIPropertyMetadata(null));
+                new UIPropertyMetadata(PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((StringProxy)dependencyObject).ValueChanged?.Invoke();
+        }
 
         public object Key { get; set; }
 
@@ -23,6 +29,8 @@ namespace MaterialForms.Wpf.Resources
         }
 
         object IProxy.Value => Value;
+
+        public Action ValueChanged { get; set; }
 
         protected override Freezable CreateInstanceCore()
         {

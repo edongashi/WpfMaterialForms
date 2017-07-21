@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 
 namespace MaterialForms.Wpf.Resources
@@ -12,7 +13,12 @@ namespace MaterialForms.Wpf.Resources
                 nameof(Value),
                 typeof(bool),
                 typeof(BoolProxy),
-                new UIPropertyMetadata(false));
+                new UIPropertyMetadata(PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((BoolProxy)dependencyObject).ValueChanged?.Invoke();
+        }
 
         public bool Value
         {
@@ -21,6 +27,8 @@ namespace MaterialForms.Wpf.Resources
         }
 
         object IProxy.Value => Value;
+
+        public Action ValueChanged { get; set; }
 
         protected override Freezable CreateInstanceCore()
         {

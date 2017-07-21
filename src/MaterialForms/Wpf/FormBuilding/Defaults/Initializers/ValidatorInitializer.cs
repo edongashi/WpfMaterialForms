@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Data;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.Models;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
 
@@ -48,13 +49,54 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 
                     argumentProvider = context => literal;
                 }
-                else if (boundExpression.StringFormat != null)
-                {
-                    argumentProvider = context => boundExpression.GetStringValue(context);
-                }
                 else
                 {
-                    argumentProvider = context => boundExpression.GetValue(context);
+                    var getString = boundExpression.StringFormat != null;
+                    var action = attribute.ArgumentUpdatedAction;
+                    var notify = action == ValidationAction.ClearErrors || action == ValidationAction.ValidateField;
+                    argumentProvider = context =>
+                    {
+                        var value = getString
+                            ? (IProxy)boundExpression.GetStringValue(context)
+                            : boundExpression.GetValue(context);
+
+                        if (notify)
+                        {
+                            value.ValueChanged = () =>
+                            {
+                                object model;
+                                try
+                                {
+                                    model = context.GetModelInstance();
+                                }
+                                catch
+                                {
+                                    // Something went wrong so it's best to 
+                                    // disable the feature entirely.
+                                    value.ValueChanged = null;
+                                    return;
+                                }
+
+                                if (model?.GetType() != modelType)
+                                {
+                                    // Self dispose when form indicates model change.
+                                    value.ValueChanged = null;
+                                    return;
+                                }
+
+                                if (action == ValidationAction.ValidateField)
+                                {
+                                    ModelState.Validate(model, propertyKey);
+                                }
+                                else
+                                {
+                                    ModelState.ClearValidationErrors(model, propertyKey);
+                                }
+                            };
+                        }
+
+                        return value;
+                    };
                 }
             }
             else
