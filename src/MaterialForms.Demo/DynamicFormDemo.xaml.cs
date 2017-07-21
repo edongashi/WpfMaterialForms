@@ -80,15 +80,14 @@ namespace MaterialForms.Demo
             });
         }
 
+        private void OnValidateClick(object sender, RoutedEventArgs e)
+        {
+            ModelState.Validate(Form.Model);
+        }
+
         private void OnResetClick(object sender, RoutedEventArgs e)
         {
-            var currentModel = Form.Model;
-            if (currentModel == null || currentModel is ValueType)
-            {
-                return;
-            }
-
-            ModelState.Reset(currentModel);
+            ModelState.Reset(Form.Model);
         }
     }
 }

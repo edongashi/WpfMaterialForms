@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:MaterialForms.Wpf.Controls;assembly=MaterialForms"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:demo="clr-namespace:MaterialForms.Demo"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="DynamicFormDemo"
@@ -18,6 +19,9 @@
     TextOptions.TextRenderingMode="Auto"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.Resources>
+        <demo:ModelTypeToVisibilityConverter x:Key="ModelTypeToVisibilityConverter" />
+    </Window.Resources>
     <Grid x:Name="Root">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -95,7 +99,26 @@
             Padding="16">
             <StackPanel>
                 <controls:DynamicForm x:Name="Form" Model="{Binding SelectedItem, ElementName=ModelsList}" />
-                <Button Click="OnResetClick" HorizontalAlignment="Right" Content="RESET FIELDS" Width="Auto" Height="Auto"></Button>
+                <StackPanel
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Visibility="{Binding Model, ElementName=Form, Converter={StaticResource ModelTypeToVisibilityConverter}}">
+                    <Button
+                        Width="Auto"
+                        Height="Auto"
+                        Margin="8"
+                        HorizontalAlignment="Right"
+                        Click="OnValidateClick"
+                        Content="VALIDATE FIELDS" />
+                    <Button
+                        Width="Auto"
+                        Height="Auto"
+                        Margin="8"
+                        HorizontalAlignment="Right"
+                        Click="OnResetClick"
+                        Content="RESET FIELDS" />
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>
