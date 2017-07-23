@@ -101,6 +101,13 @@ namespace MaterialForms.Wpf.Controls
         /// If the value is a simple object, a single field bound to this property will be displayed.
         /// If the value is a complex object, a form will be built and bound to properties of that instance.
         /// </summary>
+        /// <remarks>
+        /// Setting the value to a form definition that may eventually
+        /// create a direct model binding might cause unexpected behavior.
+        /// 
+        /// Because there is no way to know if a boxed value type is nullable,
+        /// binding this value to a boxed nullable primitive will treat it as non-nullable.
+        /// </remarks>
         public object Model
         {
             get => GetValue(ModelProperty);
@@ -168,6 +175,13 @@ namespace MaterialForms.Wpf.Controls
             {
                 // Type -> Build form, Value = new Type
                 formDefinition = FormBuilder.GetDefinition(type);
+                if (formDefinition == null)
+                {
+                    ClearForm();
+                    SetValue(ValuePropertyKey, null);
+                    return;
+                }
+
                 var instance = formDefinition.CreateInstance(ResourceContext);
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
@@ -175,7 +189,15 @@ namespace MaterialForms.Wpf.Controls
             else
             {
                 // object -> Build form, Value = model
-                RebuildForm(FormBuilder.GetDefinition(newModel.GetType()));
+                formDefinition = FormBuilder.GetDefinition(newModel.GetType());
+                if (formDefinition == null)
+                {
+                    ClearForm();
+                    SetValue(ValuePropertyKey, null);
+                    return;
+                }
+
+                RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, newModel);
             }
         }
@@ -209,8 +231,8 @@ namespace MaterialForms.Wpf.Controls
                 {
                     var provider = element.Element.CreateBindingProvider(ResourceContext, formDefinition.Resources);
                     currentElements.Add(new FormContentPresenter(i, element.Column, element.ColumnSpan, provider));
-                    if (element.Element is DataFormField field &&
-                        provider is IDataBindingProvider dataBindingProvider)
+                    if (element.Element is DataFormField field && field.Key != null && !field.IsDirectBinding
+                        && provider is IDataBindingProvider dataBindingProvider)
                     {
                         DataBindingProviders[field.Key] = dataBindingProvider;
                         DataFields[field.Key] = field;

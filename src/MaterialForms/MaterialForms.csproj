@@ -177,6 +177,7 @@
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\BindingInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\FieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\ValidatorInitializer.cs" />
+    <Compile Include="Wpf\FormBuilding\Defaults\Primitive.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Properties\SelectFromBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\DefaultTypeBuilders.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\TypeBuilder.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Wpf\Models\ModelState.cs" />
     <Compile Include="Wpf\Resources\BindingOptions.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
+    <Compile Include="Wpf\Resources\ConvertedDirectBinding.cs" />
     <Compile Include="Wpf\Resources\ConvertedDataBinding.cs" />
     <Compile Include="Wpf\Resources\DirectBinding.cs" />
     <Compile Include="Wpf\Resources\DataBinding.cs" />

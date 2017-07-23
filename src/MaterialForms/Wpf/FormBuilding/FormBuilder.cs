@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.FormBuilding.Defaults;
 using MaterialForms.Wpf.FormBuilding.Defaults.Initializers;
 using MaterialForms.Wpf.FormBuilding.Defaults.Properties;
 using MaterialForms.Wpf.FormBuilding.Defaults.Types;
@@ -42,6 +43,42 @@ namespace MaterialForms.Wpf.FormBuilding
                 return builders.ToList();
             }
 
+            Primitives = new Dictionary<Type, IFormDefinition>
+            {
+                [typeof(string)] = Primitive.String(),
+
+                [typeof(DateTime)] = Primitive.DateTime(),
+                [typeof(bool)] = Primitive.Boolean(),
+                [typeof(char)] = Primitive.Char(),
+                [typeof(byte)] = Primitive.Byte(),
+                [typeof(sbyte)] = Primitive.SByte(),
+                [typeof(short)] = Primitive.Int16(),
+                [typeof(int)] = Primitive.Int32(),
+                [typeof(long)] = Primitive.Int64(),
+                [typeof(ushort)] = Primitive.UInt16(),
+                [typeof(uint)] = Primitive.UInt32(),
+                [typeof(ulong)] = Primitive.UInt64(),
+                [typeof(float)] = Primitive.Single(),
+                [typeof(double)] = Primitive.Double(),
+                [typeof(decimal)] = Primitive.Decimal(),
+
+                // Nullables will default to non-nullable,
+                [typeof(DateTime?)] = Primitive.DateTime(),
+                [typeof(bool?)] = Primitive.Boolean(),
+                [typeof(char?)] = Primitive.Char(),
+                [typeof(byte?)] = Primitive.Byte(),
+                [typeof(sbyte?)] = Primitive.SByte(),
+                [typeof(short?)] = Primitive.Int16(),
+                [typeof(int?)] = Primitive.Int32(),
+                [typeof(long?)] = Primitive.Int64(),
+                [typeof(ushort?)] = Primitive.UInt16(),
+                [typeof(uint?)] = Primitive.UInt32(),
+                [typeof(ulong?)] = Primitive.UInt64(),
+                [typeof(float?)] = Primitive.Single(),
+                [typeof(double?)] = Primitive.Double(),
+                [typeof(decimal?)] = Primitive.Decimal()
+            };
+
             TypeBuilders = new Dictionary<Type, List<IFieldBuilder>>
             {
                 // Default type builders.
@@ -52,6 +89,8 @@ namespace MaterialForms.Wpf.FormBuilding
                 // Temporarily converted.
                 [typeof(DateTime)] = AsList(new ConvertedFieldBuilder(Deserializers.DateTime)),
                 [typeof(DateTime?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableDateTime)),
+
+                // Boolean
                 [typeof(bool)] = AsList(new BooleanFieldBuilder()),
                 [typeof(bool?)] = AsList(new BooleanFieldBuilder()),
 
@@ -129,6 +168,13 @@ namespace MaterialForms.Wpf.FormBuilding
         }
 
         /// <summary>
+        /// Contains prebuilt definitions for primitive types.
+        /// Types stored here will bypass form generation process.
+        /// Initially, value types and strings are stored here.
+        /// </summary>
+        public Dictionary<Type, IFormDefinition> Primitives { get; }
+
+        /// <summary>
         /// Gets the list of registered field builders which are queried first.
         /// </summary>
         public List<IFieldBuilder> PropertyBuilders { get; }
@@ -159,6 +205,11 @@ namespace MaterialForms.Wpf.FormBuilding
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
+            }
+
+            if (Primitives.TryGetValue(type, out var primitiveForm))
+            {
+                return primitiveForm;
             }
 
             if (cachedDefinitions.TryGetValue(type, out var formDefinition))

@@ -12,7 +12,7 @@ namespace MaterialForms.Wpf.Fields
     {
         protected DataFormField(string key, Type propertyType)
         {
-            Key = key ?? throw new ArgumentNullException(nameof(key));
+            Key = key;
             PropertyType = propertyType;
             Validators = new List<IValidatorProvider>();
             BindingOptions = new BindingOptions();
@@ -53,9 +53,9 @@ namespace MaterialForms.Wpf.Fields
 
         public IValueProvider SelectOnFocus { get; set; }
 
-        protected bool IsDirectBinding { get; set; }
+        protected internal bool IsDirectBinding { get; set; }
 
-        protected bool CreateBinding { get; set; } = true;
+        protected internal bool CreateBinding { get; set; } = true;
 
         public virtual object GetDefaultValue(IResourceContext context)
         {
