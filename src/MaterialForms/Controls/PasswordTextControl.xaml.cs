@@ -35,7 +35,7 @@ namespace MaterialForms.Controls
             var binding = new Binding("Value")
             {
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
 
             ValueHolderControl.SetBinding(PasswordProperty, binding);
