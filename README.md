@@ -36,8 +36,8 @@ public class User
     public DateTime DateOfBirth { get; set; }
 
     [Field(Name = "Username")]
-    [Value(Must.MatchPattern, "^[a-Z][a-Z0-9]*$",
-        Message = "{Value} is not a valid username, usernames must match pattern {Argument}.")]
+    [Value(Must.MatchPattern, "^[a-zA-Z][a-zA-Z0-9]*$",
+        Message = "{Value} is not a valid username, usernames must match pattern {Argument}.")]
     [Value(Must.NotExistIn, "{ContextBinding Users}",
         Message = "User {Value} is already taken.")]
     public string Username { get; set; }
@@ -57,6 +57,9 @@ public class User
     public bool AgreeToLicense { get; set; }
 }
 ```
+
+Result, depending on app theme:
+![user](https://github.com/EdonGashi/WpfMaterialForms/blob/master/doc/user.png)
 
 # WPF Material Forms
 
