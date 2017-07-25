@@ -33,7 +33,9 @@ namespace MaterialForms.Demo
         private IEnumerable<object> GetModels()
         {
             yield return new User();
+            yield return new Login();
             yield return new DataTypes();
+            yield return new Settings();
         }
 
         private void Serialize(object sender, RoutedEventArgs e)

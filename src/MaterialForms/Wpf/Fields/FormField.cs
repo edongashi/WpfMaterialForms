@@ -35,6 +35,7 @@ namespace MaterialForms.Wpf.Fields
         /// </summary>
         protected internal override void Freeze()
         {
+            base.Freeze();
             Resources.Add(nameof(Name), Name ?? LiteralValue.Null);
             Resources.Add(nameof(ToolTip), ToolTip ?? LiteralValue.Null);
             var hasIcon = Icon != null && !(Icon is LiteralValue v && v.Value == null);

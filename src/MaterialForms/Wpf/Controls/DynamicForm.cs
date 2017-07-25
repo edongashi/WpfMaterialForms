@@ -6,6 +6,7 @@ using System.Windows.Data;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
+using MaterialForms.Wpf.Resources.ValueConverters;
 
 namespace MaterialForms.Wpf.Controls
 {
@@ -270,11 +271,31 @@ namespace MaterialForms.Wpf.Controls
 
             foreach (var content in currentElements)
             {
+                var bindingProvider = content.BindingProvider;
                 var contentPresenter = new ContentPresenter
                 {
-                    Content = content.BindingProvider,
+                    Content = bindingProvider,
                     VerticalAlignment = VerticalAlignment.Center
                 };
+
+                var visibility = bindingProvider.ProvideValue("IsVisible");
+                switch (visibility)
+                {
+                    case bool b:
+                        contentPresenter.Visibility = b ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    case Visibility v:
+                        contentPresenter.Visibility = v;
+                        break;
+                    case BindingBase bindingBase:
+                        if (bindingBase is Binding binding)
+                        {
+                            binding.Converter = new BoolOrVisibilityConverter(binding.Converter);
+                        }
+
+                        BindingOperations.SetBinding(contentPresenter, VisibilityProperty, bindingBase);
+                        break;
+                }
 
                 Grid.SetRow(contentPresenter, content.Row);
                 Grid.SetColumn(contentPresenter, content.Column);

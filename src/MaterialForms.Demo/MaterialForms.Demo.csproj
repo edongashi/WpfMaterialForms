@@ -107,6 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DataTypes.cs" />
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ModelTypeToVisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

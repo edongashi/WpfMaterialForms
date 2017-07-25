@@ -37,6 +37,11 @@ namespace MaterialForms.Wpf.Annotations
         public object Icon { get; set; }
 
         /// <summary>
+        /// Determines whether this field will be visible. Accepts a boolean or a dynamic resource.
+        /// </summary>
+        public object IsVisible { get; set; }
+
+        /// <summary>
         /// Determines whether the field is editable. Accepts a boolean or a dynamic resource.
         /// </summary>
         public object IsReadOnly { get; set; }

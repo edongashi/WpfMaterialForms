@@ -23,6 +23,8 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 return;
             }
 
+            element.IsVisible = TypeUtilities.GetResource<bool>(attr.IsVisible, true, deserializer);
+
             if (element is FormField field)
             {
                 field.Name = attr.HasName
