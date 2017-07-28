@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Resources;
 
@@ -9,15 +9,16 @@ namespace MaterialForms.Wpf.Fields
     /// <summary>
     /// Default implementation of <see cref="IBindingProvider"/>.
     /// </summary>
-    public class BindingProvider : IBindingProvider, INotifyPropertyChanged
+    public abstract class BindingProvider : Control, IBindingProvider
     {
         private readonly Dictionary<string, BindingProxy> proxyCache;
 
-        public BindingProvider(IResourceContext context,
+        protected BindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources,
             bool throwOnNotFound)
         {
+            DataContext = this;
             Context = context;
             FieldResources = fieldResources;
             FormResources = formResources;
@@ -103,10 +104,5 @@ namespace MaterialForms.Wpf.Fields
         public virtual void BindingCreated(BindingExpressionBase expression, string resource)
         {
         }
-
-        /// <summary>
-        /// This event will never fire from the base class.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

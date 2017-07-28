@@ -272,7 +272,7 @@ namespace MaterialForms.Wpf.Controls
             foreach (var content in currentElements)
             {
                 var bindingProvider = content.BindingProvider;
-                var contentPresenter = new ContentPresenter
+                var contentPresenter = bindingProvider as FrameworkElement ?? new ContentPresenter
                 {
                     Content = bindingProvider,
                     VerticalAlignment = VerticalAlignment.Center

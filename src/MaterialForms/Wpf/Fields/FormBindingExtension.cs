@@ -39,7 +39,9 @@ namespace MaterialForms.Wpf.Fields
                 var field = frameworkElement.DataContext as IBindingProvider;
                 if (field == null)
                 {
-                    return null;
+                    return pvt.TargetProperty is DependencyProperty
+                        ? DependencyProperty.UnsetValue
+                        : null;
                 }
 
                 var value = field.ProvideValue(Name);

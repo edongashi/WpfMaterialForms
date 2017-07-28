@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -17,13 +18,18 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
-            return new DateTimeBindingProvider(context, Resources, formResources);
+            return new DateTimePresenter(context, Resources, formResources);
         }
     }
 
-    public class DateTimeBindingProvider : ValueBindingProvider
+    public class DateTimePresenter : ValueBindingProvider
     {
-        public DateTimeBindingProvider(IResourceContext context,
+        static DateTimePresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBoxPresenter), new FrameworkPropertyMetadata(typeof(DateTimePresenter)));
+        }
+
+        public DateTimePresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)

@@ -3,7 +3,7 @@ using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf.Controls
 {
-    public class FormContentPresenter : INotifyPropertyChanged
+    internal class FormContentPresenter : INotifyPropertyChanged
     {
         public FormContentPresenter(int row, int column, int columnSpan, IBindingProvider bindingProvider)
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -19,13 +20,18 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
-            return new StringBindingProvider(context, Resources, formResources);
+            return new StringPresenter(context, Resources, formResources);
         }
     }
 
-    public class StringBindingProvider : ValueBindingProvider
+    public class StringPresenter : ValueBindingProvider
     {
-        public StringBindingProvider(IResourceContext context,
+        static StringPresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter), new FrameworkPropertyMetadata(typeof(StringPresenter)));
+        }
+
+        public StringPresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)

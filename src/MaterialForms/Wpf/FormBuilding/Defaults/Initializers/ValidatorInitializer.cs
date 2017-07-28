@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Windows.Data;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
-using MaterialForms.Wpf.Models;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
 

@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace MaterialForms.Wpf.Controls
 {
     // https://stackoverflow.com/questions/660554/how-to-automatically-select-all-text-on-focus-in-wpf-textbox
-    public class SelectTextOnFocus : DependencyObject
+    internal class SelectTextOnFocus : DependencyObject
     {
         public static readonly DependencyProperty ActiveProperty = DependencyProperty.RegisterAttached(
             "Active",

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -15,16 +16,21 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             if (IsSwitch)
             {
-                return new SwitchBindingProvider(context, Resources, formResources);
+                return new SwitchPresenter(context, Resources, formResources);
             }
 
-            return  new CheckBoxBindingProvider(context, Resources, formResources);
+            return  new CheckBoxPresenter(context, Resources, formResources);
         }
     }
 
-    public class CheckBoxBindingProvider : ValueBindingProvider
+    public class CheckBoxPresenter : ValueBindingProvider
     {
-        public CheckBoxBindingProvider(IResourceContext context,
+        static CheckBoxPresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBoxPresenter), new FrameworkPropertyMetadata(typeof(CheckBoxPresenter)));
+        }
+
+        public CheckBoxPresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)
@@ -32,9 +38,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
     }
 
-    public class SwitchBindingProvider : ValueBindingProvider
+    public class SwitchPresenter : ValueBindingProvider
     {
-        public SwitchBindingProvider(IResourceContext context,
+        static SwitchPresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SwitchPresenter), new FrameworkPropertyMetadata(typeof(SwitchPresenter)));
+        }
+
+        public SwitchPresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)

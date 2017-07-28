@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
 
@@ -38,13 +39,18 @@ namespace MaterialForms.Wpf.Fields.Defaults
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
             IDictionary<string, IValueProvider> formResources)
         {
-            return new ConvertedFieldBindingProvider(context, Resources, formResources);
+            return new ConvertedPresenter(context, Resources, formResources);
         }
     }
 
-    public class ConvertedFieldBindingProvider : ValueBindingProvider
+    public class ConvertedPresenter : ValueBindingProvider
     {
-        public ConvertedFieldBindingProvider(IResourceContext context,
+        static ConvertedPresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ConvertedPresenter), new FrameworkPropertyMetadata(typeof(ConvertedPresenter)));
+        }
+
+        public ConvertedPresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)
