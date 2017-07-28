@@ -37,7 +37,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                 field.ItemStringFormat = BoundExpression.ParseSimplified(selectFrom.ItemStringFormat);
             }
 
-            field.SelectionType = TypeUtilities.GetResource<SelectionType>(selectFrom.SelectionType, SelectionType.ComboBox, Deserializers.Enum<SelectionType>());
+            field.SelectionType = Utilities.GetResource<SelectionType>(selectFrom.SelectionType, SelectionType.ComboBox, Deserializers.Enum<SelectionType>());
 
             switch (selectFrom.ItemsSource)
             {

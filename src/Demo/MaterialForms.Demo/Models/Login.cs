@@ -3,6 +3,7 @@ using MaterialForms.Wpf.Annotations;
 
 namespace MaterialForms.Demo.Models
 {
+    [Title("Login to continue")]
     public class Login
     {
         // Enums may be deserialized from strings.

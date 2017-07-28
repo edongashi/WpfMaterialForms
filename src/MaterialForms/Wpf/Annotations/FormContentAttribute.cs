@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.FormBuilding;
 
 namespace MaterialForms.Wpf.Annotations
 {
@@ -35,6 +36,18 @@ namespace MaterialForms.Wpf.Annotations
         /// Create a form element corresponding to this object.
         /// </summary>
         /// <returns></returns>
-        public abstract FormElement CreateElement(MemberInfo target);
+        protected abstract FormElement CreateElement(MemberInfo target);
+
+        internal FormElement GetElement(MemberInfo target)
+        {
+            var element = CreateElement(target);
+            element.IsVisible = Utilities.GetResource<bool>(IsVisible, true, Deserializers.Boolean);
+            InitializeElement(element);
+            return element;
+        }
+
+        protected virtual void InitializeElement(FormElement element)
+        {
+        }
     }
 }

@@ -156,11 +156,16 @@
     <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValidationAction.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
+    <Compile Include="Wpf\Controls\TextProperties.cs" />
     <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
     <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
+    <Compile Include="Wpf\Fields\ContentElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\TitleElement.cs" />
     <Compile Include="Wpf\Fields\FormBindingExtension.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
     <Compile Include="Wpf\Fields\DataFormField.cs" />
@@ -184,7 +189,6 @@
     <Compile Include="Wpf\FormBuilding\Deserializers.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldBuilder.cs" />
-    <Compile Include="Wpf\FormBuilding\TypeUtilities.cs" />
     <Compile Include="Wpf\FormBuilding\Utilities.cs" />
     <Compile Include="Wpf\FormBuilding\ValidatorProvider.cs" />
     <Compile Include="Wpf\ModelState.cs" />
@@ -476,6 +480,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Page Include="Themes\Elements\Text.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -23,14 +23,14 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 return;
             }
 
-            element.IsVisible = TypeUtilities.GetResource<bool>(attr.IsVisible, true, deserializer);
+            element.IsVisible = Utilities.GetResource<bool>(attr.IsVisible, true, Deserializers.Boolean);
 
             if (element is FormField field)
             {
                 field.Name = attr.HasName
-                    ? TypeUtilities.GetStringResource(attr.Name)
+                    ? Utilities.GetStringResource(attr.Name)
                     : new LiteralValue(property.Name.Humanize());
-                field.ToolTip = TypeUtilities.GetStringResource(attr.ToolTip);
+                field.ToolTip = Utilities.GetStringResource(attr.ToolTip);
 
                 if (attr.Icon is -1 || (attr.Icon is string s && string.Equals(s, "empty", StringComparison.OrdinalIgnoreCase)))
                 {
@@ -38,7 +38,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 }
                 else
                 {
-                    field.Icon = TypeUtilities.GetResource<PackIconKind>(attr.Icon, null, Deserializers.Enum<PackIconKind>());
+                    field.Icon = Utilities.GetResource<PackIconKind>(attr.Icon, null, Deserializers.Enum<PackIconKind>());
                 }
             }
 
@@ -46,17 +46,17 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             {
                 if (property.CanWrite && property.GetSetMethod(true).IsPublic)
                 {
-                    dataField.IsReadOnly = TypeUtilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
+                    dataField.IsReadOnly = Utilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
                 }
                 else
                 {
-                    dataField.IsReadOnly = new LiteralValue(true);
+                    dataField.IsReadOnly = LiteralValue.True;
                 }
 
                 var type = property.PropertyType;
                 if (attr.DefaultValue != null)
                 {
-                    dataField.DefaultValue = TypeUtilities.GetResource<object>(attr.DefaultValue, null, deserializer);
+                    dataField.DefaultValue = Utilities.GetResource<object>(attr.DefaultValue, null, deserializer);
                 }
                 else if (!type.IsValueType)
                 {

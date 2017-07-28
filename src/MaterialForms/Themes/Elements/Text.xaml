@@ -1,0 +1,41 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MaterialForms.Wpf.Controls"
+    xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
+    xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields">
+
+    <ControlTemplate x:Key="TitlePresenterTemplate" TargetType="{x:Type defaults:TitlePresenter}">
+        <TextBlock FontSize="{TemplateBinding controls:TextProperties.TitleFontSize}" Text="{fields:FormBinding Content}" />
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="HeadingPresenterTemplate" TargetType="{x:Type defaults:HeadingPresenter}">
+        <TextBlock FontSize="{TemplateBinding controls:TextProperties.HeadingFontSize}" Text="{fields:FormBinding Content}" />
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="TextPresenterTemplate" TargetType="{x:Type defaults:TextPresenter}">
+        <TextBlock FontSize="{TemplateBinding controls:TextProperties.TextFontSize}" Text="{fields:FormBinding Content}" />
+    </ControlTemplate>
+
+    <Style TargetType="defaults:TitlePresenter">
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource TitlePresenterTemplate}" />
+    </Style>
+
+    <Style TargetType="defaults:HeadingPresenter">
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource HeadingPresenterTemplate}" />
+    </Style>
+
+    <Style TargetType="defaults:TextPresenter">
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource TextPresenterTemplate}" />
+    </Style>
+
+</ResourceDictionary>

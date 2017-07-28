@@ -2,6 +2,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.Fields.Defaults;
+using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Annotations
 {
@@ -20,6 +22,14 @@ namespace MaterialForms.Wpf.Annotations
         /// Element content. Accepts a string or a dynamic expression.
         /// </summary>
         public string Value { get; }
+
+        protected override void InitializeElement(FormElement element)
+        {
+            if (element is ContentElement contentElement)
+            {
+                contentElement.Content = BoundExpression.ParseSimplified(Value);
+            }
+        }
     }
 
     /// <summary>
@@ -32,9 +42,9 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
-        public override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement(MemberInfo target)
         {
-            throw new NotImplementedException();
+            return new TitleElement();
         }
     }
 
@@ -48,9 +58,9 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
-        public override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement(MemberInfo target)
         {
-            throw new NotImplementedException();
+            return new HeadingElement();
         }
     }
 
@@ -64,9 +74,9 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
-        public override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement(MemberInfo target)
         {
-            throw new NotImplementedException();
+            return new TextElement();
         }
     }
 }

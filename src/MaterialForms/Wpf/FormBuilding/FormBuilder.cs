@@ -251,6 +251,8 @@ namespace MaterialForms.Wpf.FormBuilding
             var formDefinition = new FormDefinition(type);
             var mode = DefaultFields.AllExcludingReadonly;
             var grid = new[] { 1d };
+            var beforeFormContent = new List<FormContentAttribute>();
+            var afterFormContent = new List<FormContentAttribute>();
             foreach (var attribute in type.GetCustomAttributes())
             {
                 switch (attribute)
@@ -269,13 +271,27 @@ namespace MaterialForms.Wpf.FormBuilding
                         }
 
                         break;
+                    case FormContentAttribute contentAttribute:
+                        if (contentAttribute.InsertAfter)
+                        {
+                            afterFormContent.Add(contentAttribute);
+                        }
+                        else
+                        {
+                            beforeFormContent.Add(contentAttribute);
+                        }
+
+                        break;
                 }
             }
+
+            beforeFormContent.Sort((a, b) => a.Position.CompareTo(b.Position));
+            afterFormContent.Sort((a, b) => a.Position.CompareTo(b.Position));
 
             var gridLength = grid.Length;
 
             // Pass one - get list of valid properties.
-            var properties = TypeUtilities.GetProperties(type, mode);
+            var properties = Utilities.GetProperties(type, mode);
 
             // Pass two - build form elements.
             var elements = new List<ElementWrapper>();
@@ -324,6 +340,10 @@ namespace MaterialForms.Wpf.FormBuilding
 
             // Pass six - add attached elements.
             var rows = new List<FormRow>();
+
+            // Before form.
+            rows.AddRange(beforeFormContent.Select(attr => CreateRow(attr.GetElement(type), gridLength)));
+
             for (var i = 0; i < layout.Count; i++)
             {
                 var row = layout[i];
@@ -334,7 +354,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     var property = element.PropertyInfo;
                     foreach (var attr in property.GetCustomAttributes<FormContentAttribute>())
                     {
-                        var content = (attr.CreateElement(property), attr.Position);
+                        var content = (attr.GetElement(property), attr.Position);
                         if (attr.InsertAfter)
                         {
                             after.Add(content);
@@ -361,6 +381,9 @@ namespace MaterialForms.Wpf.FormBuilding
                 // After element.
                 rows.AddRange(after.Select(t => CreateRow(t.element, gridLength)));
             }
+
+            // After form.
+            rows.AddRange(afterFormContent.Select(attr => CreateRow(attr.GetElement(type), gridLength)));
 
             // Wrap up everything.
             formDefinition.Grid = grid;
