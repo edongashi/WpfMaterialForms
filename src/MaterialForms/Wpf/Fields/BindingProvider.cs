@@ -18,6 +18,7 @@ namespace MaterialForms.Wpf.Fields
             IDictionary<string, IValueProvider> formResources,
             bool throwOnNotFound)
         {
+            IsTabStop = false;
             DataContext = this;
             Context = context;
             FieldResources = fieldResources;

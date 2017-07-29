@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
-using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
+using Display = MaterialForms.Wpf.Annotations.Display;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 {

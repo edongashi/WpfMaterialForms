@@ -1,0 +1,35 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
+    xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="MaterialActionPresenterTemplate" TargetType="{x:Type defaults:ActionPresenter}">
+        <Button Command="{TemplateBinding Command}" Style="{StaticResource MaterialDesignFlatButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon
+                    Margin="0,0,4,0"
+                    Width="18"
+                    Height="18"
+                    VerticalAlignment="Center"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    Kind="{fields:FormBinding Icon}"
+                    Visibility="{fields:FormBinding IconVisibility}" />
+                <TextBlock VerticalAlignment="Center" Text="{fields:FormBinding Content}" />
+            </StackPanel>
+        </Button>
+    </ControlTemplate>
+
+    <Style x:Key="MaterialActionPresenterStyle" TargetType="defaults:ActionPresenter">
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource MaterialActionPresenterTemplate}" />
+    </Style>
+
+</ResourceDictionary>

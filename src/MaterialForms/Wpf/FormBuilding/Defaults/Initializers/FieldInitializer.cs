@@ -31,15 +31,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                     ? Utilities.GetStringResource(attr.Name)
                     : new LiteralValue(property.Name.Humanize());
                 field.ToolTip = Utilities.GetStringResource(attr.ToolTip);
-
-                if (attr.Icon is -1 || (attr.Icon is string s && string.Equals(s, "empty", StringComparison.OrdinalIgnoreCase)))
-                {
-                    field.Icon = new LiteralValue((PackIconKind)(-1));
-                }
-                else
-                {
-                    field.Icon = Utilities.GetResource<PackIconKind>(attr.Icon, null, Deserializers.Enum<PackIconKind>());
-                }
+                field.Icon = Utilities.GetIconResource(attr.Icon);
             }
 
             if (element is DataFormField dataField)

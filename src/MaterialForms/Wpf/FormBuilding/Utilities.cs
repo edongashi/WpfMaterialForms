@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
@@ -20,7 +21,8 @@ namespace MaterialForms.Wpf.FormBuilding
             // First requirement is that properties and getters must be public.
             var properties = type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && p.GetGetMethod(true).IsPublic);
+                .Where(p => p.CanRead && p.GetGetMethod(true).IsPublic)
+                .OrderBy(p => p.MetadataToken);
 
             switch (mode)
             {
@@ -89,6 +91,16 @@ namespace MaterialForms.Wpf.FormBuilding
             throw new ArgumentException(
                 $"The provided value must be a bound resource or a literal value of type '{typeof(T).FullName}'.",
                 nameof(value));
+        }
+
+        public static IValueProvider GetIconResource(object value)
+        {
+            if (value is -1 || value is string s && string.Equals(s, "empty", StringComparison.OrdinalIgnoreCase))
+            {
+                return new LiteralValue((PackIconKind)(-1));
+            }
+
+            return GetResource<PackIconKind>(value, null, Deserializers.Enum<PackIconKind>());
         }
 
         public static IValueProvider GetStringResource(string expression)

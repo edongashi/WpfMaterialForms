@@ -143,26 +143,33 @@
     <Compile Include="Old\IViewProvider.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Wpf\Annotations\BindingAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Content\ActionAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Content\BreakAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Content\DividerAttribute.cs" />
     <Compile Include="Wpf\Annotations\DefaultFields.cs" />
+    <Compile Include="Wpf\Annotations\Display\ToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
-    <Compile Include="Wpf\Annotations\FormContentAttribute.cs" />
-    <Compile Include="Wpf\Annotations\Display.cs" />
+    <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
-    <Compile Include="Wpf\Annotations\TextElementAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Content\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\ValidationAction.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
     <Compile Include="Wpf\Controls\TextProperties.cs" />
     <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
     <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
+    <Compile Include="Wpf\Fields\Defaults\ActionAlignerElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\ActionElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
     <Compile Include="Wpf\Fields\ContentElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TitleElement.cs" />
@@ -191,6 +198,7 @@
     <Compile Include="Wpf\FormBuilding\IFieldBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Utilities.cs" />
     <Compile Include="Wpf\FormBuilding\ValidatorProvider.cs" />
+    <Compile Include="Wpf\IActionHandler.cs" />
     <Compile Include="Wpf\ModelState.cs" />
     <Compile Include="Wpf\Resources\BindingOptions.cs" />
     <Compile Include="Wpf\Resources\CoercedValueProvider.cs" />
@@ -382,6 +390,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Material\Element.Action.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Material\Field.Converted.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -480,6 +492,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Page Include="Themes\Material\Element.Text.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Elements\Text.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,11 +1,15 @@
 ﻿using System;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
+using MaterialForms.Wpf.Annotations.Content;
 
 namespace MaterialForms.Demo.Models
 {
+    [Title("Create account")]
     public class User
     {
+        [Heading("Personal details")]
+
         [Field(Name = "First Name",
             ToolTip = "Enter your first name here.",
             Icon = PackIconKind.Pencil)]
@@ -22,6 +26,8 @@ namespace MaterialForms.Demo.Models
         [Value(Must.BeLessThan, "2020-01-01",
             Message = "You said you are born in the year {Value:yyyy}. Are you really from the future?")]
         public DateTime? DateOfBirth { get; set; }
+
+        [Heading("Account details")]
 
         [Field(Name = "Username",
             Icon = PackIconKind.Account)]
@@ -46,7 +52,18 @@ namespace MaterialForms.Demo.Models
         [Value(Must.NotBeEmpty)]
         public string ConfirmPassword { get; set; }
 
-        [Field(Icon = "Empty")]
+        [Break]
+
+        [Heading("Review entered information")]
+        [Text("Name: {Binding FirstName} {Binding LastName}")]
+        [Text("Date of birth: {Binding DateOfBirth:yyyy-MM-dd}")]
+        [Text("Username: {Binding Username}")]
+
+        [Break]
+
+        [Heading("License agreement")]
+        [Text("By signing up, you agree to our terms of use, privacy policy, and cookie policy.")]
+
         [Value(Must.BeTrue, Message = "You must accept the license agreement.")]
         public bool AgreeToLicense { get; set; }
 

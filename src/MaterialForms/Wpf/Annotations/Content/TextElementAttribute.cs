@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
+using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Annotations
@@ -23,11 +25,17 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public string Value { get; }
 
+        /// <summary>
+        /// Push text to the right to align with icons. Accepts a boolean or a dynamic resource.
+        /// </summary>
+        public object IconPadding { get; set; }
+        
         protected override void InitializeElement(FormElement element)
         {
             if (element is ContentElement contentElement)
             {
-                contentElement.Content = BoundExpression.ParseSimplified(Value);
+                contentElement.Content = Utilities.GetStringResource(Value);
+                contentElement.IconPadding = Utilities.GetResource<bool>(IconPadding, false, Deserializers.Boolean);
             }
         }
     }
@@ -42,9 +50,17 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
+        /// <summary>
+        /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
+        /// </summary>
+        public object Icon { get; set; }
+
         protected override FormElement CreateElement(MemberInfo target)
         {
-            return new TitleElement();
+            return new TitleElement
+            {
+                Icon = Utilities.GetIconResource(Icon)
+            };
         }
     }
 
@@ -58,9 +74,17 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
+        /// <summary>
+        /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
+        /// </summary>
+        public object Icon { get; set; }
+
         protected override FormElement CreateElement(MemberInfo target)
         {
-            return new HeadingElement();
+            return new HeadingElement
+            {
+                Icon = Utilities.GetIconResource(Icon)
+            };
         }
     }
 
