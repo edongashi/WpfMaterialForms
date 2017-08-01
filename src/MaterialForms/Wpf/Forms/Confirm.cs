@@ -10,7 +10,7 @@ namespace MaterialForms.Wpf.Forms
     [Break(Height = 16d, InsertAfter = true)]
     [Action("negative", "{Binding NegativeAction}", IsVisible = "{Binding NegativeAction|IsNotEmpty}")]
     [Action("positive", "{Binding PositiveAction}", IsVisible = "{Binding PositiveAction|IsNotEmpty}")]
-    public sealed class Confirmation : DialogBase
+    public sealed class Confirm : DialogBase
     {
     }
 }

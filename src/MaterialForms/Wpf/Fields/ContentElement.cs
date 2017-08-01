@@ -14,12 +14,22 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         protected internal override void Freeze()
         {
+            const string iconVisibility = "IconVisibility";
+
             base.Freeze();
             Resources.Add(nameof(Content), Content ?? LiteralValue.Null);
             Resources.Add(nameof(IconPadding), IconPadding ?? LiteralValue.False);
-            var hasIcon = Icon != null && !(Icon is LiteralValue v && v.Value == null);
-            Resources.Add(nameof(Icon), hasIcon ? Icon : new LiteralValue(default(PackIconKind)));
-            Resources.Add("IconVisibility", new LiteralValue(hasIcon ? Visibility.Visible : Visibility.Collapsed));
+
+            if (Icon != null && !(Icon is LiteralValue v && v.Value == null))
+            {
+                Resources.Add(iconVisibility, Icon.Wrap("ToVisibility"));
+                Resources.Add(nameof(Icon), Icon);
+            }
+            else
+            {
+                Resources.Add(iconVisibility, new LiteralValue(Visibility.Collapsed));
+                Resources.Add(nameof(Icon), new LiteralValue((PackIconKind)(-2)));
+            }
         }
     }
 }

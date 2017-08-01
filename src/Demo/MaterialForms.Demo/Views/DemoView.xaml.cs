@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Demo.Models;
 using MaterialForms.Wpf;
 using MaterialForms.Wpf.Forms;
@@ -27,13 +28,19 @@ namespace MaterialForms.Demo.Views
             yield return new Login();
             yield return new DataTypes();
             yield return new Settings();
-            yield return new Confirmation
+
+            yield return new Alert
+            {
+                Message = "Item deleted."
+            };
+
+            yield return new Confirm
             {
                 Message = "Discard draft?",
                 PositiveAction = "DISCARD",
             };
 
-            yield return new Confirmation
+            yield return new Confirm
             {
                 Title = "Use Google's location service?",
                 Message = "Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.",
@@ -43,7 +50,14 @@ namespace MaterialForms.Demo.Views
 
             yield return new Prompt<string>
             {
-                Message = "Enter your name."
+                Message = "Enter your name.",
+            };
+
+            yield return new Prompt<bool>
+            {
+                Message = "Discard draft?",
+                PositiveAction = "DISCARD",
+                Name = "Prevent future dialogs",
             };
         }
 

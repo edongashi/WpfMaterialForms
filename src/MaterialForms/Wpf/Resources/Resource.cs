@@ -21,7 +21,8 @@ namespace MaterialForms.Wpf.Resources
                 ["ToUpper"] = new ToUpperConverter(),
                 ["ToLower"] = new ToLowerConverter(),
                 ["Length"] = new LengthValueConverter(),
-                ["ToString"] = new ToStringConverter()
+                ["ToString"] = new ToStringConverter(),
+                ["ToVisibility"] = new VisibilityConverter()
             };
 
         protected Resource(string valueConverter)

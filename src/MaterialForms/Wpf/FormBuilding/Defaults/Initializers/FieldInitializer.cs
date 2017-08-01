@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Humanizer;
-using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Resources;

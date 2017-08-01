@@ -4,7 +4,7 @@
                     xmlns:views="clr-namespace:MaterialForms.Demo.Views">
 
     <DataTemplate DataType="{x:Type routes:HomeRoute}">
-        <views:DemoView />
+        <views:HomeView />
     </DataTemplate>
     
 </ResourceDictionary>

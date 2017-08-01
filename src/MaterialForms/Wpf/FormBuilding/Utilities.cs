@@ -100,7 +100,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 return new LiteralValue((PackIconKind)(-1));
             }
 
-            return GetResource<PackIconKind>(value, null, Deserializers.Enum<PackIconKind>());
+            return GetResource<PackIconKind>(value, (PackIconKind)(-2), Deserializers.Enum<PackIconKind>());
         }
 
         public static IValueProvider GetStringResource(string expression)

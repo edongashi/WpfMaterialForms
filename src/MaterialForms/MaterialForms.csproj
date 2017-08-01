@@ -201,7 +201,7 @@
     <Compile Include="Wpf\Forms\ActionEventArgs.cs" />
     <Compile Include="Wpf\Forms\Alert.cs" />
     <Compile Include="Wpf\Forms\Base\DialogBase.cs" />
-    <Compile Include="Wpf\Forms\Confirmation.cs" />
+    <Compile Include="Wpf\Forms\Confirm.cs" />
     <Compile Include="Wpf\Forms\Base\FormBase.cs" />
     <Compile Include="Wpf\Forms\Prompt.cs" />
     <Compile Include="Wpf\IActionHandler.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="Wpf\Resources\IValueProvider.cs" />
     <Compile Include="Wpf\Resources\BoolProxy.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\AsBoolConverter.cs" />
+    <Compile Include="Wpf\Resources\ValueConverters\VisibilityConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\BoolOrVisibilityConverter.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\ConverterWrapper.cs" />
     <Compile Include="Wpf\Resources\ValueConverters\LengthValueConverter.cs" />

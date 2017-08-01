@@ -14,11 +14,13 @@ namespace MaterialForms.Wpf.Forms
     public sealed class Prompt<T> : DialogBase
     {
         private T value;
-        private string fieldName;
+        private string name;
         private string toolTip;
         private PackIconKind? icon;
 
-        [Field(Name = "{Binding Name}", ToolTip = "{Binding ToolTip}")]
+        [Field(Name = "{Binding Name}",
+            ToolTip = "{Binding ToolTip}",
+            Icon = "{Binding Icon}")]
         public T Value
         {
             get => value;
@@ -30,13 +32,13 @@ namespace MaterialForms.Wpf.Forms
             }
         }
 
-        public string FieldName
+        public string Name
         {
-            get => fieldName;
+            get => name;
             set
             {
-                if (value == fieldName) return;
-                fieldName = value;
+                if (value == name) return;
+                name = value;
                 OnPropertyChanged();
             }
         }
@@ -48,6 +50,17 @@ namespace MaterialForms.Wpf.Forms
             {
                 if (value == toolTip) return;
                 toolTip = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PackIconKind? Icon
+        {
+            get => icon;
+            set
+            {
+                if (value == icon) return;
+                icon = value;
                 OnPropertyChanged();
             }
         }

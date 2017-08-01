@@ -102,8 +102,10 @@ namespace MaterialForms.Wpf.Resources
                     binding.Converter = binding.Converter == null
                         ? converter
                         : new ConverterWrapper(converter, binding.Converter);
+                    return binding;
                 }
-                else if (value is BindingBase)
+
+                if (value is BindingBase)
                 {
                     return value;
                 }
