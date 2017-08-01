@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using System.Windows;
+using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 
@@ -32,6 +34,10 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public bool InsertAfter { get; set; }
 
+        public bool ShareLine { get; set; }
+
+        public Position LinePosition { get; set; }
+
         /// <summary>
         /// Create a form element corresponding to this object.
         /// </summary>
@@ -42,6 +48,7 @@ namespace MaterialForms.Wpf.Annotations
         {
             var element = CreateElement(target);
             element.IsVisible = Utilities.GetResource<bool>(IsVisible, true, Deserializers.Boolean);
+            element.LinePosition = LinePosition;
             InitializeElement(element);
             return element;
         }

@@ -99,7 +99,7 @@
                     HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Visibility="{Binding Model, ElementName=Form, Converter={StaticResource ModelTypeToVisibilityConverter}}">
-                    <Button
+                    <!--<Button
                         Width="Auto"
                         Height="Auto"
                         Margin="8"
@@ -112,7 +112,7 @@
                         Margin="8"
                         HorizontalAlignment="Right"
                         Click="OnResetClick"
-                        Content="RESET FIELDS" />
+                        Content="RESET FIELDS" />-->
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.FormBuilding;
-using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Annotations
 {

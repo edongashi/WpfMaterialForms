@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -48,7 +50,7 @@ namespace MaterialForms.Wpf.Controls
 
         internal readonly IResourceContext ResourceContext;
 
-        private readonly List<FormContentPresenter> currentElements;
+        private readonly List<FrameworkElement> currentElements;
         internal readonly Dictionary<string, DataFormField> DataFields;
         internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
         private double[] columns;
@@ -61,7 +63,7 @@ namespace MaterialForms.Wpf.Controls
             IsTabStop = false;
             ResourceContext = new FormResourceContext(this);
             columns = new double[0];
-            currentElements = new List<FormContentPresenter>();
+            currentElements = new List<FrameworkElement>();
             DataFields = new Dictionary<string, DataFormField>();
             DataBindingProviders = new Dictionary<string, IDataBindingProvider>();
             BindingOperations.SetBinding(this, ContextProperty, new Binding
@@ -228,20 +230,78 @@ namespace MaterialForms.Wpf.Controls
             for (var i = 0; i < rows; i++)
             {
                 var row = formDefinition.FormRows[i];
-                foreach (var element in row.Elements)
+                foreach (var container in row.Elements)
                 {
-                    var provider = element.Element.CreateBindingProvider(ResourceContext, formDefinition.Resources);
-                    currentElements.Add(new FormContentPresenter(i, element.Column, element.ColumnSpan, provider));
-                    if (element.Element is DataFormField field && field.Key != null && !field.IsDirectBinding
-                        && provider is IDataBindingProvider dataBindingProvider)
+                    var elements = container.Elements;
+                    if (elements.Count == 0)
                     {
-                        DataBindingProviders[field.Key] = dataBindingProvider;
-                        DataFields[field.Key] = field;
+                        continue;
+                    }
+
+                    if (elements.Count > 1)
+                    {
+                        var panel = new ActionPanel();
+                        Grid.SetRow(panel, i);
+                        Grid.SetColumn(panel, container.Column);
+                        Grid.SetColumnSpan(panel, container.ColumnSpan);
+                        currentElements.Add(panel);
+                        foreach (var element in container.Elements)
+                        {
+                            var contentPresenter = CreateContentPresenter(element, formDefinition);
+                            ActionPanel.SetPosition(contentPresenter, element.LinePosition);
+                            panel.Children.Add(contentPresenter);
+                        }
+                    }
+                    else
+                    {
+                        var contentPresenter = CreateContentPresenter(elements[0], formDefinition);
+                        Grid.SetRow(contentPresenter, i);
+                        Grid.SetColumn(contentPresenter, container.Column);
+                        Grid.SetColumnSpan(contentPresenter, container.ColumnSpan);
+                        currentElements.Add(contentPresenter);
                     }
                 }
             }
 
             FillGrid();
+        }
+
+        private FrameworkElement CreateContentPresenter(FormElement element, IFormDefinition formDefinition)
+        {
+            var provider = element.CreateBindingProvider(ResourceContext, formDefinition.Resources);
+            if (element is DataFormField field && field.Key != null && !field.IsDirectBinding
+                && provider is IDataBindingProvider dataBindingProvider)
+            {
+                DataBindingProviders[field.Key] = dataBindingProvider;
+                DataFields[field.Key] = field;
+            }
+
+            var contentPresenter = provider as FrameworkElement ?? new ContentPresenter
+            {
+                Content = provider,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            var visibility = provider.ProvideValue("IsVisible");
+            switch (visibility)
+            {
+                case bool b:
+                    contentPresenter.Visibility = b ? Visibility.Visible : Visibility.Collapsed;
+                    break;
+                case Visibility v:
+                    contentPresenter.Visibility = v;
+                    break;
+                case BindingBase bindingBase:
+                    if (bindingBase is Binding binding)
+                    {
+                        binding.Converter = new BoolOrVisibilityConverter(binding.Converter);
+                    }
+
+                    BindingOperations.SetBinding(contentPresenter, VisibilityProperty, bindingBase);
+                    break;
+            }
+
+            return contentPresenter;
         }
 
         private void FillGrid()
@@ -271,36 +331,7 @@ namespace MaterialForms.Wpf.Controls
 
             foreach (var content in currentElements)
             {
-                var bindingProvider = content.BindingProvider;
-                var contentPresenter = bindingProvider as FrameworkElement ?? new ContentPresenter
-                {
-                    Content = bindingProvider,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-
-                var visibility = bindingProvider.ProvideValue("IsVisible");
-                switch (visibility)
-                {
-                    case bool b:
-                        contentPresenter.Visibility = b ? Visibility.Visible : Visibility.Collapsed;
-                        break;
-                    case Visibility v:
-                        contentPresenter.Visibility = v;
-                        break;
-                    case BindingBase bindingBase:
-                        if (bindingBase is Binding binding)
-                        {
-                            binding.Converter = new BoolOrVisibilityConverter(binding.Converter);
-                        }
-
-                        BindingOperations.SetBinding(contentPresenter, VisibilityProperty, bindingBase);
-                        break;
-                }
-
-                Grid.SetRow(contentPresenter, content.Row);
-                Grid.SetColumn(contentPresenter, content.Column);
-                Grid.SetColumnSpan(contentPresenter, content.ColumnSpan);
-                itemsGrid.Children.Add(contentPresenter);
+                itemsGrid.Children.Add(content);
             }
         }
 

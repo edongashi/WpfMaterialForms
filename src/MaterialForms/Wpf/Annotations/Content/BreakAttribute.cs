@@ -17,7 +17,7 @@ namespace MaterialForms.Wpf.Annotations
         /// <summary>
         /// Height of the break. Accepts a double or a dynamic resource.
         /// </summary>
-        public object Height { get; set; }
+        public object Height { get; set; } = 8d;
 
         protected override FormElement CreateElement(MemberInfo target)
         {

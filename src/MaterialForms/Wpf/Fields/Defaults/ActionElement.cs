@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -16,7 +17,9 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, IsEnabled)
+                Command = new ActionElementCommand(context, ActionName, IsEnabled),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
             };
         }
     }
@@ -52,12 +55,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             if (context.GetModelInstance() is IActionHandler modelHandler)
             {
-                modelHandler.OnAction(actionName);
+                modelHandler.HandleAction(actionName);
             }
 
             if (context.GetContextInstance() is IActionHandler contextHandler)
             {
-                contextHandler.OnAction(actionName);
+                contextHandler.HandleAction(actionName);
             }
         }
 

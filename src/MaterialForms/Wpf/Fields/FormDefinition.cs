@@ -44,7 +44,7 @@ namespace MaterialForms.Wpf.Fields
             IDictionary<string, object> dictionary = expando;
             foreach (var dataField in FormRows
                 .SelectMany(row => row.Elements
-                    .Select(c => c.Element)
+                    .Select(c => c.Elements)
                     .OfType<DataFormField>()))
             {
                 dictionary[dataField.Key] = dataField.GetDefaultValue(context);

@@ -1,11 +1,12 @@
 ﻿using System;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
-using MaterialForms.Wpf.Annotations.Content;
 
 namespace MaterialForms.Demo.Models
 {
     [Title("Create account")]
+    [Action("cancel", "CANCEL")]
+    [Action("register", "REGISTER")]
     public class User
     {
         [Heading("Personal details")]

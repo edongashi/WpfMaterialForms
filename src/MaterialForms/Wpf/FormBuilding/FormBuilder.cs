@@ -107,7 +107,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 [typeof(float)] = AsList(new ConvertedFieldBuilder(Deserializers.Single)),
                 [typeof(double)] = AsList(new ConvertedFieldBuilder(Deserializers.Double)),
                 [typeof(decimal)] = AsList(new ConvertedFieldBuilder(Deserializers.Decimal)),
-                
+
                 // Converted nullable
                 [typeof(char?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableChar)),
                 [typeof(byte?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableByte)),
@@ -251,8 +251,8 @@ namespace MaterialForms.Wpf.FormBuilding
             var formDefinition = new FormDefinition(type);
             var mode = DefaultFields.AllExcludingReadonly;
             var grid = new[] { 1d };
-            var beforeFormContent = new List<FormContentAttribute>();
-            var afterFormContent = new List<FormContentAttribute>();
+            var beforeFormContent = new List<(FormContentAttribute attr, FormElement element)>();
+            var afterFormContent = new List<(FormContentAttribute attr, FormElement element)>();
             foreach (var attribute in type.GetCustomAttributes())
             {
                 switch (attribute)
@@ -274,19 +274,19 @@ namespace MaterialForms.Wpf.FormBuilding
                     case FormContentAttribute contentAttribute:
                         if (contentAttribute.InsertAfter)
                         {
-                            afterFormContent.Add(contentAttribute);
+                            afterFormContent.Add((contentAttribute, contentAttribute.GetElement(type)));
                         }
                         else
                         {
-                            beforeFormContent.Add(contentAttribute);
+                            beforeFormContent.Add((contentAttribute, contentAttribute.GetElement(type)));
                         }
 
                         break;
                 }
             }
 
-            beforeFormContent.Sort((a, b) => a.Position.CompareTo(b.Position));
-            afterFormContent.Sort((a, b) => a.Position.CompareTo(b.Position));
+            beforeFormContent.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
+            afterFormContent.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
 
             var gridLength = grid.Length;
 
@@ -342,35 +342,26 @@ namespace MaterialForms.Wpf.FormBuilding
             var rows = new List<FormRow>();
 
             // Before form.
-            rows.AddRange(beforeFormContent.Select(attr => CreateRow(attr.GetElement(type), gridLength)));
+            rows.AddRange(CreateRows(beforeFormContent, gridLength));
 
-            for (var i = 0; i < layout.Count; i++)
+            foreach (var row in layout)
             {
-                var row = layout[i];
-                var before = new List<(FormElement element, int position)>();
-                var after = new List<(FormElement element, int position)>();
+                var before = new List<(FormContentAttribute attr, FormElement element)>();
+                var after = new List<(FormContentAttribute attr, FormElement element)> ();
                 foreach (var element in row.Elements)
                 {
                     var property = element.PropertyInfo;
                     foreach (var attr in property.GetCustomAttributes<FormContentAttribute>())
                     {
-                        var content = (attr.GetElement(property), attr.Position);
-                        if (attr.InsertAfter)
-                        {
-                            after.Add(content);
-                        }
-                        else
-                        {
-                            before.Add(content);
-                        }
+                        (attr.InsertAfter ? after : before).Add((attr, attr.GetElement(property)));
                     }
                 }
 
-                before.Sort((a, b) => a.position.CompareTo(b.position));
-                after.Sort((a, b) => a.position.CompareTo(b.position));
+                before.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
+                after.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
 
                 // Before element.
-                rows.AddRange(before.Select(t => CreateRow(t.element, gridLength)));
+                rows.AddRange(CreateRows(before, gridLength));
 
                 // Field row.
                 var formRow = new FormRow();
@@ -379,22 +370,44 @@ namespace MaterialForms.Wpf.FormBuilding
                 rows.Add(formRow);
 
                 // After element.
-                rows.AddRange(after.Select(t => CreateRow(t.element, gridLength)));
+                rows.AddRange(CreateRows(after, gridLength));
             }
 
             // After form.
-            rows.AddRange(afterFormContent.Select(attr => CreateRow(attr.GetElement(type), gridLength)));
+            rows.AddRange(CreateRows(afterFormContent, gridLength));
 
             // Wrap up everything.
             formDefinition.Grid = grid;
             formDefinition.FormRows = rows;
             formDefinition.Freeze();
-            foreach (var element in formDefinition.FormRows.SelectMany(r => r.Elements).Select(c => c.Element))
+            foreach (var element in formDefinition.FormRows.SelectMany(r => r.Elements).SelectMany(c => c.Elements))
             {
                 element.Freeze();
             }
 
             return formDefinition;
+        }
+
+        private static List<FormRow> CreateRows(IEnumerable<(FormContentAttribute attr, FormElement element)> elements, int gridLength)
+        {
+            var rows = new List<FormRow>();
+            List<FormElement> currentLine = null;
+            foreach (var (attr, element) in elements)
+            {
+                if (!attr.ShareLine || currentLine == null)
+                {
+                    currentLine = new List<FormElement> { element };
+                    var row = new FormRow();
+                    row.Elements.Add(new FormElementContainer(0, gridLength, currentLine));
+                    rows.Add(row);
+                }
+                else
+                {
+                    currentLine.Add(element);
+                }
+            }
+
+            return rows;
         }
 
         private Func<string, object> TryGetDeserializer(Type type)
@@ -405,13 +418,6 @@ namespace MaterialForms.Wpf.FormBuilding
             }
 
             return type.IsEnum ? Deserializers.Enum(type) : null;
-        }
-
-        private static FormRow CreateRow(FormElement element, int gridLength)
-        {
-            var row = new FormRow();
-            row.Elements.Add(new FormElementContainer(0, gridLength, element));
-            return row;
         }
 
         private static List<ElementRow> PerformLayout(double[] grid, List<ElementWrapper> elements)

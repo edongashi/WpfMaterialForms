@@ -1,0 +1,35 @@
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using MaterialForms.Annotations;
+
+namespace MaterialForms.Wpf.Forms.Base
+{
+    public abstract class FormBase : IActionHandler, INotifyPropertyChanged
+    {
+        public event EventHandler<ActionEventArgs> ActionPerformed;
+
+        public void HandleAction(string action)
+        {
+            OnAction(action);
+            ActionPerformed?.Invoke(this, new ActionEventArgs(action));
+        }
+
+        protected virtual void OnAction(string action)
+        {
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+    }
+}

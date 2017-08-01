@@ -7,8 +7,8 @@ namespace MaterialForms.Wpf.Controls
 {
     public enum Position
     {
-        Left,
-        Right
+        Right,
+        Left
     }
 
     public class ActionPanel : Panel

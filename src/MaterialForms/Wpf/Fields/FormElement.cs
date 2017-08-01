@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields
@@ -12,6 +13,8 @@ namespace MaterialForms.Wpf.Fields
         {
             Resources = new Dictionary<string, IValueProvider>();
         }
+
+        protected internal Position LinePosition { get; set; }
 
         public IDictionary<string, IValueProvider> Resources { get; set; }
 

@@ -5,7 +5,7 @@ using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.FormBuilding;
 
-namespace MaterialForms.Wpf.Annotations.Content
+namespace MaterialForms.Wpf.Annotations
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public class ActionAttribute : FormContentAttribute
@@ -15,6 +15,8 @@ namespace MaterialForms.Wpf.Annotations.Content
         {
             ActionName = name;
             Content = content;
+            // Actions are grouped by default.
+            ShareLine = true;
             // Actions are inserted after elements by default.
             InsertAfter = true;
         }
@@ -43,11 +45,6 @@ namespace MaterialForms.Wpf.Annotations.Content
         /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
         /// </summary>
         public object Icon { get; set; }
-
-        /// <summary>
-        /// Determines whether this action is displayed in a new line.
-        /// </summary>
-        public bool BreakPrevious { get; set; }
 
         protected override FormElement CreateElement(MemberInfo target)
         {

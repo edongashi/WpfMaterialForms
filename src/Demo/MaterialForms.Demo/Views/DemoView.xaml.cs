@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using MaterialForms.Demo.Models;
 using MaterialForms.Wpf;
+using MaterialForms.Wpf.Forms;
 using Newtonsoft.Json;
 
 namespace MaterialForms.Demo.Views
@@ -26,6 +27,24 @@ namespace MaterialForms.Demo.Views
             yield return new Login();
             yield return new DataTypes();
             yield return new Settings();
+            yield return new Confirmation
+            {
+                Message = "Discard draft?",
+                PositiveAction = "DISCARD",
+            };
+
+            yield return new Confirmation
+            {
+                Title = "Use Google's location service?",
+                Message = "Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.",
+                PositiveAction = "AGREE",
+                NegativeAction = "DISAGREE"
+            };
+
+            yield return new Prompt<string>
+            {
+                Message = "Enter your name."
+            };
         }
 
         private void Serialize(object sender, RoutedEventArgs e)

@@ -10,12 +10,16 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="MaterialActionPresenterTemplate" TargetType="{x:Type defaults:ActionPresenter}">
-        <Button Command="{TemplateBinding Command}" Style="{StaticResource MaterialDesignFlatButton}">
+        <Button
+            MinHeight="36"
+            Padding="{TemplateBinding Padding}"
+            Command="{TemplateBinding Command}"
+            Style="{StaticResource MaterialDesignFlatButton}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon
-                    Margin="0,0,4,0"
                     Width="18"
                     Height="18"
+                    Margin="0,0,4,0"
                     VerticalAlignment="Center"
                     Foreground="{DynamicResource MaterialDesignBody}"
                     Kind="{fields:FormBinding Icon}"
@@ -26,7 +30,7 @@
     </ControlTemplate>
 
     <Style x:Key="MaterialActionPresenterStyle" TargetType="defaults:ActionPresenter">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="8,2" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Template" Value="{StaticResource MaterialActionPresenterTemplate}" />

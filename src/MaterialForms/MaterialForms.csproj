@@ -162,7 +162,6 @@
     <Compile Include="Wpf\Controls\ActionPanel.cs" />
     <Compile Include="Wpf\Controls\TextProperties.cs" />
     <Compile Include="Wpf\Controls\SelectTextOnFocus.cs" />
-    <Compile Include="Wpf\Controls\FormContentPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\ActionAlignerElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\ActionElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
@@ -199,6 +198,12 @@
     <Compile Include="Wpf\FormBuilding\IFieldBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Utilities.cs" />
     <Compile Include="Wpf\FormBuilding\ValidatorProvider.cs" />
+    <Compile Include="Wpf\Forms\ActionEventArgs.cs" />
+    <Compile Include="Wpf\Forms\Alert.cs" />
+    <Compile Include="Wpf\Forms\Base\DialogBase.cs" />
+    <Compile Include="Wpf\Forms\Confirmation.cs" />
+    <Compile Include="Wpf\Forms\Base\FormBase.cs" />
+    <Compile Include="Wpf\Forms\Prompt.cs" />
     <Compile Include="Wpf\IActionHandler.cs" />
     <Compile Include="Wpf\ModelState.cs" />
     <Compile Include="Wpf\Resources\BindingOptions.cs" />
