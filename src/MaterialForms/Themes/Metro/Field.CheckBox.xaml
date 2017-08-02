@@ -24,7 +24,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Kind="{fields:FormBinding Icon}"
-                Style="{StaticResource ColoredIconStyle}"
+                Style="{StaticResource MetroColoredIconStyle}"
                 Visibility="{fields:FormBinding IconVisibility}" />
             <CheckBox
                 Name="ValueHolderControl"

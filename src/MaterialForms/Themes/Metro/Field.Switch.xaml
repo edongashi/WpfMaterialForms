@@ -12,7 +12,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="MetroSwitchPresenterTemplate" TargetType="{x:Type defaults:SwitchPresenter}">
-        <Grid Margin="8,12">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
