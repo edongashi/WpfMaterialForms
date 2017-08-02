@@ -63,7 +63,7 @@
             }
         }
 
-        protected override void OnAction(string action)
+        protected override void OnAction(string action, object parameter)
         {
             if (action == "positive")
             {

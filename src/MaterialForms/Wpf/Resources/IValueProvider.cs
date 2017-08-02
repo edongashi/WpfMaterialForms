@@ -13,6 +13,19 @@ namespace MaterialForms.Wpf.Resources
 
     public static class ValueProviderExtensions
     {
+        public static IProxy GetBestMatchingProxy(this IValueProvider valueProvider, IResourceContext context)
+        {
+            switch (valueProvider)
+            {
+                case LiteralValue v:
+                    return new PlainObject(v.Value);
+                case BoundExpression b:
+                    return b.GetProxy(context);
+                default:
+                    return valueProvider.GetValue(context);
+            }
+        }
+
         public static BindingProxy GetValue(this IValueProvider valueProvider, IResourceContext context)
         {
             var proxy = new BindingProxy();

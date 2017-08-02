@@ -3,6 +3,7 @@ using MaterialForms.Wpf.Annotations;
 
 namespace MaterialForms.Demo.Models
 {
+    [Title("Default data types")]
     [Form(Grid = new[] { 1d, 1d, 1d })]
     public class DataTypes
     {
@@ -92,11 +93,5 @@ namespace MaterialForms.Demo.Models
 
         [Field(Row = "10", ToolTip = "@public decimal? NullableDecimal { get; set; }")]
         public decimal? NullableDecimal { get; set; }
-
-        // Needed for ListBox display.
-        public override string ToString()
-        {
-            return "Default data types";
-        }
     }
 }

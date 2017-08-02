@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -227,6 +225,7 @@ namespace MaterialForms.Wpf.Controls
             currentElements.Clear();
             DataBindingProviders.Clear();
             DataFields.Clear();
+            var rowPointer = 0;
             for (var i = 0; i < rows; i++)
             {
                 var row = formDefinition.FormRows[i];
@@ -241,7 +240,8 @@ namespace MaterialForms.Wpf.Controls
                     if (elements.Count > 1)
                     {
                         var panel = new ActionPanel();
-                        Grid.SetRow(panel, i);
+                        Grid.SetRow(panel, rowPointer);
+                        Grid.SetRowSpan(panel, row.RowSpan);
                         Grid.SetColumn(panel, container.Column);
                         Grid.SetColumnSpan(panel, container.ColumnSpan);
                         currentElements.Add(panel);
@@ -255,11 +255,17 @@ namespace MaterialForms.Wpf.Controls
                     else
                     {
                         var contentPresenter = CreateContentPresenter(elements[0], formDefinition);
-                        Grid.SetRow(contentPresenter, i);
+                        Grid.SetRow(contentPresenter, rowPointer);
+                        Grid.SetRowSpan(contentPresenter, row.RowSpan);
                         Grid.SetColumn(contentPresenter, container.Column);
                         Grid.SetColumnSpan(contentPresenter, container.ColumnSpan);
                         currentElements.Add(contentPresenter);
                     }
+                }
+
+                if (row.StartsNewRow)
+                {
+                    rowPointer++;
                 }
             }
 

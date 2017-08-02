@@ -11,13 +11,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         public string ActionName { get; set; }
 
+        public IValueProvider ActionParameter { get; set; }
+
         public IValueProvider IsEnabled { get; set; }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, IsEnabled),
+                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
             };
@@ -27,11 +29,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
     internal class ActionElementCommand : ICommand
     {
         private readonly string actionName;
+        private readonly IProxy actionParameter;
 
         private readonly IResourceContext context;
         private readonly IBoolProxy canExecute;
 
-        public ActionElementCommand(IResourceContext context, string actionName, IValueProvider isEnabled)
+        public ActionElementCommand(IResourceContext context, string actionName, IValueProvider actionParameter, IValueProvider isEnabled)
         {
             this.context = context;
             this.actionName = actionName;
@@ -49,18 +52,21 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     canExecute = proxy;
                     break;
             }
+
+            this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
 
         public void Execute(object parameter)
         {
+            var arg = actionParameter.Value;
             if (context.GetModelInstance() is IActionHandler modelHandler)
             {
-                modelHandler.HandleAction(actionName);
+                modelHandler.HandleAction(actionName, arg);
             }
 
             if (context.GetContextInstance() is IActionHandler contextHandler)
             {
-                contextHandler.HandleAction(actionName);
+                contextHandler.HandleAction(actionName, arg);
             }
         }
 

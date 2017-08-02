@@ -36,6 +36,7 @@ namespace MaterialForms.Wpf.Annotations
         internal void Apply(BindingOptions bindingOptions)
         {
             bindingOptions.StringFormat = StringFormat;
+            bindingOptions.UpdateSourceTrigger = UpdateSourceTrigger;
             bindingOptions.ConverterCulture = ConverterCulture != null
                 ? CultureInfo.GetCultureInfo(ConverterCulture)
                 : null;

@@ -67,11 +67,5 @@ namespace MaterialForms.Demo.Models
 
         [Value(Must.BeTrue, Message = "You must accept the license agreement.")]
         public bool AgreeToLicense { get; set; }
-
-        // Needed for ListBox display.
-        public override string ToString()
-        {
-            return "User";
-        }
     }
 }

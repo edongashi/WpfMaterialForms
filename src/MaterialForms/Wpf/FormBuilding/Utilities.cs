@@ -28,12 +28,12 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 case DefaultFields.AllIncludingReadonly:
                     return properties
-                        .Where(p => p.GetCustomAttribute<FieldIgnoreAtribute>() == null)
+                        .Where(p => p.GetCustomAttribute<FieldIgnoreAttribute>() == null)
                         .ToList();
                 case DefaultFields.AllExcludingReadonly:
                     return properties.Where(p =>
                     {
-                        if (p.GetCustomAttribute<FieldIgnoreAtribute>() != null)
+                        if (p.GetCustomAttribute<FieldIgnoreAttribute>() != null)
                         {
                             return false;
                         }
@@ -48,7 +48,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 case DefaultFields.None:
                     return properties.Where(p =>
                     {
-                        if (p.GetCustomAttribute<FieldIgnoreAtribute>() != null)
+                        if (p.GetCustomAttribute<FieldIgnoreAttribute>() != null)
                         {
                             return false;
                         }

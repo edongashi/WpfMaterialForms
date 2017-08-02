@@ -336,6 +336,13 @@ namespace MaterialForms.Tests
             Assert.AreEqual("2017-02-03", value.Value);
         }
 
+        [TestMethod]
+        public void TestSelfBinding()
+        {
+            var expression = BoundExpression.Parse("{Binding}");
+            Assert.IsTrue(expression.Resources[0] is PropertyBinding b && b.PropertyPath == "");
+        }
+
         private class Model
         {
             public string Name { get; set; }

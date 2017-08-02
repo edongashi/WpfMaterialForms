@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:MaterialForms.Wpf.Controls"
     xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
-    xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields">
+    xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Elements/Text.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Wpf.xaml" />
@@ -46,6 +47,18 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid Name="PART_ItemsGrid" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type defaults:CardPresenter}">
+        <Setter Property="Panel.ZIndex" Value="-1" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

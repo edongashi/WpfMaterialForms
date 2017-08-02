@@ -139,11 +139,6 @@ namespace MaterialForms.Demo.Models
             }
         }
 
-        public override string ToString()
-        {
-            return "Settings";
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

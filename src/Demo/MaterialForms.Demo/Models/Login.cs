@@ -19,10 +19,5 @@ namespace MaterialForms.Demo.Models
         public bool RememberMe { get; set; }
 
         public PackIconKind PasswordIcon => PackIconKind.Key;
-
-        public override string ToString()
-        {
-            return "Login";
-        }
     }
 }

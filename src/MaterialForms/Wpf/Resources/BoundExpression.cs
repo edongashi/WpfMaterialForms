@@ -50,6 +50,26 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsSingleResource => StringFormat == null && Resources != null && Resources.Count == 1;
 
+        internal IProxy GetProxy(IResourceContext context)
+        {
+            if (IsPlainString)
+            {
+                return new PlainObject(StringFormat);
+            }
+
+            if (IsSingleResource)
+            {
+                return Resources[0].GetValue(context);
+            }
+
+            if (StringFormat != null)
+            {
+                return this.GetStringValue(context);
+            }
+
+            return this.GetValue(context);
+        }
+
         public IValueProvider GetValueProvider()
         {
             if (IsPlainString)
@@ -101,7 +121,7 @@ namespace MaterialForms.Wpf.Resources
         {
             if (Resources == null || Resources.Count == 0)
             {
-                return StringFormat;
+                return UnescapedStringFormat();
             }
 
             return ProvideBinding(context);
@@ -111,7 +131,7 @@ namespace MaterialForms.Wpf.Resources
         {
             if (IsPlainString)
             {
-                return new LiteralValue(StringFormat);
+                return new LiteralValue(UnescapedStringFormat());
             }
 
             if (IsSingleResource)
@@ -120,6 +140,11 @@ namespace MaterialForms.Wpf.Resources
             }
 
             return this;
+        }
+
+        private string UnescapedStringFormat()
+        {
+            return StringFormat.Replace("{{", "{").Replace("}}", "}");
         }
 
         public static IValueProvider ParseSimplified(string expression)

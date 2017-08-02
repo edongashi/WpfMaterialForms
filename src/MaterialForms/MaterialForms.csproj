@@ -142,6 +142,7 @@
     <Compile Include="Old\Extensions\InitializerExtensions.cs" />
     <Compile Include="Old\IViewProvider.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Wpf\Annotations\CardAttribute.cs" />
     <Compile Include="Wpf\Annotations\BindingAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\ActionAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\BreakAttribute.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Wpf\Annotations\Display\ToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
-    <Compile Include="Wpf\Annotations\FieldIgnoreAtribute.cs" />
+    <Compile Include="Wpf\Annotations\FieldIgnoreAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Wpf\Fields\Defaults\ActionElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
     <Compile Include="Wpf\Fields\ContentElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\CardElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />

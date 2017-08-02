@@ -6,7 +6,7 @@ namespace MaterialForms.Wpf.Annotations
     /// Properties marked with this attribute will never be generated.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public sealed class FieldIgnoreAtribute : Attribute
+    public sealed class FieldIgnoreAttribute : Attribute
     {
     }
 }

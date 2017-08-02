@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using System.Windows;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
@@ -16,6 +15,7 @@ namespace MaterialForms.Wpf.Annotations
         protected FormContentAttribute(int position)
         {
             Position = position;
+            LinePosition = Controls.Position.Left;
         }
 
         /// <summary>
@@ -37,6 +37,10 @@ namespace MaterialForms.Wpf.Annotations
         public bool ShareLine { get; set; }
 
         public Position LinePosition { get; set; }
+
+        protected internal int RowSpan { get; protected set; } = 1;
+
+        protected internal bool StartsNewRow { get; protected set; } = true;
 
         /// <summary>
         /// Create a form element corresponding to this object.

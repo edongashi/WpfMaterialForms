@@ -1,4 +1,5 @@
 ﻿using Material.Application.Infrastructure;
+using Material.Application.Routing;
 using MaterialForms.Demo.Routes;
 
 namespace MaterialForms.Demo.Infrastructure
@@ -7,7 +8,9 @@ namespace MaterialForms.Demo.Infrastructure
     {
         protected override void OnInitializing()
         {
-            Routes.MenuRoutes.Add(InitialRoute = new HomeRoute());
+            var factory = Routes.RouteFactory;
+            Routes.MenuRoutes.Add(InitialRoute = factory.Get<HomeRoute>());
+            Routes.MenuRoutes.Add(factory.Get<ExamplesRoute>());
             FontSize = 15d;
         }
     }

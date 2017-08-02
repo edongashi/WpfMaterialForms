@@ -347,7 +347,7 @@ namespace MaterialForms.Wpf.FormBuilding
             foreach (var row in layout)
             {
                 var before = new List<(FormContentAttribute attr, FormElement element)>();
-                var after = new List<(FormContentAttribute attr, FormElement element)> ();
+                var after = new List<(FormContentAttribute attr, FormElement element)>();
                 foreach (var element in row.Elements)
                 {
                     var property = element.PropertyInfo;
@@ -394,16 +394,45 @@ namespace MaterialForms.Wpf.FormBuilding
             List<FormElement> currentLine = null;
             foreach (var (attr, element) in elements)
             {
-                if (!attr.ShareLine || currentLine == null)
+                if (!attr.StartsNewRow)
                 {
-                    currentLine = new List<FormElement> { element };
-                    var row = new FormRow();
-                    row.Elements.Add(new FormElementContainer(0, gridLength, currentLine));
-                    rows.Add(row);
+                    rows.Add(new FormRow(false, attr.RowSpan)
+                    {
+                        Elements =
+                        {
+                            new FormElementContainer(0, gridLength, new List<FormElement> { element })
+                        }
+                    });
+
+                    currentLine = null;
+                    continue;
+                }
+
+                if (attr.ShareLine)
+                {
+                    if (currentLine != null)
+                    {
+                        currentLine.Add(element);
+                    }
+                    else
+                    {
+                        currentLine = new List<FormElement> { element };
+                        var row = new FormRow();
+                        row.Elements.Add(new FormElementContainer(0, gridLength, currentLine));
+                        rows.Add(row);
+                    }
                 }
                 else
                 {
-                    currentLine.Add(element);
+                    rows.Add(new FormRow
+                    {
+                        Elements =
+                        {
+                            new FormElementContainer(0, gridLength, new List<FormElement> { element })
+                        }
+                    });
+
+                    currentLine = null;
                 }
             }
 

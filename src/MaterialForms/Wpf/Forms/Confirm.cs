@@ -7,7 +7,6 @@ namespace MaterialForms.Wpf.Forms
 
     [Title("{Binding Title}", IsVisible = "{Binding Title|IsNotEmpty}")]
     [Text("{Binding Message}", IsVisible = "{Binding Message|IsNotEmpty}")]
-    [Break(Height = 16d, InsertAfter = true)]
     [Action("negative", "{Binding NegativeAction}", IsVisible = "{Binding NegativeAction|IsNotEmpty}")]
     [Action("positive", "{Binding PositiveAction}", IsVisible = "{Binding PositiveAction|IsNotEmpty}")]
     public sealed class Confirm : DialogBase

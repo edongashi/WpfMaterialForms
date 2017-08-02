@@ -4,10 +4,21 @@ namespace MaterialForms.Wpf.Fields
 {
     public class FormRow
     {
-        public FormRow()
+        public FormRow() 
+            : this(true, 1)
         {
+        }
+
+        public FormRow(bool startsNewRow, int rowSpan)
+        {
+            StartsNewRow = startsNewRow;
+            RowSpan = rowSpan;
             Elements = new List<FormElementContainer>();
         }
+
+        public bool StartsNewRow { get; }
+
+        public int RowSpan { get; }
 
         public List<FormElementContainer> Elements { get; }
     }

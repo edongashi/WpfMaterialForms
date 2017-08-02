@@ -36,7 +36,7 @@ namespace Material.Application.Infrastructure
                 return;
             }
 
-            snackbarMessageQueue.Enqueue(message + CacheBreaker, true);
+            snackbarMessageQueue.Enqueue(message/* + CacheBreaker, true*/);
         }
 
         public void Notify(string message, string actionLabel, Action action)
