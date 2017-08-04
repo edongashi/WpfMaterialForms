@@ -36,7 +36,7 @@ namespace Material.Application.Infrastructure
                 return;
             }
 
-            snackbarMessageQueue.Enqueue(message/* + CacheBreaker, true*/);
+            snackbarMessageQueue.Enqueue(message);
         }
 
         public void Notify(string message, string actionLabel, Action action)
@@ -46,7 +46,27 @@ namespace Material.Application.Infrastructure
                 return;
             }
 
-            snackbarMessageQueue.Enqueue(message/* + CacheBreaker*/, actionLabel, action);
+            snackbarMessageQueue.Enqueue(message, actionLabel, action);
+        }
+
+        public void ForceNotify(string message)
+        {
+            if (windowLocator.GetMainWindow() == null)
+            {
+                return;
+            }
+
+            snackbarMessageQueue.Enqueue(message + CacheBreaker, true);
+        }
+
+        public void ForceNotify(string message, string actionLabel, Action action)
+        {
+            if (windowLocator.GetMainWindow() == null)
+            {
+                return;
+            }
+
+            snackbarMessageQueue.Enqueue(message + CacheBreaker, actionLabel, action);
         }
     }
 }

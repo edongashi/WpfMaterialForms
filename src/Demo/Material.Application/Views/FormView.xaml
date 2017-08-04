@@ -20,7 +20,7 @@
             Grid.RowSpan="2"
             Grid.Column="0"
             MaxWidth="640"
-            Margin="8"
+            Margin="8,0,8,8"
             VerticalAlignment="Stretch">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <controls:DynamicForm Model="{Binding Model}" Margin="16" />

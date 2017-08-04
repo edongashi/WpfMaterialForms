@@ -74,15 +74,11 @@ namespace MaterialForms.Wpf.Controls
             Loaded += (s, e) =>
             {
                 ActiveForms.Add(this);
-                // Clear bindings for good measure.
-                DetachBindings();
-                FillGrid();
             };
 
             Unloaded += (s, e) =>
             {
                 ActiveForms.Remove(this);
-                DetachBindings();
             };
         }
 
