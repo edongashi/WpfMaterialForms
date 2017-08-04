@@ -205,6 +205,21 @@ namespace MaterialForms.Wpf
             return !hasErrors;
         }
 
+        internal static bool IsModel(object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+
+            if (value is ValueType || value is string)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static List<BindingExpressionBase> GetBindings(object model, string[] properties)
         {
             var list = new List<BindingExpressionBase>();

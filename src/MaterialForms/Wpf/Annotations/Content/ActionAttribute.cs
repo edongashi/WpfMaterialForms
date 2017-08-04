@@ -54,6 +54,16 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public object Icon { get; set; }
 
+        /// <summary>
+        /// Determines whether the model will be validated before the action is executed.
+        /// </summary>
+        public object Validates { get; set; }
+
+        /// <summary>
+        /// Determines whether the model will be reset to default values before the action is executed.
+        /// </summary>
+        public object IsReset { get; set; }
+
         protected override FormElement CreateElement(MemberInfo target)
         {
             return new ActionElement
@@ -64,6 +74,8 @@ namespace MaterialForms.Wpf.Annotations
                     : new LiteralValue(Parameter),
                 Content = Utilities.GetStringResource(Content),
                 Icon = Utilities.GetIconResource(Icon),
+                Validates = Utilities.GetResource<bool>(Validates, false, Deserializers.Boolean),
+                IsReset = Utilities.GetResource<bool>(IsReset, false, Deserializers.Boolean),
                 IsEnabled = Utilities.GetResource<bool>(IsEnabled, true, Deserializers.Boolean)
             };
         }

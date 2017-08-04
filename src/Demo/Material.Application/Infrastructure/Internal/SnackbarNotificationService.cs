@@ -46,7 +46,7 @@ namespace Material.Application.Infrastructure
                 return;
             }
 
-            snackbarMessageQueue.Enqueue(message + CacheBreaker, actionLabel, action);
+            snackbarMessageQueue.Enqueue(message/* + CacheBreaker*/, actionLabel, action);
         }
     }
 }

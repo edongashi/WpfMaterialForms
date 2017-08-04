@@ -15,11 +15,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public IValueProvider IsEnabled { get; set; }
 
+        public IValueProvider IsReset { get; set; }
+
+        public IValueProvider Validates { get; set; }
+
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled),
+                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates, IsReset),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
             };
@@ -33,8 +37,10 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         private readonly IResourceContext context;
         private readonly IBoolProxy canExecute;
+        private readonly IBoolProxy validates;
+        private readonly IBoolProxy resets;
 
-        public ActionElementCommand(IResourceContext context, string actionName, IValueProvider actionParameter, IValueProvider isEnabled)
+        public ActionElementCommand(IResourceContext context, string actionName, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider isReset)
         {
             this.context = context;
             this.actionName = actionName;
@@ -53,13 +59,29 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     break;
             }
 
+            this.validates = validates != null ? (IBoolProxy)validates.GetBoolValue(context) : new PlainBool(false);
+            resets = isReset != null ? (IBoolProxy)isReset.GetBoolValue(context) : new PlainBool(false);
             this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
 
         public void Execute(object parameter)
         {
             var arg = actionParameter.Value;
-            if (context.GetModelInstance() is IActionHandler modelHandler)
+            var model = context.GetModelInstance();
+            if (resets.Value && ModelState.IsModel(model))
+            {
+                ModelState.Reset(model);
+            }
+            else if (validates.Value && ModelState.IsModel(model))
+            {
+                var isValid = ModelState.Validate(model);
+                if (!isValid)
+                {
+                    return;
+                }
+            }
+
+            if (model is IActionHandler modelHandler)
             {
                 modelHandler.HandleAction(actionName, arg);
             }

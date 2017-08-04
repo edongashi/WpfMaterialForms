@@ -14,6 +14,8 @@ namespace Material.Application.Routing
 {
     public abstract class Route : Model
     {
+        protected const PackIconKind NoIcon = (PackIconKind)(-1);
+
         protected static IRefreshableCommand CommandNotImplemented([CallerMemberName] string name = null)
         {
             return new UntrackedCommand(param => Console.WriteLine($"Called not implemented command {name}"));
