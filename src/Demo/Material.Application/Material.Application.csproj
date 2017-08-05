@@ -73,6 +73,7 @@
     <Compile Include="Controls\SortableDataGrid.cs" />
     <Compile Include="Controls\SortablePageableCollection.cs" />
     <Compile Include="Infrastructure\IContext.cs" />
+    <Compile Include="Infrastructure\Internal\DialogFileSaver.cs" />
     <Compile Include="Infrastructure\Internal\DialogFilePicker.cs" />
     <Compile Include="Infrastructure\Internal\DialogHostService.cs" />
     <Compile Include="Infrastructure\ILocalizationService.cs" />

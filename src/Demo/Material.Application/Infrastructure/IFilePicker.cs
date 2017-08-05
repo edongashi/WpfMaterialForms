@@ -6,4 +6,9 @@ namespace Material.Application.Infrastructure
     {
         string GetFile(string fileName, string filter);
     }
+
+    public interface IFileSaver
+    {
+        string GetFile(string fileName, string filter);
+    }
 }

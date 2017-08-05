@@ -63,6 +63,8 @@ namespace Material.Application.Infrastructure
 
             Bind<IFilePicker>()
                 .To<DialogFilePicker>();
+            Bind<IFileSaver>()
+                .To<DialogFileSaver>();
         }
     }
 }
