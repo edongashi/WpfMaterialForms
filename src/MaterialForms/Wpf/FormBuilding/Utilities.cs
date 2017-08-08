@@ -314,6 +314,11 @@ namespace MaterialForms.Wpf.FormBuilding
             return validators;
         }
 
+        public static string GetAttributeOrValue(this XElement element, string attribute)
+        {
+            return TryGetAttribute(element, attribute) ?? element.Value;
+        }
+
         private static Must Parse(string value)
         {
             return (Must)Enum.Parse(typeof(Must), value, true);

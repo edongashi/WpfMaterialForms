@@ -303,25 +303,31 @@ namespace MaterialForms.Wpf.FormBuilding
                         if (formElement != null)
                         {
                             AddRow(formElement);
+                            foreach (var initializer in FieldInitializers)
+                            {
+                                initializer.Initialize(formElement, property, deserializer);
+                            }
                         }
+
                         break;
 
                     case "title":
-                        AddRow(new TitleAttribute(element.TryGetAttribute("content"))
+
+                        AddRow(new TitleAttribute(element.GetAttributeOrValue("content"))
                         {
                             Icon = element.TryGetAttribute("icon")
                         }.GetElement());
                         break;
 
                     case "heading":
-                        AddRow(new HeadingAttribute(element.TryGetAttribute("content"))
+                        AddRow(new HeadingAttribute(element.GetAttributeOrValue("content"))
                         {
                             Icon = element.TryGetAttribute("icon")
                         }.GetElement());
                         break;
 
                     case "text":
-                        AddRow(new TextAttribute(element.TryGetAttribute("content")).GetElement());
+                        AddRow(new TextAttribute(element.GetAttributeOrValue("content")).GetElement());
                         break;
 
                     case "br":

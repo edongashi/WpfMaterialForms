@@ -156,17 +156,17 @@ namespace MaterialForms.Wpf.Controls
                 ClearForm();
                 SetValue(ValuePropertyKey, null);
             }
-            else if (oldModel != null && oldModel.GetType() == newModel.GetType())
-            {
-                // Same type -> update values only.
-                SetValue(ValuePropertyKey, newModel);
-            }
             else if (newModel is IFormDefinition formDefinition)
             {
                 // IFormDefinition -> Build form
                 var instance = formDefinition.CreateInstance(ResourceContext);
                 RebuildForm(formDefinition);
                 SetValue(ValuePropertyKey, instance);
+            }
+            else if (oldModel != null && oldModel.GetType() == newModel.GetType())
+            {
+                // Same type -> update values only.
+                SetValue(ValuePropertyKey, newModel);
             }
             else if (newModel is Type type)
             {

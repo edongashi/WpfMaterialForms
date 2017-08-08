@@ -11,7 +11,7 @@ namespace MaterialForms.Wpf.Resources
         /// Global cache for value converters accessible from expressions.
         /// </summary>
         public static readonly Dictionary<string, IValueConverter> ValueConverters =
-            new Dictionary<string, IValueConverter>
+            new Dictionary<string, IValueConverter>(StringComparer.OrdinalIgnoreCase)
             {
                 ["IsNull"] = new IsNullConverter(),
                 ["IsNotNull"] = new IsNotNullConverter(),
