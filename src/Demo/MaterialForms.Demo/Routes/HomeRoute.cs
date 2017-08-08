@@ -32,6 +32,10 @@ namespace MaterialForms.Demo.Routes
                 case "examples":
                     GoToMenuRoute<ExamplesRoute>();
                     break;
+                case "oldexamples":
+                    var window = new MainWindow();
+                    window.ShowDialog();
+                    break;
             }
         }
     }

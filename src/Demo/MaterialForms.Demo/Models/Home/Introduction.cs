@@ -70,6 +70,9 @@ namespace MaterialForms.Demo.Models.Home
 
         [Text("See live examples for a quick overview of features.", ShareLine = true)]
         [Action("examples", "VIEW EXAMPLES", InsertAfter = false)]
+        [Break]
+        [Text("The demo for the old v1 API is also available.", ShareLine = true)]
+        [Action("oldexamples", "VIEW OLD DEMO", InsertAfter = false)]
 
         [Field(IsVisible = false)]
         public string AnnotationDummy { get; set; }
