@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Data;
+using System.Xml.Linq;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Resources;
@@ -153,6 +156,167 @@ namespace MaterialForms.Wpf.FormBuilding
             }
 
             return context => new ErrorStringProvider(boundExpression.GetStringValue(context));
+        }
+
+        public static double[] GetGridWidths(string gridExpression)
+        {
+            if (string.IsNullOrEmpty(gridExpression))
+            {
+                return null;
+            }
+
+            var parts = gridExpression.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var grid = parts.Select(expr =>
+            {
+                expr = expr.Trim();
+                var isPixel = false;
+                if (expr.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+                {
+                    isPixel = true;
+                    expr = expr.Substring(0, expr.Length - 2);
+                }
+                else if (expr.EndsWith("*"))
+                {
+                    expr = expr.Substring(0, expr.Length - 1);
+                }
+
+                var value = double.Parse(expr);
+                if (value <= 0d)
+                {
+                    throw new InvalidOperationException("Invalid grid column values.");
+                }
+                if (isPixel)
+                {
+                    value = -value;
+                }
+
+                return value;
+            }).ToArray();
+
+            return grid.Length != 0 ? grid : null;
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var t in enumerable)
+            {
+                action(t);
+            }
+        }
+
+        public static XAttribute GetSingleAttribute(this XElement element, string attribute)
+        {
+            return element.Attributes()
+                .Single(xa =>
+                    string.Equals(xa.Name.LocalName,
+                        attribute,
+                        StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static XAttribute GetSingleOrDefaultAttribute(this XElement element, string attribute)
+        {
+            return element.Attributes()
+                .SingleOrDefault(xa =>
+                    string.Equals(xa.Name.LocalName,
+                        attribute,
+                        StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static string TryGetAttribute(this XElement element, string attribute)
+        {
+            return GetSingleOrDefaultAttribute(element, attribute)?.Value;
+        }
+
+        public static FieldAttribute GetFieldAttributeFromElement(XElement element)
+        {
+            return new FieldAttribute
+            {
+                Name = element.TryGetAttribute("label"),
+                DefaultValue = element.TryGetAttribute("defaultValue"),
+                IsVisible = element.TryGetAttribute("visible"),
+                IsReadOnly = element.TryGetAttribute("readonly"),
+                Icon = element.TryGetAttribute("icon"),
+                ToolTip = element.TryGetAttribute("tooltip")
+            };
+        }
+
+        public static BindingAttribute GetBindingAttributeFromElement(XElement element)
+        {
+            var attr = new BindingAttribute
+            {
+                StringFormat = element.TryGetAttribute("stringformat"),
+                ConverterCulture = element.TryGetAttribute("conversionCulture"),
+                ConversionErrorMessage = element.TryGetAttribute("conversionError")
+            };
+
+            var expr = element.TryGetAttribute("updateSourceTrigger");
+            if (expr != null)
+            {
+                attr.UpdateSourceTrigger = (UpdateSourceTrigger)Enum.Parse(typeof(UpdateSourceTrigger), expr, true);
+            }
+
+            return attr;
+        }
+
+
+        public static IEnumerable<ValueAttribute> GetValidatorsFromElement(XElement element)
+        {
+            var validators = new List<ValueAttribute>();
+            foreach (var child in element.Descendants("validate"))
+            {
+                var type = child.TryGetAttribute("must");
+                if (type == null)
+                {
+                    continue;
+                }
+
+                var condition = Parse(type);
+                var argument = child.TryGetAttribute("value");
+                var converter = child.TryGetAttribute("converter");
+
+                ValueAttribute attr;
+                if (converter != null)
+                {
+                    attr = argument != null
+                        ? new ValueAttribute(converter, condition, argument)
+                        : new ValueAttribute(converter, condition);
+                }
+                else
+                {
+                    attr = argument != null
+                        ? new ValueAttribute(condition, argument)
+                        : new ValueAttribute(condition);
+                }
+
+                attr.Message = child.TryGetAttribute("message");
+                attr.When = child.TryGetAttribute("when");
+                var expr = child.TryGetAttribute("strict");
+                if (expr != null)
+                {
+                    attr.StrictValidation = bool.Parse(expr);
+                }
+
+                expr = child.TryGetAttribute("validatesOnTargetUpdated");
+                if (expr != null)
+                {
+                    attr.ValidatesOnTargetUpdated = bool.Parse(expr);
+                }
+
+                expr = child.TryGetAttribute("onValueChanged");
+                if (expr != null)
+                {
+                    attr.ArgumentUpdatedAction = (ValidationAction)Enum.Parse(typeof(ValidationAction), expr, true);
+                }
+
+                validators.Add(attr);
+            }
+
+            return validators;
+        }
+
+        private static Must Parse(string value)
+        {
+            return (Must)Enum.Parse(typeof(Must), value, true);
         }
     }
 }

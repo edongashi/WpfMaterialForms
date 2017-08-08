@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
@@ -8,7 +7,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 {
     internal class BindingInitializer : IFieldInitializer
     {
-        public void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer)
+        public void Initialize(FormElement element, IFormProperty property, Func<string, object> deserializer)
         {
             if (!(element is DataFormField field))
             {

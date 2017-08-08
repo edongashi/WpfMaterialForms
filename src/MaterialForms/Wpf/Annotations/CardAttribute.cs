@@ -14,7 +14,7 @@ namespace MaterialForms.Wpf.Annotations
             RowSpan = rows;
         }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new CardElement();
         }

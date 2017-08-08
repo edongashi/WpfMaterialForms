@@ -196,8 +196,11 @@
     <Compile Include="Wpf\FormBuilding\Defaults\Types\DefaultTypeBuilders.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\TypeBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Deserializers.cs" />
+    <Compile Include="Wpf\FormBuilding\DynamicProperty.cs" />
+    <Compile Include="Wpf\FormBuilding\IFormProperty.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\IFieldBuilder.cs" />
+    <Compile Include="Wpf\FormBuilding\PropertyInfoWrapper.cs" />
     <Compile Include="Wpf\FormBuilding\Utilities.cs" />
     <Compile Include="Wpf\FormBuilding\ValidatorProvider.cs" />
     <Compile Include="Wpf\Forms\ActionEventArgs.cs" />

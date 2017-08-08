@@ -22,7 +22,7 @@ namespace MaterialForms.Wpf.Annotations
 
         public object HasMargin { get; set; }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new DividerElement
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding.Defaults;
@@ -131,6 +132,39 @@ namespace MaterialForms.Wpf.FormBuilding
                 new ValidatorInitializer()
             };
 
+            TypeNames = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["string"] = typeof(string),
+                ["datetime"] = typeof(DateTime),
+                ["bool"] = typeof(bool),
+                ["char"] = typeof(char),
+                ["byte"] = typeof(byte),
+                ["sbyte"] = typeof(sbyte),
+                ["short"] = typeof(short),
+                ["int"] = typeof(int),
+                ["long"] = typeof(long),
+                ["ushort"] = typeof(ushort),
+                ["uint"] = typeof(uint),
+                ["ulong"] = typeof(ulong),
+                ["float"] = typeof(float),
+                ["double"] = typeof(double),
+                ["decimal"] = typeof(decimal),
+                ["datetime?"] = typeof(DateTime?),
+                ["bool?"] = typeof(bool?),
+                ["char?"] = typeof(char?),
+                ["byte?"] = typeof(byte?),
+                ["sbyte?"] = typeof(sbyte?),
+                ["short?"] = typeof(short?),
+                ["int?"] = typeof(int?),
+                ["long?"] = typeof(long?),
+                ["ushort?"] = typeof(ushort?),
+                ["uint?"] = typeof(uint?),
+                ["ulong?"] = typeof(ulong?),
+                ["float?"] = typeof(float?),
+                ["double?"] = typeof(double?),
+                ["decimal?"] = typeof(decimal?)
+            };
+
             TypeDeserializers = new Dictionary<Type, Func<string, object>>
             {
                 // Default deserializers - culture invariant.
@@ -185,6 +219,8 @@ namespace MaterialForms.Wpf.FormBuilding
         /// </summary>
         public Dictionary<Type, List<IFieldBuilder>> TypeBuilders { get; }
 
+        public Dictionary<string, Type> TypeNames { get; }
+
         /// <summary>
         /// Stores functions to parse string representations of types.
         /// </summary>
@@ -220,6 +256,97 @@ namespace MaterialForms.Wpf.FormBuilding
             formDefinition = BuildDefinition(type);
             cachedDefinitions[type] = formDefinition;
             return formDefinition;
+        }
+
+        public IFormDefinition GetDefinition(string xml)
+        {
+            var document = XDocument.Parse(xml);
+            var root = document.Root;
+            if (root == null)
+            {
+                throw new InvalidOperationException("Invalid XML document.");
+            }
+
+            var form = new FormDefinition(null) // null indicates dynamic type
+            {
+                Grid = Utilities.GetGridWidths(root.GetSingleOrDefaultAttribute("grid")?.Value) ?? new[] { 1d }
+            };
+
+            void AddRow(FormElement formElement)
+            {
+                form.FormRows.Add(new FormRow(formElement));
+            }
+
+            foreach (var element in root.Elements())
+            {
+                var elementName = element.Name.LocalName.ToLower();
+                switch (elementName)
+                {
+                    case "input":
+                        var typeName = element.GetSingleOrDefaultAttribute("type")?.Value ?? "string";
+                        if (!TypeNames.TryGetValue(typeName, out var propertyType))
+                        {
+                            throw new InvalidOperationException($"Type '{typeName}' not found.");
+                        }
+
+                        var fieldName = element.GetSingleOrDefaultAttribute("name")?.Value;
+                        var attributes = new List<Attribute>
+                        {
+                            Utilities.GetFieldAttributeFromElement(element),
+                            Utilities.GetBindingAttributeFromElement(element)
+                        };
+
+                        attributes.AddRange(Utilities.GetValidatorsFromElement(element));
+                        var property = new DynamicProperty(fieldName, propertyType, attributes.ToArray());
+                        var deserializer = TryGetDeserializer(propertyType);
+                        var formElement = Build(property, deserializer);
+                        if (formElement != null)
+                        {
+                            AddRow(formElement);
+                        }
+                        break;
+
+                    case "title":
+                        AddRow(new TitleAttribute(element.TryGetAttribute("content"))
+                        {
+                            Icon = element.TryGetAttribute("icon")
+                        }.GetElement());
+                        break;
+
+                    case "heading":
+                        AddRow(new HeadingAttribute(element.TryGetAttribute("content"))
+                        {
+                            Icon = element.TryGetAttribute("icon")
+                        }.GetElement());
+                        break;
+
+                    case "text":
+                        AddRow(new TextAttribute(element.TryGetAttribute("content")).GetElement());
+                        break;
+
+                    case "br":
+                        AddRow(new BreakAttribute
+                        {
+                            Height = element.TryGetAttribute("height")
+                        }.GetElement());
+                        break;
+
+                    case "hr":
+                        var hasMargin = element.TryGetAttribute("hasMargin");
+                        AddRow((hasMargin != null
+                            ? new DividerAttribute(bool.Parse(hasMargin))
+                            : new DividerAttribute()).GetElement());
+                        break;
+                }
+            }
+
+            form.Freeze();
+            foreach (var element in form.FormRows.SelectMany(r => r.Elements).SelectMany(c => c.Elements))
+            {
+                element.Freeze();
+            }
+
+            return form;
         }
 
         /// <summary>
@@ -274,11 +401,11 @@ namespace MaterialForms.Wpf.FormBuilding
                     case FormContentAttribute contentAttribute:
                         if (contentAttribute.InsertAfter)
                         {
-                            afterFormContent.Add((contentAttribute, contentAttribute.GetElement(type)));
+                            afterFormContent.Add((contentAttribute, contentAttribute.GetElement()));
                         }
                         else
                         {
-                            beforeFormContent.Add((contentAttribute, contentAttribute.GetElement(type)));
+                            beforeFormContent.Add((contentAttribute, contentAttribute.GetElement()));
                         }
 
                         break;
@@ -291,7 +418,10 @@ namespace MaterialForms.Wpf.FormBuilding
             var gridLength = grid.Length;
 
             // Pass one - get list of valid properties.
-            var properties = Utilities.GetProperties(type, mode);
+            var properties = Utilities
+                .GetProperties(type, mode)
+                .Select(p => new PropertyInfoWrapper(p))
+                .ToArray();
 
             // Pass two - build form elements.
             var elements = new List<ElementWrapper>();
@@ -299,12 +429,7 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 var deserializer = TryGetDeserializer(property.PropertyType);
                 // Query property builders.
-                var element = Build(property, deserializer, PropertyBuilders);
-                if (element == null && TypeBuilders.TryGetValue(property.PropertyType, out var builders))
-                {
-                    // Query type builders if no property builder succeeds.
-                    element = Build(property, deserializer, builders);
-                }
+                var element = Build(property, deserializer);
 
                 if (element == null)
                 {
@@ -350,10 +475,10 @@ namespace MaterialForms.Wpf.FormBuilding
                 var after = new List<(FormContentAttribute attr, FormElement element)>();
                 foreach (var element in row.Elements)
                 {
-                    var property = element.PropertyInfo;
+                    var property = element.Property;
                     foreach (var attr in property.GetCustomAttributes<FormContentAttribute>())
                     {
-                        (attr.InsertAfter ? after : before).Add((attr, attr.GetElement(property)));
+                        (attr.InsertAfter ? after : before).Add((attr, attr.GetElement()));
                     }
                 }
 
@@ -386,6 +511,18 @@ namespace MaterialForms.Wpf.FormBuilding
             }
 
             return formDefinition;
+        }
+
+        private FormElement Build(IFormProperty property, Func<string, object> deserializer)
+        {
+            var element = Build(property, deserializer, PropertyBuilders);
+            if (element == null && TypeBuilders.TryGetValue(property.PropertyType, out var builders))
+            {
+                // Query type builders if no property builder succeeds.
+                element = Build(property, deserializer, builders);
+            }
+
+            return element;
         }
 
         private static List<FormRow> CreateRows(IEnumerable<(FormContentAttribute attr, FormElement element)> elements, int gridLength)
@@ -611,7 +748,7 @@ namespace MaterialForms.Wpf.FormBuilding
             return layout;
         }
 
-        private static FormElement Build(PropertyInfo property, Func<string, object> deserializer,
+        private static FormElement Build(IFormProperty property, Func<string, object> deserializer,
             List<IFieldBuilder> builders)
         {
             foreach (var builder in builders)
@@ -629,16 +766,16 @@ namespace MaterialForms.Wpf.FormBuilding
         private class ElementWrapper
         {
             public readonly FormElement Element;
-            public readonly PropertyInfo PropertyInfo;
+            public readonly IFormProperty Property;
             public int Column;
             public int ColumnSpan;
             public int Position;
             public string Row;
 
-            public ElementWrapper(FormElement element, PropertyInfo propertyInfo)
+            public ElementWrapper(FormElement element, IFormProperty property)
             {
                 Element = element;
-                PropertyInfo = propertyInfo;
+                Property = property;
             }
         }
 

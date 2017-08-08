@@ -42,12 +42,14 @@ namespace MaterialForms.Wpf.Fields
 
             var expando = new ExpandoObject();
             IDictionary<string, object> dictionary = expando;
-            foreach (var dataField in FormRows
+            foreach (var field in FormRows
                 .SelectMany(row => row.Elements
-                    .Select(c => c.Elements)
-                    .OfType<DataFormField>()))
+                    .SelectMany(c => c.Elements)))
             {
-                dictionary[dataField.Key] = dataField.GetDefaultValue(context);
+                if (field is DataFormField dataField && dataField.Key != null && !dataField.IsDirectBinding)
+                {
+                    dictionary[dataField.Key] = dataField.GetDefaultValue(context);
+                }
             }
 
             return expando;

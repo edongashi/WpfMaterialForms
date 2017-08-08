@@ -13,7 +13,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 {
     internal class ValidatorInitializer : IFieldInitializer
     {
-        public void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer)
+        public void Initialize(FormElement element, IFormProperty property, Func<string, object> deserializer)
         {
             if (!(element is DataFormField dataField))
             {

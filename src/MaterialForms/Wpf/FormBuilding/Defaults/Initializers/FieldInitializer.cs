@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Humanizer;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
@@ -9,7 +8,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 {
     internal class FieldInitializer : IFieldInitializer
     {
-        public void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer)
+        public void Initialize(FormElement element, IFormProperty property, Func<string, object> deserializer)
         {
             var attr = property.GetCustomAttribute<FieldAttribute>();
             if (attr == null)
@@ -35,7 +34,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
 
             if (element is DataFormField dataField)
             {
-                if (property.CanWrite && property.GetSetMethod(true).IsPublic)
+                if (property.CanWrite)
                 {
                     dataField.IsReadOnly = Utilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
                 }

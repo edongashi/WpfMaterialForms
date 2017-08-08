@@ -8,14 +8,14 @@ using Display = MaterialForms.Wpf.Annotations.Display;
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 {
     internal class StringFieldBuilder : TypeBuilder<String> {
-        protected override FormElement Build(PropertyInfo property, Func<string, object> deserializer)
+        protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
             return new StringField(property.Name);
         }
     }
 
     internal class BooleanFieldBuilder : IFieldBuilder {
-        public FormElement TryBuild(PropertyInfo property, Func<string, object> deserializer)
+        public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             var isSwitch = property.GetCustomAttribute<Display.ToggleAttribute>() != null;
             return new BooleanField(property.Name)
@@ -26,7 +26,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
     }
 
     internal class DateTimeFieldBuilder : TypeBuilder<DateTime> {
-        protected override FormElement Build(PropertyInfo property, Func<string, object> deserializer)
+        protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
             return new StringField(property.Name);
         }
@@ -41,7 +41,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 
         public Func<string, CultureInfo, object> Deserializer { get; }
 
-        public FormElement TryBuild(PropertyInfo property, Func<string, object> deserializer)
+        public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             return new ConvertedField(property.Name, property.PropertyType, Deserializer);
         }

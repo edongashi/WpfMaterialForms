@@ -19,7 +19,7 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public object Height { get; set; } = 8d;
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new BreakElement
             {

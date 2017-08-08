@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf.FormBuilding
@@ -9,6 +8,6 @@ namespace MaterialForms.Wpf.FormBuilding
     /// </summary>
     public interface IFieldInitializer
     {
-        void Initialize(FormElement element, PropertyInfo property, Func<string, object> deserializer);
+        void Initialize(FormElement element, IFormProperty property, Func<string, object> deserializer);
     }
 }

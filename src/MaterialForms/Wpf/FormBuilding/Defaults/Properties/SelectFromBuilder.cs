@@ -12,7 +12,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
 {
     internal class SelectFromBuilder : IFieldBuilder
     {
-        public FormElement TryBuild(PropertyInfo property, Func<string, object> deserializer)
+        public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             var selectFrom = property.GetCustomAttribute<SelectFromAttribute>();
             if (selectFrom == null)

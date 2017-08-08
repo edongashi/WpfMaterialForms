@@ -53,7 +53,7 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public object Icon { get; set; }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new TitleElement
             {
@@ -77,7 +77,7 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public object Icon { get; set; }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new HeadingElement
             {
@@ -96,7 +96,7 @@ namespace MaterialForms.Wpf.Annotations
         {
         }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new TextElement();
         }

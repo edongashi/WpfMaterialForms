@@ -64,7 +64,7 @@ namespace MaterialForms.Wpf.Annotations
         /// </summary>
         public object IsReset { get; set; }
 
-        protected override FormElement CreateElement(MemberInfo target)
+        protected override FormElement CreateElement()
         {
             return new ActionElement
             {

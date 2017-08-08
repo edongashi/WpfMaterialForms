@@ -46,11 +46,11 @@ namespace MaterialForms.Wpf.Annotations
         /// Create a form element corresponding to this object.
         /// </summary>
         /// <returns></returns>
-        protected abstract FormElement CreateElement(MemberInfo target);
+        protected abstract FormElement CreateElement();
 
-        internal FormElement GetElement(MemberInfo target)
+        internal FormElement GetElement()
         {
-            var element = CreateElement(target);
+            var element = CreateElement();
             element.IsVisible = Utilities.GetResource<bool>(IsVisible, true, Deserializers.Boolean);
             element.LinePosition = LinePosition;
             InitializeElement(element);
