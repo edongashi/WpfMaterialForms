@@ -288,7 +288,7 @@ namespace MaterialForms.Wpf.FormBuilding
                         : new ValueAttribute(condition);
                 }
 
-                attr.Message = child.TryGetAttribute("message");
+                attr.Message = child.GetAttributeOrValue("message");
                 attr.When = child.TryGetAttribute("when");
                 var expr = child.TryGetAttribute("strict");
                 if (expr != null)
@@ -316,7 +316,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static string GetAttributeOrValue(this XElement element, string attribute)
         {
-            return TryGetAttribute(element, attribute) ?? element.Value;
+            return TryGetAttribute(element, attribute) ?? element.Value.Trim();
         }
 
         private static Must Parse(string value)
