@@ -93,7 +93,7 @@ namespace MaterialForms.Demo.Routes
                   message=""The entered passwords do not match."" />
     </input>
     <br />
-    <heading icon=""check"">Review entered information</heading>
+    <heading icon=""checkall"">Review entered information</heading>
     <text>Name: {Binding FirstName} {Binding LastName}</text>
     <text>Date of birth: {Binding DateOfBirth:yyyy-MM-dd}</text>
     <text>Username: {Binding Username}</text>
