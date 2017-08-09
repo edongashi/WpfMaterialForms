@@ -133,6 +133,11 @@ namespace MaterialForms.Wpf.Controls
             FillGrid();
         }
 
+        public Dictionary<string, DataFormField> GetDataFields()
+        {
+            return new Dictionary<string, DataFormField>(DataFields);
+        }
+
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             ((DynamicForm)obj).UpdateModel(e.OldValue, e.NewValue);
