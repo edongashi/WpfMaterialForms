@@ -83,12 +83,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
             if (model is IActionHandler modelHandler)
             {
-                modelHandler.HandleAction(actionName, arg);
+                modelHandler.HandleAction(model, actionName, arg);
             }
 
             if (context.GetContextInstance() is IActionHandler contextHandler)
             {
-                contextHandler.HandleAction(actionName, arg);
+                contextHandler.HandleAction(model, actionName, arg);
             }
         }
 

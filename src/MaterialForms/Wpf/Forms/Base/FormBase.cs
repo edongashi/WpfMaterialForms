@@ -9,7 +9,7 @@ namespace MaterialForms.Wpf.Forms.Base
     {
         public event EventHandler<ActionEventArgs> ActionPerformed;
 
-        public void HandleAction(string action, object parameter)
+        public void HandleAction(object model, string action, object parameter)
         {
             OnAction(action, parameter);
             ActionPerformed?.Invoke(this, new ActionEventArgs(action));

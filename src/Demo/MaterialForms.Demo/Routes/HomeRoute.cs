@@ -21,7 +21,7 @@ namespace MaterialForms.Demo.Routes
         
         public object Model { get; }
 
-        public void HandleAction(string action, object parameter)
+        public void HandleAction(object model, string action, object parameter)
         {
             switch (action?.ToLower())
             {

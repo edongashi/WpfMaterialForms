@@ -92,7 +92,7 @@ namespace MaterialForms.Demo.Routes
             yield return new ExamplePresenter(new DataTypes(), "Data types", large);
         }
 
-        public void HandleAction(string action, object parameter)
+        public void HandleAction(object model, string action, object parameter)
         {
             notificationService.Notify($"Action '{action}'");
         }

@@ -3,6 +3,6 @@ namespace MaterialForms.Wpf
 {
     public interface IActionHandler
     {
-        void HandleAction(string action, object parameter);
+        void HandleAction(object model, string action, object parameter);
     }
 }

@@ -109,7 +109,7 @@ namespace MaterialForms.Demo.Routes
 
             BuildDefinition();
         }
-        public void HandleAction(string action, object parameter)
+        public void HandleAction(object model, string action, object parameter)
         {
             notificationService.Notify($"Action '{action}'");
         }
