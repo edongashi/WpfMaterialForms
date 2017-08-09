@@ -28,6 +28,10 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     new ConvertedDirectBinding(BindingOptions, Validators, Deserializer,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
             }
+            else if (string.IsNullOrEmpty(Key))
+            {
+                Resources.Add("Value", LiteralValue.Null);
+            }
             else
             {
                 Resources.Add("Value",

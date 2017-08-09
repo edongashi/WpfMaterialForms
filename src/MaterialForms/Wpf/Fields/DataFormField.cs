@@ -27,6 +27,10 @@ namespace MaterialForms.Wpf.Fields
                 {
                     Resources.Add("Value", new DirectBinding(BindingOptions, Validators));
                 }
+                else if (string.IsNullOrEmpty(Key))
+                {
+                    Resources.Add("Value", LiteralValue.Null);
+                }
                 else
                 {
                     Resources.Add("Value", new DataBinding(Key, BindingOptions, Validators));
