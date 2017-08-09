@@ -686,20 +686,27 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static Func<string, object> Enum<TEnum>()
         {
-            return Enum(typeof(TEnum));
+            return Enum(typeof(TEnum), true);
         }
 
         public static Func<string, object> Enum(Type enumType)
         {
+            return Enum(enumType, true);
+        }
+
+        public static Func<string, object> Enum(Type enumType, bool ignoreCase)
+        {
             if (enumType.IsGenericType && enumType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                var type = Nullable.GetUnderlyingType(enumType);
+                enumType = Nullable.GetUnderlyingType(enumType);
                 return expr => string.IsNullOrEmpty(expr)
                     ? null
-                    : System.Enum.Parse(type, expr);
+                    : System.Enum.Parse(enumType, expr, ignoreCase);
             }
-
-            return expr => System.Enum.Parse(enumType, expr);
+            else
+            {
+                return expr => System.Enum.Parse(enumType, expr, ignoreCase);
+            }
         }
 
         #endregion

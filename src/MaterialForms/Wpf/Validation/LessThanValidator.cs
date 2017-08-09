@@ -23,7 +23,7 @@ namespace MaterialForms.Wpf.Validation
 
             if (value == null)
             {
-                return true;
+                return false;
             }
 
             if (/*value != null &&*/ comparand is IConvertible && value.GetType() != comparand.GetType())

@@ -78,11 +78,15 @@
     <Compile Include="Models\ExamplePresenter.cs" />
     <Compile Include="Routes\ExamplesRoute.cs" />
     <Compile Include="Routes\HomeRoute.cs" />
+    <Compile Include="Routes\XmlExamplesRoute.cs" />
     <Compile Include="Views\ExamplesView.xaml.cs">
       <DependentUpon>ExamplesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FormView.xaml.cs">
       <DependentUpon>FormView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\XmlExamplesView.xaml.cs">
+      <DependentUpon>XmlExamplesView.xaml</DependentUpon>
     </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,6 +115,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FormView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\XmlExamplesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

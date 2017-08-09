@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
+using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.FormBuilding.Defaults;
 using MaterialForms.Wpf.FormBuilding.Defaults.Initializers;
 using MaterialForms.Wpf.FormBuilding.Defaults.Properties;
@@ -272,14 +273,20 @@ namespace MaterialForms.Wpf.FormBuilding
                 Grid = Utilities.GetGridWidths(root.GetSingleOrDefaultAttribute("grid")?.Value) ?? new[] { 1d }
             };
 
+            var gridLength = form.Grid.Length;
             void AddRow(FormElement formElement)
             {
-                form.FormRows.Add(new FormRow(formElement));
+                form.FormRows.Add(new FormRow
+                {
+                    Elements = { new FormElementContainer(0, gridLength, formElement) }
+                });
             }
 
+            var actions = new List<FormElement>();
+            string elementName = null;
             foreach (var element in root.Elements())
             {
-                var elementName = element.Name.LocalName.ToLower();
+                elementName = element.Name.LocalName.ToLower();
                 switch (elementName)
                 {
                     case "input":
@@ -312,7 +319,6 @@ namespace MaterialForms.Wpf.FormBuilding
                         break;
 
                     case "title":
-
                         AddRow(new TitleAttribute(element.GetAttributeOrValue("content"))
                         {
                             Icon = element.TryGetAttribute("icon")
@@ -343,7 +349,31 @@ namespace MaterialForms.Wpf.FormBuilding
                             ? new DividerAttribute(bool.Parse(hasMargin))
                             : new DividerAttribute()).GetElement());
                         break;
+
+                    case "action":
+                        actions.Add(Utilities.GetAction(element).GetElement());
+                        break;
                 }
+
+                if (elementName != "action" && actions.Count != 0)
+                {
+                    form.FormRows.Add(new FormRow
+                    {
+                        Elements = { new FormElementContainer(0, gridLength, actions.ToList()) }
+                    });
+
+                    actions.Clear();
+                }
+            }
+
+            if (elementName == "action" && actions.Count != 0)
+            {
+                form.FormRows.Add(new FormRow
+                {
+                    Elements = { new FormElementContainer(0, gridLength, actions.ToList()) }
+                });
+
+                actions.Clear();
             }
 
             form.Freeze();

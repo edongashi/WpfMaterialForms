@@ -4,12 +4,6 @@ namespace MaterialForms.Wpf.Fields
 {
     public class FormRow
     {
-        public FormRow(FormElement singleElement)
-            : this(true, 1)
-        {
-            Elements.Add(new FormElementContainer(0, 1, singleElement));
-        }
-
         public FormRow() 
             : this(true, 1)
         {

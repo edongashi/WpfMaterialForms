@@ -11,6 +11,7 @@ namespace MaterialForms.Demo.Infrastructure
             var factory = Routes.RouteFactory;
             Routes.MenuRoutes.Add(InitialRoute = factory.Get<HomeRoute>());
             Routes.MenuRoutes.Add(factory.Get<ExamplesRoute>());
+            Routes.MenuRoutes.Add(factory.Get<XmlExamplesRoute>());
             FontSize = 15d;
         }
     }

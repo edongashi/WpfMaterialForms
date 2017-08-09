@@ -227,6 +227,20 @@ namespace MaterialForms.Wpf.FormBuilding
             return GetSingleOrDefaultAttribute(element, attribute)?.Value;
         }
 
+        public static string GetAttributeOrValue(this XElement element, string attribute)
+        {
+            var value = TryGetAttribute(element, attribute);
+            if (value != null)
+            {
+                return value;
+            }
+
+            value = element.Value.Trim();
+            return value == "" 
+                ? null 
+                : value;
+        }
+
         public static FieldAttribute GetFieldAttributeFromElement(XElement element)
         {
             return new FieldAttribute
@@ -257,7 +271,6 @@ namespace MaterialForms.Wpf.FormBuilding
 
             return attr;
         }
-
 
         public static IEnumerable<ValueAttribute> GetValidatorsFromElement(XElement element)
         {
@@ -314,9 +327,28 @@ namespace MaterialForms.Wpf.FormBuilding
             return validators;
         }
 
-        public static string GetAttributeOrValue(this XElement element, string attribute)
+        public static ActionAttribute GetAction(XElement element)
         {
-            return TryGetAttribute(element, attribute) ?? element.Value.Trim();
+            var action = new ActionAttribute(element.TryGetAttribute("name"), element.GetAttributeOrValue("content"));
+            var expr = element.TryGetAttribute("isDefault");
+            if (expr != null)
+            {
+                action.IsDefault = bool.Parse(expr);
+            }
+
+            expr = element.TryGetAttribute("isCancel");
+            if (expr != null)
+            {
+                action.IsCancel = bool.Parse(expr);
+            }
+
+            action.Parameter = element.TryGetAttribute("parameter");
+            action.IsEnabled = element.TryGetAttribute("enabled");
+            action.Icon = element.TryGetAttribute("icon");
+            action.Validates = element.TryGetAttribute("validates");
+            action.IsReset = element.TryGetAttribute("resets");
+
+            return action;
         }
 
         private static Must Parse(string value)
