@@ -83,7 +83,7 @@ namespace MaterialForms.Demo.Routes
     <input type=""string"" name=""Password""
            label=""Password"" icon=""key"">
         <validate converter=""Length"" must=""BeGreaterThanOrEqualTo"" value=""6"">
-            Your password has {Value|Length} characters, which is less than the required {Argument}.""
+            Your password has {Value|Length} characters, which is less than the required {Argument}.
         </validate>
     </input>
     <input type=""string"" name=""PasswordConfirm""
@@ -93,14 +93,14 @@ namespace MaterialForms.Demo.Routes
                   message=""The entered passwords do not match."" />
     </input>
     <br />
-    <heading>Review entered information</heading>
+    <heading icon=""check"">Review entered information</heading>
     <text>Name: {Binding FirstName} {Binding LastName}</text>
     <text>Date of birth: {Binding DateOfBirth:yyyy-MM-dd}</text>
     <text>Username: {Binding Username}</text>
     <br />
     <heading>License agreement</heading>
     <text>By signing up, you agree to our terms of use, privacy policy, and cookie policy.</text>
-    <input type=""bool"" name=""Agree"" label=""Agree to license"">
+    <input type=""bool"" name=""Agree"" label=""Agree to license"" defaultValue=""false"">
         <validate must=""BeTrue"">You must accept the license agreement.</validate>
     </input>
     <action name=""reset"" content=""RESET"" icon=""close"" resets=""true"" />
