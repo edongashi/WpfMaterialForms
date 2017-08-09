@@ -42,7 +42,6 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.0.823, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -113,8 +112,6 @@
     <Compile Include="Routing\Default\ListRoute.cs" />
     <Compile Include="ValueConverters\CollectionToVisibilityConverter.cs" />
     <Compile Include="Controls\ConfirmableButton.cs" />
-    <Compile Include="Controls\FluidMoveBehaviorBaseNoLeak.cs" />
-    <Compile Include="Controls\FluidMoveBehaviorNoLeak.cs" />
     <Compile Include="Controls\LockableToggleButton.cs" />
     <Compile Include="Controls\NullAsSeparatorTemplateSelector.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
