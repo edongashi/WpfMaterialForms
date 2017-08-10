@@ -63,7 +63,24 @@ namespace MaterialForms.Wpf.Fields
 
         public virtual object GetDefaultValue(IResourceContext context)
         {
-            return DefaultValue?.GetValue(context).Value;
+            if (DefaultValue != null)
+            {
+                return DefaultValue.GetValue(context).Value;
+            }
+
+            if (PropertyType == null || !PropertyType.IsValueType)
+            {
+                return null;
+            }
+
+            try
+            {
+                return Activator.CreateInstance(PropertyType);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
