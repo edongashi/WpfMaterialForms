@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>WpfMaterialForms</id>
-        <version>1.1.1</version>
+        <version>$version$</version>
         <title>WPF Material Forms</title>
         <authors>Edon Gashi</authors>
         <owners>Edon Gashi</owners>
         <licenseUrl>https://github.com/EdonGashi/WpfMaterialForms/blob/master/License.md</licenseUrl>
         <projectUrl>https://github.com/EdonGashi/WpfMaterialForms</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>Schema generated material dialogs in WPF</description>
-        <tags>Material Design Dialog WPF XAML</tags>
+        <description>Dynamically generated forms and dialogs in WPF</description>
+        <tags>Material Design Form Dialog WPF XAML</tags>
     </metadata>
 </package>
