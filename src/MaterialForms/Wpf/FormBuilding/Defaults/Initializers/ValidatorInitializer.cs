@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -76,7 +77,11 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                                     return;
                                 }
 
-                                if (model?.GetType() != modelType)
+                                if (model is ExpandoObject && modelType == null)
+                                {
+                                    // Do nothing.
+                                }
+                                else if (model == null || model.GetType() != modelType)
                                 {
                                     // Self dispose when form indicates model change.
                                     value.ValueChanged = null;
