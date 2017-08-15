@@ -67,7 +67,7 @@ namespace MaterialForms.Wpf.Annotations
         {
             return new ActionElement
             {
-                ActionName = ActionName,
+                ActionName = BoundExpression.ParseSimplified(ActionName),
                 ActionParameter = Parameter is string expr
                     ? BoundExpression.ParseSimplified(expr)
                     : new LiteralValue(Parameter),

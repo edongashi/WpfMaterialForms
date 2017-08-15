@@ -9,7 +9,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class ActionElement : ContentElement
     {
-        public string ActionName { get; set; }
+        public IValueProvider ActionName { get; set; }
 
         public IValueProvider ActionParameter { get; set; }
 
@@ -32,7 +32,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
     internal class ActionElementCommand : ICommand
     {
-        private readonly string actionName;
+        private readonly IProxy action;
         private readonly IProxy actionParameter;
 
         private readonly IResourceContext context;
@@ -40,10 +40,11 @@ namespace MaterialForms.Wpf.Fields.Defaults
         private readonly IBoolProxy validates;
         private readonly IBoolProxy resets;
 
-        public ActionElementCommand(IResourceContext context, string actionName, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider isReset)
+        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider isReset)
         {
             this.context = context;
-            this.actionName = actionName;
+            this.action = action?.GetBestMatchingProxy(context) ?? new PlainObject(null);
+
             switch (isEnabled)
             {
                 case LiteralValue v when v.Value is bool b:
@@ -81,20 +82,40 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 }
             }
 
-            if (model is IActionHandler modelHandler)
+            switch (action.Value)
             {
-                modelHandler.HandleAction(model, actionName, arg);
-            }
+                case string actionName:
+                    if (model is IActionHandler modelHandler)
+                    {
+                        modelHandler.HandleAction(model, actionName, arg);
+                    }
 
-            if (context.GetContextInstance() is IActionHandler contextHandler)
-            {
-                contextHandler.HandleAction(model, actionName, arg);
+                    if (context.GetContextInstance() is IActionHandler contextHandler)
+                    {
+                        contextHandler.HandleAction(model, actionName, arg);
+                    }
+
+                    break;
+                case ICommand command:
+                    command.Execute(arg);
+                    break;
             }
         }
 
         public bool CanExecute(object parameter)
         {
-            return canExecute.Value;
+            var flag = canExecute.Value;
+            if (!flag)
+            {
+                return false;
+            }
+
+            if (action.Value is ICommand command)
+            {
+                return command.CanExecute(actionParameter.Value);
+            }
+
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;
