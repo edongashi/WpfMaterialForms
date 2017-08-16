@@ -1,4 +1,5 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
@@ -53,5 +54,10 @@ namespace MaterialForms.Wpf.Resources
         /// <param name="key">Resource key.</param>
         /// <param name="value">Resource value.</param>
         void AddResource(object key, object value);
+    }
+
+    public interface IFrameworkResourceContext : IResourceContext
+    {
+        FrameworkElement GetOwningElement();
     }
 }

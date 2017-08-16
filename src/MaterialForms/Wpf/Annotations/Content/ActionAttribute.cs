@@ -59,6 +59,11 @@ namespace MaterialForms.Wpf.Annotations
         public object Validates { get; set; }
 
         /// <summary>
+        /// Determines whether this action will close dialogs that host it.
+        /// </summary>
+        public object ClosesDialog { get; set; }
+
+        /// <summary>
         /// Determines whether the model will be reset to default values before the action is executed.
         /// </summary>
         public object IsReset { get; set; }
@@ -74,6 +79,7 @@ namespace MaterialForms.Wpf.Annotations
                 Content = Utilities.GetStringResource(Content),
                 Icon = Utilities.GetIconResource(Icon),
                 Validates = Utilities.GetResource<bool>(Validates, false, Deserializers.Boolean),
+                ClosesDialog = Utilities.GetResource<bool>(ClosesDialog, true, Deserializers.Boolean),
                 IsReset = Utilities.GetResource<bool>(IsReset, false, Deserializers.Boolean),
                 IsEnabled = Utilities.GetResource<bool>(IsEnabled, true, Deserializers.Boolean)
             };

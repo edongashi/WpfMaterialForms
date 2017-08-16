@@ -1,9 +1,10 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Data;
 using MaterialForms.Wpf.Controls;
 
 namespace MaterialForms.Wpf.Resources
 {
-    internal class FormResourceContext : IResourceContext
+    internal class FormResourceContext : IFrameworkResourceContext
     {
         public FormResourceContext(DynamicForm form)
             : this(form, null)
@@ -61,6 +62,11 @@ namespace MaterialForms.Wpf.Resources
         public void AddResource(object key, object value)
         {
             Form.Resources.Add(key, value);
+        }
+
+        public FrameworkElement GetOwningElement()
+        {
+            return Form;
         }
     }
 }

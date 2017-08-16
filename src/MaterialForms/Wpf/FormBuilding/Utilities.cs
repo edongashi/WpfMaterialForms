@@ -346,6 +346,7 @@ namespace MaterialForms.Wpf.FormBuilding
             action.IsEnabled = element.TryGetAttribute("enabled");
             action.Icon = element.TryGetAttribute("icon");
             action.Validates = element.TryGetAttribute("validates");
+            action.ClosesDialog = element.TryGetAttribute("closesDialog");
             action.IsReset = element.TryGetAttribute("resets");
 
             return action;

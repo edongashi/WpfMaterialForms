@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 
@@ -19,11 +22,13 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public IValueProvider Validates { get; set; }
 
+        public IValueProvider ClosesDialog { get; set; }
+
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates, IsReset),
+                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates, ClosesDialog, IsReset),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
             };
@@ -39,8 +44,9 @@ namespace MaterialForms.Wpf.Fields.Defaults
         private readonly IBoolProxy canExecute;
         private readonly IBoolProxy validates;
         private readonly IBoolProxy resets;
+        private readonly IBoolProxy closesDialog;
 
-        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider isReset)
+        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset)
         {
             this.context = context;
             this.action = action?.GetBestMatchingProxy(context) ?? new PlainObject(null);
@@ -61,6 +67,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             }
 
             this.validates = validates != null ? (IBoolProxy)validates.GetBoolValue(context) : new PlainBool(false);
+            this.closesDialog = closesDialog != null ? (IBoolProxy)closesDialog.GetBoolValue(context) : new PlainBool(true);
             resets = isReset != null ? (IBoolProxy)isReset.GetBoolValue(context) : new PlainBool(false);
             this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
@@ -79,6 +86,19 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 if (!isValid)
                 {
                     return;
+                }
+            }
+
+            if (closesDialog.Value && context is IFrameworkResourceContext fwContext)
+            {
+                var frameworkElement = fwContext.GetOwningElement();
+                if (frameworkElement != null && frameworkElement.CheckAccess())
+                {
+                    var dialogHost = GetVisualAncestry(frameworkElement).OfType<DialogHost>().FirstOrDefault();
+                    if (dialogHost != null)
+                    {
+                        dialogHost.IsOpen = false;
+                    }
                 }
             }
 
@@ -119,6 +139,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
 
         public event EventHandler CanExecuteChanged;
+
+        private static IEnumerable<DependencyObject> GetVisualAncestry(DependencyObject leaf)
+        {
+            while (leaf != null)
+            {
+                yield return leaf;
+                leaf = VisualTreeHelper.GetParent(leaf);
+            }
+        }
     }
 
     public class ActionPresenter : BindingProvider
