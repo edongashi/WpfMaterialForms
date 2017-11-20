@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Annotations
@@ -37,9 +38,7 @@ namespace MaterialForms.Wpf.Annotations
         {
             bindingOptions.StringFormat = StringFormat;
             bindingOptions.UpdateSourceTrigger = UpdateSourceTrigger;
-            bindingOptions.ConverterCulture = ConverterCulture != null
-                ? CultureInfo.GetCultureInfo(ConverterCulture)
-                : null;
+            bindingOptions.ConverterCulture = ConversionCulture.Get(ConverterCulture);
             bindingOptions.Delay = Delay;
             bindingOptions.ValidatesOnExceptions = ValidatesOnExceptions;
             bindingOptions.ValidatesOnDataErrors = ValidatesOnDataErrors;

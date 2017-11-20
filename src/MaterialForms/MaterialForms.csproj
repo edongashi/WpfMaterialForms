@@ -188,6 +188,7 @@
     <Compile Include="Wpf\Fields\IFormDefinition.cs" />
     <Compile Include="Wpf\Fields\StringTypeConverter.cs" />
     <Compile Include="Wpf\Fields\ValueBindingProvider.cs" />
+    <Compile Include="Wpf\FormBuilding\CustomCulture.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\BindingInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\FieldInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\ValidatorInitializer.cs" />
