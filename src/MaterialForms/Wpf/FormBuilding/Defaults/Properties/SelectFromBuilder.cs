@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Humanizer;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
@@ -51,10 +50,38 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                     field.ItemsSource = value.Resources[0];
                     break;
                 case IEnumerable<object> enumerable:
-                    field.ItemsSource = new LiteralValue(enumerable.ToList());
+                    var objects = enumerable.ToList();
+                    var elements = objects.Select(item =>
+                    {
+                        if (item is string expr)
+                        {
+                            return BoundExpression.ParseSimplified(expr);
+                        }
+
+                        return new LiteralValue(item);
+                    }).ToList();
+
+                    if (elements.All(item => item is LiteralValue))
+                    {
+                        field.ItemsSource = new LiteralValue(objects);
+                    }
+                    else
+                    {
+                        field.ItemsSource = new EnumerableStringValueProvider(elements);
+                        field.DisplayPath = new LiteralValue(nameof(StringProxy.Value));
+                        field.ValuePath = new LiteralValue(nameof(StringProxy.Key));
+                    }
+
                     break;
                 case Type enumType:
-                    if (!enumType.IsEnum)
+                    var addNull = false;
+                    if (enumType.IsGenericType && enumType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        enumType = Nullable.GetUnderlyingType(enumType);
+                        addNull = true;
+                    }
+
+                    if (enumType != null && !enumType.IsEnum)
                     {
                         throw new InvalidOperationException("A type argument for ItemsSource must be an enum.");
                     }
@@ -80,7 +107,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                         collection.Add(new KeyValuePair<ValueType, IValueProvider>(enumValue, name));
                     }
 
-                    field.ItemsSource = new EnumerableStringValueProvider(collection);
+                    field.ItemsSource = new EnumerableKeyValueProvider(collection, addNull);
                     field.DisplayPath = new LiteralValue(nameof(StringProxy.Value));
                     field.ValuePath = new LiteralValue(type == typeof(string)
                         ? nameof(StringProxy.Value)

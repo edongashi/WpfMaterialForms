@@ -5,12 +5,14 @@ using System.Windows.Data;
 
 namespace MaterialForms.Wpf.Resources
 {
-    public class EnumerableStringValueProvider : IValueProvider
+    public class EnumerableKeyValueProvider : IValueProvider
     {
         private readonly IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements;
+        private readonly bool addNull;
 
-        public EnumerableStringValueProvider(IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements)
+        public EnumerableKeyValueProvider(IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements, bool addNull)
         {
+            this.addNull = addNull;
             this.elements = elements ?? throw new ArgumentNullException(nameof(elements));
         }
 
@@ -25,12 +27,19 @@ namespace MaterialForms.Wpf.Resources
 
         public object ProvideValue(IResourceContext context)
         {
-            return elements.Select(e =>
+            var list = elements.Select(e =>
             {
                 var proxy = e.Value.GetStringValue(context);
                 proxy.Key = e.Key;
                 return proxy;
             }).ToList();
+
+            if (addNull)
+            {
+                list.Insert(0, new StringProxy { Key = null, Value = "" });
+            }
+
+            return list;
         }
     }
 }

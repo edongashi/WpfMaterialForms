@@ -8,6 +8,13 @@ namespace MaterialForms.Wpf.Resources
     /// </summary>
     public class StringProxy : Freezable, IStringProxy, IProxy
     {
+        public static readonly DependencyProperty KeyProperty =
+            DependencyProperty.Register(
+                nameof(Key),
+                typeof(object),
+                typeof(StringProxy),
+                new UIPropertyMetadata());
+
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
                 nameof(Value),
@@ -20,7 +27,11 @@ namespace MaterialForms.Wpf.Resources
             ((StringProxy)dependencyObject).ValueChanged?.Invoke();
         }
 
-        public object Key { get; set; }
+        public object Key
+        {
+            get => GetValue(KeyProperty);
+            set => SetValue(KeyProperty, value);
+        }
 
         public string Value
         {
@@ -31,6 +42,8 @@ namespace MaterialForms.Wpf.Resources
         object IProxy.Value => Value;
 
         public Action ValueChanged { get; set; }
+
+        public override string ToString() => Value;
 
         protected override Freezable CreateInstanceCore()
         {

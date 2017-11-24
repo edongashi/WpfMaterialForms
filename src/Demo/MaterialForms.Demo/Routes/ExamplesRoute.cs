@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Material.Application.Infrastructure;
-using Material.Application.Models;
 using Material.Application.Routing;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Demo.Models;
@@ -56,6 +55,10 @@ namespace MaterialForms.Demo.Routes
             yield return new ExamplePresenter(new Settings(), "Settings", large);
 
             yield return new ExamplePresenter(new User(), "User", large);
+
+            yield return new ExamplePresenter(new Selection(), "Selection", large);
+
+            yield return new ExamplePresenter(new FoodSelection(), "Food Selection", large);
 
             yield return new ExamplePresenter(new Alert
             {

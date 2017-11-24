@@ -20,6 +20,7 @@ namespace MaterialForms.Wpf.Fields
 
         protected internal override void Freeze()
         {
+            const string isNotReadOnly = "IsNotReadOnly";
             base.Freeze();
             if (CreateBinding)
             {
@@ -38,6 +39,19 @@ namespace MaterialForms.Wpf.Fields
             }
 
             Resources.Add(nameof(IsReadOnly), IsReadOnly ?? LiteralValue.False);
+            if (IsReadOnly == null)
+            {
+                Resources.Add(isNotReadOnly, LiteralValue.True);
+            }
+            else if (IsReadOnly is LiteralValue literal)
+            {
+                Resources.Add(isNotReadOnly, new LiteralValue(literal.Value is false));
+            }
+            else
+            {
+                Resources.Add(isNotReadOnly, IsReadOnly.Wrap("Negate"));
+            }
+
             Resources.Add(nameof(DefaultValue), DefaultValue ?? new LiteralValue(null));
             Resources.Add(nameof(SelectOnFocus), SelectOnFocus ?? LiteralValue.True);
         }

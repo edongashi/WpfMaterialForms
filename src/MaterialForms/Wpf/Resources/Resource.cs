@@ -16,6 +16,7 @@ namespace MaterialForms.Wpf.Resources
                 ["IsNull"] = new IsNullConverter(),
                 ["IsNotNull"] = new IsNotNullConverter(),
                 ["AsBool"] = new AsBoolConverter(),
+                ["Negate"] = new NegateConverter(),
                 ["IsEmpty"] = new IsEmptyConverter(),
                 ["IsNotEmpty"] = new IsNotEmptyConverter(),
                 ["ToUpper"] = new ToUpperConverter(),

@@ -44,15 +44,28 @@ namespace MaterialForms.Wpf.Resources
 
         public static StringProxy GetStringValue(this IValueProvider valueProvider, IResourceContext context)
         {
+            return GetStringValue(valueProvider, context, false);
+        }
+
+        public static StringProxy GetStringValue(this IValueProvider valueProvider, IResourceContext context, bool setKey)
+        {
             var proxy = new StringProxy();
             var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
             {
                 BindingOperations.SetBinding(proxy, StringProxy.ValueProperty, binding);
+                if (setKey)
+                {
+                    BindingOperations.SetBinding(proxy, StringProxy.KeyProperty, binding);
+                }
             }
             else
             {
                 proxy.Value = value?.ToString();
+                if (setKey)
+                {
+                    proxy.Key = value;
+                }
             }
 
             return proxy;
@@ -76,8 +89,8 @@ namespace MaterialForms.Wpf.Resources
 
         public static IValueProvider Wrap(this IValueProvider valueProvider, string valueConverter)
         {
-            return valueConverter == null 
-                ? valueProvider 
+            return valueConverter == null
+                ? valueProvider
                 : new ValueProviderWrapper(valueProvider, valueConverter);
         }
 
@@ -98,8 +111,8 @@ namespace MaterialForms.Wpf.Resources
                 if (bindingBase is Binding binding)
                 {
                     var converter = Resource.GetValueConverter(context, valueConverter);
-                    binding.Converter = binding.Converter == null 
-                        ? converter 
+                    binding.Converter = binding.Converter == null
+                        ? converter
                         : new ConverterWrapper(converter, binding.Converter);
                 }
 
