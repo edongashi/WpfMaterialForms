@@ -165,6 +165,7 @@
         <Setter Property="Template" Value="{StaticResource MaterialComboBoxSelectionPresenterTemplate}" />
         <Style.Triggers>
             <DataTrigger Binding="{fields:FormBinding SelectionType}" Value="{x:Static annotations:SelectionType.RadioButtons}">
+                <Setter Property="Margin" Value="8" />
                 <Setter Property="Template" Value="{StaticResource MaterialRadioButtonsSelectionPresenterTemplate}" />
             </DataTrigger>
             <DataTrigger Binding="{fields:FormBinding SelectionType}" Value="{x:Static annotations:SelectionType.ComboBoxEditable}">
