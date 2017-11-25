@@ -28,7 +28,7 @@ namespace MaterialForms.Demo.Models
     public class Selection
     {
         [SelectFrom(typeof(Gender), SelectionType = SelectionType.RadioButtons)]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [SelectFrom(typeof(AgeGroup))]
         public AgeGroup AgeGroup { get; set; }

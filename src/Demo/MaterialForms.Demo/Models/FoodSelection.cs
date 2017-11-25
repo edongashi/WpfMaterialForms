@@ -11,6 +11,7 @@ namespace MaterialForms.Demo.Models
         private string thirdFood = "Salad";
         private string yourFavoriteFood;
 
+        [Field(DefaultValue = "Pizza")]
         [Value(Must.NotBeEmpty)]
         public string FirstFood
         {
@@ -22,6 +23,7 @@ namespace MaterialForms.Demo.Models
             }
         }
 
+        [Field(DefaultValue = "Steak")]
         [Value(Must.NotBeEmpty)]
         public string SecondFood
         {
@@ -33,6 +35,7 @@ namespace MaterialForms.Demo.Models
             }
         }
 
+        [Field(DefaultValue = "Salad")]
         [Value(Must.NotBeEmpty)]
         public string ThirdFood
         {
