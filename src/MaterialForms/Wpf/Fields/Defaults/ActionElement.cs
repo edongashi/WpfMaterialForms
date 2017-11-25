@@ -94,11 +94,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 var frameworkElement = fwContext.GetOwningElement();
                 if (frameworkElement != null && frameworkElement.CheckAccess())
                 {
-                    var dialogHost = GetVisualAncestry(frameworkElement).OfType<DialogHost>().FirstOrDefault();
-                    if (dialogHost != null)
-                    {
-                        dialogHost.IsOpen = false;
-                    }
+                    DialogHost.CloseDialogCommand.Execute(arg, frameworkElement);
                 }
             }
 
