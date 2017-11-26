@@ -72,6 +72,9 @@ The dialogs and windows are generated dynamically from data schemas. The API is 
 Check out MaterialForms.WpfDemo for easy to follow examples.
 
 ## Examples
+
+*[If you're looking for the Old documentation click here](https://github.com/redbaty/WpfMaterialForms/blob/master/OLDDOCS.md)*
+
 Use attributes to describe how controls should be rendered like this
 
 ```csharp
