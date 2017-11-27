@@ -15,7 +15,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style BasedOn="{StaticResource MaterialStringPresenterStyle}" TargetType="{x:Type defaults:StringPresenter}" />
-    <Style BasedOn="{StaticResource MaterialDatePickerPresenterStyle}" TargetType="{x:Type defaults:DateTimePresenter}" />
     <Style BasedOn="{StaticResource MaterialConvertedPresenterStyle}" TargetType="{x:Type defaults:ConvertedPresenter}" />
     <Style BasedOn="{StaticResource MaterialCheckBoxPresenterStyle}" TargetType="{x:Type defaults:CheckBoxPresenter}" />
     <Style BasedOn="{StaticResource MaterialSwitchPresenterStyle}" TargetType="{x:Type defaults:SwitchPresenter}" />
@@ -26,5 +25,7 @@
     <Style BasedOn="{StaticResource MaterialTextPresenterStyle}" TargetType="{x:Type defaults:TextPresenter}" />
 
     <Style BasedOn="{StaticResource MaterialActionPresenterStyle}" TargetType="{x:Type defaults:ActionPresenter}" />
+
+    <Style BasedOn="{StaticResource MaterialDatePickerPresenterStyle}" TargetType="{x:Type defaults:DateTimePresenter}" />
 
 </ResourceDictionary>

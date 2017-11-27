@@ -89,8 +89,8 @@ namespace MaterialForms.Wpf.FormBuilding
                 [typeof(string)] = AsList(new StringFieldBuilder()),
 
                 // Temporarily converted.
-                [typeof(DateTime)] = AsList(new DateTimeFieldBuilder(Deserializers.DateTime)),
-                [typeof(DateTime?)] = AsList(new DateTimeFieldBuilder(Deserializers.NullableDateTime)),
+                [typeof(DateTime)] = AsList(new DateTimeFieldBuilder()),
+                [typeof(DateTime?)] = AsList(new DateTimeFieldBuilder()),
 
                 // Boolean
                 [typeof(bool)] = AsList(new BooleanFieldBuilder()),

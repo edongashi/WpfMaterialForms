@@ -11,11 +11,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
         }
 
-        protected internal override void Freeze()
-        {
-            base.Freeze();
-        }
-
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
             return new DateTimePresenter(context, Resources, formResources);
