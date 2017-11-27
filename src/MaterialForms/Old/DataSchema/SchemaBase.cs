@@ -10,24 +10,23 @@ using MaterialForms.Annotations;
 namespace MaterialForms
 {
     /// <summary>
-    /// Base class for all schemas. Custom data types and controls can be implemented by extending this class.
+    ///     Base class for all schemas. Custom data types and controls can be implemented by extending this class.
     /// </summary>
     public abstract class SchemaBase : IViewProvider, INotifyDataErrorInfo
     {
-        public static implicit operator MaterialForm(SchemaBase schema) => new MaterialForm(schema);
-
-        private string key;
         private string description;
-        private string name;
         private PackIconKind iconKind;
         private Visibility iconVisibility = Visibility.Collapsed;
 
+        private string key;
+        private string name;
+
         /// <summary>
-        /// Gets or sets the key that identifies the value in the form. Does not appear in the UI.
+        ///     Gets or sets the key that identifies the value in the form. Does not appear in the UI.
         /// </summary>
         public string Key
         {
-            get { return key; }
+            get => key;
             set
             {
                 if (value == key) return;
@@ -37,11 +36,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the display name of the schema, usually appearing as a control hint or label.
+        ///     Gets or sets the display name of the schema, usually appearing as a control hint or label.
         /// </summary>
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (value == name) return;
@@ -51,11 +50,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the description of the schema, usually appearing as a tooltip on mouse over.
+        ///     Gets or sets the description of the schema, usually appearing as a tooltip on mouse over.
         /// </summary>
         public string Description
         {
-            get { return description; }
+            get => description;
             set
             {
                 if (value == description) return;
@@ -66,7 +65,7 @@ namespace MaterialForms
 
         public Visibility IconVisibility
         {
-            get { return iconVisibility; }
+            get => iconVisibility;
             set
             {
                 if (value == iconVisibility) return;
@@ -74,13 +73,13 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
-        
+
         /// <summary>
-        /// Gets or sets the icon type shown in the control. Some controls do not display icons.
+        ///     Gets or sets the icon type shown in the control. Some controls do not display icons.
         /// </summary>
         public PackIconKind IconKind
         {
-            get { return iconKind; }
+            get => iconKind;
             set
             {
                 IconVisibility = Visibility.Visible;
@@ -90,15 +89,22 @@ namespace MaterialForms
             }
         }
 
+        public abstract bool HoldsValue { get; }
+
         public UserControl View => CreateView();
+
+        public static implicit operator MaterialForm(SchemaBase schema)
+        {
+            return new MaterialForm(schema);
+        }
 
         public abstract UserControl CreateView();
 
-        public abstract bool HoldsValue { get; }
-
         public abstract object GetValue();
 
-        public virtual void SetValue(object obj) { }
+        public virtual void SetValue(object obj)
+        {
+        }
 
         #region INotifyPropertyChanged
 
@@ -109,9 +115,7 @@ namespace MaterialForms
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             if (ValidatesOnValueChanged && propertyName == "Value")
-            {
                 Validate();
-            }
         }
 
         #endregion
@@ -131,13 +135,9 @@ namespace MaterialForms
             var isValid = OnValidation();
             HasErrors = !isValid;
             if (!isValid)
-            {
                 OnErrorsChanged("Value");
-            }
             else
-            {
                 Error = null;
-            }
 
             return isValid;
         }
@@ -149,7 +149,10 @@ namespace MaterialForms
             OnErrorsChanged("Value");
         }
 
-        public bool IsValid() => OnValidation();
+        public bool IsValid()
+        {
+            return OnValidation();
+        }
 
         protected virtual bool OnValidation()
         {
@@ -158,7 +161,7 @@ namespace MaterialForms
 
         public virtual IEnumerable GetErrors(string propertyName)
         {
-            return propertyName == "Value" ? new[] { Error } : null;
+            return propertyName == "Value" ? new[] {Error} : null;
         }
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;

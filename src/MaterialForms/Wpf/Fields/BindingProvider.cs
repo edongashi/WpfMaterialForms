@@ -7,7 +7,7 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Fields
 {
     /// <summary>
-    /// Default implementation of <see cref="IBindingProvider"/>.
+    ///     Default implementation of <see cref="IBindingProvider" />.
     /// </summary>
     public abstract class BindingProvider : Control, IBindingProvider
     {
@@ -28,27 +28,27 @@ namespace MaterialForms.Wpf.Fields
         }
 
         /// <summary>
-        /// Gets the context associated with the form control.
+        ///     Gets the context associated with the form control.
         /// </summary>
         public IResourceContext Context { get; }
 
         /// <summary>
-        /// Gets the field resources identified by name.
+        ///     Gets the field resources identified by name.
         /// </summary>
         public IDictionary<string, IValueProvider> FieldResources { get; }
 
         /// <summary>
-        /// Gets the form resources identified by name.
+        ///     Gets the form resources identified by name.
         /// </summary>
         public IDictionary<string, IValueProvider> FormResources { get; }
 
         /// <summary>
-        /// Gets whether this object will throw when a resource is not found.
+        ///     Gets whether this object will throw when a resource is not found.
         /// </summary>
         public bool ThrowOnNotFound { get; }
 
         /// <summary>
-        /// Returns a <see cref="BindingProxy"/> bound to the value returned by <see cref="ProvideValue"/>.
+        ///     Returns a <see cref="BindingProxy" /> bound to the value returned by <see cref="ProvideValue" />.
         /// </summary>
         /// <param name="name">Resource name. This is not the object property name.</param>
         /// <returns></returns>
@@ -57,47 +57,35 @@ namespace MaterialForms.Wpf.Fields
             get
             {
                 if (proxyCache.TryGetValue(name, out var proxy))
-                {
                     return proxy;
-                }
 
                 proxy = new BindingProxy();
                 proxyCache[name] = proxy;
                 var value = ProvideValue(name);
                 if (value is BindingBase binding)
-                {
                     BindingOperations.SetBinding(proxy, BindingProxy.ValueProperty, binding);
-                }
                 else
-                {
                     proxy.Value = value;
-                }
 
                 return proxy;
             }
         }
 
         /// <summary>
-        /// Resolves the value for the specified resource.
-        /// The result may be a <see cref="BindingBase"/> or a literal value.
+        ///     Resolves the value for the specified resource.
+        ///     The result may be a <see cref="BindingBase" /> or a literal value.
         /// </summary>
         /// <param name="name">Resource name. This is not the object property name.</param>
         public virtual object ProvideValue(string name)
         {
             if (FieldResources.TryGetValue(name, out var resource))
-            {
                 return resource.ProvideValue(Context);
-            }
 
             if (FormResources.TryGetValue(name, out resource))
-            {
                 return resource.ProvideValue(Context);
-            }
 
             if (ThrowOnNotFound)
-            {
                 throw new InvalidOperationException($"Resource {name} not found.");
-            }
 
             return null;
         }

@@ -21,7 +21,8 @@ namespace MaterialForms.Wpf.Validation
                 return new ValidationResult(false, error);
             }
 
-            return ValidationResult.ValidResult; ;
+            return ValidationResult.ValidResult;
+            ;
         }
     }
 }

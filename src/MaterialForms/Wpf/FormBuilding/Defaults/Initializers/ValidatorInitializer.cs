@@ -17,24 +17,19 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
         public void Initialize(FormElement element, IFormProperty property, Func<string, object> deserializer)
         {
             if (!(element is DataFormField dataField))
-            {
                 return;
-            }
 
             var attributes = property.GetCustomAttributes<ValueAttribute>().ToArray();
             if (attributes.Length == 0)
-            {
                 return;
-            }
 
             var modelType = property.DeclaringType;
             foreach (var attr in attributes)
-            {
                 dataField.Validators.Add(CreateValidator(modelType, dataField.Key, attr, deserializer));
-            }
         }
 
-        private static IValidatorProvider CreateValidator(Type modelType, string propertyKey, ValueAttribute attribute, Func<string, object> deserializer)
+        private static IValidatorProvider CreateValidator(Type modelType, string propertyKey, ValueAttribute attribute,
+            Func<string, object> deserializer)
         {
             Func<IResourceContext, IProxy> argumentProvider;
             var argument = attribute.Argument;
@@ -57,11 +52,10 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                     argumentProvider = context =>
                     {
                         var value = getString
-                            ? (IProxy)boundExpression.GetStringValue(context)
+                            ? (IProxy) boundExpression.GetStringValue(context)
                             : boundExpression.GetValue(context);
 
                         if (notify)
-                        {
                             value.ValueChanged = () =>
                             {
                                 object model;
@@ -89,15 +83,10 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                                 }
 
                                 if (action == ValidationAction.ValidateField)
-                                {
                                     ModelState.Validate(model, propertyKey);
-                                }
                                 else
-                                {
                                     ModelState.ClearValidationErrors(model, propertyKey);
-                                }
                             };
-                        }
 
                         return value;
                     };
@@ -113,9 +102,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             {
                 var key = new BindingProxyKey(propertyKey);
                 if (context.TryFindResource(key) is BindingProxy proxy)
-                {
                     return proxy;
-                }
 
                 proxy = new BindingProxy();
                 context.AddResource(key, proxy);
@@ -131,10 +118,8 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 case string expr:
                     var boundExpression = BoundExpression.Parse(expr);
                     if (!boundExpression.IsSingleResource)
-                    {
                         throw new ArgumentException(
                             "The provided value must be a bound resource or a literal bool value.", nameof(attribute));
-                    }
 
                     isEnforcedProvider = context => boundExpression.GetBoolValue(context);
                     break;
@@ -149,7 +134,6 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             Func<IResourceContext, IErrorStringProvider> errorProvider;
             var message = attribute.Message;
             if (message == null)
-            {
                 switch (attribute.Condition)
                 {
                     case Must.BeGreaterThan:
@@ -174,7 +158,6 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                         message = "@Invalid value.";
                         break;
                 }
-            }
 
             {
                 var func = new Func<IResourceContext, IProxy>(ValueProvider);
@@ -193,16 +176,12 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 {
                     if (boundExpression.Resources.Any(
                         res => res is DeferredProxyResource resource && resource.ProxyProvider == func))
-                    {
                         errorProvider =
                             context => new ValueErrorStringProvider(boundExpression.GetStringValue(context),
                                 ValueProvider(context));
-                    }
                     else
-                    {
                         errorProvider =
                             context => new ErrorStringProvider(boundExpression.GetStringValue(context));
-                    }
                 }
             }
 
@@ -212,9 +191,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             {
                 IValueConverter converter = null;
                 if (converterName != null)
-                {
                     converter = Resource.GetValueConverter(context, converterName);
-                }
 
                 return converter;
             }
@@ -228,23 +205,28 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotBeEqualTo:
-                    return new ValidatorProvider((context, pipe) => new NotEqualsValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new NotEqualsValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeGreaterThan:
-                    return new ValidatorProvider((context, pipe) => new GreaterThanValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new GreaterThanValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeGreaterThanOrEqualTo:
-                    return new ValidatorProvider((context, pipe) => new GreaterThanEqualValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new GreaterThanEqualValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeLessThan:
-                    return new ValidatorProvider((context, pipe) => new LessThanValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new LessThanValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeLessThanOrEqualTo:
-                    return new ValidatorProvider((context, pipe) => new LessThanEqualValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new LessThanEqualValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.BeEmpty:
@@ -272,35 +254,43 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                         isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.ExistIn:
-                    return new ValidatorProvider((context, pipe) => new ExistsInValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new ExistsInValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotExistIn:
-                    return new ValidatorProvider((context, pipe) => new NotExistsInValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new NotExistsInValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.MatchPattern:
-                    return new ValidatorProvider((context, pipe) => new MatchPatternValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new MatchPatternValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.NotMatchPattern:
-                    return new ValidatorProvider((context, pipe) => new NotMatchPatternValidator(pipe, argumentProvider(context),
+                    return new ValidatorProvider((context, pipe) => new NotMatchPatternValidator(pipe,
+                        argumentProvider(context),
                         errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
                         validateOnTargetUpdated));
                 case Must.SatisfyContextMethod:
                     var methodName = GetMethodName(attribute.Argument, propertyKey);
                     var propertyName = propertyKey;
                     return new ValidatorProvider(
-                        (context, pipe) => new MethodInvocationValidator(pipe, GetContextMethodValidator(propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
+                        (context, pipe) => new MethodInvocationValidator(pipe,
+                            GetContextMethodValidator(propertyName, methodName, context),
+                            errorProvider(context), isEnforcedProvider(context), GetConverter(context),
+                            strictValidation,
                             validateOnTargetUpdated));
                 case Must.SatisfyMethod:
                     var type = modelType;
                     methodName = GetMethodName(attribute.Argument, propertyKey);
                     propertyName = propertyKey;
                     return new ValidatorProvider(
-                        (context, pipe) => new MethodInvocationValidator(pipe, GetModelMethodValidator(type, propertyName, methodName, context),
-                            errorProvider(context), isEnforcedProvider(context), GetConverter(context), strictValidation,
+                        (context, pipe) => new MethodInvocationValidator(pipe,
+                            GetModelMethodValidator(type, propertyName, methodName, context),
+                            errorProvider(context), isEnforcedProvider(context), GetConverter(context),
+                            strictValidation,
                             validateOnTargetUpdated));
                 default:
                     throw new ArgumentException($"Invalid validator condition for property {propertyKey}.",
@@ -311,23 +301,20 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
         private static string GetMethodName(object argument, string propertyKey)
         {
             if (argument is string methodName && !string.IsNullOrWhiteSpace(methodName))
-            {
                 return methodName;
-            }
 
             throw new InvalidOperationException(
                 $"Validator for property {propertyKey} does not specify a valid method name. Value must be a nonempty string.");
         }
 
         // Called on binding -> not performance critical.
-        private static Func<object, CultureInfo, bool, bool> GetModelMethodValidator(Type modelType, string propertyName, string methodName, IResourceContext context)
+        private static Func<object, CultureInfo, bool, bool> GetModelMethodValidator(Type modelType,
+            string propertyName, string methodName, IResourceContext context)
         {
             var method = GetMethod(modelType, methodName);
             if (method == null)
-            {
                 throw new InvalidOperationException(
                     $"Type hierarchy of {modelType.FullName} does not include a static method named {methodName}.");
-            }
 
             // Called on validation -> performance critical.
             bool Validate(object value, CultureInfo cultureInfo, bool strictValidation)
@@ -345,7 +332,8 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
         }
 
         // Called on binding = not performance critical.
-        private static Func<object, CultureInfo, bool, bool> GetContextMethodValidator(string propertyName, string methodName, IResourceContext context)
+        private static Func<object, CultureInfo, bool, bool> GetContextMethodValidator(string propertyName,
+            string methodName, IResourceContext context)
         {
             Type currentType = null;
             Func<ValidationContext, bool> method = null;
@@ -363,9 +351,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 }
 
                 if (method == null)
-                {
                     return true;
-                }
 
                 return method(new ValidationContext(
                     context.GetModelInstance(),
@@ -382,23 +368,18 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
         private static Func<ValidationContext, bool> GetMethod(Type type, string methodName)
         {
             var delegateType = typeof(Func<ValidationContext, bool>);
+
             bool IsMatch(MethodInfo methodInfo)
             {
                 if (methodInfo.Name != methodName)
-                {
                     return false;
-                }
 
                 if (methodInfo.ReturnType != typeof(bool))
-                {
                     return false;
-                }
 
                 var parameters = methodInfo.GetParameters();
                 if (parameters.Length != 1)
-                {
                     return false;
-                }
 
                 return parameters[0].ParameterType == typeof(ValidationContext);
             }
@@ -408,13 +389,11 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
                 .FirstOrDefault(IsMatch);
 
             if (method == null)
-            {
                 return null;
-            }
 
             try
             {
-                return (Func<ValidationContext, bool>)Delegate.CreateDelegate(delegateType, method);
+                return (Func<ValidationContext, bool>) Delegate.CreateDelegate(delegateType, method);
             }
             catch
             {

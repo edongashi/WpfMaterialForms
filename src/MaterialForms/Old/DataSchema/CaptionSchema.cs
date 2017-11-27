@@ -5,13 +5,16 @@ namespace MaterialForms
 {
     public class CaptionSchema : SchemaBase
     {
-        public override UserControl CreateView()
-        {
-            return new CaptionControl { DataContext = this };
-        }
-
         public override bool HoldsValue => false;
 
-        public override object GetValue() => null;
+        public override UserControl CreateView()
+        {
+            return new CaptionControl {DataContext = this};
+        }
+
+        public override object GetValue()
+        {
+            return null;
+        }
     }
 }

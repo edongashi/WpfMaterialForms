@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialForms.Wpf.Fields;
-using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Resources.ValueConverters;
@@ -41,23 +39,23 @@ namespace MaterialForms.Wpf.Controls
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
 
+        internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
+
+        private readonly List<FrameworkElement> currentElements;
+        internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
+        internal readonly Dictionary<string, DataFormField> DataFields;
+
+        internal readonly IResourceContext ResourceContext;
+        private double[] columns;
+
+        private Grid itemsGrid;
+        private int rows;
+
         static DynamicForm()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
                 new FrameworkPropertyMetadata(typeof(DynamicForm)));
         }
-
-        internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
-
-        internal readonly IResourceContext ResourceContext;
-
-        private readonly List<FrameworkElement> currentElements;
-        internal readonly Dictionary<string, DataFormField> DataFields;
-        internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
-        private double[] columns;
-        private int rows;
-
-        private Grid itemsGrid;
 
         public DynamicForm()
         {
@@ -80,7 +78,7 @@ namespace MaterialForms.Wpf.Controls
         }
 
         /// <summary>
-        /// Gets or sets the form builder that is responsible for building forms.
+        ///     Gets or sets the form builder that is responsible for building forms.
         /// </summary>
         public IFormBuilder FormBuilder
         {
@@ -89,18 +87,17 @@ namespace MaterialForms.Wpf.Controls
         }
 
         /// <summary>
-        /// Gets or sets the model associated with this form.
-        /// If the value is a IFormDefinition, a form will be built based on that definition.
-        /// If the value is a Type, a form will be built and bound to a new instance of that type.
-        /// If the value is a simple object, a single field bound to this property will be displayed.
-        /// If the value is a complex object, a form will be built and bound to properties of that instance.
+        ///     Gets or sets the model associated with this form.
+        ///     If the value is a IFormDefinition, a form will be built based on that definition.
+        ///     If the value is a Type, a form will be built and bound to a new instance of that type.
+        ///     If the value is a simple object, a single field bound to this property will be displayed.
+        ///     If the value is a complex object, a form will be built and bound to properties of that instance.
         /// </summary>
         /// <remarks>
-        /// Setting the value to a form definition that may eventually
-        /// create a direct model binding might cause unexpected behavior.
-        /// 
-        /// Because there is no way to know if a boxed value type is nullable,
-        /// binding this value to a boxed nullable primitive will treat it as non-nullable.
+        ///     Setting the value to a form definition that may eventually
+        ///     create a direct model binding might cause unexpected behavior.
+        ///     Because there is no way to know if a boxed value type is nullable,
+        ///     binding this value to a boxed nullable primitive will treat it as non-nullable.
         /// </remarks>
         public object Model
         {
@@ -109,14 +106,14 @@ namespace MaterialForms.Wpf.Controls
         }
 
         /// <summary>
-        /// Gets the value of the current model instance.
+        ///     Gets the value of the current model instance.
         /// </summary>
         public object Value => GetValue(ValueProperty);
 
         /// <summary>
-        /// Gets or sets the context associated with this form.
-        /// Models can utilize this property to get data from
-        /// outside of their instance scope.
+        ///     Gets or sets the context associated with this form.
+        ///     Models can utilize this property to get data from
+        ///     outside of their instance scope.
         /// </summary>
         public object Context
         {
@@ -143,14 +140,10 @@ namespace MaterialForms.Wpf.Controls
         private void UpdateModel(object oldModel, object newModel)
         {
             if (Equals(oldModel, newModel))
-            {
                 return;
-            }
 
             if (Equals(Value, newModel))
-            {
                 return;
-            }
 
             if (newModel == null)
             {
@@ -214,9 +207,7 @@ namespace MaterialForms.Wpf.Controls
         {
             ClearForm();
             if (formDefinition == null)
-            {
                 return;
-            }
 
             rows = formDefinition.FormRows.Count;
             columns = formDefinition.Grid;
@@ -231,9 +222,7 @@ namespace MaterialForms.Wpf.Controls
                 {
                     var elements = container.Elements;
                     if (elements.Count == 0)
-                    {
                         continue;
-                    }
 
                     if (elements.Count > 1)
                     {
@@ -262,9 +251,7 @@ namespace MaterialForms.Wpf.Controls
                 }
 
                 if (row.StartsNewRow)
-                {
                     rowPointer++;
-                }
             }
 
             FillGrid();
@@ -297,9 +284,7 @@ namespace MaterialForms.Wpf.Controls
                     break;
                 case BindingBase bindingBase:
                     if (bindingBase is Binding binding)
-                    {
                         binding.Converter = new BoolOrVisibilityConverter(binding.Converter);
-                    }
 
                     BindingOperations.SetBinding(contentPresenter, VisibilityProperty, bindingBase);
                     break;
@@ -311,32 +296,24 @@ namespace MaterialForms.Wpf.Controls
         private void FillGrid()
         {
             if (itemsGrid == null)
-            {
                 return;
-            }
 
             itemsGrid.Children.Clear();
             itemsGrid.RowDefinitions.Clear();
             itemsGrid.ColumnDefinitions.Clear();
             for (var i = 0; i < rows; i++)
-            {
                 itemsGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
-            }
 
             foreach (var column in columns)
-            {
                 itemsGrid.ColumnDefinitions.Add(new ColumnDefinition
                 {
                     Width = column > 0d
                         ? new GridLength(column, GridUnitType.Star)
                         : new GridLength(-column, GridUnitType.Pixel)
                 });
-            }
 
             foreach (var content in currentElements)
-            {
                 itemsGrid.Children.Add(content);
-            }
         }
 
         private void ClearForm()
@@ -346,22 +323,18 @@ namespace MaterialForms.Wpf.Controls
             var resources = Resources;
             var keys = resources.Keys;
             foreach (var key in keys)
-            {
                 if (key is DynamicResourceKey || key is BindingProxyKey)
                 {
                     var proxy = (BindingProxy) resources[key];
                     proxy.Value = null;
                     resources.Remove(key);
                 }
-            }
         }
 
         private void DetachBindings()
         {
             foreach (var provider in DataBindingProviders.Values)
-            {
                 provider.ClearBindings();
-            }
         }
     }
 }

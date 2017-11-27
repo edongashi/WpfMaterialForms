@@ -31,13 +31,9 @@ namespace MaterialForms.Wpf.Resources
             var proxy = new BindingProxy();
             var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
-            {
                 BindingOperations.SetBinding(proxy, BindingProxy.ValueProperty, binding);
-            }
             else
-            {
                 proxy.Value = value;
-            }
 
             return proxy;
         }
@@ -47,7 +43,8 @@ namespace MaterialForms.Wpf.Resources
             return GetStringValue(valueProvider, context, false);
         }
 
-        public static StringProxy GetStringValue(this IValueProvider valueProvider, IResourceContext context, bool setKey)
+        public static StringProxy GetStringValue(this IValueProvider valueProvider, IResourceContext context,
+            bool setKey)
         {
             var proxy = new StringProxy();
             var value = valueProvider.ProvideValue(context);
@@ -55,17 +52,13 @@ namespace MaterialForms.Wpf.Resources
             {
                 BindingOperations.SetBinding(proxy, StringProxy.ValueProperty, binding);
                 if (setKey)
-                {
                     BindingOperations.SetBinding(proxy, StringProxy.KeyProperty, binding);
-                }
             }
             else
             {
                 proxy.Value = value?.ToString();
                 if (setKey)
-                {
                     proxy.Key = value;
-                }
             }
 
             return proxy;
@@ -76,13 +69,9 @@ namespace MaterialForms.Wpf.Resources
             var proxy = new BoolProxy();
             var value = valueProvider.ProvideValue(context);
             if (value is BindingBase binding)
-            {
                 BindingOperations.SetBinding(proxy, BoolProxy.ValueProperty, binding);
-            }
             else
-            {
                 proxy.Value = value is bool b && b;
-            }
 
             return proxy;
         }
@@ -132,9 +121,7 @@ namespace MaterialForms.Wpf.Resources
                 }
 
                 if (value is BindingBase)
-                {
                     return value;
-                }
 
                 return converter.Convert(value, typeof(object), null, CultureInfo.CurrentCulture);
             }

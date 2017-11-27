@@ -1,5 +1,4 @@
-﻿
-namespace MaterialForms.Wpf
+﻿namespace MaterialForms.Wpf
 {
     public interface IActionHandler
     {

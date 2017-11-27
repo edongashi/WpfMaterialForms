@@ -3,7 +3,7 @@
 namespace MaterialForms.Extensions
 {
     /// <summary>
-    /// Helper extensions for object initialization.
+    ///     Helper extensions for object initialization.
     /// </summary>
     public static class InitializerExtensions
     {

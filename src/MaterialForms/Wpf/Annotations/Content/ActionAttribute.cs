@@ -28,43 +28,43 @@ namespace MaterialForms.Wpf.Annotations
         public bool IsCancel { get; set; }
 
         /// <summary>
-        /// Action identifier that is passed to handlers.
+        ///     Action identifier that is passed to handlers.
         /// </summary>
         public string ActionName { get; }
 
         /// <summary>
-        /// Action parameter. Accepts a dynamic expression.
+        ///     Action parameter. Accepts a dynamic expression.
         /// </summary>
         public object Parameter { get; set; }
 
         /// <summary>
-        /// Displayed content. Accepts a dynamic expression.
+        ///     Displayed content. Accepts a dynamic expression.
         /// </summary>
         public string Content { get; }
 
         /// <summary>
-        /// Determines whether this action can be performed.
-        /// Accepts a boolean or a dynamic resource.
+        ///     Determines whether this action can be performed.
+        ///     Accepts a boolean or a dynamic resource.
         /// </summary>
         public object IsEnabled { get; set; }
 
         /// <summary>
-        /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
+        ///     Displayed icon. Accepts a PackIconKind or a dynamic resource.
         /// </summary>
         public object Icon { get; set; }
 
         /// <summary>
-        /// Determines whether the model will be validated before the action is executed.
+        ///     Determines whether the model will be validated before the action is executed.
         /// </summary>
         public object Validates { get; set; }
 
         /// <summary>
-        /// Determines whether this action will close dialogs that host it.
+        ///     Determines whether this action will close dialogs that host it.
         /// </summary>
         public object ClosesDialog { get; set; }
 
         /// <summary>
-        /// Determines whether the model will be reset to default values before the action is executed.
+        ///     Determines whether the model will be reset to default values before the action is executed.
         /// </summary>
         public object IsReset { get; set; }
 

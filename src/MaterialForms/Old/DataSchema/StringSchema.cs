@@ -5,13 +5,13 @@ namespace MaterialForms
 {
     public class StringSchema : SchemaBase
     {
-        private string value;
         private bool isMultiLine;
         private bool isReadOnly;
+        private string value;
 
         public string Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -22,7 +22,7 @@ namespace MaterialForms
 
         public bool IsMultiLine
         {
-            get { return isMultiLine; }
+            get => isMultiLine;
             set
             {
                 if (value == isMultiLine) return;
@@ -34,7 +34,7 @@ namespace MaterialForms
 
         public bool IsReadOnly
         {
-            get { return isReadOnly; }
+            get => isReadOnly;
             set
             {
                 if (value == isReadOnly) return;
@@ -43,15 +43,17 @@ namespace MaterialForms
             }
         }
 
+        public override bool HoldsValue => true;
+
+        public ValidationCallback<string> Validation { get; set; }
+
         public override UserControl CreateView()
         {
             if (IsMultiLine)
-            {
                 return new MultiLineTextControl
                 {
                     DataContext = this
                 };
-            }
 
             return new SingleLineTextControl
             {
@@ -59,24 +61,21 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {
             Value = obj?.ToString();
         }
 
-        public ValidationCallback<string> Validation { get; set; }
-
         protected override bool OnValidation()
         {
             var callback = Validation;
             if (callback == null)
-            {
                 return true;
-            }
 
             Error = callback(value);
             return HasNoError;

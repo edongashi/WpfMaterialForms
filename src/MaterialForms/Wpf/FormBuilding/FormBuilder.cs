@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
-using MaterialForms.Wpf.Fields.Defaults;
 using MaterialForms.Wpf.FormBuilding.Defaults;
 using MaterialForms.Wpf.FormBuilding.Defaults.Initializers;
 using MaterialForms.Wpf.FormBuilding.Defaults.Properties;
@@ -20,12 +19,12 @@ namespace MaterialForms.Wpf.FormBuilding
     }
 
     /// <summary>
-    /// Configurable object responsible for creating form definitions from types.
+    ///     Configurable object responsible for creating form definitions from types.
     /// </summary>
     public class FormBuilder : IFormBuilder
     {
         /// <summary>
-        /// Default instance of <see cref="FormBuilder" />.
+        ///     Default instance of <see cref="FormBuilder" />.
         /// </summary>
         public static readonly FormBuilder Default = new FormBuilder();
 
@@ -122,7 +121,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 [typeof(ulong?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableUInt64)),
                 [typeof(float?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableSingle)),
                 [typeof(double?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableDouble)),
-                [typeof(decimal?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableDecimal)),
+                [typeof(decimal?)] = AsList(new ConvertedFieldBuilder(Deserializers.NullableDecimal))
             };
 
             FieldInitializers = new List<IFieldInitializer>
@@ -203,56 +202,50 @@ namespace MaterialForms.Wpf.FormBuilding
         }
 
         /// <summary>
-        /// Contains prebuilt definitions for primitive types.
-        /// Types stored here will bypass form generation process.
-        /// Initially, value types and strings are stored here.
+        ///     Contains prebuilt definitions for primitive types.
+        ///     Types stored here will bypass form generation process.
+        ///     Initially, value types and strings are stored here.
         /// </summary>
         public Dictionary<Type, IFormDefinition> Primitives { get; }
 
         /// <summary>
-        /// Gets the list of registered field builders which are queried first.
+        ///     Gets the list of registered field builders which are queried first.
         /// </summary>
         public List<IFieldBuilder> PropertyBuilders { get; }
 
         /// <summary>
-        /// Gets the mapping of types to respective field builders.
-        /// These are queried if no field builder from <see cref="PropertyBuilders" /> succeeds in creating an element.
+        ///     Gets the mapping of types to respective field builders.
+        ///     These are queried if no field builder from <see cref="PropertyBuilders" /> succeeds in creating an element.
         /// </summary>
         public Dictionary<Type, List<IFieldBuilder>> TypeBuilders { get; }
 
         public Dictionary<string, Type> TypeNames { get; }
 
         /// <summary>
-        /// Stores functions to parse string representations of types.
+        ///     Stores functions to parse string representations of types.
         /// </summary>
         public Dictionary<Type, Func<string, object>> TypeDeserializers { get; }
 
         public List<IFieldInitializer> FieldInitializers { get; }
 
         /// <summary>
-        /// Gets the <see cref="FormDefinition" /> for the provided type.
-        /// The cache is looked up first before generating the form.
+        ///     Gets the <see cref="FormDefinition" /> for the provided type.
+        ///     The cache is looked up first before generating the form.
         /// </summary>
         /// <remarks>
-        /// If current <see cref="FormBuilder" /> configuration has changed,
-        /// clearing the cache using <see cref="ClearCache" /> may be necessary.
+        ///     If current <see cref="FormBuilder" /> configuration has changed,
+        ///     clearing the cache using <see cref="ClearCache" /> may be necessary.
         /// </remarks>
         public IFormDefinition GetDefinition(Type type)
         {
             if (type == null)
-            {
                 throw new ArgumentNullException(nameof(type));
-            }
 
             if (Primitives.TryGetValue(type, out var primitiveForm))
-            {
                 return primitiveForm;
-            }
 
             if (cachedDefinitions.TryGetValue(type, out var formDefinition))
-            {
                 return formDefinition;
-            }
 
             formDefinition = BuildDefinition(type);
             cachedDefinitions[type] = formDefinition;
@@ -264,21 +257,20 @@ namespace MaterialForms.Wpf.FormBuilding
             var document = XDocument.Parse(xml);
             var root = document.Root;
             if (root == null)
-            {
                 throw new InvalidOperationException("Invalid XML document.");
-            }
 
             var form = new FormDefinition(null) // null indicates dynamic type
             {
-                Grid = Utilities.GetGridWidths(root.GetSingleOrDefaultAttribute("grid")?.Value) ?? new[] { 1d }
+                Grid = Utilities.GetGridWidths(root.GetSingleOrDefaultAttribute("grid")?.Value) ?? new[] {1d}
             };
 
             var gridLength = form.Grid.Length;
+
             void AddRow(FormElement formElement)
             {
                 form.FormRows.Add(new FormRow
                 {
-                    Elements = { new FormElementContainer(0, gridLength, formElement) }
+                    Elements = {new FormElementContainer(0, gridLength, formElement)}
                 });
             }
 
@@ -292,9 +284,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     case "input":
                         var typeName = element.GetSingleOrDefaultAttribute("type")?.Value ?? "string";
                         if (!TypeNames.TryGetValue(typeName, out var propertyType))
-                        {
                             throw new InvalidOperationException($"Type '{typeName}' not found.");
-                        }
 
                         var fieldName = element.GetSingleOrDefaultAttribute("name")?.Value;
                         var attributes = new List<Attribute>
@@ -311,9 +301,7 @@ namespace MaterialForms.Wpf.FormBuilding
                         {
                             AddRow(formElement);
                             foreach (var initializer in FieldInitializers)
-                            {
                                 initializer.Initialize(formElement, property, deserializer);
-                            }
                         }
 
                         break;
@@ -359,7 +347,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 {
                     form.FormRows.Add(new FormRow
                     {
-                        Elements = { new FormElementContainer(0, gridLength, actions.ToList()) }
+                        Elements = {new FormElementContainer(0, gridLength, actions.ToList())}
                     });
 
                     actions.Clear();
@@ -370,7 +358,7 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 form.FormRows.Add(new FormRow
                 {
-                    Elements = { new FormElementContainer(0, gridLength, actions.ToList()) }
+                    Elements = {new FormElementContainer(0, gridLength, actions.ToList())}
                 });
 
                 actions.Clear();
@@ -378,16 +366,14 @@ namespace MaterialForms.Wpf.FormBuilding
 
             form.Freeze();
             foreach (var element in form.FormRows.SelectMany(r => r.Elements).SelectMany(c => c.Elements))
-            {
                 element.Freeze();
-            }
 
             return form;
         }
 
         /// <summary>
-        /// Clears cached form definitions.
-        /// This may be necessary when current configuration has changed.
+        ///     Clears cached form definitions.
+        ///     This may be necessary when current configuration has changed.
         /// </summary>
         public void ClearCache()
         {
@@ -395,7 +381,7 @@ namespace MaterialForms.Wpf.FormBuilding
         }
 
         /// <summary>
-        /// Removes a single type from the form definition cache.
+        ///     Removes a single type from the form definition cache.
         /// </summary>
         public bool ClearCached<T>()
         {
@@ -407,46 +393,36 @@ namespace MaterialForms.Wpf.FormBuilding
             // Only classes are allowed.
             // Primitives should be retrieved from prebuilt definitions.
             if (!type.IsClass || typeof(MulticastDelegate).IsAssignableFrom(type.BaseType))
-            {
                 return null;
-            }
 
             var formDefinition = new FormDefinition(type);
             var mode = DefaultFields.AllExcludingReadonly;
-            var grid = new[] { 1d };
+            var grid = new[] {1d};
             var beforeFormContent = new List<(FormContentAttribute attr, FormElement element)>();
             var afterFormContent = new List<(FormContentAttribute attr, FormElement element)>();
             foreach (var attribute in type.GetCustomAttributes())
-            {
                 switch (attribute)
                 {
                     case ResourceAttribute resource:
                         formDefinition.Resources.Add(resource.Name, resource.Value is string expr
-                            ? (IValueProvider)BoundExpression.Parse(expr)
+                            ? (IValueProvider) BoundExpression.Parse(expr)
                             : new LiteralValue(resource.Value));
                         break;
                     case FormAttribute form:
                         mode = form.Mode;
                         grid = form.Grid;
                         if (grid == null || grid.Length < 1)
-                        {
-                            grid = new[] { 1d };
-                        }
+                            grid = new[] {1d};
 
                         break;
                     case FormContentAttribute contentAttribute:
                         if (contentAttribute.InsertAfter)
-                        {
                             afterFormContent.Add((contentAttribute, contentAttribute.GetElement()));
-                        }
                         else
-                        {
                             beforeFormContent.Add((contentAttribute, contentAttribute.GetElement()));
-                        }
 
                         break;
                 }
-            }
 
             beforeFormContent.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
             afterFormContent.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
@@ -468,16 +444,11 @@ namespace MaterialForms.Wpf.FormBuilding
                 var element = Build(property, deserializer);
 
                 if (element == null)
-                {
-                    // Unhandled properties are ignored.
                     continue;
-                }
 
                 // Pass three - initialize elements.
                 foreach (var initializer in FieldInitializers)
-                {
                     initializer.Initialize(element, property, deserializer);
-                }
 
                 var wrapper = new ElementWrapper(element, property);
                 // Set layout.
@@ -513,9 +484,7 @@ namespace MaterialForms.Wpf.FormBuilding
                 {
                     var property = element.Property;
                     foreach (var attr in property.GetCustomAttributes<FormContentAttribute>())
-                    {
                         (attr.InsertAfter ? after : before).Add((attr, attr.GetElement()));
-                    }
                 }
 
                 before.Sort((a, b) => a.attr.Position.CompareTo(b.attr.Position));
@@ -542,9 +511,7 @@ namespace MaterialForms.Wpf.FormBuilding
             formDefinition.FormRows = rows;
             formDefinition.Freeze();
             foreach (var element in formDefinition.FormRows.SelectMany(r => r.Elements).SelectMany(c => c.Elements))
-            {
                 element.Freeze();
-            }
 
             return formDefinition;
         }
@@ -553,15 +520,13 @@ namespace MaterialForms.Wpf.FormBuilding
         {
             var element = Build(property, deserializer, PropertyBuilders);
             if (element == null && TypeBuilders.TryGetValue(property.PropertyType, out var builders))
-            {
-                // Query type builders if no property builder succeeds.
                 element = Build(property, deserializer, builders);
-            }
 
             return element;
         }
 
-        private static List<FormRow> CreateRows(IEnumerable<(FormContentAttribute attr, FormElement element)> elements, int gridLength)
+        private static List<FormRow> CreateRows(IEnumerable<(FormContentAttribute attr, FormElement element)> elements,
+            int gridLength)
         {
             var rows = new List<FormRow>();
             List<FormElement> currentLine = null;
@@ -573,7 +538,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     {
                         Elements =
                         {
-                            new FormElementContainer(0, gridLength, new List<FormElement> { element })
+                            new FormElementContainer(0, gridLength, new List<FormElement> {element})
                         }
                     });
 
@@ -589,7 +554,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     }
                     else
                     {
-                        currentLine = new List<FormElement> { element };
+                        currentLine = new List<FormElement> {element};
                         var row = new FormRow();
                         row.Elements.Add(new FormElementContainer(0, gridLength, currentLine));
                         rows.Add(row);
@@ -601,7 +566,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     {
                         Elements =
                         {
-                            new FormElementContainer(0, gridLength, new List<FormElement> { element })
+                            new FormElementContainer(0, gridLength, new List<FormElement> {element})
                         }
                     });
 
@@ -615,9 +580,7 @@ namespace MaterialForms.Wpf.FormBuilding
         private Func<string, object> TryGetDeserializer(Type type)
         {
             if (TypeDeserializers.TryGetValue(type, out var deserializer))
-            {
                 return deserializer;
-            }
 
             return type.IsEnum ? Deserializers.Enum(type) : null;
         }
@@ -629,22 +592,14 @@ namespace MaterialForms.Wpf.FormBuilding
             foreach (var element in elements)
             {
                 if (element.Column < 0)
-                {
                     element.Column = 0;
-                }
                 else if (element.Column >= gridLength)
-                {
                     element.Column = gridLength - 1;
-                }
 
                 if (element.ColumnSpan < 1)
-                {
                     element.ColumnSpan = 1;
-                }
                 else if (element.ColumnSpan > gridLength)
-                {
                     element.ColumnSpan = gridLength;
-                }
 
                 if (element.Row == null)
                 {
@@ -658,9 +613,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     {
                         var row = layout[i];
                         if (row.RowName != rowName)
-                        {
                             continue;
-                        }
 
                         if (row.Sealed)
                         {
@@ -673,14 +626,10 @@ namespace MaterialForms.Wpf.FormBuilding
                             {
                                 var nextRow = layout[j];
                                 if (nextRow.RowName != rowName)
-                                {
                                     break;
-                                }
 
                                 if (nextRow.Sealed)
-                                {
                                     continue;
-                                }
 
                                 row = nextRow;
                                 found = true;
@@ -697,9 +646,7 @@ namespace MaterialForms.Wpf.FormBuilding
                         row.Elements.Add(element);
                         row.ColumnSpan += element.ColumnSpan;
                         if (row.ColumnSpan >= gridLength)
-                        {
                             row.Sealed = true;
-                        }
 
                         added = true;
                         break;
@@ -710,22 +657,17 @@ namespace MaterialForms.Wpf.FormBuilding
                         var row = new ElementRow(rowName, element);
                         layout.Add(row);
                         if (row.ColumnSpan >= gridLength)
-                        {
                             row.Sealed = true;
-                        }
                     }
                 }
             }
 
             foreach (var row in layout)
-            {
                 if (row.RowName == null)
                 {
                     var element = row.Elements[0];
                     if (element.Column >= gridLength)
-                    {
                         element.Column = gridLength - 1;
-                    }
 
                     row.Elements[0].ColumnSpan = gridLength - element.Column;
                 }
@@ -745,9 +687,7 @@ namespace MaterialForms.Wpf.FormBuilding
                         }
 
                         if (count > element.Column)
-                        {
                             element.Column = count;
-                        }
 
                         count += element.ColumnSpan;
                     }
@@ -759,27 +699,20 @@ namespace MaterialForms.Wpf.FormBuilding
                         for (var i = gaps.Length - 1; i >= 0; i--)
                         {
                             if (delta == 0)
-                            {
                                 break;
-                            }
 
                             var gap = gaps[i];
                             if (gap == 0)
-                            {
                                 continue;
-                            }
 
                             var subtraction = Math.Min(delta, gap);
                             for (var j = i; j < gaps.Length; j++)
-                            {
                                 rowElements[j].Column -= subtraction;
-                            }
 
                             delta -= subtraction;
                         }
                     }
                 }
-            }
 
             return layout;
         }
@@ -791,9 +724,7 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 var element = builder.TryBuild(property, deserializer);
                 if (element != null)
-                {
                     return element;
-                }
             }
 
             return null;

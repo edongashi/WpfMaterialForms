@@ -14,7 +14,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
             Resources.Add(nameof(Height), Height ?? new LiteralValue(8d));
         }
 
-        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
+            IDictionary<string, IValueProvider> formResources)
         {
             return new BreakPresenter(context, Resources, formResources);
         }
@@ -24,10 +25,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static BreakPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BreakPresenter), new FrameworkPropertyMetadata(typeof(BreakPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BreakPresenter),
+                new FrameworkPropertyMetadata(typeof(BreakPresenter)));
         }
 
-        public BreakPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources, IDictionary<string, IValueProvider> formResources)
+        public BreakPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)
         {
         }

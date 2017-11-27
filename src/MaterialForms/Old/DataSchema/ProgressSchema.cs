@@ -5,15 +5,15 @@ namespace MaterialForms
 {
     public class ProgressSchema : SchemaBase
     {
-        private double progress;
-        private int maximum = 100;
         private bool isIndeterminate;
+        private int maximum = 100;
+        private double progress;
         private bool showAbsolute;
         private bool showPercentage = true;
 
         public double Progress
         {
-            get { return progress; }
+            get => progress;
             set
             {
                 if (value == progress) return;
@@ -24,7 +24,7 @@ namespace MaterialForms
 
         public int Maximum
         {
-            get { return maximum; }
+            get => maximum;
             set
             {
                 if (value <= 0 || value == maximum) return;
@@ -35,7 +35,7 @@ namespace MaterialForms
 
         public bool IsIndeterminate
         {
-            get { return isIndeterminate; }
+            get => isIndeterminate;
             set
             {
                 if (value == isIndeterminate) return;
@@ -46,7 +46,7 @@ namespace MaterialForms
 
         public bool ShowPercentage
         {
-            get { return showPercentage; }
+            get => showPercentage;
             set
             {
                 if (value == showPercentage) return;
@@ -57,7 +57,7 @@ namespace MaterialForms
 
         public bool ShowAbsolute
         {
-            get { return showAbsolute; }
+            get => showAbsolute;
             set
             {
                 if (value == showAbsolute) return;
@@ -65,6 +65,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => false;
 
         public override UserControl CreateView()
         {
@@ -74,24 +76,25 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => false;
-
-        public override object GetValue() => Progress;
+        public override object GetValue()
+        {
+            return Progress;
+        }
 
         public override void SetValue(object obj)
         {
             if (obj is double)
             {
-                Progress = (double)obj;
+                Progress = (double) obj;
             }
             else if (obj is int)
             {
-                Progress = (int)obj;
+                Progress = (int) obj;
             }
             else if (obj is string)
             {
                 double result;
-                double.TryParse((string)obj, out result);
+                double.TryParse((string) obj, out result);
                 Progress = result;
             }
         }

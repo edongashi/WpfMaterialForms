@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection;
 using MaterialForms.Wpf.Annotations;
+using MaterialForms.Wpf.Annotations.Display;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
-using Display = MaterialForms.Wpf.Annotations.Display;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 {
-    internal class StringFieldBuilder : TypeBuilder<String> {
+    internal class StringFieldBuilder : TypeBuilder<string>
+    {
         protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
             var maskAttr = property.GetCustomAttribute<MaskedAttribute>();
             if (property.GetCustomAttribute<MaskedAttribute>() != null)
-            {
                 return new StringField(property.Name, maskAttr.Mask);
-            }
-            else
-            {
-                return new StringField(property.Name);
-            }
+            return new StringField(property.Name);
         }
     }
 
-    internal class BooleanFieldBuilder : IFieldBuilder {
+    internal class BooleanFieldBuilder : IFieldBuilder
+    {
         public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
-            var isSwitch = property.GetCustomAttribute<Display.ToggleAttribute>() != null;
+            var isSwitch = property.GetCustomAttribute<ToggleAttribute>() != null;
             return new BooleanField(property.Name)
             {
                 IsSwitch = isSwitch
@@ -133,5 +129,4 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
     //        throw new NotImplementedException();
     //    }
     //}
-
 }

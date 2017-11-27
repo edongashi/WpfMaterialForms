@@ -10,17 +10,18 @@ namespace MaterialForms
     public class MaterialDialog : IViewProvider
     {
         /// <summary>
-        /// Represents the default theme used by new dialogs.
+        ///     Represents the default theme used by new dialogs.
         /// </summary>
         public static DialogTheme DefaultDialogTheme = DialogTheme.Inherit;
 
-        private string title;
-        private string message;
+        private string auxiliaryAction;
         private MaterialForm form;
+        private string message;
         private string negativeAction;
         private string positiveAction;
-        private string auxiliaryAction;
         private DialogTheme theme;
+
+        private string title;
 
         public MaterialDialog()
             : this(message: null)
@@ -72,12 +73,14 @@ namespace MaterialForms
         {
         }
 
-        public MaterialDialog(string message, string title, string positiveAction, string negativeAction, MaterialForm form)
+        public MaterialDialog(string message, string title, string positiveAction, string negativeAction,
+            MaterialForm form)
             : this(message, title, positiveAction, negativeAction, null, form)
         {
         }
 
-        public MaterialDialog(string message, string title, string positiveAction, string negativeAction, string auxiliaryAction, MaterialForm form)
+        public MaterialDialog(string message, string title, string positiveAction, string negativeAction,
+            string auxiliaryAction, MaterialForm form)
         {
             Message = message;
             Title = title;
@@ -89,11 +92,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the title that appears in the dialog. This is not the same as the window title.
+        ///     Gets or sets the title that appears in the dialog. This is not the same as the window title.
         /// </summary>
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if (value == title) return;
@@ -103,11 +106,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the message that appears in the dialog.
+        ///     Gets or sets the message that appears in the dialog.
         /// </summary>
         public string Message
         {
-            get { return message; }
+            get => message;
             set
             {
                 if (value == message) return;
@@ -117,11 +120,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the text that appears on the positive dialog button. A null or empty value hides the button.
+        ///     Gets or sets the text that appears on the positive dialog button. A null or empty value hides the button.
         /// </summary>
         public string PositiveAction
         {
-            get { return positiveAction; }
+            get => positiveAction;
             set
             {
                 if (value == positiveAction) return;
@@ -131,11 +134,11 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the dialog theme.
+        ///     Gets or sets the dialog theme.
         /// </summary>
         public DialogTheme Theme
         {
-            get { return theme; }
+            get => theme;
             set
             {
                 if (value == theme) return;
@@ -145,17 +148,17 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the callback that will be invoked when the positive button is clicked by the user.
-        /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
+        ///     Gets or sets the callback that will be invoked when the positive button is clicked by the user.
+        ///     When this property is not null, the dialog must be closed explicitly using Session.Close(result).
         /// </summary>
         public FormActionCallback OnPositiveAction { get; set; }
 
         /// <summary>
-        /// Gets or sets the text that appears on the negative dialog button. A null or empty value hides the button.
+        ///     Gets or sets the text that appears on the negative dialog button. A null or empty value hides the button.
         /// </summary>
         public string NegativeAction
         {
-            get { return negativeAction; }
+            get => negativeAction;
             set
             {
                 if (value == negativeAction) return;
@@ -165,17 +168,17 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the callback that will be invoked when the negative button is clicked by the user.
-        /// When this property is not null, the dialog must be closed explicitly using Session.Close(result).
+        ///     Gets or sets the callback that will be invoked when the negative button is clicked by the user.
+        ///     When this property is not null, the dialog must be closed explicitly using Session.Close(result).
         /// </summary>
         public FormActionCallback OnNegativeAction { get; set; }
 
         /// <summary>
-        /// Gets or sets the text that appears on the auxiliary dialog button. A null or empty value hides the button.
+        ///     Gets or sets the text that appears on the auxiliary dialog button. A null or empty value hides the button.
         /// </summary>
         public string AuxiliaryAction
         {
-            get { return auxiliaryAction; }
+            get => auxiliaryAction;
             set
             {
                 if (value == auxiliaryAction) return;
@@ -185,13 +188,13 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets or sets the callback that will be invoked when the auxiliary button is clicked by the user.
+        ///     Gets or sets the callback that will be invoked when the auxiliary button is clicked by the user.
         /// </summary>
         public FormActionCallback OnAuxiliaryAction { get; set; }
 
         public MaterialForm Form
         {
-            get { return form; }
+            get => form;
             set
             {
                 if (Equals(value, form)) return;
@@ -201,20 +204,20 @@ namespace MaterialForms
         }
 
         /// <summary>
-        /// Gets a new instance of a DialogView bound to this object.
-        /// </summary>
-        public UserControl View => new DialogView(this);
-
-        /// <summary>
-        /// Gets or sets whether to perform form validation before handling the positive dialog action.
+        ///     Gets or sets whether to perform form validation before handling the positive dialog action.
         /// </summary>
         public bool ValidatesOnPositiveAction { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets whether to show a progress indicator while performing the positive dialog action.
-        /// Applies only when a custom handler is assigned to the PositiveAction property.
+        ///     Gets or sets whether to show a progress indicator while performing the positive dialog action.
+        ///     Applies only when a custom handler is assigned to the PositiveAction property.
         /// </summary>
         public bool ShowsProgressOnPositiveAction { get; set; }
+
+        /// <summary>
+        ///     Gets a new instance of a DialogView bound to this object.
+        /// </summary>
+        public UserControl View => new DialogView(this);
 
         public bool Validate()
         {
@@ -222,11 +225,20 @@ namespace MaterialForms
             return currentForm == null || currentForm.Validate();
         }
 
-        public Task<bool?> Show(string dialogIdentifier) => Show(dialogIdentifier, double.NaN);
+        public Task<bool?> Show(string dialogIdentifier)
+        {
+            return Show(dialogIdentifier, double.NaN);
+        }
 
-        public Task<bool?> Show(string dialogIdentifier, double width) => ShowTracked(dialogIdentifier, width).Task;
+        public Task<bool?> Show(string dialogIdentifier, double width)
+        {
+            return ShowTracked(dialogIdentifier, width).Task;
+        }
 
-        public DialogSession ShowTracked(string dialogIdentifier) => ShowTracked(dialogIdentifier, double.NaN);
+        public DialogSession ShowTracked(string dialogIdentifier)
+        {
+            return ShowTracked(dialogIdentifier, double.NaN);
+        }
 
         public DialogSession ShowTracked(string dialogIdentifier, double width)
         {

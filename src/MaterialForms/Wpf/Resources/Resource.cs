@@ -8,7 +8,7 @@ namespace MaterialForms.Wpf.Resources
     public abstract class Resource : IEquatable<Resource>, IValueProvider
     {
         /// <summary>
-        /// Global cache for value converters accessible from expressions.
+        ///     Global cache for value converters accessible from expressions.
         /// </summary>
         public static readonly Dictionary<string, IValueConverter> ValueConverters =
             new Dictionary<string, IValueConverter>(StringComparer.OrdinalIgnoreCase)
@@ -39,7 +39,10 @@ namespace MaterialForms.Wpf.Resources
 
         public abstract BindingBase ProvideBinding(IResourceContext context);
 
-        public virtual object ProvideValue(IResourceContext context) => ProvideBinding(context);
+        public virtual object ProvideValue(IResourceContext context)
+        {
+            return ProvideBinding(context);
+        }
 
         protected IValueConverter GetValueConverter(IResourceContext context)
         {
@@ -49,19 +52,13 @@ namespace MaterialForms.Wpf.Resources
         protected internal static IValueConverter GetValueConverter(IResourceContext context, string valueConverter)
         {
             if (string.IsNullOrEmpty(valueConverter))
-            {
                 return null;
-            }
 
             if (ValueConverters.TryGetValue(valueConverter, out var c))
-            {
                 return c;
-            }
 
             if (context != null && context.TryFindResource(valueConverter) is IValueConverter converter)
-            {
                 return converter;
-            }
 
             throw new InvalidOperationException($"Value converter '{valueConverter}' not found.");
         }
@@ -69,21 +66,15 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
-            {
                 return false;
-            }
 
             if (ReferenceEquals(this, obj))
-            {
                 return true;
-            }
 
             if (obj.GetType() != GetType())
-            {
                 return false;
-            }
 
-            return Equals((Resource)obj);
+            return Equals((Resource) obj);
         }
 
         public abstract override int GetHashCode();
@@ -91,14 +82,10 @@ namespace MaterialForms.Wpf.Resources
         public static string FormatPath(string path)
         {
             if (string.IsNullOrEmpty(path))
-            {
                 return "";
-            }
 
             if (path[0] == '[')
-            {
                 return path;
-            }
 
             return "." + path;
         }

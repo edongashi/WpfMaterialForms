@@ -7,9 +7,11 @@ namespace MaterialForms.Wpf.Validation
 {
     public class LessThanValidator : ComparisonValidator
     {
-        public LessThanValidator(ValidationPipe pipe, IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+        public LessThanValidator(ValidationPipe pipe, IProxy argument, IErrorStringProvider errorProvider,
+            IBoolProxy isEnforced,
             IValueConverter valueConverter, bool strictValidation, bool validatesOnTargetUpdated)
-            : base(pipe, argument, errorProvider, isEnforced, valueConverter, strictValidation, validatesOnTargetUpdated)
+            : base(pipe, argument, errorProvider, isEnforced, valueConverter, strictValidation,
+                validatesOnTargetUpdated)
         {
         }
 
@@ -17,24 +19,16 @@ namespace MaterialForms.Wpf.Validation
         {
             var comparand = Argument.Value;
             if (comparand == null)
-            {
                 return true;
-            }
 
             if (value == null)
-            {
                 return false;
-            }
 
-            if (/*value != null &&*/ comparand is IConvertible && value.GetType() != comparand.GetType())
-            {
+            if ( /*value != null &&*/ comparand is IConvertible && value.GetType() != comparand.GetType())
                 comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
-            }
 
             if (value is IComparable c)
-            {
                 return c.CompareTo(comparand) < 0;
-            }
 
             return false;
         }

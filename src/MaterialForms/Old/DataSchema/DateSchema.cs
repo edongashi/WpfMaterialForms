@@ -10,7 +10,7 @@ namespace MaterialForms
 
         public DateTime? Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value.Equals(this.value)) return;
@@ -18,6 +18,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -27,9 +29,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

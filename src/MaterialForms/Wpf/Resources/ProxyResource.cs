@@ -35,12 +35,10 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is ProxyResource resource)
-            {
                 return ReferenceEquals(Proxy, resource.Proxy)
                        && PropertyPath == resource.PropertyPath
                        && OneTimeBinding == resource.OneTimeBinding
                        && ValueConverter == resource.ValueConverter;
-            }
 
             return false;
         }

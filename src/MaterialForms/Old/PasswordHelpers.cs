@@ -9,9 +9,7 @@ namespace MaterialForms
         public static string ConvertToUnsecureString(SecureString securePassword)
         {
             if (securePassword == null)
-            {
                 return null;
-            }
 
             var unmanagedString = IntPtr.Zero;
             try

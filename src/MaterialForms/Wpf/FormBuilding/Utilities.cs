@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
@@ -17,9 +16,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static List<PropertyInfo> GetProperties(Type type, DefaultFields mode)
         {
             if (type == null)
-            {
                 throw new ArgumentException(nameof(type));
-            }
 
             // First requirement is that properties and getters must be public.
             var properties = type
@@ -37,14 +34,10 @@ namespace MaterialForms.Wpf.FormBuilding
                     return properties.Where(p =>
                     {
                         if (p.GetCustomAttribute<FieldIgnoreAttribute>() != null)
-                        {
                             return false;
-                        }
 
                         if (p.GetCustomAttribute<FieldAttribute>() != null)
-                        {
                             return true;
-                        }
 
                         return p.CanWrite && p.GetSetMethod(true).IsPublic;
                     }).ToList();
@@ -52,9 +45,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     return properties.Where(p =>
                     {
                         if (p.GetCustomAttribute<FieldIgnoreAttribute>() != null)
-                        {
                             return false;
-                        }
 
                         return p.GetCustomAttribute<FieldAttribute>() != null;
                     }).ToList();
@@ -63,12 +54,11 @@ namespace MaterialForms.Wpf.FormBuilding
             }
         }
 
-        public static IValueProvider GetResource<T>(object value, object defaultValue, Func<string, object> deserializer)
+        public static IValueProvider GetResource<T>(object value, object defaultValue,
+            Func<string, object> deserializer)
         {
             if (value == null)
-            {
                 return new LiteralValue(defaultValue);
-            }
 
             if (value is string expression)
             {
@@ -87,9 +77,7 @@ namespace MaterialForms.Wpf.FormBuilding
             }
 
             if (value is T)
-            {
                 return new LiteralValue(value);
-            }
 
             throw new ArgumentException(
                 $"The provided value must be a bound resource or a literal value of type '{typeof(T).FullName}'.",
@@ -99,11 +87,9 @@ namespace MaterialForms.Wpf.FormBuilding
         public static IValueProvider GetIconResource(object value)
         {
             if (value is -1 || value is string s && string.Equals(s, "empty", StringComparison.OrdinalIgnoreCase))
-            {
-                return new LiteralValue((PackIconKind)(-1));
-            }
+                return new LiteralValue((PackIconKind) (-1));
 
-            return GetResource<PackIconKind>(value, (PackIconKind)(-2), Deserializers.Enum<PackIconKind>());
+            return GetResource<PackIconKind>(value, (PackIconKind) (-2), Deserializers.Enum<PackIconKind>());
         }
 
         public static IValueProvider GetStringResource(string expression)
@@ -115,9 +101,7 @@ namespace MaterialForms.Wpf.FormBuilding
         {
             var key = new BindingProxyKey(propertyKey);
             if (context.TryFindResource(key) is BindingProxy proxy)
-            {
                 return proxy;
-            }
 
             proxy = new BindingProxy();
             context.AddResource(key, proxy);
@@ -152,7 +136,8 @@ namespace MaterialForms.Wpf.FormBuilding
                 res => res is DeferredProxyResource resource && resource.ProxyProvider == func))
             {
                 var key = propertyKey;
-                return context => new ValueErrorStringProvider(boundExpression.GetStringValue(context), GetValueProxy(context, key));
+                return context =>
+                    new ValueErrorStringProvider(boundExpression.GetStringValue(context), GetValueProxy(context, key));
             }
 
             return context => new ErrorStringProvider(boundExpression.GetStringValue(context));
@@ -161,11 +146,9 @@ namespace MaterialForms.Wpf.FormBuilding
         public static double[] GetGridWidths(string gridExpression)
         {
             if (string.IsNullOrEmpty(gridExpression))
-            {
                 return null;
-            }
 
-            var parts = gridExpression.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = gridExpression.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             var grid = parts.Select(expr =>
             {
                 expr = expr.Trim();
@@ -182,13 +165,9 @@ namespace MaterialForms.Wpf.FormBuilding
 
                 var value = double.Parse(expr);
                 if (value <= 0d)
-                {
                     throw new InvalidOperationException("Invalid grid column values.");
-                }
                 if (isPixel)
-                {
                     value = -value;
-                }
 
                 return value;
             }).ToArray();
@@ -199,9 +178,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (var t in enumerable)
-            {
                 action(t);
-            }
         }
 
         public static XAttribute GetSingleAttribute(this XElement element, string attribute)
@@ -231,13 +208,11 @@ namespace MaterialForms.Wpf.FormBuilding
         {
             var value = TryGetAttribute(element, attribute);
             if (value != null)
-            {
                 return value;
-            }
 
             value = element.Value.Trim();
-            return value == "" 
-                ? null 
+            return value == ""
+                ? null
                 : value;
         }
 
@@ -265,9 +240,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
             var expr = element.TryGetAttribute("updateSourceTrigger");
             if (expr != null)
-            {
-                attr.UpdateSourceTrigger = (UpdateSourceTrigger)Enum.Parse(typeof(UpdateSourceTrigger), expr, true);
-            }
+                attr.UpdateSourceTrigger = (UpdateSourceTrigger) Enum.Parse(typeof(UpdateSourceTrigger), expr, true);
 
             return attr;
         }
@@ -279,9 +252,7 @@ namespace MaterialForms.Wpf.FormBuilding
             {
                 var type = child.TryGetAttribute("must");
                 if (type == null)
-                {
                     continue;
-                }
 
                 var condition = Parse(type);
                 var argument = child.TryGetAttribute("value");
@@ -289,37 +260,27 @@ namespace MaterialForms.Wpf.FormBuilding
 
                 ValueAttribute attr;
                 if (converter != null)
-                {
                     attr = argument != null
                         ? new ValueAttribute(converter, condition, argument)
                         : new ValueAttribute(converter, condition);
-                }
                 else
-                {
                     attr = argument != null
                         ? new ValueAttribute(condition, argument)
                         : new ValueAttribute(condition);
-                }
 
                 attr.Message = child.GetAttributeOrValue("message");
                 attr.When = child.TryGetAttribute("when");
                 var expr = child.TryGetAttribute("strict");
                 if (expr != null)
-                {
                     attr.StrictValidation = bool.Parse(expr);
-                }
 
                 expr = child.TryGetAttribute("validatesOnTargetUpdated");
                 if (expr != null)
-                {
                     attr.ValidatesOnTargetUpdated = bool.Parse(expr);
-                }
 
                 expr = child.TryGetAttribute("onValueChanged");
                 if (expr != null)
-                {
-                    attr.ArgumentUpdatedAction = (ValidationAction)Enum.Parse(typeof(ValidationAction), expr, true);
-                }
+                    attr.ArgumentUpdatedAction = (ValidationAction) Enum.Parse(typeof(ValidationAction), expr, true);
 
                 validators.Add(attr);
             }
@@ -332,15 +293,11 @@ namespace MaterialForms.Wpf.FormBuilding
             var action = new ActionAttribute(element.TryGetAttribute("name"), element.GetAttributeOrValue("content"));
             var expr = element.TryGetAttribute("isDefault");
             if (expr != null)
-            {
                 action.IsDefault = bool.Parse(expr);
-            }
 
             expr = element.TryGetAttribute("isCancel");
             if (expr != null)
-            {
                 action.IsCancel = bool.Parse(expr);
-            }
 
             action.Parameter = element.TryGetAttribute("parameter");
             action.IsEnabled = element.TryGetAttribute("enabled");
@@ -354,7 +311,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
         private static Must Parse(string value)
         {
-            return (Must)Enum.Parse(typeof(Must), value, true);
+            return (Must) Enum.Parse(typeof(Must), value, true);
         }
     }
 }

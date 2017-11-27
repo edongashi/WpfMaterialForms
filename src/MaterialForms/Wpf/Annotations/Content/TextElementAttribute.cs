@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
@@ -8,7 +7,7 @@ using MaterialForms.Wpf.FormBuilding;
 namespace MaterialForms.Wpf.Annotations
 {
     /// <summary>
-    /// Represents textual content in a form.
+    ///     Represents textual content in a form.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public abstract class TextElementAttribute : FormContentAttribute
@@ -19,15 +18,15 @@ namespace MaterialForms.Wpf.Annotations
         }
 
         /// <summary>
-        /// Element content. Accepts a string or a dynamic expression.
+        ///     Element content. Accepts a string or a dynamic expression.
         /// </summary>
         public string Value { get; }
 
         /// <summary>
-        /// Push text to the right to align with icons. Accepts a boolean or a dynamic resource.
+        ///     Push text to the right to align with icons. Accepts a boolean or a dynamic resource.
         /// </summary>
         public object IconPadding { get; set; }
-        
+
         protected override void InitializeElement(FormElement element)
         {
             if (element is ContentElement contentElement)
@@ -39,7 +38,7 @@ namespace MaterialForms.Wpf.Annotations
     }
 
     /// <summary>
-    /// Draws title text.
+    ///     Draws title text.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class TitleAttribute : TextElementAttribute
@@ -49,7 +48,7 @@ namespace MaterialForms.Wpf.Annotations
         }
 
         /// <summary>
-        /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
+        ///     Displayed icon. Accepts a PackIconKind or a dynamic resource.
         /// </summary>
         public object Icon { get; set; }
 
@@ -63,7 +62,7 @@ namespace MaterialForms.Wpf.Annotations
     }
 
     /// <summary>
-    /// Draws accented heading text.
+    ///     Draws accented heading text.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class HeadingAttribute : TextElementAttribute
@@ -73,7 +72,7 @@ namespace MaterialForms.Wpf.Annotations
         }
 
         /// <summary>
-        /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
+        ///     Displayed icon. Accepts a PackIconKind or a dynamic resource.
         /// </summary>
         public object Icon { get; set; }
 
@@ -87,7 +86,7 @@ namespace MaterialForms.Wpf.Annotations
     }
 
     /// <summary>
-    /// Draws regular text.
+    ///     Draws regular text.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
     public sealed class TextAttribute : TextElementAttribute

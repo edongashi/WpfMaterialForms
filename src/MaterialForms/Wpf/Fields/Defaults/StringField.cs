@@ -12,7 +12,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public StringField(string key) : base(key, typeof(string))
         {
-
         }
 
         public IValueProvider IsMultiline { get; set; }
@@ -25,7 +24,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
             Resources.Add(nameof(Mask), Mask ?? LiteralValue.Null);
         }
 
-        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
+            IDictionary<string, IValueProvider> formResources)
         {
             return new StringPresenter(context, Resources, formResources);
         }

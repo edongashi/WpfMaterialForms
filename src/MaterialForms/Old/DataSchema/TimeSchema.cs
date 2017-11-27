@@ -5,12 +5,12 @@ namespace MaterialForms
 {
     public class TimeSchema : SchemaBase
     {
-        private string value;
         private bool is24Hours = true;
+        private string value;
 
         public string Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -21,7 +21,7 @@ namespace MaterialForms
 
         public bool Is24Hours
         {
-            get { return is24Hours; }
+            get => is24Hours;
             set
             {
                 if (value == is24Hours) return;
@@ -29,6 +29,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -38,9 +40,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

@@ -14,9 +14,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             if (attr == null)
             {
                 if (element is FormField formField && formField.Name == null)
-                {
                     formField.Name = new LiteralValue(property.Name.Humanize());
-                }
 
                 return;
             }
@@ -35,28 +33,17 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Initializers
             if (element is DataFormField dataField)
             {
                 if (property.CanWrite)
-                {
                     dataField.IsReadOnly = Utilities.GetResource<bool>(attr.IsReadOnly, false, Deserializers.Boolean);
-                }
                 else
-                {
                     dataField.IsReadOnly = LiteralValue.True;
-                }
 
                 var type = property.PropertyType;
                 if (attr.DefaultValue != null)
-                {
                     dataField.DefaultValue = Utilities.GetResource<object>(attr.DefaultValue, null, deserializer);
-                }
                 else if (!type.IsValueType)
-                {
-                    // Null for reference types and nullables.
                     dataField.DefaultValue = LiteralValue.Null;
-                } else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    // Same for nullables.
+                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                     dataField.DefaultValue = LiteralValue.Null;
-                }
             }
         }
     }

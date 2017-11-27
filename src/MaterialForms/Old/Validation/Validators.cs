@@ -12,9 +12,7 @@ namespace MaterialForms
         public static string RequiredFile(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            {
                 return "Value is required.";
-            }
 
             return !File.Exists(value) ? "File does not exist." : null;
         }
@@ -22,9 +20,7 @@ namespace MaterialForms
         public static string OptionalFile(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            {
                 return null;
-            }
 
             return !File.Exists(value) ? "File does not exist." : null;
         }

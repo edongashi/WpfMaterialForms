@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
@@ -10,7 +9,7 @@ namespace MaterialForms
 
         public string Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -18,6 +17,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -27,9 +28,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

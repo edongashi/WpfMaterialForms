@@ -14,7 +14,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
             Resources.Add(nameof(HasMargin), HasMargin ?? LiteralValue.True);
         }
 
-        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
+            IDictionary<string, IValueProvider> formResources)
         {
             return new DividerPresenter(context, Resources, formResources);
         }
@@ -24,10 +25,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static DividerPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DividerPresenter), new FrameworkPropertyMetadata(typeof(DividerPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DividerPresenter),
+                new FrameworkPropertyMetadata(typeof(DividerPresenter)));
         }
 
-        public DividerPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources, IDictionary<string, IValueProvider> formResources)
+        public DividerPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)
         {
         }

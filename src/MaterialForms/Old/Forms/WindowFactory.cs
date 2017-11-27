@@ -2,9 +2,15 @@
 {
     public static class WindowFactory
     {
-        public static MaterialWindow Alert(string message) => Alert(message, null);
+        public static MaterialWindow Alert(string message)
+        {
+            return Alert(message, null);
+        }
 
-        public static MaterialWindow Alert(string message, string title) => Alert(message, title, "OK");
+        public static MaterialWindow Alert(string message, string title)
+        {
+            return Alert(message, title, "OK");
+        }
 
         public static MaterialWindow Alert(string message, string title, string action)
         {
@@ -14,11 +20,20 @@
             };
         }
 
-        public static MaterialWindow Prompt(string message) => Prompt(message, null);
+        public static MaterialWindow Prompt(string message)
+        {
+            return Prompt(message, null);
+        }
 
-        public static MaterialWindow Prompt(string message, string title) => Prompt(message, title, "OK");
+        public static MaterialWindow Prompt(string message, string title)
+        {
+            return Prompt(message, title, "OK");
+        }
 
-        public static MaterialWindow Prompt(string message, string title, string positiveAction) => Prompt(message, title, positiveAction, "CANCEL");
+        public static MaterialWindow Prompt(string message, string title, string positiveAction)
+        {
+            return Prompt(message, title, positiveAction, "CANCEL");
+        }
 
         public static MaterialWindow Prompt(string message, string title, string positiveAction, string negativeAction)
         {
@@ -28,17 +43,32 @@
             };
         }
 
-        public static MaterialWindow FromSingleSchema(SchemaBase schema) => FromSingleSchema(null, schema);
-
-        public static MaterialWindow FromSingleSchema(string message, SchemaBase schema) => FromSingleSchema(message, null, schema);
-
-        public static MaterialWindow FromSingleSchema(string message, string title, SchemaBase schema) => FromSingleSchema(message, title, "OK", schema);
-
-        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction, SchemaBase schema) => FromSingleSchema(message, title, positiveAction, "CANCEL", schema);
-
-        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction, string negativeAction, SchemaBase schema)
+        public static MaterialWindow FromSingleSchema(SchemaBase schema)
         {
-            return new MaterialWindow(new MaterialDialog(message, title, positiveAction, negativeAction, new MaterialForm(schema)));
+            return FromSingleSchema(null, schema);
+        }
+
+        public static MaterialWindow FromSingleSchema(string message, SchemaBase schema)
+        {
+            return FromSingleSchema(message, null, schema);
+        }
+
+        public static MaterialWindow FromSingleSchema(string message, string title, SchemaBase schema)
+        {
+            return FromSingleSchema(message, title, "OK", schema);
+        }
+
+        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction,
+            SchemaBase schema)
+        {
+            return FromSingleSchema(message, title, positiveAction, "CANCEL", schema);
+        }
+
+        public static MaterialWindow FromSingleSchema(string message, string title, string positiveAction,
+            string negativeAction, SchemaBase schema)
+        {
+            return new MaterialWindow(new MaterialDialog(message, title, positiveAction, negativeAction,
+                new MaterialForm(schema)));
         }
     }
 }

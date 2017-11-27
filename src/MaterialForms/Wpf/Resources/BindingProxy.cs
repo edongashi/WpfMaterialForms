@@ -4,7 +4,7 @@ using System.Windows;
 namespace MaterialForms.Wpf.Resources
 {
     /// <summary>
-    /// Encapsulates an object bound to a resource.
+    ///     Encapsulates an object bound to a resource.
     /// </summary>
     public class BindingProxy : Freezable, IProxy
     {
@@ -15,11 +15,6 @@ namespace MaterialForms.Wpf.Resources
                 typeof(BindingProxy),
                 new UIPropertyMetadata(PropertyChangedCallback));
 
-        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            ((BindingProxy)dependencyObject).ValueChanged?.Invoke();
-        }
-
         public object Key { get; set; }
 
         public object Value
@@ -27,8 +22,14 @@ namespace MaterialForms.Wpf.Resources
             get => GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
-        
+
         public Action ValueChanged { get; set; }
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((BindingProxy) dependencyObject).ValueChanged?.Invoke();
+        }
 
         protected override Freezable CreateInstanceCore()
         {
@@ -53,9 +54,7 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
-            {
                 return false;
-            }
 
             return obj is BindingProxyKey key && Equals(key);
         }

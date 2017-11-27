@@ -17,7 +17,8 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public DataBinding(string propertyPath, BindingOptions bindingOptions, List<IValidatorProvider> validationRules, string valueConverter)
+        public DataBinding(string propertyPath, BindingOptions bindingOptions, List<IValidatorProvider> validationRules,
+            string valueConverter)
             : base(valueConverter)
         {
             PropertyPath = propertyPath;
@@ -40,9 +41,7 @@ namespace MaterialForms.Wpf.Resources
             BindingOptions.Apply(binding);
             var pipe = new ValidationPipe();
             foreach (var validatorProvider in ValidationRules)
-            {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context, pipe));
-            }
 
             binding.ValidationRules.Add(pipe);
             return binding;

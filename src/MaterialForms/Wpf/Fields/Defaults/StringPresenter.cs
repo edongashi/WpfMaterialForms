@@ -8,7 +8,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static StringPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter), new FrameworkPropertyMetadata(typeof(StringPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter),
+                new FrameworkPropertyMetadata(typeof(StringPresenter)));
         }
 
         public StringPresenter(IResourceContext context,

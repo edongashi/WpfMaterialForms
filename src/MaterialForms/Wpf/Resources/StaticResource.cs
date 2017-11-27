@@ -33,10 +33,8 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is StaticResource resource)
-            {
                 return ResourceKey == resource.ResourceKey
-                    && ValueConverter == resource.ValueConverter;
-            }
+                       && ValueConverter == resource.ValueConverter;
 
             return false;
         }
