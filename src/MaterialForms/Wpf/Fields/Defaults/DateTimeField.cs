@@ -26,7 +26,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static DateTimePresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBoxPresenter), new FrameworkPropertyMetadata(typeof(DateTimePresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DateTimePresenter), new FrameworkPropertyMetadata(typeof(DateTimePresenter)));
         }
 
         public DateTimePresenter(IResourceContext context,

@@ -3,23 +3,20 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
 {
-    public class StringField : DataFormField
+    public class DateField : DataFormField
     {
-        public StringField(string key) : base(key, typeof(string))
+        public DateField(string key) : base(key, typeof(string))
         {
         }
-
-        public IValueProvider IsMultiline { get; set; }
 
         protected internal override void Freeze()
         {
             base.Freeze();
-            Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
         {
-            return new StringPresenter(context, Resources, formResources);
+            return new DatePresenter(context, Resources, formResources);
         }
     }
 }
