@@ -25,8 +25,16 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
         }
     }
 
-    internal class DateTimeFieldBuilder : TypeBuilder<DateTime> {
-        protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
+    internal class DateTimeFieldBuilder : IFieldBuilder
+    {
+        public Func<string, CultureInfo, object> Deserializer { get; }
+
+        public DateTimeFieldBuilder(Func<string, CultureInfo, object> deserializer)
+        {
+            Deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+        }
+
+        public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             return new DateField(property.Name);
         }
