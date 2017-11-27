@@ -29,13 +29,13 @@
                 Visibility="{fields:FormBinding IconVisibility}" />
             <DatePicker
                 Name="ValueHolderControl"
-                Grid.Column="1"
+                Grid.Column="1"         
                 Margin="0,-14,0,0"
-                VerticalAlignment="Center"
+                VerticalAlignment="Bottom"
                 controls1:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
                 materialDesign:HintAssist.Hint="{fields:FormBinding Name}"
                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                Text="{fields:FormBinding Value}"
+                SelectedDate="{fields:FormBinding Value}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </ControlTemplate>
