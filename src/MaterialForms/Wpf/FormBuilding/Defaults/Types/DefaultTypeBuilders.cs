@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
 using Display = MaterialForms.Wpf.Annotations.Display;
@@ -10,7 +11,15 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
     internal class StringFieldBuilder : TypeBuilder<String> {
         protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
-            return new StringField(property.Name);
+            var maskAttr = property.GetCustomAttribute<MaskedAttribute>();
+            if (property.GetCustomAttribute<MaskedAttribute>() != null)
+            {
+                return new StringField(property.Name, maskAttr.Mask);
+            }
+            else
+            {
+                return new StringField(property.Name);
+            }
         }
     }
 

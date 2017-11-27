@@ -4,7 +4,8 @@
     xmlns:controls1="clr-namespace:MaterialForms.Wpf.Controls"
     xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
     xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/IconStyles.xaml" />
@@ -27,8 +28,8 @@
                 Kind="{fields:FormBinding Icon}"
                 Style="{StaticResource MaterialColoredIconStyle}"
                 Visibility="{fields:FormBinding IconVisibility}" />
-            <TextBox
-                Name="ValueHolderControl"
+            <xctk:MaskedTextBox
+                x:Name="ValueHolderControl"
                 Grid.Column="1"
                 Margin="0,-14,0,0"
                 VerticalAlignment="Center"
@@ -37,6 +38,7 @@
                 IsReadOnly="{fields:FormBinding IsReadOnly}"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 Text="{fields:FormBinding Value}"
+                Mask="{fields:FormBinding Mask}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </ControlTemplate>
