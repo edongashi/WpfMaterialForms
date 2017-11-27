@@ -8,7 +8,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static DatePresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter), new FrameworkPropertyMetadata(typeof(StringPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DatePresenter), new FrameworkPropertyMetadata(typeof(DatePresenter)));
         }
 
         public DatePresenter(IResourceContext context,
