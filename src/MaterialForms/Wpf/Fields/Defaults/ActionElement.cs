@@ -96,7 +96,9 @@ namespace MaterialForms.Wpf.Fields.Defaults
             {
                 var frameworkElement = fwContext.GetOwningElement();
                 if (frameworkElement != null && frameworkElement.CheckAccess())
+                {
                     DialogHost.CloseDialogCommand.Execute(arg, frameworkElement);
+                }
             }
 
             switch (action.Value)
