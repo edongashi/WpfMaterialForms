@@ -11,7 +11,7 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DatePicker.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <ControlTemplate x:Key="MaterialDatePickerPresenterTemplate" TargetType="{x:Type defaults:DateTimePresenter}">
+    <ControlTemplate x:Key="MaterialDatePickerPresenterTemplate" TargetType="{x:Type defaults:DatePresenter}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -34,13 +34,13 @@
                 VerticalAlignment="Center"
                 controls1:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
                 materialDesign:HintAssist.Hint="{fields:FormBinding Name}"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Text="{fields:FormBinding Value}"
+                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+               
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </ControlTemplate>
 
-    <Style x:Key="MaterialDatePickerPresenterStyle" TargetType="{x:Type defaults:DateTimePresenter}">
+    <Style x:Key="MaterialDatePickerPresenterStyle" TargetType="{x:Type defaults:DatePresenter}">
         <Setter Property="Margin" Value="8,16" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Center" />

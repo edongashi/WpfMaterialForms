@@ -26,6 +26,6 @@
 
     <Style BasedOn="{StaticResource MaterialActionPresenterStyle}" TargetType="{x:Type defaults:ActionPresenter}" />
 
-    <Style BasedOn="{StaticResource MaterialDatePickerPresenterStyle}" TargetType="{x:Type defaults:DateTimePresenter}" />
+    <Style BasedOn="{StaticResource MaterialDatePickerPresenterStyle}" TargetType="{x:Type defaults:DatePresenter}" />
 
 </ResourceDictionary>
