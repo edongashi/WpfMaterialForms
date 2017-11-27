@@ -35,7 +35,7 @@
                 controls1:SelectTextOnFocus.Active="{fields:FormBinding SelectOnFocus}"
                 materialDesign:HintAssist.Hint="{fields:FormBinding Name}"
                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-               
+                Text="{fields:FormBinding Value}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </ControlTemplate>

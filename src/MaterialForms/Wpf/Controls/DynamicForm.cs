@@ -43,7 +43,8 @@ namespace MaterialForms.Wpf.Controls
 
         static DynamicForm()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm), new FrameworkPropertyMetadata(typeof(DynamicForm)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
+                new FrameworkPropertyMetadata(typeof(DynamicForm)));
         }
 
         internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
@@ -73,15 +74,9 @@ namespace MaterialForms.Wpf.Controls
                 Mode = BindingMode.OneWay
             });
 
-            Loaded += (s, e) =>
-            {
-                ActiveForms.Add(this);
-            };
+            Loaded += (s, e) => { ActiveForms.Add(this); };
 
-            Unloaded += (s, e) =>
-            {
-                ActiveForms.Remove(this);
-            };
+            Unloaded += (s, e) => { ActiveForms.Remove(this); };
         }
 
         /// <summary>
@@ -89,7 +84,7 @@ namespace MaterialForms.Wpf.Controls
         /// </summary>
         public IFormBuilder FormBuilder
         {
-            get => (IFormBuilder)GetValue(FormBuilderProperty);
+            get => (IFormBuilder) GetValue(FormBuilderProperty);
             set => SetValue(FormBuilderProperty, value);
         }
 
@@ -142,7 +137,7 @@ namespace MaterialForms.Wpf.Controls
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            ((DynamicForm)obj).UpdateModel(e.OldValue, e.NewValue);
+            ((DynamicForm) obj).UpdateModel(e.OldValue, e.NewValue);
         }
 
         private void UpdateModel(object oldModel, object newModel)
@@ -325,7 +320,7 @@ namespace MaterialForms.Wpf.Controls
             itemsGrid.ColumnDefinitions.Clear();
             for (var i = 0; i < rows; i++)
             {
-                itemsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                itemsGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
             }
 
             foreach (var column in columns)
@@ -333,8 +328,8 @@ namespace MaterialForms.Wpf.Controls
                 itemsGrid.ColumnDefinitions.Add(new ColumnDefinition
                 {
                     Width = column > 0d
-                    ? new GridLength(column, GridUnitType.Star)
-                    : new GridLength(-column, GridUnitType.Pixel)
+                        ? new GridLength(column, GridUnitType.Star)
+                        : new GridLength(-column, GridUnitType.Pixel)
                 });
             }
 
@@ -354,7 +349,7 @@ namespace MaterialForms.Wpf.Controls
             {
                 if (key is DynamicResourceKey || key is BindingProxyKey)
                 {
-                    var proxy = (BindingProxy)resources[key];
+                    var proxy = (BindingProxy) resources[key];
                     proxy.Value = null;
                     resources.Remove(key);
                 }
