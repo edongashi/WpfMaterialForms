@@ -5,8 +5,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class StringField : DataFormField
     {
+        public StringField(string key, string mask) : base(key, typeof(string))
+        {
+            Mask = new LiteralValue(mask);
+        }
+
         public StringField(string key) : base(key, typeof(string))
         {
+
         }
 
         public IValueProvider IsMultiline { get; set; }
@@ -16,7 +22,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             base.Freeze();
             Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
-            Resources.Add(nameof(Mask), Mask ?? LiteralValue.False);
+            Resources.Add(nameof(Mask), Mask ?? LiteralValue.Null);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)

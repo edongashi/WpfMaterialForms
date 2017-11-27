@@ -36,8 +36,7 @@ namespace MaterialForms.Wpf.Fields
             
             if (pvt.TargetObject is FrameworkElement frameworkElement)
             {
-                var field = frameworkElement.DataContext as IBindingProvider;
-                if (field == null)
+                if (!(frameworkElement.DataContext is IBindingProvider field))
                 {
                     return pvt.TargetProperty is DependencyProperty
                         ? DependencyProperty.UnsetValue

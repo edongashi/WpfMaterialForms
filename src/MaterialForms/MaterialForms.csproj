@@ -172,7 +172,7 @@
     <Compile Include="Wpf\Annotations\FieldIgnoreAttribute.cs" />
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
-    <Compile Include="Wpf\Annotations\MaskAttribute.cs" />
+    <Compile Include="Wpf\Annotations\MaskedAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
@@ -192,8 +192,6 @@
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
-    <Compile Include="Wpf\Fields\Defaults\MaskField.cs" />
-    <Compile Include="Wpf\Fields\Defaults\MaskPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\StringPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
