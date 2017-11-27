@@ -9,23 +9,6 @@ using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
 {
-    internal class MaskBuilder : IFieldBuilder
-    {
-        public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
-        {
-            var mask = property.GetCustomAttribute<SelectFromAttribute>();
-            if (mask == null)
-                return null;
-
-            var type = property.PropertyType;
-            if (type != typeof(string))
-                return null;
-
-            var field = new MaskField(property.Name);
-            return null;
-        }
-    }
-
     internal class SelectFromBuilder : IFieldBuilder
     {
         public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
