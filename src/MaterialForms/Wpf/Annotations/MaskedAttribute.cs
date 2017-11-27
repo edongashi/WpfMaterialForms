@@ -6,13 +6,8 @@ namespace MaterialForms.Wpf.Annotations
     /// Specifies that a field uses a mask.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public sealed class MaskAttribute : Attribute
-    {
-        public MaskAttribute(string mask)
-        {
-            mask = Mask;
-        }
-
+    public sealed class MaskedAttribute : Attribute
+    {   
         public string Mask { get; set; }
     }
 }
