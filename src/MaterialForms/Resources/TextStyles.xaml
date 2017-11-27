@@ -2,21 +2,26 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialForms="clr-namespace:MaterialForms">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="TextBlockLabelStyle" TargetType="{x:Type TextBlock}">
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
+                <Setter Property="Opacity"
+                        Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="TextBlockHintStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="Opacity" Value="{Binding Path=(materialForms:ColorAssist.Opacity), RelativeSource={RelativeSource Self}}" />
-        <Setter Property="Foreground" Value="{Binding Path=(materialForms:ColorAssist.Foreground), RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Opacity"
+                Value="{Binding Path=(materialForms:ColorAssist.Opacity), RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Foreground"
+                Value="{Binding Path=(materialForms:ColorAssist.Foreground), RelativeSource={RelativeSource Self}}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
+                <Setter Property="Opacity"
+                        Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -25,7 +30,8 @@
            TargetType="{x:Type TextBlock}">
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
+                <Setter Property="Opacity"
+                        Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -34,7 +40,8 @@
            TargetType="{x:Type TextBlock}">
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
+                <Setter Property="Opacity"
+                        Value="{Binding Path=(materialForms:ColorAssist.DisabledOpacity), RelativeSource={RelativeSource Self}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
