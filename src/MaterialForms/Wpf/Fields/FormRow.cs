@@ -4,7 +4,7 @@ namespace MaterialForms.Wpf.Fields
 {
     public class FormRow
     {
-        public FormRow() 
+        public FormRow()
             : this(true, 1)
         {
         }
@@ -25,8 +25,8 @@ namespace MaterialForms.Wpf.Fields
 
     public class FormElementContainer
     {
-        public FormElementContainer(int column, int columnSpan, FormElement element) 
-            : this(column, columnSpan, new List<FormElement> { element })
+        public FormElementContainer(int column, int columnSpan, FormElement element)
+            : this(column, columnSpan, new List<FormElement> {element})
         {
         }
 

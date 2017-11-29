@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 
 namespace MaterialForms.Wpf.FormBuilding
 {
@@ -20,9 +21,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableDateTime(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return System.DateTime.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -35,9 +34,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableBoolean(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return bool.Parse(expression);
         }
@@ -45,9 +42,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object Char(string expression)
         {
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -55,14 +50,10 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableChar(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -75,9 +66,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableByte(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return byte.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -90,9 +79,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableSByte(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return sbyte.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -105,9 +92,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt16(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return short.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -120,9 +105,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt32(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return int.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -135,9 +118,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt64(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return long.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -150,9 +131,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt16(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ushort.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -165,9 +144,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt32(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return uint.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -180,9 +157,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt64(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ulong.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -195,41 +170,49 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableSingle(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return float.Parse(expression, CultureInfo.InvariantCulture);
         }
 
         public static object Double(string expression)
         {
-            return double.Parse(expression, CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(expression, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, CultureInfo.InvariantCulture);
+            }
         }
 
         public static object NullableDouble(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
-            return double.Parse(expression, CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(expression, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, CultureInfo.InvariantCulture);
+            }
         }
 
         public static object Decimal(string expression)
         {
-            return decimal.Parse(expression, CultureInfo.InvariantCulture);
+            return decimal.Parse(expression, NumberStyles.AllowCurrencySymbol);
         }
 
         public static object NullableDecimal(string expression)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
-            return decimal.Parse(expression, CultureInfo.InvariantCulture);
+            return decimal.Parse(expression, NumberStyles.AllowCurrencySymbol);
         }
 
         #endregion
@@ -244,9 +227,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableDateTime(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return System.DateTime.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -259,9 +240,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableBoolean(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return bool.Parse(expression);
         }
@@ -269,9 +248,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantChar(string expression, CultureInfo culture)
         {
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -279,14 +256,10 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableChar(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -299,9 +272,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableByte(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return byte.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -314,24 +285,20 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableSByte(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return sbyte.Parse(expression, CultureInfo.InvariantCulture);
         }
 
         public static object CultureInvariantInt16(string expression, CultureInfo culture)
-       {
+        {
             return short.Parse(expression, CultureInfo.InvariantCulture);
         }
 
         public static object CultureInvariantNullableInt16(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return short.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -344,9 +311,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableInt32(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return int.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -359,9 +324,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableInt64(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return long.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -374,9 +337,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableUInt16(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ushort.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -389,9 +350,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableUInt32(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return uint.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -404,9 +363,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableUInt64(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ulong.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -419,9 +376,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableSingle(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return float.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -434,9 +389,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableDouble(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return double.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -449,9 +402,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object CultureInvariantNullableDecimal(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return decimal.Parse(expression, CultureInfo.InvariantCulture);
         }
@@ -468,9 +419,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableDateTime(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return System.DateTime.Parse(expression, culture);
         }
@@ -483,9 +432,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableBoolean(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return bool.Parse(expression);
         }
@@ -493,9 +440,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object Char(string expression, CultureInfo culture)
         {
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -503,14 +448,10 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableChar(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             if (expression.Length == 2 && expression[1] == '\0')
-            {
                 return expression[0];
-            }
 
             return char.Parse(expression);
         }
@@ -523,9 +464,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableByte(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return byte.Parse(expression, culture);
         }
@@ -538,9 +477,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableSByte(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return sbyte.Parse(expression, culture);
         }
@@ -553,9 +490,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt16(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return short.Parse(expression, culture);
         }
@@ -568,9 +503,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt32(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return int.Parse(expression, culture);
         }
@@ -583,9 +516,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableInt64(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return long.Parse(expression, culture);
         }
@@ -598,9 +529,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt16(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ushort.Parse(expression, culture);
         }
@@ -613,9 +542,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt32(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return uint.Parse(expression, culture);
         }
@@ -628,9 +555,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableUInt64(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return ulong.Parse(expression, culture);
         }
@@ -643,26 +568,36 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableSingle(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return float.Parse(expression, culture);
         }
 
         public static object Double(string expression, CultureInfo culture)
         {
-            return double.Parse(expression, culture);
+            try
+            {
+                return double.Parse(expression, culture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, culture);
+            }
         }
 
         public static object NullableDouble(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
-            return double.Parse(expression, culture);
+            try
+            {
+                return double.Parse(expression, culture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, culture);
+            }
         }
 
         public static object Decimal(string expression, CultureInfo culture)
@@ -673,9 +608,7 @@ namespace MaterialForms.Wpf.FormBuilding
         public static object NullableDecimal(string expression, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(expression))
-            {
                 return null;
-            }
 
             return decimal.Parse(expression, culture);
         }
@@ -703,10 +636,7 @@ namespace MaterialForms.Wpf.FormBuilding
                     ? null
                     : System.Enum.Parse(enumType, expr, ignoreCase);
             }
-            else
-            {
-                return expr => System.Enum.Parse(enumType, expr, ignoreCase);
-            }
+            return expr => System.Enum.Parse(enumType, expr, ignoreCase);
         }
 
         #endregion

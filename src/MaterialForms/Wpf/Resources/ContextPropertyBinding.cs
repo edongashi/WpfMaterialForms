@@ -33,10 +33,8 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is ContextPropertyBinding resource)
-            {
                 return PropertyPath == resource.PropertyPath && OneTimeBinding == resource.OneTimeBinding &&
                        ValueConverter == resource.ValueConverter;
-            }
 
             return false;
         }

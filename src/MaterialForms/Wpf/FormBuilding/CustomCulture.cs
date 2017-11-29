@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 
 namespace MaterialForms.Wpf.FormBuilding
@@ -7,19 +6,17 @@ namespace MaterialForms.Wpf.FormBuilding
     public static class ConversionCulture
     {
         /// <summary>
-        /// Stores custom cultures which can be used for date and number conversion.
+        ///     Stores custom cultures which can be used for date and number conversion.
         /// </summary>
         public static readonly Dictionary<string, CultureInfo> CustomCultures = new Dictionary<string, CultureInfo>();
 
         public static CultureInfo Get(string name)
         {
             if (name == null)
-            {
                 return null;
-            }
 
-            return CustomCultures.TryGetValue(name, out var value) 
-                ? value 
+            return CustomCultures.TryGetValue(name, out var value)
+                ? value
                 : CultureInfo.GetCultureInfo(name);
         }
 

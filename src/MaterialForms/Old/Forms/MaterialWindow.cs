@@ -7,14 +7,14 @@ namespace MaterialForms
 {
     public class MaterialWindow : INotifyPropertyChanged
     {
-        private string title = "Dialog";
-        private double width = 400d;
-        private double height = double.NaN;
-        private bool showMinButton;
-        private bool showMaxRestoreButton = true;
-        private bool showCloseButton;
         private bool canResize;
         private MaterialDialog dialog;
+        private double height = double.NaN;
+        private bool showCloseButton;
+        private bool showMaxRestoreButton = true;
+        private bool showMinButton;
+        private string title = "Dialog";
+        private double width = 400d;
 
         public MaterialWindow()
         {
@@ -27,7 +27,7 @@ namespace MaterialForms
 
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if (value == title) return;
@@ -38,7 +38,7 @@ namespace MaterialForms
 
         public double Width
         {
-            get { return width; }
+            get => width;
             set
             {
                 if (value.Equals(width)) return;
@@ -49,7 +49,7 @@ namespace MaterialForms
 
         public double Height
         {
-            get { return height; }
+            get => height;
             set
             {
                 if (value.Equals(height)) return;
@@ -60,7 +60,7 @@ namespace MaterialForms
 
         public bool ShowMinButton
         {
-            get { return showMinButton; }
+            get => showMinButton;
             set
             {
                 if (value == showMinButton) return;
@@ -71,7 +71,7 @@ namespace MaterialForms
 
         public bool ShowMaxRestoreButton
         {
-            get { return showMaxRestoreButton; }
+            get => showMaxRestoreButton;
             set
             {
                 if (value == showMaxRestoreButton) return;
@@ -82,7 +82,7 @@ namespace MaterialForms
 
         public bool ShowCloseButton
         {
-            get { return showCloseButton; }
+            get => showCloseButton;
             set
             {
                 if (value == showCloseButton) return;
@@ -93,7 +93,7 @@ namespace MaterialForms
 
         public bool CanResize
         {
-            get { return canResize; }
+            get => canResize;
             set
             {
                 if (value == canResize) return;
@@ -104,7 +104,7 @@ namespace MaterialForms
 
         public MaterialDialog Dialog
         {
-            get { return dialog; }
+            get => dialog;
             set
             {
                 if (Equals(value, dialog)) return;
@@ -113,18 +113,27 @@ namespace MaterialForms
             }
         }
 
-        public Task<bool?> Show() => Show(MaterialApplication.DefaultDispatcher);
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public Task<bool?> Show(DispatcherOption dispatcherOption) => ShowTracked(dispatcherOption).Task;
+        public Task<bool?> Show()
+        {
+            return Show(MaterialApplication.DefaultDispatcher);
+        }
 
-        public WindowSession ShowTracked() => ShowTracked(MaterialApplication.DefaultDispatcher);
+        public Task<bool?> Show(DispatcherOption dispatcherOption)
+        {
+            return ShowTracked(dispatcherOption).Task;
+        }
+
+        public WindowSession ShowTracked()
+        {
+            return ShowTracked(MaterialApplication.DefaultDispatcher);
+        }
 
         public WindowSession ShowTracked(DispatcherOption dispatcherOption)
         {
             return new WindowSession(this, MaterialApplication.GetDispatcher(dispatcherOption)).Show();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

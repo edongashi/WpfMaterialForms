@@ -1,19 +1,19 @@
-﻿using System.Windows.Controls;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 using MaterialForms.Controls;
 
 namespace MaterialForms
 {
     public class SelectionSchema : SchemaBase
     {
-        private object value;
-        private ObservableCollection<object> items;
         private bool isEditable;
+        private ObservableCollection<object> items;
+        private object value;
 
         public object Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (Equals(value, this.value)) return;
@@ -24,7 +24,7 @@ namespace MaterialForms
 
         public ObservableCollection<object> Items
         {
-            get { return items; }
+            get => items;
             set
             {
                 if (Equals(value, items)) return;
@@ -35,7 +35,7 @@ namespace MaterialForms
 
         public bool IsEditable
         {
-            get { return isEditable; }
+            get => isEditable;
             set
             {
                 if (value == isEditable) return;
@@ -43,6 +43,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -52,9 +54,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

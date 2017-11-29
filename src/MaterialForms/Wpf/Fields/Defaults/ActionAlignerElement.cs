@@ -1,5 +1,4 @@
-﻿
-namespace MaterialForms.Wpf.Fields.Defaults
+﻿namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class ActionAlignerElement
     {

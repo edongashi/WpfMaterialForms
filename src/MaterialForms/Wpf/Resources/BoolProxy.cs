@@ -4,7 +4,7 @@ using System.Windows;
 namespace MaterialForms.Wpf.Resources
 {
     /// <summary>
-    /// Encapsulates a string bound to a resource.
+    ///     Encapsulates a string bound to a resource.
     /// </summary>
     public class BoolProxy : Freezable, IBoolProxy, IProxy
     {
@@ -15,20 +15,21 @@ namespace MaterialForms.Wpf.Resources
                 typeof(BoolProxy),
                 new UIPropertyMetadata(PropertyChangedCallback));
 
-        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            ((BoolProxy)dependencyObject).ValueChanged?.Invoke();
-        }
-
         public bool Value
         {
-            get => (bool)GetValue(ValueProperty);
+            get => (bool) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
         object IProxy.Value => Value;
 
         public Action ValueChanged { get; set; }
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((BoolProxy) dependencyObject).ValueChanged?.Invoke();
+        }
 
         protected override Freezable CreateInstanceCore()
         {

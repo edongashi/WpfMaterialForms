@@ -7,8 +7,8 @@ namespace MaterialForms.Wpf.Resources
 {
     public class EnumerableKeyValueProvider : IValueProvider
     {
-        private readonly IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements;
         private readonly bool addNull;
+        private readonly IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements;
 
         public EnumerableKeyValueProvider(IEnumerable<KeyValuePair<ValueType, IValueProvider>> elements, bool addNull)
         {
@@ -35,9 +35,7 @@ namespace MaterialForms.Wpf.Resources
             }).ToList();
 
             if (addNull)
-            {
-                list.Insert(0, new StringProxy { Key = null, Value = "" });
-            }
+                list.Insert(0, new StringProxy {Key = null, Value = ""});
 
             return list;
         }

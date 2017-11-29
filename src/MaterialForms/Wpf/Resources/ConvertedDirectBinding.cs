@@ -32,17 +32,19 @@ namespace MaterialForms.Wpf.Resources
             var binding = context.CreateDirectModelBinding();
             BindingOptions.Apply(binding);
             binding.Converter = new StringTypeConverter(Deserializer);
-            binding.ValidationRules.Add(new ConversionValidator(Deserializer, ConversionErrorStringProvider(context), binding.ConverterCulture));
+            binding.ValidationRules.Add(new ConversionValidator(Deserializer, ConversionErrorStringProvider(context),
+                binding.ConverterCulture));
             var pipe = new ValidationPipe();
             foreach (var validatorProvider in ValidationRules)
-            {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context, pipe));
-            }
 
             binding.ValidationRules.Add(pipe);
             return binding;
         }
 
-        public object ProvideValue(IResourceContext context) => ProvideBinding(context);
+        public object ProvideValue(IResourceContext context)
+        {
+            return ProvideBinding(context);
+        }
     }
 }

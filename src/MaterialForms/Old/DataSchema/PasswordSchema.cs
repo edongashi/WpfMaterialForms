@@ -10,7 +10,7 @@ namespace MaterialForms
 
         public SecureString Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (Equals(value, this.value)) return;
@@ -19,13 +19,16 @@ namespace MaterialForms
             }
         }
 
-        public override UserControl CreateView()
-        {
-            return new PasswordTextControl { DataContext = this };
-        }
-
         public override bool HoldsValue => true;
 
-        public override object GetValue() => PasswordHelpers.ConvertToUnsecureString(Value);
+        public override UserControl CreateView()
+        {
+            return new PasswordTextControl {DataContext = this};
+        }
+
+        public override object GetValue()
+        {
+            return PasswordHelpers.ConvertToUnsecureString(Value);
+        }
     }
 }

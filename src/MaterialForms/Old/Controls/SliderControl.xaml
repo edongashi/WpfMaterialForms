@@ -8,10 +8,12 @@
             <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
                 <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=ValueHolderControl, Mode=OneWay}"
+                                 Value="True">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}"
+                                 Value="True">
                         <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}" />
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=HintText, Mode=OneWay}" Value="True">
@@ -21,7 +23,8 @@
             </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Resources/TextStyles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

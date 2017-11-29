@@ -3,9 +3,9 @@ namespace MaterialForms.Tasks
     public class ProgressController
     {
         internal readonly MaterialDialog Dialog;
-        internal readonly ProgressSchema Schema;
 
         private readonly DialogActionListener listener;
+        internal readonly ProgressSchema Schema;
 
         internal ProgressController(ProgressDialogOptions options)
         {
@@ -27,27 +27,25 @@ namespace MaterialForms.Tasks
             };
 
             if (!string.IsNullOrEmpty(options.Cancel))
-            {
                 listener = new DialogActionListener(Dialog, "negative");
-            }
         }
 
         public string Message
         {
-            get { return Dialog.Message; }
-            set { Dialog.Message = value; }
+            get => Dialog.Message;
+            set => Dialog.Message = value;
         }
 
         public double Progress
         {
-            get { return Schema.Progress; }
-            set { Schema.Progress = value; }
+            get => Schema.Progress;
+            set => Schema.Progress = value;
         }
 
         public int Maximum
         {
-            get { return Schema.Maximum; }
-            set { Schema.Maximum = value; }
+            get => Schema.Maximum;
+            set => Schema.Maximum = value;
         }
 
         public bool CancellationRequested => listener.ActionPerformed;

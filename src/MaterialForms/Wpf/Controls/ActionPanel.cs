@@ -22,7 +22,7 @@ namespace MaterialForms.Wpf.Controls
 
         public static Position GetPosition(DependencyObject element)
         {
-            return (Position)element.GetValue(PositionProperty);
+            return (Position) element.GetValue(PositionProperty);
         }
 
         public static void SetPosition(DependencyObject element, Position value)
@@ -70,17 +70,13 @@ namespace MaterialForms.Wpf.Controls
 
             // Test for h h.
             if (leftWidth + rightWidth <= availableSize.Width)
-            {
                 return new Size(leftWidth + rightWidth, Math.Max(leftMaxHeight, rightMaxHeight));
-            }
 
             if (leftWidth <= availableSize.Width)
             {
                 // Test for h / h
                 if (rightWidth <= availableSize.Width)
-                {
                     return new Size(Math.Max(leftWidth, rightWidth), leftMaxHeight + rightMaxHeight);
-                }
 
                 // Return h / v
                 return new Size(Math.Max(leftWidth, rightMaxWidth), leftMaxHeight + rightHeight);
@@ -88,9 +84,7 @@ namespace MaterialForms.Wpf.Controls
 
             // Test for v / h
             if (rightWidth <= availableSize.Width)
-            {
                 return new Size(Math.Max(leftMaxWidth, rightWidth), leftHeight + rightMaxHeight);
-            }
 
             // Return v / v
             return new Size(Math.Max(leftMaxWidth, rightMaxWidth), leftHeight + rightHeight);

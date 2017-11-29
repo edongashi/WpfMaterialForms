@@ -8,9 +8,7 @@ namespace MaterialForms
         public DialogActionListener(MaterialDialog dialog, string action)
         {
             if (string.IsNullOrEmpty(action))
-            {
                 throw new ArgumentException(nameof(action));
-            }
 
             switch (action.ToLower())
             {

@@ -2,11 +2,11 @@
 {
     public abstract class DialogBase : FormBase
     {
-        private string title;
+        private bool confirmed;
         private string message;
         private string negativeAction = "CANCEL";
         private string positiveAction = "OK";
-        private bool confirmed;
+        private string title;
 
         public string Title
         {
@@ -66,9 +66,7 @@
         protected override void OnAction(string action, object parameter)
         {
             if (action == "positive")
-            {
                 Confirmed = true;
-            }
         }
     }
 }

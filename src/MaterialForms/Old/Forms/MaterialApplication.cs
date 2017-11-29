@@ -18,7 +18,7 @@ namespace MaterialForms
         public static void CreateApplication()
         {
             var materialFormsApplication = Application.Current ??
-                               new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+                                           new Application {ShutdownMode = ShutdownMode.OnExplicitShutdown};
             LoadMaterialDesign(materialFormsApplication);
         }
 
@@ -26,15 +26,14 @@ namespace MaterialForms
         {
             application.Resources.MergedDictionaries.Add(
                 Application.LoadComponent(
-                    new Uri("/MaterialForms;component/Resources/Material.xaml", UriKind.Relative)) as ResourceDictionary);
+                        new Uri("/MaterialForms;component/Resources/Material.xaml", UriKind.Relative)) as
+                    ResourceDictionary);
         }
 
         public static void ShutDownCustomDispatcher()
         {
             if (CustomDispatcher == null)
-            {
                 return;
-            }
 
             CustomDispatcher.InvokeShutdown();
             CustomDispatcher = null;
@@ -45,18 +44,12 @@ namespace MaterialForms
             ShutDownCustomDispatcher();
             var application = Application.Current;
             if (application == null)
-            {
                 return;
-            }
 
             if (application.CheckAccess())
-            {
                 application.Shutdown();
-            }
             else
-            {
                 application.Dispatcher.InvokeAsync(application.Shutdown);
-            }
         }
 
         public static void SetDefaultDispatcher(DispatcherOption dispatcherOption)
@@ -64,7 +57,10 @@ namespace MaterialForms
             DefaultDispatcher = dispatcherOption;
         }
 
-        public static bool CheckDispatcherAccess() => CheckDispatcherAccess(DefaultDispatcher);
+        public static bool CheckDispatcherAccess()
+        {
+            return CheckDispatcherAccess(DefaultDispatcher);
+        }
 
         public static bool CheckDispatcherAccess(DispatcherOption dispatcherOption)
         {
@@ -72,7 +68,10 @@ namespace MaterialForms
             return dispatcher.CheckAccess();
         }
 
-        public static void RunDispatcher() => Dispatcher.Run();
+        public static void RunDispatcher()
+        {
+            Dispatcher.Run();
+        }
 
         internal static Dispatcher GetDispatcher(DispatcherOption dispatcherOption)
         {
@@ -98,9 +97,7 @@ namespace MaterialForms
         internal static Dispatcher GetCustomDispatcher()
         {
             if (CustomDispatcher != null)
-            {
                 return CustomDispatcher;
-            }
 
             var waitHandle = new ManualResetEventSlim();
             var thread = new Thread(() =>

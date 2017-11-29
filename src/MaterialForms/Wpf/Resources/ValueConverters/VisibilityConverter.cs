@@ -17,7 +17,7 @@ namespace MaterialForms.Wpf.Resources.ValueConverters
                 case Visibility v:
                     return v;
                 case PackIconKind i:
-                    return i == (PackIconKind)(-2)
+                    return i == (PackIconKind) (-2)
                         ? Visibility.Collapsed
                         : Visibility.Visible;
                 default:

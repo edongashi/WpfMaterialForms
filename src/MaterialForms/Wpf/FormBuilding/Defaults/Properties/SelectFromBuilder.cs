@@ -15,37 +15,28 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
         {
             var selectFrom = property.GetCustomAttribute<SelectFromAttribute>();
             if (selectFrom == null)
-            {
                 return null;
-            }
 
             var type = property.PropertyType;
             var field = new SelectionField(property.Name, property.PropertyType);
             if (selectFrom.DisplayPath != null)
-            {
                 field.DisplayPath = BoundExpression.ParseSimplified(selectFrom.DisplayPath);
-            }
 
             if (selectFrom.ValuePath != null)
-            {
                 field.ValuePath = BoundExpression.ParseSimplified(selectFrom.ValuePath);
-            }
 
             if (selectFrom.ItemStringFormat != null)
-            {
                 field.ItemStringFormat = BoundExpression.ParseSimplified(selectFrom.ItemStringFormat);
-            }
 
-            field.SelectionType = Utilities.GetResource<SelectionType>(selectFrom.SelectionType, SelectionType.ComboBox, Deserializers.Enum<SelectionType>());
+            field.SelectionType = Utilities.GetResource<SelectionType>(selectFrom.SelectionType, SelectionType.ComboBox,
+                Deserializers.Enum<SelectionType>());
 
             switch (selectFrom.ItemsSource)
             {
                 case string expr:
                     var value = BoundExpression.Parse(expr);
                     if (!value.IsSingleResource)
-                    {
                         throw new InvalidOperationException("ItemsSource must be a single resource reference.");
-                    }
 
                     field.ItemsSource = value.Resources[0];
                     break;
@@ -54,9 +45,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                     var elements = objects.Select(item =>
                     {
                         if (item is string expr)
-                        {
                             return BoundExpression.ParseSimplified(expr);
-                        }
 
                         return new LiteralValue(item);
                     }).ToList();
@@ -82,9 +71,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                     }
 
                     if (enumType != null && !enumType.IsEnum)
-                    {
                         throw new InvalidOperationException("A type argument for ItemsSource must be an enum.");
-                    }
 
                     var values = Enum.GetValues(enumType);
                     var collection = new List<KeyValuePair<ValueType, IValueProvider>>();
@@ -96,7 +83,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Properties
                         IValueProvider name;
                         if (attributes.Length > 0)
                         {
-                            var attr = (EnumDisplayAttribute)attributes[0];
+                            var attr = (EnumDisplayAttribute) attributes[0];
                             name = BoundExpression.ParseSimplified(attr.Name);
                         }
                         else

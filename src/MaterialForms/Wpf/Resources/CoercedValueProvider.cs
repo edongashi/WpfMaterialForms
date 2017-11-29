@@ -4,8 +4,8 @@ namespace MaterialForms.Wpf.Resources
 {
     public class CoercedValueProvider<T> : IValueProvider
     {
-        private readonly IValueProvider innerProvider;
         private readonly object defaultValue;
+        private readonly IValueProvider innerProvider;
 
         public CoercedValueProvider(IValueProvider innerProvider, object defaultValue)
         {
@@ -30,9 +30,7 @@ namespace MaterialForms.Wpf.Resources
             }
 
             if (value is T)
-            {
                 return value;
-            }
 
             return defaultValue;
         }

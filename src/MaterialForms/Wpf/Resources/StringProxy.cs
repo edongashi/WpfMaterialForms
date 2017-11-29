@@ -4,7 +4,7 @@ using System.Windows;
 namespace MaterialForms.Wpf.Resources
 {
     /// <summary>
-    /// Encapsulates a string bound to a resource.
+    ///     Encapsulates a string bound to a resource.
     /// </summary>
     public class StringProxy : Freezable, IStringProxy, IProxy
     {
@@ -22,28 +22,32 @@ namespace MaterialForms.Wpf.Resources
                 typeof(StringProxy),
                 new UIPropertyMetadata(PropertyChangedCallback));
 
-        private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            ((StringProxy)dependencyObject).ValueChanged?.Invoke();
-        }
-
         public object Key
         {
             get => GetValue(KeyProperty);
             set => SetValue(KeyProperty, value);
         }
 
-        public string Value
-        {
-            get => (string)GetValue(ValueProperty);
-            set => SetValue(ValueProperty, value);
-        }
-
         object IProxy.Value => Value;
 
         public Action ValueChanged { get; set; }
 
-        public override string ToString() => Value;
+        public string Value
+        {
+            get => (string) GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
+        }
+
+        private static void PropertyChangedCallback(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((StringProxy) dependencyObject).ValueChanged?.Invoke();
+        }
+
+        public override string ToString()
+        {
+            return Value;
+        }
 
         protected override Freezable CreateInstanceCore()
         {

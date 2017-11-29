@@ -5,12 +5,12 @@ namespace MaterialForms
 {
     public class BooleanSchema : SchemaBase
     {
-        private bool value;
         private bool isCheckBox;
+        private bool value;
 
         public bool Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -21,7 +21,7 @@ namespace MaterialForms
 
         public bool IsCheckBox
         {
-            get { return isCheckBox; }
+            get => isCheckBox;
             set
             {
                 if (value == isCheckBox) return;
@@ -31,15 +31,15 @@ namespace MaterialForms
             }
         }
 
+        public override bool HoldsValue => true;
+
         public override UserControl CreateView()
         {
             if (isCheckBox)
-            {
                 return new CheckBoxControl
                 {
                     DataContext = this
                 };
-            }
 
             return new SwitchControl
             {
@@ -47,9 +47,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

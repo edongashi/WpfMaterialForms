@@ -7,9 +7,11 @@ namespace MaterialForms.Wpf.Validation
 {
     internal class EqualsValidator : ComparisonValidator
     {
-        public EqualsValidator(ValidationPipe pipe, IProxy argument, IErrorStringProvider errorProvider, IBoolProxy isEnforced,
+        public EqualsValidator(ValidationPipe pipe, IProxy argument, IErrorStringProvider errorProvider,
+            IBoolProxy isEnforced,
             IValueConverter valueConverter, bool strictValidation, bool validatesOnTargetUpdated)
-            : base(pipe, argument, errorProvider, isEnforced, valueConverter, strictValidation, validatesOnTargetUpdated)
+            : base(pipe, argument, errorProvider, isEnforced, valueConverter, strictValidation,
+                validatesOnTargetUpdated)
         {
         }
 
@@ -17,9 +19,7 @@ namespace MaterialForms.Wpf.Validation
         {
             var comparand = Argument.Value;
             if (value != null && comparand is IConvertible && value.GetType() != comparand.GetType())
-            {
                 comparand = Convert.ChangeType(comparand, value.GetType(), CultureInfo.InvariantCulture);
-            }
 
             return Equals(comparand, value);
         }

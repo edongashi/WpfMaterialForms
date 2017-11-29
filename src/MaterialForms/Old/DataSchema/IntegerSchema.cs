@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using MaterialForms.Controls;
 using MaterialForms.ValueConverters;
 
@@ -7,11 +6,12 @@ namespace MaterialForms
 {
     public class IntegerSchema : SchemaBase
     {
+        public bool Required = true;
         private int? value;
 
         public int? Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -24,13 +24,13 @@ namespace MaterialForms
 
         public int MaxValue { get; set; } = int.MaxValue;
 
-        public bool Required = true;
-
         public string LessThanMinimumMessage { get; set; } = "Value must be greater than or equal to {0}.";
 
         public string GreaterThanMaximumMessage { get; set; } = "Value must be less than or equal to {0}.";
 
         public string RequiredMessage { get; set; } = "Field is required.";
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -40,9 +40,10 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {

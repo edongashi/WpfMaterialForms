@@ -9,7 +9,7 @@ namespace MaterialForms
 
         public string Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -22,17 +22,20 @@ namespace MaterialForms
 
         public ValidationCallback<string> Validation { get; set; }
 
+        public override bool HoldsValue => true;
+
         public override UserControl CreateView()
         {
-            return new FileLoaderControl()
+            return new FileLoaderControl
             {
                 DataContext = this
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {
@@ -43,9 +46,7 @@ namespace MaterialForms
         {
             var callback = Validation;
             if (callback == null)
-            {
                 return true;
-            }
 
             Error = callback(value);
             return HasNoError;

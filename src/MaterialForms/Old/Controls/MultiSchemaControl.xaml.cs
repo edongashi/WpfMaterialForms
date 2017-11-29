@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MaterialForms.Controls
 {
     /// <summary>
-    /// Interaction logic for MultiSchemaControl.xaml
+    ///     Interaction logic for MultiSchemaControl.xaml
     /// </summary>
     public partial class MultiSchemaControl : UserControl
     {
@@ -30,9 +18,7 @@ namespace MaterialForms.Controls
                 var schema = schemas[i];
                 var gridWidth = 1d;
                 if (i < length)
-                {
                     gridWidth = columnWidths[i];
-                }
 
                 LayoutGrid.ColumnDefinitions.Add(new ColumnDefinition
                 {

@@ -26,9 +26,7 @@ namespace MaterialForms.Wpf.Resources
         {
             var key = new DynamicResourceKey(ResourceKey);
             if (context.TryFindResource(key) is BindingProxy proxy)
-            {
                 return CreateBinding(context, proxy);
-            }
 
             proxy = new BindingProxy();
             context.AddResource(key, proxy);
@@ -39,9 +37,7 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is DynamicResource resource)
-            {
                 return ResourceKey == resource.ResourceKey && ValueConverter == resource.ValueConverter;
-            }
 
             return false;
         }
@@ -72,9 +68,7 @@ namespace MaterialForms.Wpf.Resources
             public object GetService(Type serviceType)
             {
                 if (serviceType == typeof(IProvideValueTarget))
-                {
                     return this;
-                }
 
                 return null;
             }
@@ -102,9 +96,7 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
-            {
                 return false;
-            }
 
             return obj is DynamicResourceKey key && Equals(key);
         }

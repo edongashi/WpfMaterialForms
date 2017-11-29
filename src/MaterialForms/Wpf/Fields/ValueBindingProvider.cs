@@ -5,29 +5,28 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Fields
 {
     /// <summary>
-    /// Single source data binding provider that captures resources with name "Value".
+    ///     Single source data binding provider that captures resources with name "Value".
     /// </summary>
     public class ValueBindingProvider : BindingProvider, IDataBindingProvider
     {
-        public ValueBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> fieldResources, IDictionary<string, IValueProvider> formResources, bool throwOnNotFound) 
+        public ValueBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources, bool throwOnNotFound)
             : base(context, fieldResources, formResources, throwOnNotFound)
         {
         }
 
+        public BindingExpressionBase CurrentBindingExpression { get; private set; }
+
         public override void BindingCreated(BindingExpressionBase expression, string resource)
         {
             if (resource == "Value")
-            {
                 CurrentBindingExpression = expression;
-            }
         }
-
-        public BindingExpressionBase CurrentBindingExpression { get; private set; }
 
         public IEnumerable<BindingExpressionBase> GetBindings()
         {
-            return CurrentBindingExpression != null 
-                ? new[] { CurrentBindingExpression } 
+            return CurrentBindingExpression != null
+                ? new[] {CurrentBindingExpression}
                 : new BindingExpressionBase[0];
         }
 

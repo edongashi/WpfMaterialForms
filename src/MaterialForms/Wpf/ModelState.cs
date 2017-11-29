@@ -11,42 +11,32 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf
 {
     /// <summary>
-    /// Provides utilities for bound models.
+    ///     Provides utilities for bound models.
     /// </summary>
     public static class ModelState
     {
         /// <summary>
-        /// Attempts to reset object properties to default values.
-        /// Does nothing if object is not part of any generated form.
+        ///     Attempts to reset object properties to default values.
+        ///     Does nothing if object is not part of any generated form.
         /// </summary>
         public static bool Reset(object model, params string[] properties)
         {
             if (properties == null)
-            {
                 throw new ArgumentNullException(nameof(properties));
-            }
 
             if (properties.Length == 0)
-            {
                 return true;
-            }
 
             var form = GetForms(model).FirstOrDefault();
             if (form == null)
-            {
                 return false;
-            }
 
             var fields = form.DataFields;
             // Storing pairs in a dictionary to avoid duplicates.
             var existingFields = new Dictionary<string, DataFormField>();
             foreach (var property in properties)
-            {
                 if (fields.TryGetValue(property, out var field))
-                {
                     existingFields[property] = field;
-                }
-            }
 
             Reset(model, existingFields, form.ResourceContext);
             // Update UI just in case.
@@ -55,16 +45,14 @@ namespace MaterialForms.Wpf
         }
 
         /// <summary>
-        /// Attempts to reset object to default values.
-        /// Will not work if object is not part of any generated form.
+        ///     Attempts to reset object to default values.
+        ///     Will not work if object is not part of any generated form.
         /// </summary>
         public static bool Reset(object model)
         {
             var form = GetForms(model).FirstOrDefault();
             if (form == null)
-            {
                 return false;
-            }
 
             Reset(model, form.DataFields, form.ResourceContext);
             UpdateFields(model);
@@ -74,13 +62,10 @@ namespace MaterialForms.Wpf
         private static void Reset(object model, Dictionary<string, DataFormField> fields, IResourceContext context)
         {
             if (fields.Count == 0)
-            {
                 return;
-            }
 
             var accessor = ObjectAccessor.Create(model);
             foreach (var pair in fields)
-            {
                 try
                 {
                     var property = pair.Key;
@@ -89,32 +74,20 @@ namespace MaterialForms.Wpf
                     {
                         var type = field.PropertyType;
                         if (type == null)
-                        {
-                            // No more info available to determine a value.
                             continue;
-                        }
 
                         if (type.IsValueType)
-                        {
                             accessor[property] = Activator.CreateInstance(field.PropertyType);
-                        }
                         else
-                        {
                             accessor[property] = null;
-                        }
                     }
                     else
                     {
                         object value;
                         if (field.DefaultValue is LiteralValue literal)
-                        {
                             value = literal.Value;
-                        }
                         else
-                        {
-                            // Get proxied value.
                             value = field.DefaultValue.GetValue(context).Value;
-                        }
 
                         accessor[property] = value;
                     }
@@ -123,58 +96,49 @@ namespace MaterialForms.Wpf
                 {
                     // Tried our best.
                 }
-            }
         }
 
         /// <summary>
-        /// Updates form fields with model values.
-        /// Has a similar effect to <see cref="INotifyPropertyChanged"/>.
+        ///     Updates form fields with model values.
+        ///     Has a similar effect to <see cref="INotifyPropertyChanged" />.
         /// </summary>
         public static void UpdateFields(object model)
         {
             foreach (var expression in GetBindings(model))
-            {
                 expression.UpdateTarget();
-            }
         }
 
         /// <summary>
-        /// Updates form fields with property values.
-        /// Has a similar effect to <see cref="INotifyPropertyChanged"/>.
+        ///     Updates form fields with property values.
+        ///     Has a similar effect to <see cref="INotifyPropertyChanged" />.
         /// </summary>
         public static void UpdateFields(object model, params string[] properties)
         {
             foreach (var expression in GetBindings(model, properties))
-            {
                 expression.UpdateTarget();
-            }
         }
 
 
         /// <summary>
-        /// Clear validation errors from source properties.
+        ///     Clear validation errors from source properties.
         /// </summary>
         public static void ClearValidationErrors(object model)
         {
             foreach (var expression in GetBindings(model))
-            {
                 System.Windows.Controls.Validation.ClearInvalid(expression);
-            }
         }
 
         /// <summary>
-        /// Clear validation errors from properties.
+        ///     Clear validation errors from properties.
         /// </summary>
         public static void ClearValidationErrors(object model, params string[] properties)
         {
             foreach (var expression in GetBindings(model, properties))
-            {
                 System.Windows.Controls.Validation.ClearInvalid(expression);
-            }
         }
 
         /// <summary>
-        /// Validates source by flushing bindings.
+        ///     Validates source by flushing bindings.
         /// </summary>
         public static bool Validate(object model)
         {
@@ -189,7 +153,7 @@ namespace MaterialForms.Wpf
         }
 
         /// <summary>
-        /// Validates source properties by flushing bindings.
+        ///     Validates source properties by flushing bindings.
         /// </summary>
         public static bool Validate(object model, params string[] properties)
         {
@@ -208,14 +172,10 @@ namespace MaterialForms.Wpf
         internal static bool IsModel(object value)
         {
             if (value == null)
-            {
                 return false;
-            }
 
             if (value is ValueType || value is string)
-            {
                 return false;
-            }
 
             return true;
         }
@@ -224,20 +184,12 @@ namespace MaterialForms.Wpf
         {
             var list = new List<BindingExpressionBase>();
             if (properties == null || properties.Length == 0)
-            {
                 return list;
-            }
 
             foreach (var form in GetForms(model))
-            {
-                foreach (var property in properties)
-                {
-                    if (form.DataBindingProviders.TryGetValue(property, out var provider))
-                    {
-                        list.AddRange(provider.GetBindings());
-                    }
-                }
-            }
+            foreach (var property in properties)
+                if (form.DataBindingProviders.TryGetValue(property, out var provider))
+                    list.AddRange(provider.GetBindings());
 
             return list;
         }
@@ -252,17 +204,14 @@ namespace MaterialForms.Wpf
         private static IEnumerable<DynamicForm> GetForms(object model)
         {
             if (model == null)
-            {
                 throw new ArgumentNullException(nameof(model));
-            }
 
             if (model is ValueType || model is string)
-            {
                 throw new ArgumentException("Cannot track state of primitive types.", nameof(model));
-            }
 
             return DynamicForm.ActiveForms.Where(
-                f => f.CheckAccess() // Get only synchronized controls, otherwise updating bindings would cause problems.
+                f =>
+                    f.CheckAccess() // Get only synchronized controls, otherwise updating bindings would cause problems.
                     && ReferenceEquals(f.Value, model));
         }
     }

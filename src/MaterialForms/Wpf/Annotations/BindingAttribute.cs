@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows.Data;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
@@ -7,16 +6,16 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Annotations
 {
     /// <summary>
-    /// Specifies additional information about a field's data binding.
+    ///     Specifies additional information about a field's data binding.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class BindingAttribute : Attribute
     {
         /// <summary>
-        /// Indicates the culture name to use if this field uses
-        /// data conversion. A null value indicates UI culture;
-        /// an empty value indicates invariant culture; a string
-        /// value will retrieve the culture by name.
+        ///     Indicates the culture name to use if this field uses
+        ///     data conversion. A null value indicates UI culture;
+        ///     an empty value indicates invariant culture; a string
+        ///     value will retrieve the culture by name.
         /// </summary>
         public string ConverterCulture { get; set; } = "";
 

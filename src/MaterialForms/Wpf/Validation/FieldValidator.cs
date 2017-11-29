@@ -34,15 +34,11 @@ namespace MaterialForms.Wpf.Validation
             {
                 // Pass if another validator has already reported an error.
                 if (ValidationPipe.Error != null)
-                {
                     return ValidationResult.ValidResult;
-                }
 
                 // Checking this later might be a tiny bit faster.
                 if (!IsEnforced.Value)
-                {
                     return ValidationResult.ValidResult;
-                }
 
                 var isValid = ValidateValue(ValueConverter != null
                     ? ValueConverter.Convert(value, typeof(object), null, cultureInfo)
@@ -67,9 +63,7 @@ namespace MaterialForms.Wpf.Validation
             else
             {
                 if (!IsEnforced.Value)
-                {
                     return ValidationResult.ValidResult;
-                }
 
                 // When there's no pipe validation must return eagerly.
                 // Properties will not be updated this way as validation will stop binding.

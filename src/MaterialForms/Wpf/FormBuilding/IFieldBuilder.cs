@@ -4,7 +4,7 @@ using MaterialForms.Wpf.Fields;
 namespace MaterialForms.Wpf.FormBuilding
 {
     /// <summary>
-    /// Intercepts properties and builds form elements if conditions are met.
+    ///     Intercepts properties and builds form elements if conditions are met.
     /// </summary>
     public interface IFieldBuilder
     {

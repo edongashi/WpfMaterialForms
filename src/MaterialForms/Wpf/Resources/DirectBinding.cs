@@ -17,7 +17,8 @@ namespace MaterialForms.Wpf.Resources
         {
         }
 
-        public DirectBinding(BindingOptions bindingOptions, List<IValidatorProvider> validationRules, string valueConverter)
+        public DirectBinding(BindingOptions bindingOptions, List<IValidatorProvider> validationRules,
+            string valueConverter)
             : base(valueConverter)
         {
             BindingOptions = bindingOptions ?? throw new ArgumentNullException(nameof(bindingOptions));
@@ -37,9 +38,7 @@ namespace MaterialForms.Wpf.Resources
             BindingOptions.Apply(binding);
             var pipe = new ValidationPipe();
             foreach (var validatorProvider in ValidationRules)
-            {
                 binding.ValidationRules.Add(validatorProvider.GetValidator(context, pipe));
-            }
 
             binding.ValidationRules.Add(pipe);
             return binding;

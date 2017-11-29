@@ -7,11 +7,10 @@ namespace MaterialForms
 {
     public class DialogSession : Session
     {
-        private Task<bool?> task;
-        private MaterialDialogSession sessionInstance;
-
         private readonly string dialogIdentifier;
         private readonly double dialogWidth;
+        private MaterialDialogSession sessionInstance;
+        private Task<bool?> task;
 
         internal DialogSession(string dialogIdentifier, MaterialDialog dialog, double dialogWidth)
         {
@@ -47,10 +46,8 @@ namespace MaterialForms
 
         private async Task<bool?> StartTask(DependencyObject view)
         {
-            return await DialogHost.Show(view, dialogIdentifier, (object sender, DialogOpenedEventArgs args) =>
-            {
-                sessionInstance = args.Session;
-            }) as bool?;
+            return await DialogHost.Show(view, dialogIdentifier,
+                (object sender, DialogOpenedEventArgs args) => { sessionInstance = args.Session; }) as bool?;
         }
     }
 }

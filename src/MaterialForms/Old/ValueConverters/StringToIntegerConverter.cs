@@ -15,9 +15,7 @@ namespace MaterialForms.ValueConverters
         {
             int result;
             if (int.TryParse(value?.ToString(), out result))
-            {
                 return result;
-            }
 
             return null;
         }

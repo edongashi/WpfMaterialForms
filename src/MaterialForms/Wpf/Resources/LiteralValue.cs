@@ -6,9 +6,9 @@ namespace MaterialForms.Wpf.Resources
     public sealed class LiteralValue : Resource
     {
         public static readonly LiteralValue Null = new LiteralValue(null);
-                      
+
         public static readonly LiteralValue True = new LiteralValue(true);
-                      
+
         public static readonly LiteralValue False = new LiteralValue(false);
 
         public LiteralValue(object value)
@@ -20,9 +20,7 @@ namespace MaterialForms.Wpf.Resources
             : base(valueConverter)
         {
             if (value is BindingBase)
-            {
                 throw new ArgumentException("Value cannot be an instance of BindingBase.", nameof(value));
-            }
 
             Value = value;
         }
@@ -51,10 +49,8 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is LiteralValue resource)
-            {
                 return Equals(Value, resource.Value)
-                    && ValueConverter == other.ValueConverter;
-            }
+                       && ValueConverter == other.ValueConverter;
 
             return false;
         }

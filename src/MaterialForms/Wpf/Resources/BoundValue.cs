@@ -29,12 +29,10 @@ namespace MaterialForms.Wpf.Resources
         public override bool Equals(Resource other)
         {
             if (other is BoundValue resource)
-            {
                 return ReferenceEquals(Source, resource.Source)
                        && PropertyPath == resource.PropertyPath
                        && OneTimeBinding == resource.OneTimeBinding
                        && ValueConverter == resource.ValueConverter;
-            }
 
             return false;
         }

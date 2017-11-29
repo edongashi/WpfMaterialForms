@@ -5,33 +5,33 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Fields
 {
     /// <summary>
-    /// Base class for all form field definitions.
+    ///     Base class for all form field definitions.
     /// </summary>
     public abstract class FormField : FormElement
     {
         /// <summary>
-        /// Gets or sets the unique name of this field.
+        ///     Gets or sets the unique name of this field.
         /// </summary>
         public string Key { get; set; }
 
         /// <summary>
-        /// Gets or sets the string expression of the field's title.
+        ///     Gets or sets the string expression of the field's title.
         /// </summary>
         public IValueProvider Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the string expression of the field's tooltip.
+        ///     Gets or sets the string expression of the field's tooltip.
         /// </summary>
         public IValueProvider ToolTip { get; set; }
 
         /// <summary>
-        /// Gets or sets the field's PackIconKind resource. Not all controls may display an icon.
+        ///     Gets or sets the field's PackIconKind resource. Not all controls may display an icon.
         /// </summary>
         public IValueProvider Icon { get; set; }
 
         /// <summary>
-        /// Finalizes the field state by adding all appropriate values as resources.
-        /// Changing properties after this method has been called is strongly discouraged.
+        ///     Finalizes the field state by adding all appropriate values as resources.
+        ///     Changing properties after this method has been called is strongly discouraged.
         /// </summary>
         protected internal override void Freeze()
         {
@@ -49,7 +49,7 @@ namespace MaterialForms.Wpf.Fields
             else
             {
                 Resources.Add(iconVisibility, new LiteralValue(Visibility.Collapsed));
-                Resources.Add(nameof(Icon), new LiteralValue((PackIconKind)(-2)));
+                Resources.Add(nameof(Icon), new LiteralValue((PackIconKind) (-2)));
             }
         }
     }

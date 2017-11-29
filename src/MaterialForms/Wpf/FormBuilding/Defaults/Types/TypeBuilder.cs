@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using MaterialForms.Wpf.Fields;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
@@ -9,9 +8,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
         public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             if (property.PropertyType != typeof(T))
-            {
                 return null;
-            }
 
             return Build(property, deserializer);
         }

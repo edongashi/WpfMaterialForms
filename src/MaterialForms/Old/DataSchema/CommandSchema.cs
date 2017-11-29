@@ -23,13 +23,13 @@ namespace MaterialForms
 
     public class CommandSchema : SchemaBase
     {
-        private string commandHint = "";
         private ICommand command;
+        private string commandHint = "";
         private MaterialForm form;
 
         public string CommandHint
         {
-            get { return commandHint; }
+            get => commandHint;
             set
             {
                 if (value == commandHint) return;
@@ -40,7 +40,7 @@ namespace MaterialForms
 
         public MaterialForm Form
         {
-            get { return form; }
+            get => form;
             set
             {
                 if (Equals(value, form)) return;
@@ -51,15 +51,12 @@ namespace MaterialForms
 
         public Action<CommandArgs> Callback
         {
-            set
-            {
-                Command = new DelegateCommand(arg => value(new CommandArgs(this, arg as Session, form)));
-            }
+            set { Command = new DelegateCommand(arg => value(new CommandArgs(this, arg as Session, form))); }
         }
 
         public ICommand Command
         {
-            get { return command; }
+            get => command;
             private set
             {
                 if (Equals(value, command)) return;
@@ -67,6 +64,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => false;
 
         public override UserControl CreateView()
         {
@@ -76,8 +75,9 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => false;
-
-        public override object GetValue() => null;
+        public override object GetValue()
+        {
+            return null;
+        }
     }
 }

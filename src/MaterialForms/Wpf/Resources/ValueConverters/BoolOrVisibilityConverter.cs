@@ -17,9 +17,7 @@ namespace MaterialForms.Wpf.Resources.ValueConverters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (innerConverter != null)
-            {
                 value = innerConverter.Convert(value, targetType, parameter, culture);
-            }
 
             switch (value)
             {

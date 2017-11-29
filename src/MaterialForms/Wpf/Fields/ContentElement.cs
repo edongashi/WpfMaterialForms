@@ -28,7 +28,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             else
             {
                 Resources.Add(iconVisibility, new LiteralValue(Visibility.Collapsed));
-                Resources.Add(nameof(Icon), new LiteralValue((PackIconKind)(-2)));
+                Resources.Add(nameof(Icon), new LiteralValue((PackIconKind) (-2)));
             }
         }
     }

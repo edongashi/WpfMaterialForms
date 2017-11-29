@@ -5,7 +5,7 @@ using MaterialForms.Wpf.Resources;
 namespace MaterialForms.Wpf.Fields
 {
     /// <summary>
-    /// Represents a form element, which is not necessarily an input field.
+    ///     Represents a form element, which is not necessarily an input field.
     /// </summary>
     public abstract class FormElement
     {
@@ -19,7 +19,7 @@ namespace MaterialForms.Wpf.Fields
         public IDictionary<string, IValueProvider> Resources { get; set; }
 
         /// <summary>
-        /// Gets or sets the bool resource that determines whether this element will be visible.
+        ///     Gets or sets the bool resource that determines whether this element will be visible.
         /// </summary>
         public IValueProvider IsVisible { get; set; }
 

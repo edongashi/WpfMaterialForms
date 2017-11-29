@@ -20,7 +20,7 @@ namespace MaterialForms.Wpf.Resources
 
         public BoundExpression(IValueProvider resource, string stringFormat)
         {
-            Resources = new List<IValueProvider>(1) { resource ?? throw new ArgumentNullException(nameof(resource)) };
+            Resources = new List<IValueProvider>(1) {resource ?? throw new ArgumentNullException(nameof(resource))};
             StringFormat = stringFormat;
         }
 
@@ -28,18 +28,12 @@ namespace MaterialForms.Wpf.Resources
         {
             Resources = resources?.ToList() ?? throw new ArgumentNullException(nameof(resources));
             if (Resources.Count != 1)
-            {
                 StringFormat = stringFormat ?? throw new ArgumentNullException(nameof(stringFormat));
-            }
             else
-            {
                 StringFormat = stringFormat;
-            }
 
             if (Resources.Count == 0)
-            {
                 IsPlainString = true;
-            }
         }
 
         public string StringFormat { get; }
@@ -50,56 +44,17 @@ namespace MaterialForms.Wpf.Resources
 
         public bool IsSingleResource => StringFormat == null && Resources != null && Resources.Count == 1;
 
-        internal IProxy GetProxy(IResourceContext context)
-        {
-            if (IsPlainString)
-            {
-                return new PlainObject(StringFormat);
-            }
-
-            if (IsSingleResource)
-            {
-                return Resources[0].GetValue(context);
-            }
-
-            if (StringFormat != null)
-            {
-                return this.GetStringValue(context);
-            }
-
-            return this.GetValue(context);
-        }
-
-        public IValueProvider GetValueProvider()
-        {
-            if (IsPlainString)
-            {
-                return new LiteralValue(StringFormat);
-            }
-
-            if (IsSingleResource)
-            {
-                return Resources[0];
-            }
-
-            return this;
-        }
-
         public BindingBase ProvideBinding(IResourceContext context)
         {
             if (Resources == null || Resources.Count == 0)
-            {
                 return new LiteralValue(StringFormat).ProvideBinding(context);
-            }
 
             if (Resources.Count == 1)
             {
                 var resource = Resources[0];
                 var binding = resource.ProvideBinding(context);
                 if (StringFormat != null)
-                {
                     binding.StringFormat = StringFormat;
-                }
 
                 return binding;
             }
@@ -110,9 +65,7 @@ namespace MaterialForms.Wpf.Resources
             };
 
             foreach (var binding in Resources.Select(resource => resource.ProvideBinding(context)))
-            {
                 multiBinding.Bindings.Add(binding);
-            }
 
             return multiBinding;
         }
@@ -120,24 +73,43 @@ namespace MaterialForms.Wpf.Resources
         public object ProvideValue(IResourceContext context)
         {
             if (Resources == null || Resources.Count == 0)
-            {
                 return UnescapedStringFormat();
-            }
 
             return ProvideBinding(context);
+        }
+
+        internal IProxy GetProxy(IResourceContext context)
+        {
+            if (IsPlainString)
+                return new PlainObject(StringFormat);
+
+            if (IsSingleResource)
+                return Resources[0].GetValue(context);
+
+            if (StringFormat != null)
+                return this.GetStringValue(context);
+
+            return this.GetValue(context);
+        }
+
+        public IValueProvider GetValueProvider()
+        {
+            if (IsPlainString)
+                return new LiteralValue(StringFormat);
+
+            if (IsSingleResource)
+                return Resources[0];
+
+            return this;
         }
 
         public IValueProvider Simplified()
         {
             if (IsPlainString)
-            {
                 return new LiteralValue(UnescapedStringFormat());
-            }
 
             if (IsSingleResource)
-            {
                 return Resources[0];
-            }
 
             return this;
         }
@@ -173,15 +145,11 @@ namespace MaterialForms.Wpf.Resources
                     }
 
                     if (index == -1)
-                    {
                         return null;
-                    }
 
                     var source = name.Substring(0, index);
                     if (!contextualResources.TryGetValue(source, out value))
-                    {
                         return null;
-                    }
 
                     var path = name.Substring(index + increment);
                     switch (value)
@@ -213,22 +181,17 @@ namespace MaterialForms.Wpf.Resources
             return Parse(expression, Factory);
         }
 
-        public static BoundExpression Parse(string expression, Func<string, bool, string, IValueProvider> contextualResource)
+        public static BoundExpression Parse(string expression,
+            Func<string, bool, string, IValueProvider> contextualResource)
         {
             if (expression == null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var i = 0;
             if (expression.StartsWith("\\"))
-            {
                 i = 1;
-            }
             else if (expression.StartsWith("@"))
-            {
                 return new BoundExpression(expression.Substring(1));
-            }
 
             var resources = new List<IValueProvider>();
             var stringFormat = new StringBuilder();
@@ -251,9 +214,7 @@ namespace MaterialForms.Wpf.Resources
             {
                 stringFormat.Append('{');
                 if (++i == expression.Length)
-                {
                     throw new FormatException("Invalid unescaped '{' at end of input.");
-                }
 
                 if (expression[i] == '{')
                 {
@@ -269,9 +230,7 @@ namespace MaterialForms.Wpf.Resources
             {
                 stringFormat.Append('}');
                 if (++i == expression.Length)
-                {
                     throw new FormatException("Invalid unescaped '}' at end of input.");
-                }
 
                 if (expression[i] == '}')
                 {
@@ -292,9 +251,7 @@ namespace MaterialForms.Wpf.Resources
             if (expression[i] == '^')
             {
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
 
                 oneTimeBind = true;
             }
@@ -304,82 +261,56 @@ namespace MaterialForms.Wpf.Resources
             {
                 resourceType.Append(c);
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
             }
 
             // Skip whitespace.
             while (char.IsWhiteSpace(expression[i]))
-            {
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
-            }
 
             // Resource name.
             while ((c = expression[i]) != ',' && c != ':' && c != '|')
             {
                 if (char.IsWhiteSpace(c))
-                {
                     break;
-                }
 
                 if (c == '{')
                 {
                     if (++i == length)
-                    {
                         throw new FormatException("Unexpected end of input.");
-                    }
 
                     if (expression[i] != '{')
-                    {
                         throw new FormatException("Invalid unescaped '{'.");
-                    }
                 }
                 else if (c == '}')
                 {
                     if (++i == length)
-                    {
                         goto addResource;
-                    }
 
                     if (expression[i] != '}')
-                    {
                         goto addResource;
-                    }
                 }
 
                 resourceName.Append(c);
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
             }
 
             // Skip whitespace between name and converter/format/end.
             while (char.IsWhiteSpace(expression[i]))
-            {
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
-            }
 
             c = expression[i];
             if (c == '}')
             {
                 // Resource can close at this point assuming no converter and no string format.
                 if (++i == length)
-                {
                     goto addResource;
-                }
 
                 if (expression[i] != '}')
-                {
                     goto addResource;
-                }
 
                 throw new FormatException("Invalid '}}' sequence.");
             }
@@ -388,39 +319,27 @@ namespace MaterialForms.Wpf.Resources
             if (c == '|')
             {
                 if (++i == length)
-                {
                     throw new FormatException("Unexpected end of input.");
-                }
 
                 while (char.IsLetter(c = expression[i]))
                 {
                     resourceConverter.Append(c);
                     if (++i == length)
-                    {
                         throw new FormatException("Unexpected end of input.");
-                    }
                 }
 
                 // Skip whitespace between converter to format/end.
                 while (char.IsWhiteSpace(expression[i]))
-                {
                     if (++i == length)
-                    {
                         throw new FormatException("Unexpected end of input.");
-                    }
-                }
 
                 if (c == '}')
                 {
                     if (++i == length)
-                    {
                         goto addResource;
-                    }
 
                     if (expression[i] != '}')
-                    {
                         goto addResource;
-                    }
 
                     throw new FormatException("Converter name cannot contain braces.");
                 }
@@ -433,22 +352,16 @@ namespace MaterialForms.Wpf.Resources
                 while (true)
                 {
                     if (++i == length)
-                    {
                         throw new FormatException("Unexpected end of input.");
-                    }
 
                     c = expression[i];
                     if (c == '}')
                     {
                         if (++i == length)
-                        {
                             goto addResource;
-                        }
 
                         if (expression[i] != '}')
-                        {
                             goto addResource;
-                        }
 
                         resourceFormat.Append('}');
                     }
@@ -485,9 +398,7 @@ namespace MaterialForms.Wpf.Resources
                 default:
                     resource = contextualResource?.Invoke(resourceTypeString + key, oneTimeBind, converter);
                     if (resource != null)
-                    {
                         break;
-                    }
 
                     throw new FormatException("Invalid resource type.");
             }
@@ -501,9 +412,7 @@ namespace MaterialForms.Wpf.Resources
 
             stringFormat.Append(index);
             if (resourceFormat.Length != 0)
-            {
                 stringFormat.Append(resourceFormat);
-            }
 
             stringFormat.Append('}');
 

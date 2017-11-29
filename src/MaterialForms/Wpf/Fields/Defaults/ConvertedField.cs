@@ -9,7 +9,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public sealed class ConvertedField : DataFormField
     {
-        public ConvertedField(string key, Type propertyType, Func<string, CultureInfo, object> deserializer) : base(key, propertyType)
+        public ConvertedField(string key, Type propertyType, Func<string, CultureInfo, object> deserializer) : base(key,
+            propertyType)
         {
             Deserializer = deserializer;
             CreateBinding = false;
@@ -23,21 +24,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             base.Freeze();
             if (IsDirectBinding)
-            {
                 Resources.Add("Value",
                     new ConvertedDirectBinding(BindingOptions, Validators, Deserializer,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
-            }
             else if (string.IsNullOrEmpty(Key))
-            {
                 Resources.Add("Value", LiteralValue.Null);
-            }
             else
-            {
                 Resources.Add("Value",
                     new ConvertedDataBinding(Key, BindingOptions, Validators, Deserializer,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
-            }
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
@@ -51,7 +46,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static ConvertedPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ConvertedPresenter), new FrameworkPropertyMetadata(typeof(ConvertedPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ConvertedPresenter),
+                new FrameworkPropertyMetadata(typeof(ConvertedPresenter)));
         }
 
         public ConvertedPresenter(IResourceContext context,

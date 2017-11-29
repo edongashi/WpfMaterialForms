@@ -8,13 +8,15 @@
             <Style x:Key="ColoredIconStyle" TargetType="{x:Type materialDesign:PackIcon}">
                 <Setter Property="Foreground" Value="{Binding BorderBrush, ElementName=ValueHolderControl}" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding IsFocused, ElementName=ValueHolderControl, Mode=OneWay}"
+                                 Value="True">
                         <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -49,4 +51,3 @@
                  VerticalScrollBarVisibility="Auto" />
     </Grid>
 </UserControl>
-

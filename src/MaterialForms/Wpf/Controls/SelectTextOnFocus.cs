@@ -18,7 +18,7 @@ namespace MaterialForms.Wpf.Controls
         {
             if (d is TextBox)
             {
-                TextBox textBox = d as TextBox;
+                var textBox = d as TextBox;
                 if ((e.NewValue as bool?).GetValueOrDefault(false))
                 {
                     textBox.GotKeyboardFocus += OnKeyboardFocusSelectText;
@@ -34,14 +34,12 @@ namespace MaterialForms.Wpf.Controls
 
         private static void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DependencyObject dependencyObject = GetParentFromVisualTree(e.OriginalSource);
+            var dependencyObject = GetParentFromVisualTree(e.OriginalSource);
 
             if (dependencyObject == null)
-            {
                 return;
-            }
 
-            var textBox = (TextBox)dependencyObject;
+            var textBox = (TextBox) dependencyObject;
             if (!textBox.IsKeyboardFocusWithin)
             {
                 textBox.Focus();
@@ -53,27 +51,23 @@ namespace MaterialForms.Wpf.Controls
         {
             DependencyObject parent = source as UIElement;
             while (parent != null && !(parent is TextBox))
-            {
                 parent = VisualTreeHelper.GetParent(parent);
-            }
 
             return parent;
         }
 
         private static void OnKeyboardFocusSelectText(object sender, KeyboardFocusChangedEventArgs e)
         {
-            TextBox textBox = e.OriginalSource as TextBox;
+            var textBox = e.OriginalSource as TextBox;
             if (textBox != null)
-            {
                 textBox.SelectAll();
-            }
         }
 
         [AttachedPropertyBrowsableForChildren(IncludeDescendants = false)]
         [AttachedPropertyBrowsableForType(typeof(TextBox))]
         public static bool GetActive(DependencyObject @object)
         {
-            return (bool)@object.GetValue(ActiveProperty);
+            return (bool) @object.GetValue(ActiveProperty);
         }
 
         public static void SetActive(DependencyObject @object, bool value)

@@ -12,14 +12,16 @@
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding ElementName=ValueHolderControl, Path=IsFocused}" Value="True" />
-                            <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}" Value="False" />
+                            <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}"
+                                       Value="False" />
                         </MultiDataTrigger.Conditions>
                         <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using MahApps.Metro.Controls;
 
 namespace MaterialForms
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     internal partial class MaterialFormsWindow : MetroWindow
     {

@@ -72,120 +72,92 @@ The dialogs and windows are generated dynamically from data schemas. The API is 
 Check out MaterialForms.WpfDemo for easy to follow examples.
 
 ## Examples
-### Basic dialogs
-```cs
-await WindowFactory.Alert("Hello World!").Show();
-bool? result = await WindowFactory.Prompt("Delete item?").Show();
-```
 
-### Customized dialogs
+*[If you're looking for the Old documentation click here](https://github.com/redbaty/WpfMaterialForms/blob/master/OLDDOCS.md)*
 
-![login](https://github.com/EdonGashi/WpfMaterialForms/blob/master/doc/login.png)
+Use attributes to describe how controls should be rendered like this
 
-```cs
+```csharp
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using MaterialForms.Wpf.Annotations;
+
+namespace MaterialForms.Demo.Models
 {
-    Title = "Please log in to continue",
-    PositiveAction = "LOG IN",
-    Form = new MaterialForm
+    public class FoodSelection : INotifyPropertyChanged
     {
-        new StringSchema
+        private string firstFood = "Pizza";
+        private string secondFood = "Steak";
+        private string thirdFood = "Salad";
+        private string yourFavoriteFood;
+
+        [Field(DefaultValue = "Pizza")]
+        [Value(Must.NotBeEmpty)]
+        public string FirstFood
         {
-            Name = "Username",
-            IconKind = PackIconKind.Account
-        },
-        new PasswordSchema
-        {
-            Name = "Password",
-            IconKind = PackIconKind.Key
-        },
-        new BooleanSchema
-        {
-            Name = "Remember me",
-            IsCheckBox = true
+            get => firstFood;
+            set
+            {
+                firstFood = value;
+                OnPropertyChanged();
+            }
         }
-    },
-	Theme = DialogTheme.Light // DialogTheme.Dark
-}
-```
----
 
-![settings](https://github.com/EdonGashi/WpfMaterialForms/blob/master/doc/settings.png)
+        [Field(DefaultValue = "Steak")]
+        [Value(Must.NotBeEmpty)]
+        public string SecondFood
+        {
+            get => secondFood;
+            set
+            {
+                secondFood = value;
+                OnPropertyChanged();
+            }
+        }
 
-```cs
-{
-    Title = "Settings",
-    Form = new MaterialForm
-    {
-        new CaptionSchema
+        [Field(DefaultValue = "Salad")]
+        [Value(Must.NotBeEmpty)]
+        public string ThirdFood
         {
-            Name = "Connectivity"
-        },
-        new BooleanSchema
+            get => thirdFood;
+            set
+            {
+                thirdFood = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Text("You have selected {Binding YourFavoriteFood}", InsertAfter = true)]
+
+        [SelectFrom(new[] { "{Binding FirstFood}, obviously.", "{Binding SecondFood} is best!", "I love {Binding ThirdFood}" })]
+        public string YourFavoriteFood
         {
-            Name = "WiFi",
-            IconKind = PackIconKind.Wifi,
-            Value = true
-        },
-        new BooleanSchema
+            get => yourFavoriteFood;
+            set
+            {
+                yourFavoriteFood = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Name = "Mobile Data",
-            IconKind = PackIconKind.Signal
-        },
-        new CaptionSchema
-        {
-            Name = "Device"
-        },
-        new NumberRangeSchema
-        {
-            Name = "Volume",
-            IconKind = PackIconKind.VolumeHigh,
-            MinValue = 0,
-            MaxValue = 10,
-            Value = 5
-        },
-        new KeyValueSchema
-        {
-            Name = "Ringtone",
-            Value = "Over the horizon",
-            IconKind = PackIconKind.MusicNote
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
 ```
----
 
-![email](https://github.com/EdonGashi/WpfMaterialForms/blob/master/doc/email.png)
+for more information click on one of this attributes
+* Binding
+* Field
+* SelectFrom
+* Value
 
-```cs
-{
-    Title = "Send e-mail",
-    PositiveAction = "SEND",
-    Form = new MaterialForm
-    {
-        new StringSchema
-        {
-            Name = "To",
-            IconKind = PackIconKind.Email
-        },
-        new StringSchema
-        {
-            Name = "Message",
-            IsMultiLine = true,
-            IconKind = PackIconKind.Comment
-        }
-    }
-}
-```
----
 
-![dialog](https://github.com/EdonGashi/WpfMaterialForms/blob/master/doc/dialog.png)
-
-```cs
-{
-    Message = "Discard draft?",
-    PositiveAction = "DISCARD"
-}
-```
+[See more about attributes](https://github.com/redbaty/WpfMaterialForms/wiki/Attributes)
 
 ## How to use
 ### In a WPF project
@@ -198,6 +170,9 @@ In your App.xaml you need to have the following resources included. If you are u
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml" />
+	    <!-- If you're going to use SelectFrom -->
+	    <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material.xaml" />
+	    
         </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
 </Application.Resources>
@@ -215,23 +190,3 @@ Before stopping your application you need to shut down explicitly:
 ```cs
 MaterialApplication.ShutDownApplication();
 ```
-
-### API guide
-The ```MaterialDialog``` class describes displayed dialog contents ```{ Title, Message, Form, PositiveAction, NegativeAction, ... }```
-
-The ```MaterialForm``` class is a list of data schemas that display as controls inside the dialogs. Schemas can hold values and can be given keys. You can access schema values in different ways:
-```cs
-string username = (string)Form["username"];
-Dictionary<string, object> dictionary = Form.GetValuesDictionary();
-List<object> schemaValues = Form.GetValuesList();
-```
-
-Dialogs can be hosted in two contexts: in a new WPF Window or in an existing DialogHost.
-
-To host within a DialogHost, call ```await dialog.Show("DialogIdentifier")``` where "DialogIdentifier" is the ```DialogHost.Identifer``` that you specify in your window.
-
-To host within a new Window, create a ```new MaterialWindow(dialog)```. MaterialWindow abstracts WPF Window properties and binds them automatically ```{ Title, Width, Height, ShowCloseButton, ... }```. To show the created window call ```await window.Show()```.
-
-The async Show() method returns a bool? value. Usually true represents positive action click, false negative action click, and null that the dialog has been closed by other means.
-
-The ShowTracked() method returns a ```Session``` object, which you can use to close the dialog host from code. If a dialog has been shown using ShowTracked, you can await its session.Task.

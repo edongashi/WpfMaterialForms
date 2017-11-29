@@ -5,13 +5,13 @@ namespace MaterialForms
 {
     public class NumberRangeSchema : SchemaBase
     {
-        private int value;
-        private int minValue;
         private int maxValue;
+        private int minValue;
+        private int value;
 
         public int Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (value == this.value) return;
@@ -22,7 +22,7 @@ namespace MaterialForms
 
         public int MinValue
         {
-            get { return minValue; }
+            get => minValue;
             set
             {
                 if (value == minValue) return;
@@ -33,7 +33,7 @@ namespace MaterialForms
 
         public int MaxValue
         {
-            get { return maxValue; }
+            get => maxValue;
             set
             {
                 if (value == maxValue) return;
@@ -41,6 +41,8 @@ namespace MaterialForms
                 OnPropertyChanged();
             }
         }
+
+        public override bool HoldsValue => true;
 
         public override UserControl CreateView()
         {
@@ -50,20 +52,21 @@ namespace MaterialForms
             };
         }
 
-        public override bool HoldsValue => true;
-
-        public override object GetValue() => Value;
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         public override void SetValue(object obj)
         {
             if (obj is int)
             {
-                Value = (int)obj;
+                Value = (int) obj;
             }
             else if (obj is string)
             {
                 int result;
-                int.TryParse((string)obj, out result);
+                int.TryParse((string) obj, out result);
                 Value = result;
             }
         }
