@@ -189,7 +189,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static object Decimal(string expression)
         {
-            return decimal.Parse(expression, CultureInfo.InvariantCulture);
+            return decimal.Parse(expression, NumberStyles.AllowCurrencySymbol);
         }
 
         public static object NullableDecimal(string expression)
@@ -197,7 +197,7 @@ namespace MaterialForms.Wpf.FormBuilding
             if (string.IsNullOrEmpty(expression))
                 return null;
 
-            return decimal.Parse(expression, CultureInfo.InvariantCulture);
+            return decimal.Parse(expression, NumberStyles.AllowCurrencySymbol);
         }
 
         #endregion
