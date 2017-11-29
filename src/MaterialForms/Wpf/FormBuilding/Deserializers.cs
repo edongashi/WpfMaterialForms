@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 
 namespace MaterialForms.Wpf.FormBuilding
 {
@@ -176,7 +177,14 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static object Double(string expression)
         {
-            return double.Parse(expression, CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(expression, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, CultureInfo.InvariantCulture);
+            }
         }
 
         public static object NullableDouble(string expression)
@@ -184,7 +192,14 @@ namespace MaterialForms.Wpf.FormBuilding
             if (string.IsNullOrEmpty(expression))
                 return null;
 
-            return double.Parse(expression, CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(expression, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, CultureInfo.InvariantCulture);
+            }
         }
 
         public static object Decimal(string expression)
@@ -560,7 +575,14 @@ namespace MaterialForms.Wpf.FormBuilding
 
         public static object Double(string expression, CultureInfo culture)
         {
-            return double.Parse(expression, culture);
+            try
+            {
+                return double.Parse(expression, culture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, culture);
+            }
         }
 
         public static object NullableDouble(string expression, CultureInfo culture)
@@ -568,7 +590,14 @@ namespace MaterialForms.Wpf.FormBuilding
             if (string.IsNullOrEmpty(expression))
                 return null;
 
-            return double.Parse(expression, culture);
+            try
+            {
+                return double.Parse(expression, culture);
+            }
+            catch
+            {
+                return double.Parse(expression, NumberStyles.Currency, culture);
+            }
         }
 
         public static object Decimal(string expression, CultureInfo culture)
