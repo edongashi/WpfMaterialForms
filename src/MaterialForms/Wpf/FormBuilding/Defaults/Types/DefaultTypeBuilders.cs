@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection;
+using System.Linq;
+using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.Fields.Defaults;
 using Display = MaterialForms.Wpf.Annotations.Display;
 
 namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 {
-    internal class StringFieldBuilder : TypeBuilder<String> {
+    internal class StringFieldBuilder : TypeBuilder<String>
+    {
         protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
             return new StringField(property.Name);
         }
     }
 
-    internal class BooleanFieldBuilder : IFieldBuilder {
+    internal class BooleanFieldBuilder : IFieldBuilder
+    {
         public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
             var isSwitch = property.GetCustomAttribute<Display.ToggleAttribute>() != null;
@@ -25,7 +28,8 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
         }
     }
 
-    internal class DateTimeFieldBuilder : TypeBuilder<DateTime> {
+    internal class DateTimeFieldBuilder : TypeBuilder<DateTime>
+    {
         protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
             return new StringField(property.Name);
@@ -43,7 +47,14 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
 
         public FormElement TryBuild(IFormProperty property, Func<string, object> deserializer)
         {
-            return new ConvertedField(property.Name, property.PropertyType, Deserializer);
+            var replacements = property
+                .GetCustomAttributes<ReplaceAttribute>()
+                .OrderBy(attr => attr.Position)
+                .Select(attr => attr.GetReplacement());
+            return new ConvertedField(
+                property.Name,
+                property.PropertyType,
+                new ReplacementPipe(Deserializer, replacements));
         }
     }
 
