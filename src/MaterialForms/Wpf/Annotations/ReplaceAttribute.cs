@@ -38,7 +38,7 @@ namespace MaterialForms.Wpf.Annotations
         /// Regex search options.
         /// Accepts a dynamic resource or <see cref="System.Text.RegularExpressions.RegexOptions"/>.
         /// </summary>
-        public string RegexOptions { get; set; }
+        public object RegexOptions { get; set; }
 
         internal int Position { get; }
 
