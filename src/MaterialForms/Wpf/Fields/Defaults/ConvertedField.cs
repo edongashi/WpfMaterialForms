@@ -16,6 +16,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
             CreateBinding = false;
         }
 
+        public ConvertedField(string propertyName, Type propertyPropertyType, Func<string, CultureInfo, object> deserializer, string maskAttrMask) : base(propertyName, propertyPropertyType)
+        {
+            Deserializer = deserializer;
+            CreateBinding = false;
+            Mask = new LiteralValue(maskAttrMask);
+        }
+
+        public IValueProvider Mask { get; set; }
+
         public Func<string, CultureInfo, object> Deserializer { get; }
 
         public Func<IResourceContext, IErrorStringProvider> ConversionErrorMessage { get; set; }
@@ -33,6 +42,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 Resources.Add("Value",
                     new ConvertedDataBinding(Key, BindingOptions, Validators, Deserializer,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
+
+            Resources.Add(nameof(Mask), Mask ?? LiteralValue.Null);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,

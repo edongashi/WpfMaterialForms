@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using MaterialForms.Demo.Infrastructure;
+using MaterialForms.Demo.Models;
+using MaterialForms.Mappers;
+using MaterialForms.Wpf.Annotations;
 
 namespace MaterialForms.Demo
 {
@@ -12,6 +16,9 @@ namespace MaterialForms.Demo
         [STAThread]
         public static void Main()
         {
+            var login = new Login();
+            var newLoginType = login.InjectAttributes(u => u.RememberMe, new[] {new FieldAttribute {Name = "Fuck"}});
+            var props = newLoginType.GetType().GetProperty("RememberMe")?.GetCustomAttributes();
             var app = new App();
             app.InitializeComponent();
             app.Run();
