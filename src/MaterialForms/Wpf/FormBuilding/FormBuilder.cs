@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding.Defaults;

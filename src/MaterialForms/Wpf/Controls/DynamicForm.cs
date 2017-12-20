@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
@@ -134,7 +135,18 @@ namespace MaterialForms.Wpf.Controls
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            ((DynamicForm) obj).UpdateModel(e.OldValue, e.NewValue);
+            Mapper.InitializeIMapperClasses();
+            var type = e.NewValue;
+
+            if (Mapper.TypesOverrides.ContainsKey(e.NewValue.GetType().FullName))
+            {
+                foreach (var expression in Mapper.TypesOverrides[e.NewValue.GetType().FullName])
+                {
+                   type = MapperExtensions.InjectAttributes<object>(e.NewValue.GetType(),expression.PropertyInfo,expression.Expression);
+                }
+            }
+
+            ((DynamicForm) obj).UpdateModel(e.OldValue, type);
         }
 
         private void UpdateModel(object oldModel, object newModel)

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows.Data;
 using System.Xml.Linq;
 using MaterialDesignThemes.Wpf;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
@@ -20,9 +21,10 @@ namespace MaterialForms.Wpf.FormBuilding
 
             // First requirement is that properties and getters must be public.
             var properties = type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && p.GetGetMethod(true).IsPublic)
-                .OrderBy(p => p.MetadataToken);
+                .GetProperty()
+                .Where(p => p.PropertyInfo.CanRead && p.PropertyInfo.GetGetMethod(true).IsPublic)
+                .OrderBy(p => p.Token)
+                .Select(i => i.PropertyInfo);
 
             switch (mode)
             {
