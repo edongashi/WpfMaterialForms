@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using MaterialForms.Demo.Infrastructure;
 using MaterialForms.Demo.Models;
@@ -16,8 +17,8 @@ namespace MaterialForms.Demo
         public static void Main()
         {
             var login = new Login();
-            login.InjectAttributes(u => u.RememberMe, new[] {new FieldAttribute {Name = "Fuck"}});
-
+            var newLoginType = login.InjectAttributes(u => u.RememberMe, new[] {new FieldAttribute {Name = "Fuck"}});
+            var props = newLoginType.GetType().GetProperty("RememberMe")?.GetCustomAttributes();
             var app = new App();
             app.InitializeComponent();
             app.Run();
