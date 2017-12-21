@@ -112,7 +112,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     if (context.GetContextInstance() is IActionHandler contextHandler)
                         contextHandler.HandleAction(model, actionName, arg);
 
-                    foreach (var mapper in Mapper.Mappers)
+                    foreach (var mapper in Mapper.Mappers.Where(i => model.GetType().GetParentTypes().Any(o => o.FullName == i.Type.FullName)))
                     {
                         mapper.HandleAction(model, actionName, arg);
                     }

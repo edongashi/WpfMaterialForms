@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -31,7 +32,6 @@ namespace MaterialForms.Mappers
             return target;
         }
 
-
         /// <summary>
         /// Do all injections this type have defined on the global overrides list.
         /// </summary>
@@ -39,7 +39,10 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static T GetInjectedObject<T>(this T obj)
         {
-            return (T)obj.CopyTo(Activator.CreateInstance(obj.GetType().GetInjectedType().AddParameterlessConstructor()));
+            var yo = (T) obj.CopyTo(
+                Activator.CreateInstance(obj.GetType().GetInjectedType().AddParameterlessConstructor()));
+
+            return yo;
         }
 
         /// <summary>
@@ -82,6 +85,10 @@ namespace MaterialForms.Mappers
                 cGen.Emit(OpCodes.Nop);
                 cGen.Emit(OpCodes.Ret);
             }
+            else
+            {
+                return type;
+            }
 
             return typeBuilder.CreateType();
         }
@@ -119,6 +126,29 @@ namespace MaterialForms.Mappers
             return typeBuilder.CreateType();
         }
 
+        public static IEnumerable<Type> GetParentTypes(this Type type)
+        {
+            // is there any base type?
+            if ((type == null) || (type.BaseType == null))
+            {
+                yield break;
+            }
+
+            // return all implemented or inherited interfaces
+            foreach (var i in type.GetInterfaces())
+            {
+                yield return i;
+            }
+
+            // return all inherited types
+            var currentBaseType = type.BaseType;
+            while (currentBaseType != null)
+            {
+                yield return currentBaseType;
+                currentBaseType= currentBaseType.BaseType;
+            }
+        }
+        
         /// <summary>
         /// Inject attributes into a property from a Type
         /// </summary>
@@ -145,13 +175,22 @@ namespace MaterialForms.Mappers
                 cGen.Emit(OpCodes.Ret);
             }
 
-            var custNamePropBldr = typeBuilder.DefineProperty(propInfo.Name,
+            var custNamePropBldr = propInfo.Name.CreateProperty(typeBuilder, propInfo.PropertyType);
+            
+            foreach (var expression in expressions)
+                custNamePropBldr.SetCustomAttribute(expression);
+            return typeBuilder.CreateType();
+        }
+
+        public static PropertyBuilder CreateProperty(this string name, TypeBuilder typeBuilder,Type type)
+        {
+            var custNamePropBldr = typeBuilder.DefineProperty(name,
                 PropertyAttributes.HasDefault,
-                propInfo.PropertyType,
+                type,
                 null);
 
-            var customerNameBldr = typeBuilder.DefineField($"{propInfo.Name}_proxy_filter",
-                propInfo.PropertyType,
+            var customerNameBldr = typeBuilder.DefineField($"{name}_proxy_filter",
+                type,
                 FieldAttributes.Private);
 
 
@@ -159,9 +198,9 @@ namespace MaterialForms.Mappers
                                                 MethodAttributes.HideBySig;
 
             var custNameGetPropMthdBldr =
-                typeBuilder.DefineMethod($"get_{propInfo.Name}",
+                typeBuilder.DefineMethod($"get_{name}",
                     getSetAttr,
-                    propInfo.PropertyType,
+                    type,
                     Type.EmptyTypes);
 
             var custNameGetIl = custNameGetPropMthdBldr.GetILGenerator();
@@ -171,10 +210,10 @@ namespace MaterialForms.Mappers
             custNameGetIl.Emit(OpCodes.Ret);
 
             var custNameSetPropMthdBldr =
-                typeBuilder.DefineMethod($"set_{propInfo.Name}",
+                typeBuilder.DefineMethod($"set_{name}",
                     getSetAttr,
                     null,
-                    new[] {propInfo.PropertyType});
+                    new[] {type});
 
             var custNameSetIl = custNameSetPropMthdBldr.GetILGenerator();
             custNameSetIl.Emit(OpCodes.Ldarg_0);
@@ -183,10 +222,7 @@ namespace MaterialForms.Mappers
             custNameSetIl.Emit(OpCodes.Ret);
             custNamePropBldr.SetGetMethod(custNameGetPropMthdBldr);
             custNamePropBldr.SetSetMethod(custNameSetPropMthdBldr);
-
-            foreach (var expression in expressions)
-                custNamePropBldr.SetCustomAttribute(expression);
-            return typeBuilder.CreateType();
+            return custNamePropBldr;
         }
 
         /// <summary>
