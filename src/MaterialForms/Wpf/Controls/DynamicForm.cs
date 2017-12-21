@@ -144,9 +144,10 @@ namespace MaterialForms.Wpf.Controls
             Mapper.InitializeIMapperClasses();
             var type = e.NewValue;
 
-            if (Mapper.TypesOverrides.ContainsKey(e.NewValue.GetType().FullName))
+            var fullname = e.NewValue.GetType().FullName;
+            if (Mapper.TypesOverrides.ContainsKey(fullname))
             {
-                foreach (var expression in Mapper.TypesOverrides[e.NewValue.GetType().FullName])
+                foreach (var expression in Mapper.TypesOverrides[fullname])
                 {
                    type = MapperExtensions.InjectAttributes<object>(e.NewValue.GetType(),expression.PropertyInfo,expression.Expression);
                 }
