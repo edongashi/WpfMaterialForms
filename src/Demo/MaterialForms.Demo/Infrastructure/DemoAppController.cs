@@ -11,7 +11,7 @@ using MaterialForms.Wpf.Controls;
 namespace MaterialForms.Demo.Infrastructure {
     public class LoginExtensions : MaterialMapper<Login> {
         public LoginExtensions () {
-            AddMapper (() => new FieldAttribute { Name = "sdfgsrysert" }, i => i.RememberMe);
+            AddPropertyAttribute(i => i.RememberMe,() => new FieldAttribute { Name = "sdfgsrysert" });
         }
     }
 
