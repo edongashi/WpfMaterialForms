@@ -14,11 +14,14 @@ namespace MaterialForms.Mappers
     {
         private static object CopyTo(this object baseClassInstance, object target)
         {
-            foreach (var propertyInfo in baseClassInstance.GetType().GetProperties())
+            foreach (var propertyInfo in baseClassInstance.GetType().GetHighestProperties().Select(i => i.PropertyInfo))
                 try
                 {
                     var value = propertyInfo.GetValue(baseClassInstance, null);
-                    if (null != value) propertyInfo.SetValue(target, value, null);
+                    var highEquiv = target.GetType().GetHighestProperties(propertyInfo.Name);
+                    
+                    if (null != value) 
+                        highEquiv.SetValue(target, value, null);
                 }
                 catch
                 {
