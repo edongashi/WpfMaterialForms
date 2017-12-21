@@ -16,7 +16,7 @@ namespace MaterialForms.Mappers
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static PropertyInfo GetProperty(this Type type, string name)
+        public static PropertyInfo GetHighestProperties(this Type type, string name)
         {
             while (type != null)
             {
@@ -35,7 +35,7 @@ namespace MaterialForms.Mappers
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static IEnumerable<PropertyTokenFix> GetProperty(this Type type)
+        public static IEnumerable<PropertyTokenFix> GetHighestProperties(this Type type)
         {
             return type.GetProperties(BindingFlags.Public | BindingFlags.Instance).GroupBy(i => i.Name)
                 .Select(i => new PropertyTokenFix {PropertyInfo = i.First(), Token = i.Last().MetadataToken});

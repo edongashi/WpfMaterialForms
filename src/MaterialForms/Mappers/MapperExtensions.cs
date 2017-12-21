@@ -12,6 +12,35 @@ namespace MaterialForms.Mappers
     /// </summary>
     public static class MapperExtensions
     {
+        public static object GetInjectedObject(this object obj)
+        {
+            var fullName = obj.GetType().FullName;
+            if (fullName != null && Mapper.TypesOverrides.ContainsKey(fullName))
+            {
+                foreach (var expression in Mapper.TypesOverrides[fullName])
+                {
+                    obj = InjectAttributes<object>(obj.GetType(), expression.PropertyInfo,
+                        expression.Expression);
+                }
+            }
+
+            return obj;
+        }
+
+        public static Type GetInjectedType(this Type obj)
+        {
+            var fullName = obj.FullName;
+            if (fullName != null && Mapper.TypesOverrides.ContainsKey(fullName))
+            {
+                foreach (var expression in Mapper.TypesOverrides[fullName])
+                {
+                    obj = InjectAttributes(obj, expression.PropertyInfo, expression.Expression);
+                }
+            }
+
+            return obj;
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="attribute"></param>
@@ -30,6 +59,12 @@ namespace MaterialForms.Mappers
                 Type.EmptyTypes,
                 properties,
                 propertyValues.ToArray());
+        }
+
+        public static TSource InjectAttributes<TSource>(Type type, PropertyInfo propInfo,
+            params Expression<Func<Attribute>>[] expressions)
+        {
+            return (TSource) Activator.CreateInstance(typeof(TSource).InjectAttributes(propInfo, expressions));
         }
 
         /// <summary>
