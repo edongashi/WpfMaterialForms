@@ -39,9 +39,10 @@ namespace MaterialForms.Mappers
         /// <param name="type"></param>
         /// <param name="propInfo"></param>
         /// <param name="expression"></param>
+        /// <param name="expressions"></param>
         /// <returns></returns>
         public static TSource InjectAttributes<TSource>(Type type, PropertyInfo propInfo,
-            Expression<Func<Attribute>> expression)
+            params Expression<Func<Attribute>>[] expressions)
         {
             var assemblyName = new AssemblyName("ProxyBuilder");
             var assemblyBuilder =
@@ -87,7 +88,11 @@ namespace MaterialForms.Mappers
             custNameSetIl.Emit(OpCodes.Ret);
             custNamePropBldr.SetGetMethod(custNameGetPropMthdBldr);
             custNamePropBldr.SetSetMethod(custNameSetPropMthdBldr);
-            custNamePropBldr.SetCustomAttribute(expression);
+            
+            foreach (var expression in expressions)
+            {
+                custNamePropBldr.SetCustomAttribute(expression);
+            }
 
             var newtype = typeBuilder.CreateType();
             return (TSource) Activator.CreateInstance(newtype);

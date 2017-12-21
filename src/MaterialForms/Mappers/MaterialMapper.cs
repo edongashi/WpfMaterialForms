@@ -53,8 +53,7 @@ namespace MaterialForms.Mappers
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="expression"></param>
         /// <param name="propertyLambda"></param>
-        public void AddMapper<TProperty>(Expression<Func<Attribute>> expression,
-            Expression<Func<TSource, TProperty>> propertyLambda)
+        public void AddMapper<TProperty>(Expression<Func<TSource, TProperty>> propertyLambda, params Expression<Func<Attribute>>[] expression)
         {
             var type = typeof(TSource);
 

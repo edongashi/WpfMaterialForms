@@ -20,7 +20,7 @@ namespace MaterialForms.Mappers
         /// <summary>
         ///     This mapper attribute expression
         /// </summary>
-        public Expression<Func<Attribute>> Expression { get; set; }
+        public Expression<Func<Attribute>>[] Expression { get; set; }
 
         /// <summary>
         ///     This mapper property info
