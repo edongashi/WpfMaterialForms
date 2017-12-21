@@ -41,7 +41,7 @@ namespace MaterialForms.Mappers
         /// <param name="expression"></param>
         /// <param name="expressions"></param>
         /// <returns></returns>
-        public static TSource InjectAttributes<TSource>(Type type, PropertyInfo propInfo,
+        public static Type InjectAttributes(this Type type, PropertyInfo propInfo,
             params Expression<Func<Attribute>>[] expressions)
         {
             var assemblyName = new AssemblyName("ProxyBuilder");
@@ -49,6 +49,16 @@ namespace MaterialForms.Mappers
                 AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
             var typeBuilder = moduleBuilder.DefineType(type.Name + "Proxy", TypeAttributes.Public, type);
+            var constructor = type.GetConstructor(Type.EmptyTypes);
+
+            if (constructor == null)
+            {
+                var constructorBuilder =
+                    typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Any, Type.EmptyTypes);
+                var cGen = constructorBuilder.GetILGenerator();
+                cGen.Emit(OpCodes.Nop);
+                cGen.Emit(OpCodes.Ret);
+            }
 
             var custNamePropBldr = typeBuilder.DefineProperty(propInfo.Name,
                 PropertyAttributes.HasDefault,
@@ -88,14 +98,10 @@ namespace MaterialForms.Mappers
             custNameSetIl.Emit(OpCodes.Ret);
             custNamePropBldr.SetGetMethod(custNameGetPropMthdBldr);
             custNamePropBldr.SetSetMethod(custNameSetPropMthdBldr);
-            
-            foreach (var expression in expressions)
-            {
-                custNamePropBldr.SetCustomAttribute(expression);
-            }
 
-            var newtype = typeBuilder.CreateType();
-            return (TSource) Activator.CreateInstance(newtype);
+            foreach (var expression in expressions)
+                custNamePropBldr.SetCustomAttribute(expression);
+            return typeBuilder.CreateType();
         }
 
 
