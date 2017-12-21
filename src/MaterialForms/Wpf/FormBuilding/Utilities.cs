@@ -17,15 +17,14 @@ namespace MaterialForms.Wpf.FormBuilding
         public static List<PropertyInfo> GetProperties(Type type, DefaultFields mode)
         {
             if (type == null)
-            {
                 throw new ArgumentException(nameof(type));
-            }
 
             // First requirement is that properties and getters must be public.
             var properties = type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && p.GetGetMethod(true).IsPublic)
-                .OrderBy(p => p.MetadataToken);
+                .GetProperty()
+                .Where(p => p.PropertyInfo.CanRead && p.PropertyInfo.GetGetMethod(true).IsPublic)
+                .OrderBy(p => p.Token)
+                .Select(i => i.PropertyInfo);
 
             switch (mode)
             {
