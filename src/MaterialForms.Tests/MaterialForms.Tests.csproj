@@ -58,7 +58,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AnnotationTests.cs" />
     <Compile Include="BoundExpressionTests.cs" />
     <Compile Include="MaterialFormTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

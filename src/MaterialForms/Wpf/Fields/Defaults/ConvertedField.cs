@@ -9,13 +9,13 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public sealed class ConvertedField : DataFormField
     {
-        public ConvertedField(string key, Type propertyType, Func<string, CultureInfo, object> deserializer) : base(key, propertyType)
+        public ConvertedField(string key, Type propertyType, ReplacementPipe replacementPipe) : base(key, propertyType)
         {
-            Deserializer = deserializer;
+            ReplacementPipe = replacementPipe;
             CreateBinding = false;
         }
 
-        public Func<string, CultureInfo, object> Deserializer { get; }
+        public ReplacementPipe ReplacementPipe { get; }
 
         public Func<IResourceContext, IErrorStringProvider> ConversionErrorMessage { get; set; }
 
@@ -25,7 +25,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             if (IsDirectBinding)
             {
                 Resources.Add("Value",
-                    new ConvertedDirectBinding(BindingOptions, Validators, Deserializer,
+                    new ConvertedDirectBinding(BindingOptions, Validators, ReplacementPipe,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
             }
             else if (string.IsNullOrEmpty(Key))
@@ -35,7 +35,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             else
             {
                 Resources.Add("Value",
-                    new ConvertedDataBinding(Key, BindingOptions, Validators, Deserializer,
+                    new ConvertedDataBinding(Key, BindingOptions, Validators, ReplacementPipe,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
             }
         }

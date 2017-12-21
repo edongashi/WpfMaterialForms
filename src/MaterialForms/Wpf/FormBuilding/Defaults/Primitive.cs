@@ -21,7 +21,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults
 
         private static FormDefinition BuildConverted(Type type, Func<string, CultureInfo, object> deserializer)
         {
-            var field = new ConvertedField(null, type, deserializer)
+            var field = new ConvertedField(null, type, new ReplacementPipe(deserializer))
             {
                 IsDirectBinding = true
             };

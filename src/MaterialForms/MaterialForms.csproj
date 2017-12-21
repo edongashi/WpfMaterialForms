@@ -155,6 +155,7 @@
     <Compile Include="Wpf\Annotations\FormAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
+    <Compile Include="Wpf\Annotations\ReplaceAttribute.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\TextElementAttribute.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
     <Compile Include="Wpf\Fields\IDataBindingProvider.cs" />
     <Compile Include="Wpf\Fields\IFormDefinition.cs" />
+    <Compile Include="Wpf\Fields\ReplacementPipe.cs" />
     <Compile Include="Wpf\Fields\StringTypeConverter.cs" />
     <Compile Include="Wpf\Fields\ValueBindingProvider.cs" />
     <Compile Include="Wpf\FormBuilding\CustomCulture.cs" />

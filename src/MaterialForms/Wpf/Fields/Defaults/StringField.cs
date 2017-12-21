@@ -6,7 +6,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
 {
     public class StringField : DataFormField
     {
-        public StringField(string key) : base(key, typeof(string))
+        public StringField(string key)
+            : base(key, typeof(string))
         {
         }
 
