@@ -12,7 +12,7 @@ namespace MaterialForms.Mappers
     /// </summary>
     public static class MapperExtensions
     {
-        private static object CopyTo(this object baseClassInstance, object target)
+        public static object CopyTo(this object baseClassInstance, object target)
         {
             foreach (var propertyInfo in baseClassInstance.GetType().GetHighestProperties().Select(i => i.PropertyInfo))
                 try

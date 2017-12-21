@@ -17,7 +17,7 @@ namespace MaterialForms.Mappers
         {
         }
 
-        public virtual void HandleAction(object model, string action, object parameter)
+        internal virtual void HandleAction(object model, string action, object parameter)
         {
             
         }
@@ -50,6 +50,17 @@ namespace MaterialForms.Mappers
     {
         public MaterialMapper() : base(typeof(TSource))
         {
+        }
+
+        public virtual void Action(TSource model, string action, object parameter)
+        {
+            
+        }
+
+        internal override void HandleAction(object model, string action, object parameter)
+        {
+            var obj = (TSource)Activator.CreateInstance(typeof(TSource));
+            Action((TSource)model.CopyTo(obj), action, parameter);
         }
 
         public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
