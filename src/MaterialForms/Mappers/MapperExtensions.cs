@@ -12,68 +12,83 @@ namespace MaterialForms.Mappers
     /// </summary>
     public static class MapperExtensions
     {
-        public static object GetInjectedObject(this object obj)
+        private static object CopyTo(this object baseClassInstance, object target)
         {
-            var fullName = obj.GetType().FullName;
-            if (fullName != null && Mapper.TypesOverrides.ContainsKey(fullName))
-            {
-                foreach (var expression in Mapper.TypesOverrides[fullName])
+            foreach (var propertyInfo in baseClassInstance.GetType().GetProperties())
+                try
                 {
-                    obj = InjectAttributes<object>(obj.GetType(), expression.PropertyInfo,
-                        expression.Expression);
+                    var value = propertyInfo.GetValue(baseClassInstance, null);
+                    if (null != value) propertyInfo.SetValue(target, value, null);
                 }
-            }
+                catch
+                {
+                    // ignored
+                }
 
-            return obj;
+            return target;
         }
 
-        public static Type GetInjectedType(this Type obj)
-        {
-            var fullName = obj.FullName;
-            if (fullName != null && Mapper.TypesOverrides.ContainsKey(fullName))
-            {
-                foreach (var expression in Mapper.TypesOverrides[fullName])
-                {
-                    obj = InjectAttributes(obj, expression.PropertyInfo, expression.Expression);
-                }
-            }
-
-            return obj;
-        }
 
         /// <summary>
+        /// Do all injections this type have defined on the global overrides list.
         /// </summary>
-        /// <param name="attribute"></param>
+        /// <param name="obj"></param>
         /// <returns></returns>
-        public static CustomAttributeBuilder BuildCustomAttribute(this Attribute attribute)
+        public static T GetInjectedObject<T>(this T obj)
         {
-            var type = attribute.GetType();
-            var constructor = type.GetConstructor(Type.EmptyTypes);
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(i => i.CanWrite)
-                .ToArray();
-
-            var propertyValues = from p in properties
-                select p.GetValue(attribute, null);
-
-            return new CustomAttributeBuilder(constructor ?? throw new InvalidOperationException(),
-                Type.EmptyTypes,
-                properties,
-                propertyValues.ToArray());
-        }
-
-        public static TSource InjectAttributes<TSource>(Type type, PropertyInfo propInfo,
-            params Expression<Func<Attribute>>[] expressions)
-        {
-            return (TSource) Activator.CreateInstance(typeof(TSource).InjectAttributes(propInfo, expressions));
+            return (T)obj.CopyTo(Activator.CreateInstance(obj.GetType().GetInjectedType().AddParameterlessConstructor()));
         }
 
         /// <summary>
-        /// 
+        /// Do all injections this type have defined on the global overrides list.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Type GetInjectedType(this Type type)
+        {
+            var fullName = type.FullName;
+            if (fullName == null || !Mapper.TypesOverrides.ContainsKey(fullName)) return type;
+            foreach (var expression in Mapper.TypesOverrides[fullName])
+            {
+                type = type.InjectAttributes(expression.PropertyInfo, expression.Expression);
+            }
+
+            return type;
+        }
+
+        /// <summary>
+        /// Inject attributes into a Type
+        /// </summary>
         /// <param name="type"></param>
         /// <param name="propInfo"></param>
-        /// <param name="expression"></param>
+        /// <param name="expressions"></param>
+        /// <returns></returns>
+        public static Type AddParameterlessConstructor(this Type type)
+        {
+            var assemblyName = new AssemblyName("ProxyBuilder");
+            var assemblyBuilder =
+                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
+            var typeBuilder = moduleBuilder.DefineType(type.Name + "wConstructor", TypeAttributes.Public, type);
+            var constructor = type.GetConstructor(Type.EmptyTypes);
+
+            if (constructor == null)
+            {
+                var constructorBuilder =
+                    typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Any, Type.EmptyTypes);
+                var cGen = constructorBuilder.GetILGenerator();
+                cGen.Emit(OpCodes.Nop);
+                cGen.Emit(OpCodes.Ret);
+            }
+
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
+        /// Inject attributes into a Type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="propInfo"></param>
         /// <param name="expressions"></param>
         /// <returns></returns>
         public static Type InjectAttributes(this Type type, PropertyInfo propInfo,
@@ -139,37 +154,14 @@ namespace MaterialForms.Mappers
             return typeBuilder.CreateType();
         }
 
-
         /// <summary>
+        /// Get a propertyInfo using lambdas.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="propertyLambda"></param>
-        /// <param name="attributes"></param>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="propertyLambda"></param>
         /// <returns></returns>
-        public static TSource InjectAttributes<TSource, TProperty>(this TSource obj,
-            Expression<Func<TSource, TProperty>> propertyLambda, Expression<Func<Attribute>> expression)
-        {
-            var type = typeof(TSource);
-
-            if (!(propertyLambda.Body is MemberExpression member))
-                throw new ArgumentException(
-                    $"Expression '{propertyLambda}' refers to a method, not a property.");
-
-            var propInfo = member.Member as PropertyInfo;
-            if (propInfo == null)
-                throw new ArgumentException(
-                    $"Expression '{propertyLambda}' refers to a field, not a property.");
-
-            if (type != propInfo.ReflectedType &&
-                !type.IsSubclassOf(propInfo.ReflectedType ?? throw new InvalidOperationException()))
-                throw new ArgumentException(
-                    $"Expresion '{propertyLambda}' refers to a property that is not from type {type}.");
-
-            return InjectAttributes<TSource>(typeof(TSource), propInfo, expression);
-        }
-
         public static PropertyInfo GetPropertyInfo<TSource, TProperty>(
             this TSource source,
             Expression<Func<TSource, TProperty>> propertyLambda)
