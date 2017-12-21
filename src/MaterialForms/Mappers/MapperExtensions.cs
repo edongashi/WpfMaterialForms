@@ -19,8 +19,8 @@ namespace MaterialForms.Mappers
                 {
                     var value = propertyInfo.GetValue(baseClassInstance, null);
                     var highEquiv = target.GetType().GetHighestProperties(propertyInfo.Name);
-                    
-                    if (null != value) 
+
+                    if (null != value)
                         highEquiv.SetValue(target, value, null);
                 }
                 catch
@@ -51,12 +51,11 @@ namespace MaterialForms.Mappers
         {
             var fullName = type.FullName;
             if (fullName == null || !Mapper.TypesOverrides.ContainsKey(fullName)) return type;
-            foreach (var expression in Mapper.TypesOverrides[fullName])
-            {
-                type = type.InjectAttributes(expression.PropertyInfo, expression.Expression);
-            }
-
-            return type;
+            type = Mapper.TypesOverrides[fullName].Where(i => i.PropertyInfo != null).Aggregate(type,
+                (current, expression) =>
+                    current.InjectPropertyAttributes(expression.PropertyInfo, expression.Expression));
+            return Mapper.TypesOverrides[fullName].Where(i => i.PropertyInfo == null).Aggregate(type,
+                (current, expression) => current.InjectClassAttributes(expression.Expression));
         }
 
         /// <summary>
@@ -88,13 +87,46 @@ namespace MaterialForms.Mappers
         }
 
         /// <summary>
-        /// Inject attributes into a Type
+        /// Inject attributes into a Type (class)
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="expressions"></param>
+        /// <returns></returns>
+        public static Type InjectClassAttributes(this Type type, params Expression<Func<Attribute>>[] expressions)
+        {
+            if (!type.IsClass)
+                throw new Exception("Type is not a class, cannot inject.");
+
+            var assemblyName = new AssemblyName("ProxyBuilder");
+            var assemblyBuilder =
+                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
+            var typeBuilder = moduleBuilder.DefineType(type.Name + "Proxy", TypeAttributes.Public, type);
+            var constructor = type.GetConstructor(Type.EmptyTypes);
+
+            if (constructor == null)
+            {
+                var constructorBuilder =
+                    typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Any, Type.EmptyTypes);
+                var cGen = constructorBuilder.GetILGenerator();
+                cGen.Emit(OpCodes.Nop);
+                cGen.Emit(OpCodes.Ret);
+            }
+
+            foreach (var expression in expressions)
+                typeBuilder.SetCustomAttribute(expression);
+
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
+        /// Inject attributes into a property from a Type
         /// </summary>
         /// <param name="type"></param>
         /// <param name="propInfo"></param>
         /// <param name="expressions"></param>
         /// <returns></returns>
-        public static Type InjectAttributes(this Type type, PropertyInfo propInfo,
+        public static Type InjectPropertyAttributes(this Type type, PropertyInfo propInfo,
             params Expression<Func<Attribute>>[] expressions)
         {
             var assemblyName = new AssemblyName("ProxyBuilder");

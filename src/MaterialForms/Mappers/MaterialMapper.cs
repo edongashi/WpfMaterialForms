@@ -17,6 +17,11 @@ namespace MaterialForms.Mappers
         {
         }
 
+        public virtual void HandleAction(object model, string action, object parameter)
+        {
+            
+        }
+
         public Type Type { get; set; }
 
         /// <inheritdoc />
@@ -47,13 +52,25 @@ namespace MaterialForms.Mappers
         {
         }
 
+        public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
+        {
+            var mapper = new Mapper
+            {
+                PropertyInfo = null,
+                Expression = expression
+            };
+
+            Mappings.Add(mapper);
+        }
+
         /// <summary>
         ///     Adds a mapper.
         /// </summary>
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="expression"></param>
         /// <param name="propertyLambda"></param>
-        public void AddMapper<TProperty>(Expression<Func<TSource, TProperty>> propertyLambda, params Expression<Func<Attribute>>[] expression)
+        public void AddPropertyAttribute<TProperty>(Expression<Func<TSource, TProperty>> propertyLambda,
+            params Expression<Func<Attribute>>[] expression)
         {
             var type = typeof(TSource);
 
