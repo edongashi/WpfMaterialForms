@@ -22,7 +22,7 @@ namespace MaterialForms.Wpf.FormBuilding
 
             // First requirement is that properties and getters must be public.
             var properties = type
-                .GetProperty()
+                .GetHighestProperties()
                 .Where(p => p.PropertyInfo.CanRead && p.PropertyInfo.GetGetMethod(true).IsPublic)
                 .OrderBy(p => p.Token)
                 .Select(i => i.PropertyInfo);

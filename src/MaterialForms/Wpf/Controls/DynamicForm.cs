@@ -141,19 +141,7 @@ namespace MaterialForms.Wpf.Controls
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            Mapper.InitializeIMapperClasses();
-            var type = e.NewValue;
-
-            var fullname = e.NewValue.GetType().FullName;
-            if (Mapper.TypesOverrides.ContainsKey(fullname))
-            {
-                foreach (var expression in Mapper.TypesOverrides[fullname])
-                {
-                   type = MapperExtensions.InjectAttributes<object>(e.NewValue.GetType(),expression.PropertyInfo,expression.Expression);
-                }
-            }
-
-            ((DynamicForm) obj).UpdateModel(e.OldValue, type);
+            ((DynamicForm) obj).UpdateModel(e.OldValue, e.NewValue.GetInjectedObject());
         }
 
         private void UpdateModel(object oldModel, object newModel)

@@ -177,12 +177,9 @@
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
     <Compile Include="Wpf\Fields\ContentElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\CardElement.cs" />
-    <Compile Include="Wpf\Fields\Defaults\DateField.cs" />
-    <Compile Include="Wpf\Fields\Defaults\DatePresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
-    <Compile Include="Wpf\Fields\Defaults\StringPresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TitleElement.cs" />
@@ -423,10 +420,6 @@
     <Page Include="Themes\Material\Field.Converted.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Material\Field.DatePicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Material\Field.Selection.xaml">
       <Generator>MSBuild:Compile</Generator>
