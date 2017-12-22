@@ -41,19 +41,19 @@ namespace MaterialForms.Mappers
             var fullName = Type.FullName;
             if (fullName == null) return;
 
-
-            foreach (var propertyInfo in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
-            {
-                var mapper = new Mapper
+            if (AutoHide)
+                foreach (var propertyInfo in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
                 {
-                    Expression = new List<Expression<Func<Attribute>>>
+                    var mapper = new Mapper
                     {
-                        () => new FieldAttribute{IsVisible = false}
-                    }.ToArray(),
-                    PropertyInfo = propertyInfo
-                };
-                Mappings.Add(mapper);
-            }
+                        Expression = new List<Expression<Func<Attribute>>>
+                        {
+                            () => new FieldAttribute {IsVisible = false}
+                        }.ToArray(),
+                        PropertyInfo = propertyInfo
+                    };
+                    Mappings.Add(mapper);
+                }
 
             if (!Mapper.TypesOverrides.ContainsKey(fullName))
                 Mapper.TypesOverrides.Add(fullName, Mappings);
