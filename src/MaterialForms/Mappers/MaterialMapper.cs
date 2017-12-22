@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using MaterialForms.Wpf.Annotations;
+using Ninject;
 
 namespace MaterialForms.Mappers
 {
@@ -13,14 +14,18 @@ namespace MaterialForms.Mappers
         /// Automatically hides elements that are not defined already.
         /// </summary>
         public bool AutoHide { get; set; } = false;
+        public IKernel Kernel { get; set; }
+        public MaterialMapper Parent { get; set; }
 
-        public MaterialMapper(Type type)
+        public MaterialMapper(Type type) : this()
         {
+            BaseType = type;
             Type = type;
         }
 
         public MaterialMapper()
         {
+            Parent = this;
         }
 
         internal virtual void HandleAction(object model, string action, object parameter)
@@ -28,6 +33,7 @@ namespace MaterialForms.Mappers
         }
 
         public Type Type { get; set; }
+        public Type BaseType { get; }
 
         /// <inheritdoc />
         public List<Mapper> Mappings { get; } = new List<Mapper>();
@@ -36,29 +42,30 @@ namespace MaterialForms.Mappers
         public void Include()
         {
             if (Type == null) return;
-
-
-            var fullName = Type.FullName;
-            if (fullName == null) return;
-
-            if (AutoHide)
-                foreach (var propertyInfo in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
+            if (!AutoHide) return;
+            foreach (var propertyInfo in BaseType.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
+            {
+                var mapper = new Mapper(this)
                 {
-                    var mapper = new Mapper
+                    Expression = new List<Expression<Func<Attribute>>>
                     {
-                        Expression = new List<Expression<Func<Attribute>>>
-                        {
-                            () => new FieldAttribute {IsVisible = false}
-                        }.ToArray(),
-                        PropertyInfo = propertyInfo
-                    };
-                    Mappings.Add(mapper);
-                }
+                        () => new FieldAttribute {IsVisible = false}
+                    }.ToArray(),
+                    PropertyInfo = propertyInfo
+                };
+                Mappings.Add(mapper);
+            }
+        }
 
-            if (!Mapper.TypesOverrides.ContainsKey(fullName))
-                Mapper.TypesOverrides.Add(fullName, Mappings);
-            else
-                Mapper.TypesOverrides[fullName].AddRange(Mappings.Except(Mapper.TypesOverrides[fullName]));
+        public virtual object TransfomSpawn(object createInstance)
+        {
+            Kernel?.Inject(createInstance);
+            return createInstance;
+        }
+
+        public virtual void OnKernelLoaded()
+        {
+           
         }
     }
 
@@ -84,13 +91,34 @@ namespace MaterialForms.Mappers
 
         public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
         {
-            var mapper = new Mapper
+            var mapper = new Mapper(this)
             {
                 PropertyInfo = null,
                 Expression = expression
             };
 
             Mappings.Add(mapper);
+        }
+
+        /// <summary>
+        ///     Adds a mapper by name.
+        /// </summary>
+        public void AddProperty(string prop, Type type)
+        {
+            Type = Type.InjectProperty(prop, type);
+        }
+
+        /// <summary>
+        ///     Adds a mapper by name.
+        /// </summary>
+        public void AddPropertyAttribute(string prop,
+            params Expression<Func<Attribute>>[] expression)
+        {
+            Mappings.Add(new Mapper(this)
+            {
+                Expression = expression,
+                PropertyInfo = Type.GetHighestProperty(prop)
+            });
         }
 
         /// <summary>
@@ -102,7 +130,7 @@ namespace MaterialForms.Mappers
         public void AddPropertyAttribute<TProperty>(Expression<Func<TSource, TProperty>> propertyLambda,
             params Expression<Func<Attribute>>[] expression)
         {
-            var type = typeof(TSource);
+            var type = Type;
 
             if (!(propertyLambda.Body is MemberExpression member))
                 throw new ArgumentException(
@@ -118,7 +146,7 @@ namespace MaterialForms.Mappers
                 throw new ArgumentException(
                     $"Expresion '{propertyLambda}' refers to a property that is not from type {type}.");
 
-            var mapper = new Mapper
+            var mapper = new Mapper(this)
             {
                 Expression = expression,
                 PropertyInfo = propInfo

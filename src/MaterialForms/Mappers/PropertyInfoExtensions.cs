@@ -16,7 +16,7 @@ namespace MaterialForms.Mappers
         /// <param name="type"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static PropertyInfo GetHighestProperties(this Type type, string name)
+        public static PropertyInfo GetHighestProperty(this Type type, string name)
         {
             while (type != null)
             {
@@ -28,6 +28,11 @@ namespace MaterialForms.Mappers
                 type = type.BaseType;
             }
             return null;
+        }
+
+        public static object GetHighestPropertyValue(this object obj, string property)
+        {
+            return obj.GetType().GetHighestProperty(property).GetValue(obj, null);
         }
 
         /// <summary>

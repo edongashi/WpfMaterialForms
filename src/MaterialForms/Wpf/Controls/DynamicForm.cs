@@ -147,11 +147,13 @@ namespace MaterialForms.Wpf.Controls
             if (e.NewValue is IKernel kernel)
             {
                 var oldModel = form.Model;
-                kernel.Inject(form.Model);
+                if (form.Model != null)
+                    kernel.Inject(form.Model);
                 form.UpdateModel(oldModel, form.Model);
             }
             else
             {
+                Mapper.InitializeIMapperClasses(form.Kernel);
                 var objec = e.NewValue.GetInjectedObject();
                 form.Kernel?.Inject(objec);
 

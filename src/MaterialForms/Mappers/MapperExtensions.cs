@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using AttributeBuilder;
 using Ninject;
+using Ninject.Infrastructure.Language;
 
 namespace MaterialForms.Mappers
 {
@@ -21,7 +22,7 @@ namespace MaterialForms.Mappers
                 try
                 {
                     var value = propertyInfo.GetValue(baseClassInstance, null);
-                    var highEquiv = target.GetType().GetHighestProperties(propertyInfo.Name);
+                    var highEquiv = target.GetType().GetHighestProperty(propertyInfo.Name);
 
                     if (null != value)
                         highEquiv.SetValue(target, value, null);
@@ -41,8 +42,24 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static T GetInjectedObject<T>(this T obj)
         {
-            return (T) obj.CopyTo(
-                Activator.CreateInstance(obj.GetType().GetInjectedType().AddParameterlessConstructor()));
+            if (!Mapper.TypesOverrides.ContainsKey(obj.GetType())) return obj;
+            return (T) Mapper.TypesOverrides[obj.GetType()].Spawn();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static ExtensionMapper FindOverridableType(this Type type)
+        {
+            if (Mapper.TypesOverrides.ContainsKey(type))
+                return Mapper.TypesOverrides[type];
+
+            var injType = type.GetParentTypes()
+                .FirstOrDefault(allBaseType => Mapper.TypesOverrides.ContainsKey(allBaseType));
+
+            return injType != null ? Mapper.TypesOverrides[injType] : null;
         }
 
         /// <summary>
@@ -52,12 +69,13 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static Type GetInjectedType(this Type type)
         {
-            var fullName = type.FullName;
-            if (fullName == null || !Mapper.TypesOverrides.ContainsKey(fullName)) return type;
-            type = Mapper.TypesOverrides[fullName].Where(i => i.PropertyInfo != null).Aggregate(type,
+            var mapper = type.FindOverridableType();
+            if (mapper == null) return type;
+
+            type = mapper.Mapper.Mappings.Where(i => i.PropertyInfo != null).Aggregate(type,
                 (current, expression) =>
                     current.InjectPropertyAttributes(expression.PropertyInfo, expression.Expression));
-            return Mapper.TypesOverrides[fullName].Where(i => i.PropertyInfo == null).Aggregate(type,
+            return mapper.Mapper.Mappings.Where(i => i.PropertyInfo == null).Aggregate(type,
                 (current, expression) => current.InjectClassAttributes(expression.Expression));
         }
 
@@ -135,25 +153,21 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static IEnumerable<Type> GetParentTypes(this Type type)
         {
-            // is there any base type?
             if ((type == null) || (type.BaseType == null))
             {
-                yield break;
+                return new List<Type> {type};
             }
 
-            // return all implemented or inherited interfaces
-            foreach (var i in type.GetInterfaces())
-            {
-                yield return i;
-            }
+            var returnList = type.GetInterfaces().ToList();
 
-            // return all inherited types
             var currentBaseType = type.BaseType;
             while (currentBaseType != null)
             {
-                yield return currentBaseType;
+                returnList.Add(currentBaseType);
                 currentBaseType = currentBaseType.BaseType;
             }
+
+            return returnList;
         }
 
         /// <summary>
@@ -167,18 +181,9 @@ namespace MaterialForms.Mappers
             params Expression<Func<Attribute>>[] expressions)
         {
             var moduleBuilder = ModuleBuilder();
+            type = type.AddParameterlessConstructor();
             var typeBuilder = moduleBuilder.DefineType(type.Name + "Proxy", TypeAttributes.Public, type);
             var constructor = type.GetConstructor(Type.EmptyTypes);
-
-            if (constructor == null)
-            {
-                var constructorBuilder =
-                    typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Any, Type.EmptyTypes);
-                var cGen = constructorBuilder.GetILGenerator();
-                cGen.Emit(OpCodes.Nop);
-                cGen.Emit(OpCodes.Ret);
-            }
-
             var custNamePropBldr = propInfo.Name.CreateProperty(typeBuilder, propInfo.PropertyType);
 
             foreach (var expression in expressions)
@@ -186,6 +191,30 @@ namespace MaterialForms.Mappers
             return typeBuilder.CreateType();
         }
 
+        /// <summary>
+        /// Inject attributes into a property from a Type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <param name="propType"></param>
+        /// <returns></returns>
+        public static Type InjectProperty(this Type type, string name, Type propType)
+        {
+            type = type.AddParameterlessConstructor();
+            var moduleBuilder = ModuleBuilder();
+            var typeBuilder = moduleBuilder.DefineType(type.Name + "prop", TypeAttributes.Public, type);
+            var constructor = type.GetConstructor(Type.EmptyTypes);
+            var custNamePropBldr = name.CreateProperty(typeBuilder, propType);
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="typeBuilder"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static PropertyBuilder CreateProperty(this string name, TypeBuilder typeBuilder, Type type)
         {
             var custNamePropBldr = typeBuilder.DefineProperty(name,
