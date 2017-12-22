@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using AttributeBuilder;
+using Ninject;
 
 namespace MaterialForms.Mappers
 {
@@ -40,10 +41,8 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static T GetInjectedObject<T>(this T obj)
         {
-            var yo = (T) obj.CopyTo(
+            return (T) obj.CopyTo(
                 Activator.CreateInstance(obj.GetType().GetInjectedType().AddParameterlessConstructor()));
-
-            return yo;
         }
 
         /// <summary>
