@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 
@@ -24,13 +25,16 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public IValueProvider ClosesDialog { get; set; }
 
-        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
+            IDictionary<string, IValueProvider> formResources)
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates, ClosesDialog, IsReset),
+                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates,
+                    ClosesDialog, IsReset),
                 VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
+                HorizontalAlignment =
+                    LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
             };
         }
     }
@@ -39,14 +43,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         private readonly IProxy action;
         private readonly IProxy actionParameter;
-
-        private readonly IResourceContext context;
         private readonly IBoolProxy canExecute;
-        private readonly IBoolProxy validates;
-        private readonly IBoolProxy resets;
         private readonly IBoolProxy closesDialog;
 
-        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset)
+        private readonly IResourceContext context;
+        private readonly IBoolProxy resets;
+        private readonly IBoolProxy validates;
+
+        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter,
+            IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset)
         {
             this.context = context;
             this.action = action?.GetBestMatchingProxy(context) ?? new PlainObject(null);
@@ -66,9 +71,11 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     break;
             }
 
-            this.validates = validates != null ? (IBoolProxy)validates.GetBoolValue(context) : new PlainBool(false);
-            this.closesDialog = closesDialog != null ? (IBoolProxy)closesDialog.GetBoolValue(context) : new PlainBool(true);
-            resets = isReset != null ? (IBoolProxy)isReset.GetBoolValue(context) : new PlainBool(false);
+            this.validates = validates != null ? (IBoolProxy) validates.GetBoolValue(context) : new PlainBool(false);
+            this.closesDialog = closesDialog != null
+                ? (IBoolProxy) closesDialog.GetBoolValue(context)
+                : new PlainBool(true);
+            resets = isReset != null ? (IBoolProxy) isReset.GetBoolValue(context) : new PlainBool(false);
             this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
 
@@ -84,9 +91,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             {
                 var isValid = ModelState.Validate(model);
                 if (!isValid)
-                {
                     return;
-                }
             }
 
             if (closesDialog.Value && context is IFrameworkResourceContext fwContext)
@@ -102,15 +107,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
             {
                 case string actionName:
                     if (model is IActionHandler modelHandler)
-                    {
                         modelHandler.HandleAction(model, actionName, arg);
-                    }
 
                     if (context.GetContextInstance() is IActionHandler contextHandler)
-                    {
                         contextHandler.HandleAction(model, actionName, arg);
-                    }
 
+                    model.GetType().FindOverridableType().Mapper.HandleAction(model, actionName, arg);
                     break;
                 case ICommand command:
                     command.Execute(arg);
@@ -122,14 +124,10 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             var flag = canExecute.Value;
             if (!flag)
-            {
                 return false;
-            }
 
             if (action.Value is ICommand command)
-            {
                 return command.CanExecute(actionParameter.Value);
-            }
 
             return true;
         }
@@ -155,18 +153,20 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         static ActionPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ActionPresenter), new FrameworkPropertyMetadata(typeof(ActionPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ActionPresenter),
+                new FrameworkPropertyMetadata(typeof(ActionPresenter)));
+        }
+
+        public ActionPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
+            : base(context, fieldResources, formResources, true)
+        {
         }
 
         public ICommand Command
         {
-            get => (ICommand)GetValue(CommandProperty);
+            get => (ICommand) GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
-        }
-
-        public ActionPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources, IDictionary<string, IValueProvider> formResources)
-            : base(context, fieldResources, formResources, true)
-        {
         }
     }
 }

@@ -12,11 +12,13 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
 
         public IValueProvider IsMultiline { get; set; }
+        public IValueProvider Mask { get; set; }
 
         protected internal override void Freeze()
         {
             base.Freeze();
             Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
+            Resources.Add(nameof(Mask), Mask ?? LiteralValue.Null);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
