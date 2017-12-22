@@ -169,9 +169,10 @@
     <Compile Include="Wpf\Fields\Defaults\BooleanField.cs" />
     <Compile Include="Wpf\Fields\ContentElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\CardElement.cs" />
-    <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\DateField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\DatePresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />

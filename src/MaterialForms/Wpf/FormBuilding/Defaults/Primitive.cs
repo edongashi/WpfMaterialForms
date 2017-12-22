@@ -41,8 +41,12 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults
 
         public static FormDefinition DateTime()
         {
-            // Temporarily
-            return BuildConverted(typeof(DateTime), Deserializers.DateTime);
+            var field = new DateField(null)
+            {
+                IsDirectBinding = true
+            };
+
+            return BuildWith(field);
         }
 
         public static FormDefinition Boolean()
