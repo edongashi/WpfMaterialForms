@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>WpfMaterialForms</id>
+        <id>MaterialForms</id>
         <version>$version$</version>
         <title>WPF Material Forms</title>
         <authors>Edon Gashi</authors>
@@ -11,5 +11,9 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Dynamically generated forms and dialogs in WPF</description>
         <tags>Material Design Form Dialog WPF XAML</tags>
-    </metadata>
+</metadata>
+  <files>
+    <file src=".\bin\Release\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*;*.db"/>
+    <file src=".\bin\Release\**\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*;*.db"/>
+  </files>
 </package>
