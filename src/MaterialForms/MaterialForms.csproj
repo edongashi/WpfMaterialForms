@@ -164,6 +164,7 @@
     <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
     <Compile Include="Wpf\Annotations\MaskedAttribute.cs" />
     <Compile Include="Wpf\Annotations\Must.cs" />
+    <Compile Include="Wpf\Annotations\ReplaceAttribute.cs" />
     <Compile Include="Wpf\Annotations\ResourceAttribute.cs" />
     <Compile Include="Wpf\Annotations\SelectFromAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\TextElementAttribute.cs" />
@@ -179,7 +180,8 @@
     <Compile Include="Wpf\Fields\Defaults\CardElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
-    <Compile Include="Wpf\Fields\Defaults\DateTimeField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\DateField.cs" />
+    <Compile Include="Wpf\Fields\Defaults\DatePresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="Wpf\Fields\BindingProvider.cs" />
     <Compile Include="Wpf\Fields\IDataBindingProvider.cs" />
     <Compile Include="Wpf\Fields\IFormDefinition.cs" />
+    <Compile Include="Wpf\Fields\ReplacementPipe.cs" />
     <Compile Include="Wpf\Fields\StringTypeConverter.cs" />
     <Compile Include="Wpf\Fields\ValueBindingProvider.cs" />
     <Compile Include="Wpf\FormBuilding\CustomCulture.cs" />
@@ -483,6 +486,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Wpf\Element.Action.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Material\Field.DatePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -7,6 +7,7 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.Converted.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.String.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.DatePicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.Switch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Field.Selection.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/Element.Text.xaml" />
@@ -24,5 +25,7 @@
     <Style BasedOn="{StaticResource MaterialTextPresenterStyle}" TargetType="{x:Type defaults:TextPresenter}" />
 
     <Style BasedOn="{StaticResource MaterialActionPresenterStyle}" TargetType="{x:Type defaults:ActionPresenter}" />
+
+    <Style BasedOn="{StaticResource MaterialDatePickerPresenterStyle}" TargetType="{x:Type defaults:DatePresenter}" />
 
 </ResourceDictionary>

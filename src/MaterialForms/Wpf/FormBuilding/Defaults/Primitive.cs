@@ -21,7 +21,7 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults
 
         private static FormDefinition BuildConverted(Type type, Func<string, CultureInfo, object> deserializer)
         {
-            var field = new ConvertedField(null, type, deserializer)
+            var field = new ConvertedField(null, type, new ReplacementPipe(deserializer))
             {
                 IsDirectBinding = true
             };
@@ -41,8 +41,12 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults
 
         public static FormDefinition DateTime()
         {
-            // Temporarily
-            return BuildConverted(typeof(DateTime), Deserializers.DateTime);
+            var field = new DateField(null)
+            {
+                IsDirectBinding = true
+            };
+
+            return BuildWith(field);
         }
 
         public static FormDefinition Boolean()

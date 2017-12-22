@@ -10,11 +10,11 @@ namespace MaterialForms.Wpf.Resources
     public sealed class ConvertedDirectBinding : IValueProvider
     {
         public ConvertedDirectBinding(BindingOptions bindingOptions,
-            List<IValidatorProvider> validationRules, Func<string, CultureInfo, object> deserializer,
+            List<IValidatorProvider> validationRules, ReplacementPipe replacementPipe,
             Func<IResourceContext, IErrorStringProvider> conversionErrorStringProvider)
         {
             BindingOptions = bindingOptions ?? throw new ArgumentNullException(nameof(bindingOptions));
-            Deserializer = deserializer;
+            ReplacementPipe = replacementPipe ?? throw new ArgumentNullException(nameof(replacementPipe));
             ValidationRules = validationRules ?? new List<IValidatorProvider>();
             ConversionErrorStringProvider = conversionErrorStringProvider;
         }
@@ -23,7 +23,7 @@ namespace MaterialForms.Wpf.Resources
 
         public List<IValidatorProvider> ValidationRules { get; }
 
-        public Func<string, CultureInfo, object> Deserializer { get; }
+        public ReplacementPipe ReplacementPipe { get; }
 
         public Func<IResourceContext, IErrorStringProvider> ConversionErrorStringProvider { get; }
 
@@ -31,8 +31,9 @@ namespace MaterialForms.Wpf.Resources
         {
             var binding = context.CreateDirectModelBinding();
             BindingOptions.Apply(binding);
-            binding.Converter = new StringTypeConverter(Deserializer);
-            binding.ValidationRules.Add(new ConversionValidator(Deserializer, ConversionErrorStringProvider(context), binding.ConverterCulture));
+            var deserializer = ReplacementPipe.CreateDeserializer(context);
+            binding.Converter = new StringTypeConverter(deserializer);
+            binding.ValidationRules.Add(new ConversionValidator(deserializer, ConversionErrorStringProvider(context), binding.ConverterCulture));
             var pipe = new ValidationPipe();
             foreach (var validatorProvider in ValidationRules)
             {
