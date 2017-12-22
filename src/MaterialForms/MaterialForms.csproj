@@ -148,6 +148,7 @@
     <Compile Include="Wpf\Annotations\Content\BreakAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\DividerAttribute.cs" />
     <Compile Include="Wpf\Annotations\DefaultFields.cs" />
+    <Compile Include="Wpf\Annotations\Display\SliderAttribute.cs" />
     <Compile Include="Wpf\Annotations\Display\ToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
     <Compile Include="Wpf\Annotations\FieldAttribute.cs" />
@@ -172,8 +173,8 @@
     <Compile Include="Wpf\Fields\Defaults\ConvertedField.cs" />
     <Compile Include="Wpf\Fields\Defaults\BreakElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\DateField.cs" />
-    <Compile Include="Wpf\Fields\Defaults\DatePresenter.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\SliderField.cs" />
     <Compile Include="Wpf\Fields\Defaults\TextElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\TitleElement.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Wpf\FormBuilding\Defaults\Initializers\ValidatorInitializer.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Primitive.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Properties\SelectFromBuilder.cs" />
+    <Compile Include="Wpf\FormBuilding\Defaults\Properties\SliderBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\DefaultTypeBuilders.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\TypeBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Deserializers.cs" />
@@ -457,6 +459,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Metro\Field.Converted.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Material\Field.Slider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

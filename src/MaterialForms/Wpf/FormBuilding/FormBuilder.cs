@@ -37,7 +37,8 @@ namespace MaterialForms.Wpf.FormBuilding
             PropertyBuilders = new List<IFieldBuilder>
             {
                 // Default property builders.
-                new SelectFromBuilder()
+                new SelectFromBuilder(),
+                new SliderBuilder()
             };
 
             List<IFieldBuilder> AsList(params IFieldBuilder[] builders)

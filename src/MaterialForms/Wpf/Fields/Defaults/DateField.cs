@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using MaterialForms.Wpf.Resources;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -18,6 +19,22 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             var datePresenter = new DatePresenter(context, Resources, formResources);
             return datePresenter;
+        }
+    }
+
+    public class DatePresenter : ValueBindingProvider
+    {
+        static DatePresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DatePresenter),
+                new FrameworkPropertyMetadata(typeof(DatePresenter)));
+        }
+
+        public DatePresenter(IResourceContext context,
+            IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
+            : base(context, fieldResources, formResources, true)
+        {
         }
     }
 }

@@ -18,6 +18,7 @@ namespace MaterialForms.Demo.Models
         private bool twitter;
         private bool instagram;
         private string deviceName;
+        private double volume;
         private bool sendAnonymousData;
 
         [Title("Settings")]
@@ -125,6 +126,41 @@ namespace MaterialForms.Demo.Models
             {
                 deviceName = value;
                 OnPropertyChanged();
+            }
+        }
+
+        [Slider(Minimum = 0d, Maximum = 100d), Field(Icon = "{Binding VolumeIcon}")]
+        public double Volume
+        {
+            get => volume;
+            set
+            {
+                volume = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(VolumeIcon));
+            }
+        }
+
+        public PackIconKind VolumeIcon
+        {
+            get
+            {
+                if (volume <= 0d)
+                {
+                    return PackIconKind.VolumeOff;
+                }
+
+                if (volume < 33d)
+                {
+                    return PackIconKind.VolumeLow;
+                }
+
+                if (volume > 66d)
+                {
+                    return PackIconKind.VolumeHigh;
+                }
+
+                return PackIconKind.VolumeMedium;
             }
         }
 
