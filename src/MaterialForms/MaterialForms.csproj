@@ -480,6 +480,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Material\Field.DatePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Wpf\Field.Switch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
