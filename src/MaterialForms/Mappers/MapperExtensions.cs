@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -70,27 +71,32 @@ namespace MaterialForms.Mappers
         /// <returns></returns>
         public static Type AddParameterlessConstructor(this Type type)
         {
-            var assemblyName = new AssemblyName("ProxyBuilder");
-            var assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
-            var typeBuilder = moduleBuilder.DefineType(type.Name + "wConstructor", TypeAttributes.Public, type);
             var constructor = type.GetConstructor(Type.EmptyTypes);
 
-            if (constructor == null)
-            {
-                var constructorBuilder =
-                    typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Any, Type.EmptyTypes);
-                var cGen = constructorBuilder.GetILGenerator();
-                cGen.Emit(OpCodes.Nop);
-                cGen.Emit(OpCodes.Ret);
-            }
-            else
+            if (constructor != null)
             {
                 return type;
             }
 
+            var moduleBuilder = ModuleBuilder();
+            var typeBuilder = moduleBuilder.DefineType(type.Name + "ctor", TypeAttributes.Public, type);
+
+            var constructorBuilder =
+                typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
+            var cGen = constructorBuilder.GetILGenerator();
+            cGen.Emit(OpCodes.Nop);
+            cGen.Emit(OpCodes.Ret);
+
             return typeBuilder.CreateType();
+        }
+
+        private static ModuleBuilder ModuleBuilder()
+        {
+            var assemblyName = new AssemblyName("ProxyBuilder");
+            var assemblyBuilder =
+                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
+            return moduleBuilder;
         }
 
         /// <summary>
@@ -104,10 +110,7 @@ namespace MaterialForms.Mappers
             if (!type.IsClass)
                 throw new Exception("Type is not a class, cannot inject.");
 
-            var assemblyName = new AssemblyName("ProxyBuilder");
-            var assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
+            var moduleBuilder = ModuleBuilder();
             var typeBuilder = moduleBuilder.DefineType(type.Name + "Proxy", TypeAttributes.Public, type);
             var constructor = type.GetConstructor(Type.EmptyTypes);
 
@@ -126,6 +129,11 @@ namespace MaterialForms.Mappers
             return typeBuilder.CreateType();
         }
 
+        /// <summary>
+        /// Get all base types from a type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static IEnumerable<Type> GetParentTypes(this Type type)
         {
             // is there any base type?
@@ -145,10 +153,10 @@ namespace MaterialForms.Mappers
             while (currentBaseType != null)
             {
                 yield return currentBaseType;
-                currentBaseType= currentBaseType.BaseType;
+                currentBaseType = currentBaseType.BaseType;
             }
         }
-        
+
         /// <summary>
         /// Inject attributes into a property from a Type
         /// </summary>
@@ -159,10 +167,7 @@ namespace MaterialForms.Mappers
         public static Type InjectPropertyAttributes(this Type type, PropertyInfo propInfo,
             params Expression<Func<Attribute>>[] expressions)
         {
-            var assemblyName = new AssemblyName("ProxyBuilder");
-            var assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-            var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name);
+            var moduleBuilder = ModuleBuilder();
             var typeBuilder = moduleBuilder.DefineType(type.Name + "Proxy", TypeAttributes.Public, type);
             var constructor = type.GetConstructor(Type.EmptyTypes);
 
@@ -176,13 +181,13 @@ namespace MaterialForms.Mappers
             }
 
             var custNamePropBldr = propInfo.Name.CreateProperty(typeBuilder, propInfo.PropertyType);
-            
+
             foreach (var expression in expressions)
                 custNamePropBldr.SetCustomAttribute(expression);
             return typeBuilder.CreateType();
         }
 
-        public static PropertyBuilder CreateProperty(this string name, TypeBuilder typeBuilder,Type type)
+        public static PropertyBuilder CreateProperty(this string name, TypeBuilder typeBuilder, Type type)
         {
             var custNamePropBldr = typeBuilder.DefineProperty(name,
                 PropertyAttributes.HasDefault,

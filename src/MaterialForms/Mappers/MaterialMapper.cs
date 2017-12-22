@@ -78,8 +78,8 @@ namespace MaterialForms.Mappers
 
         internal override void HandleAction(object model, string action, object parameter)
         {
-            var obj = (TSource) Activator.CreateInstance(typeof(TSource).AddParameterlessConstructor());
-            Action((TSource) model.CopyTo(obj), action, parameter);
+            Action((TSource) model.CopyTo(Activator.CreateInstance(Type.AddParameterlessConstructor())), action,
+                parameter);
         }
 
         public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
