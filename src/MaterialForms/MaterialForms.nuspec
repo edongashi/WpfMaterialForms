@@ -12,8 +12,4 @@
         <description>Dynamically generated forms and dialogs in WPF</description>
         <tags>Material Design Form Dialog WPF XAML</tags>
 </metadata>
-  <files>
-    <file src=".\bin\Release\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*;*.db"/>
-    <file src=".\bin\Release\**\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*;*.db"/>
-  </files>
 </package>
