@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms", "src\MaterialForms\MaterialForms.csproj", "{703572CE-5A7E-4B37-9F12-FF9A11483DE2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Tests", "src\MaterialForms.Tests\MaterialForms.Tests.csproj", "{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms.Demo", "src\Demo\MaterialForms.Demo\MaterialForms.Demo.csproj", "{9366F07D-D5DE-4B19-987C-B27C40476685}"
@@ -13,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{F136458D-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Material.Application", "src\Demo\Material.Application\Material.Application.csproj", "{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms", "src\MaterialForms\MaterialForms.csproj", "{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU
@@ -20,12 +20,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{703572CE-5A7E-4B37-9F12-FF9A11483DE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
 		{528FBDC1-500C-4C3B-AD72-F8FB49E778FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,6 +38,12 @@ Global
 		{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A356BE4-7ABA-49FA-BE73-31AF171C0E01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,5 +51,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9366F07D-D5DE-4B19-987C-B27C40476685} = {F136458D-E31D-48AE-9649-EA6B63176D30}
 		{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA} = {F136458D-E31D-48AE-9649-EA6B63176D30}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80A84907-BABD-4D97-87E9-D2C5B331F074}
 	EndGlobalSection
 EndGlobal
