@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 using Proxier.Mappers;
@@ -111,7 +112,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     if (context.GetContextInstance() is IActionHandler contextHandler)
                         contextHandler.HandleAction(model, actionName, arg);
 
-                    model.GetType().FindOverridableType().HandleAction(model, actionName, arg);
+                    model.GetType().FindOverridableType<MaterialMapper>().HandleAction(model, actionName, arg);
                     break;
                 case ICommand command:
                     command.Execute(arg);

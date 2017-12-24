@@ -9,7 +9,7 @@ using MaterialForms.Wpf.Controls;
 using Proxier.Mappers;
 
 namespace MaterialForms.Demo.Infrastructure {
-    public class LoginExtensions : AttributesMapper<Login> {
+    public class LoginExtensions : AttributeMapper<Login> {
         public LoginExtensions () {
             AddPropertyAttribute(i => i.RememberMe,() => new FieldAttribute { Name = "sdfgsrysert" });
         }
