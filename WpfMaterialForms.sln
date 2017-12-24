@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialForms", "src\MaterialForms\MaterialForms.csproj", "{703572CE-5A7E-4B37-9F12-FF9A11483DE2}"
 EndProject
@@ -51,5 +51,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9366F07D-D5DE-4B19-987C-B27C40476685} = {F136458D-E31D-48AE-9649-EA6B63176D30}
 		{88934993-2F5B-49F2-BA5A-6B7BE3FF2DFA} = {F136458D-E31D-48AE-9649-EA6B63176D30}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF62C871-39E3-458E-9EF8-EFB3729E452F}
 	EndGlobalSection
 EndGlobal

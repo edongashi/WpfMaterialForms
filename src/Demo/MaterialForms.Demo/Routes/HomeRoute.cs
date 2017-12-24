@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
-using MahApps.Metro.Controls;
+﻿using System.Windows;
 using Material.Application.Infrastructure;
 using Material.Application.Routing;
 using MaterialDesignThemes.Wpf;
-using MaterialForms.Demo.Models;
 using MaterialForms.Demo.Models.Home;
-using MaterialForms.Mappers;
 using MaterialForms.Wpf;
-using MaterialForms.Wpf.Annotations;
-using MaterialForms.Wpf.Controls;
 
 namespace MaterialForms.Demo.Routes
 {
