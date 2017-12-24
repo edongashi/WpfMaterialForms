@@ -41,9 +41,9 @@ namespace MaterialForms.Wpf.Controls
             new FrameworkPropertyMetadata(FormBuilding.FormBuilder.Default));
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
-
+        
         [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnPropertyChanged = "ModelChanged")]
+            OnPropertyChanged = "KernelChanged")]
         public IKernel Kernel { get; set; }
 
         static DynamicForm()
@@ -140,25 +140,23 @@ namespace MaterialForms.Wpf.Controls
             return new Dictionary<string, DataFormField>(DataFields);
         }
 
+        private static void KernelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var form = (DynamicForm) obj;
+            var kernel = (IKernel)e.NewValue;
+            var oldModel = form.Model;
+            if (form.Model != null)
+                kernel.Inject(form.Model);
+            form.UpdateModel(oldModel, form.Model);
+        }
+
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var form = (DynamicForm) obj;
-
-            if (e.NewValue is IKernel kernel)
-            {
-                var oldModel = form.Model;
-                if (form.Model != null)
-                    kernel.Inject(form.Model);
-                form.UpdateModel(oldModel, form.Model);
-            }
-            else
-            {
-                Mapper.InitializeIMapperClasses(form.Kernel);
-                var objec = e.NewValue.GetInjectedObject();
-                form.Kernel?.Inject(objec);
-
-                form.UpdateModel(e.OldValue, objec);
-            }
+            Mapper.InitializeIMapperClasses(form.Kernel);
+            var objec = e.NewValue.GetInjectedObject();
+            form.Kernel?.Inject(objec);
+            form.UpdateModel(e.OldValue, objec);          
         }
 
         private void UpdateModel(object oldModel, object newModel)
