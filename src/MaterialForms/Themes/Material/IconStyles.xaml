@@ -8,8 +8,7 @@
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding ElementName=ValueHolderControl, Path=IsFocused}" Value="True" />
-                    <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}"
-                               Value="False" />
+                    <Condition Binding="{Binding ElementName=ValueHolderControl, Path=(Validation.HasError)}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
             </MultiDataTrigger>
@@ -24,5 +23,5 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-
+    
 </ResourceDictionary>

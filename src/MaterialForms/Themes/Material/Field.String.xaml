@@ -4,13 +4,11 @@
     xmlns:controls1="clr-namespace:MaterialForms.Wpf.Controls"
     xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
     xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialForms;component/Themes/Material/IconStyles.xaml" />
-        <ResourceDictionary
-            Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="MaterialStringPresenterTemplate" TargetType="{x:Type defaults:StringPresenter}">
@@ -29,8 +27,8 @@
                 Kind="{fields:FormBinding Icon}"
                 Style="{StaticResource MaterialColoredIconStyle}"
                 Visibility="{fields:FormBinding IconVisibility}" />
-            <xctk:MaskedTextBox
-                x:Name="ValueHolderControl"
+            <TextBox
+                Name="ValueHolderControl"
                 Grid.Column="1"
                 Margin="0,-14,0,0"
                 VerticalAlignment="Center"
@@ -39,7 +37,6 @@
                 IsReadOnly="{fields:FormBinding IsReadOnly}"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 Text="{fields:FormBinding Value}"
-                Mask="{fields:FormBinding Mask}"
                 ToolTip="{fields:FormBinding ToolTip}" />
         </Grid>
     </ControlTemplate>

@@ -15,8 +15,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
             CreateBinding = false;
         }
 
-        public IValueProvider Mask { get; set; }
-
         public ReplacementPipe ReplacementPipe { get; }
 
         public Func<IResourceContext, IErrorStringProvider> ConversionErrorMessage { get; set; }
@@ -40,8 +38,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     new ConvertedDataBinding(Key, BindingOptions, Validators, ReplacementPipe,
                         ConversionErrorMessage ?? (ctx => new PlainErrorStringProvider("Invalid value."))));
             }
-
-            Resources.Add(nameof(Mask), Mask ?? LiteralValue.Null);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
