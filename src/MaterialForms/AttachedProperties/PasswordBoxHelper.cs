@@ -26,13 +26,9 @@ namespace MaterialForms.AttachedProperties
             obj.SetValue(PasswordProperty, value);
         }
 
-        // We play a trick here. If we set the initial value to something, it'll be set to something else when the binding kicks in,
-        // and HandleBoundPasswordChanged will be called, which allows us to set up our event subscription.
-        // If the binding sets us to a value which we already are, then this doesn't happen. Therefore start with a value that's
-        // definitely unique.
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper),
-                new FrameworkPropertyMetadata("", HandleBoundPasswordChanged)
+                new FrameworkPropertyMetadata(Guid.NewGuid().ToString(), HandleBoundPasswordChanged)
                 {
                     BindsTwoWayByDefault = true,
                     DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus // Match the default on Binding
