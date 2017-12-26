@@ -58,6 +58,9 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Bindables, Version=0.4.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Bindables.Fody.0.4.0\lib\net40\Bindables.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -540,4 +543,5 @@
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Fody.2.3.6\build\net452\Fody.targets" Condition="Exists('..\..\packages\Fody.2.3.6\build\net452\Fody.targets')" />
 </Project>

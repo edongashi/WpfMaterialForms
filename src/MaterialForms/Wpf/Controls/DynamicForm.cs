@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Bindables;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Resources.ValueConverters;
 using Ninject;
+using Bindables;
 using Proxier.Mappers;
 
 namespace MaterialForms.Wpf.Controls

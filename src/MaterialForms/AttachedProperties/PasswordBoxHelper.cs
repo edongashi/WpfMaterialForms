@@ -9,11 +9,11 @@ namespace MaterialForms.AttachedProperties
     public static class PasswordBoxHelper
     {
         private static readonly DependencyProperty PasswordInitializedProperty =
-            DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordHelper),
+            DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordBoxHelper),
                 new PropertyMetadata(false));
 
         private static readonly DependencyProperty SettingPasswordProperty =
-            DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordHelper),
+            DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper),
                 new PropertyMetadata(false));
 
         public static string GetPassword(DependencyObject obj)
@@ -31,7 +31,7 @@ namespace MaterialForms.AttachedProperties
         // If the binding sets us to a value which we already are, then this doesn't happen. Therefore start with a value that's
         // definitely unique.
         public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordHelper),
+            DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper),
                 new FrameworkPropertyMetadata("", HandleBoundPasswordChanged)
                 {
                     BindsTwoWayByDefault = true,
