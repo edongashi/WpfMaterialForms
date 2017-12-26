@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MaterialForms.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Annotations.Display;
 
@@ -7,7 +8,7 @@ namespace MaterialForms.Demo.Models
     [Title("Login to continue")]
     [Action("cancel", "CANCEL")]
     [Action("login", "LOG IN")]
-    public class Login
+    public class Login : IActionHandler
     {
         // Enums may be deserialized from strings.
         [Field(Icon = "Account")]
@@ -21,5 +22,11 @@ namespace MaterialForms.Demo.Models
         public bool RememberMe { get; set; }
 
         public PackIconKind PasswordIcon => PackIconKind.Key;
+
+        /// <inheritdoc />
+        public void HandleAction(object model, string action, object parameter)
+        {
+            
+        }
     }
 }
