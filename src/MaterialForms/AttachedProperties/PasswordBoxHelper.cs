@@ -6,7 +6,7 @@ using System.Windows.Data;
 namespace MaterialForms.AttachedProperties
 {
     //Source: https://antonymale.co.uk/binding-to-a-passwordbox-password-in-wpf.html
-    public static class PasswordHelper
+    public static class PasswordBoxHelper
     {
         private static readonly DependencyProperty PasswordInitializedProperty =
             DependencyProperty.RegisterAttached("PasswordInitialized", typeof(bool), typeof(PasswordHelper),
@@ -32,7 +32,7 @@ namespace MaterialForms.AttachedProperties
         // definitely unique.
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordHelper),
-                new FrameworkPropertyMetadata(Guid.NewGuid().ToString(), HandleBoundPasswordChanged)
+                new FrameworkPropertyMetadata("", HandleBoundPasswordChanged)
                 {
                     BindsTwoWayByDefault = true,
                     DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus // Match the default on Binding
@@ -40,22 +40,29 @@ namespace MaterialForms.AttachedProperties
 
         private static void HandleBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
         {
-            if (!(dp is PasswordBox passwordBox))
-                return;
-
-            // If we're being called because we set the value of the property we're bound to (from inside 
-            // HandlePasswordChanged, then do nothing - we already have the latest value).
-            if ((bool) passwordBox.GetValue(SettingPasswordProperty))
-                return;
-
-            // If this is the initial set (see the comment on PasswordProperty), set ourselves up
-            if (!(bool) passwordBox.GetValue(PasswordInitializedProperty))
+            try
             {
-                passwordBox.SetValue(PasswordInitializedProperty, true);
-                passwordBox.PasswordChanged += HandlePasswordChanged;
-            }
+                if (!(dp is PasswordBox passwordBox))
+                    return;
 
-            passwordBox.Password = e.NewValue as string ?? throw new InvalidOperationException();
+                // If we're being called because we set the value of the property we're bound to (from inside 
+                // HandlePasswordChanged, then do nothing - we already have the latest value).
+                if ((bool) passwordBox.GetValue(SettingPasswordProperty))
+                    return;
+
+                // If this is the initial set (see the comment on PasswordProperty), set ourselves up
+                if (!(bool) passwordBox.GetValue(PasswordInitializedProperty))
+                {
+                    passwordBox.SetValue(PasswordInitializedProperty, true);
+                    passwordBox.PasswordChanged += HandlePasswordChanged;
+                }
+
+                passwordBox.Password = e.NewValue as string ?? throw new InvalidOperationException();
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private static void HandlePasswordChanged(object sender, RoutedEventArgs e)
