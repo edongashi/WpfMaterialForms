@@ -11,6 +11,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
         }
 
+        public bool IsPassword { get; set; }
         public IValueProvider IsMultiline { get; set; }
 
         protected internal override void Freeze()
@@ -19,9 +20,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
             Resources.Add(nameof(IsMultiline), IsMultiline ?? LiteralValue.False);
         }
 
-        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context, IDictionary<string, IValueProvider> formResources)
+        protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
+            IDictionary<string, IValueProvider> formResources)
         {
-            return new StringPresenter(context, Resources, formResources);
+            return !IsPassword
+                ? (IBindingProvider) new StringPresenter(context, Resources, formResources)
+                : new PasswordPresenter(context, Resources, formResources);
         }
     }
 
@@ -29,10 +33,27 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         static StringPresenter()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter), new FrameworkPropertyMetadata(typeof(StringPresenter)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StringPresenter),
+                new FrameworkPropertyMetadata(typeof(StringPresenter)));
         }
 
         public StringPresenter(IResourceContext context,
+            IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
+            : base(context, fieldResources, formResources, true)
+        {
+        }
+    }
+
+    public class PasswordPresenter : ValueBindingProvider
+    {
+        static PasswordPresenter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PasswordPresenter),
+                new FrameworkPropertyMetadata(typeof(PasswordPresenter)));
+        }
+
+        public PasswordPresenter(IResourceContext context,
             IDictionary<string, IValueProvider> fieldResources,
             IDictionary<string, IValueProvider> formResources)
             : base(context, fieldResources, formResources, true)

@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
+using MaterialForms.Wpf.Annotations.Display;
 
 namespace MaterialForms.Demo.Models
 {
@@ -14,6 +15,7 @@ namespace MaterialForms.Demo.Models
 
         // Or be dynamically assigned...
         [Field(Icon = "{Property PasswordIcon}")]
+        [Password]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
