@@ -153,7 +153,7 @@ namespace MaterialForms.Wpf.Controls
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var form = (DynamicForm) obj;
-            Mapper.InitializeIMapperClasses(form.Kernel);
+            Mapper.InitializeMapperClasses(form.Kernel);
             var objec = e.NewValue.GetInjectedObject();
             form.Kernel?.Inject(objec);
             form.UpdateModel(e.OldValue, objec);          
