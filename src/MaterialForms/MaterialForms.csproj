@@ -453,10 +453,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Material\Field.Slider.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Themes\Material\Field.String.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
