@@ -12,7 +12,10 @@ namespace MaterialForms.Wpf.FormBuilding.Defaults.Types
     {
         protected override FormElement Build(IFormProperty property, Func<string, object> deserializer)
         {
-            return new StringField(property.Name);
+            return new StringField(property.Name)
+            {
+                IsPassword = property.GetCustomAttribute<Display.PasswordAttribute>() != null
+            };
         }
     }
 

@@ -186,6 +186,7 @@
     <Compile Include="Wpf\Annotations\Content\FormContentAttribute.cs" />
     <Compile Include="Wpf\Annotations\Content\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\DefaultFields.cs" />
+    <Compile Include="Wpf\Annotations\Display\PasswordAttribute.cs" />
     <Compile Include="Wpf\Annotations\Display\SliderAttribute.cs" />
     <Compile Include="Wpf\Annotations\Display\ToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
@@ -454,6 +455,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Material\Field.Slider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Material\Field.String.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -514,7 +519,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Wpf\Field.String.xaml">
+    <Page Include="Themes\Wpf\Field.Password.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
