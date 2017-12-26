@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AttributeBuilder.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.0.0-CI-20171224-160349\lib\netstandard2.0\AttributeBuilder.Standard.dll</HintPath>
+      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.1.0-CI-20171226-194624\lib\netstandard2.0\AttributeBuilder.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.3.191, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Dragablz.0.0.3.191\lib\net45\Dragablz.dll</HintPath>
@@ -66,8 +66,8 @@
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7">
       <HintPath>..\..\..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Proxier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Proxier.1.0.0-CI-20171224-160349\lib\netstandard2.0\Proxier.dll</HintPath>
+    <Reference Include="Proxier, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\packages\Proxier.1.2.0\lib\netstandard2.0\Proxier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

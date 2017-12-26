@@ -155,7 +155,8 @@ namespace MaterialForms.Wpf.Controls
             var form = (DynamicForm) obj;
             Mapper.InitializeMapperClasses(form.Kernel);
             var objec = e.NewValue.GetInjectedObject();
-            form.Kernel?.Inject(objec);
+            if(objec != null)
+                form.Kernel?.Inject(objec);
             form.UpdateModel(e.OldValue, objec);          
         }
 

@@ -4,12 +4,13 @@ using Material.Application.Infrastructure;
 using Material.Application.Routing;
 using MaterialForms.Demo.Models;
 using MaterialForms.Demo.Routes;
+using MaterialForms.Mappers;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Controls;
 using Proxier.Mappers;
 
 namespace MaterialForms.Demo.Infrastructure {
-    public class LoginExtensions : AttributeMapper<Login> {
+    public class LoginExtensions : MaterialMapper<Login> {
         public LoginExtensions () {
             AddPropertyAttribute(i => i.RememberMe,() => new FieldAttribute { Name = "sdfgsrysert" });
         }
