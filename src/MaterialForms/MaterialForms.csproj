@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
     <Compile Include="Mappers\MaterialMapper.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Controls\ButtonControl.xaml.cs">
