@@ -18,7 +18,7 @@ namespace MaterialForms.Demo.Routes
             RouteConfig.Icon = PackIconKind.Home;
             Model = new Introduction();
         }
-        
+
         public object Model { get; }
 
         public void HandleAction(object model, string action, object parameter)

@@ -7,6 +7,9 @@ using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Resources.ValueConverters;
+using Ninject;
+using Bindables;
+using Proxier.Mappers;
 
 namespace MaterialForms.Wpf.Controls
 {
@@ -38,10 +41,15 @@ namespace MaterialForms.Wpf.Controls
             new FrameworkPropertyMetadata(FormBuilding.FormBuilder.Default));
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
+        
+        [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+            OnPropertyChanged = "KernelChanged")]
+        public IKernel Kernel { get; set; }
 
         static DynamicForm()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm), new FrameworkPropertyMetadata(typeof(DynamicForm)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
+                new FrameworkPropertyMetadata(typeof(DynamicForm)));
         }
 
         internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
@@ -71,15 +79,9 @@ namespace MaterialForms.Wpf.Controls
                 Mode = BindingMode.OneWay
             });
 
-            Loaded += (s, e) =>
-            {
-                ActiveForms.Add(this);
-            };
+            Loaded += (s, e) => { ActiveForms.Add(this); };
 
-            Unloaded += (s, e) =>
-            {
-                ActiveForms.Remove(this);
-            };
+            Unloaded += (s, e) => { ActiveForms.Remove(this); };
         }
 
         /// <summary>
@@ -87,7 +89,7 @@ namespace MaterialForms.Wpf.Controls
         /// </summary>
         public IFormBuilder FormBuilder
         {
-            get => (IFormBuilder)GetValue(FormBuilderProperty);
+            get => (IFormBuilder) GetValue(FormBuilderProperty);
             set => SetValue(FormBuilderProperty, value);
         }
 
@@ -138,9 +140,23 @@ namespace MaterialForms.Wpf.Controls
             return new Dictionary<string, DataFormField>(DataFields);
         }
 
+        private static void KernelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var form = (DynamicForm) obj;
+            var kernel = (IKernel)e.NewValue;
+            var oldModel = form.Model;
+            if (form.Model != null)
+                kernel.Inject(form.Model);
+            form.UpdateModel(oldModel, form.Model);
+        }
+
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            ((DynamicForm)obj).UpdateModel(e.OldValue, e.NewValue);
+            var form = (DynamicForm) obj;
+            Mapper.InitializeMapperClasses(form.Kernel);
+            var objec = e.NewValue.GetInjectedObject();
+            form.Kernel?.Inject(objec);
+            form.UpdateModel(e.OldValue, objec);          
         }
 
         private void UpdateModel(object oldModel, object newModel)
@@ -323,7 +339,7 @@ namespace MaterialForms.Wpf.Controls
             itemsGrid.ColumnDefinitions.Clear();
             for (var i = 0; i < rows; i++)
             {
-                itemsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                itemsGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
             }
 
             foreach (var column in columns)
@@ -331,8 +347,8 @@ namespace MaterialForms.Wpf.Controls
                 itemsGrid.ColumnDefinitions.Add(new ColumnDefinition
                 {
                     Width = column > 0d
-                    ? new GridLength(column, GridUnitType.Star)
-                    : new GridLength(-column, GridUnitType.Pixel)
+                        ? new GridLength(column, GridUnitType.Star)
+                        : new GridLength(-column, GridUnitType.Pixel)
                 });
             }
 
@@ -352,7 +368,7 @@ namespace MaterialForms.Wpf.Controls
             {
                 if (key is DynamicResourceKey || key is BindingProxyKey)
                 {
-                    var proxy = (BindingProxy)resources[key];
+                    var proxy = (BindingProxy) resources[key];
                     proxy.Value = null;
                     resources.Remove(key);
                 }

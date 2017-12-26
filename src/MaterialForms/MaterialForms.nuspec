@@ -11,5 +11,5 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Dynamically generated forms and dialogs in WPF</description>
         <tags>Material Design Form Dialog WPF XAML</tags>
-    </metadata>
+	</metadata>
 </package>
