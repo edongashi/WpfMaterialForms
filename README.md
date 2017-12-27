@@ -1,5 +1,12 @@
 # Dynamic Forms
 
+
+[![Build status](https://ci.appveyor.com/api/projects/status/5y0t43qaee7fq8iv?svg=true)](https://ci.appveyor.com/project/EdonGashi/wpfmaterialforms) [![NuGet](https://img.shields.io/nuget/dt/WpfMaterialForms.svg?style=flat-square)](https://www.nuget.org/packages/WpfMaterialForms/)
+
+
+
+
+
 This library is in early stages of being reworked to support dynamically generated forms in MVVM style:
 
 ```xaml
