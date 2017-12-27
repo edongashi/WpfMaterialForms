@@ -6,6 +6,9 @@ branches:
 
   - master
 
+only_commits:
+  message: /\[Build\]/
+
 image: Visual Studio 2017
 
 configuration: Release
@@ -57,6 +60,3 @@ after_build:
 artifacts:
 
 - path: '**\MaterialForms.*.nupkg'
-
-only_commits:
-  message: /\[Build\]/
