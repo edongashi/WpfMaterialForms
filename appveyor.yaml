@@ -67,8 +67,4 @@ deploy:
     secure: ALElYwQcTMo/PpXFNBakLvjgDsuJHunVnIhbccQulTM/9mCNRhyD1HpEehGD46n/
 
 only_commits:
-  message: 
-    - /\[Build\]/
-    - /\[CI\]/
-    - /\[build\]/
-    - /\[BUILD\]/
+  message: /\[Build\]/|/\[CI\]/|/\[build\]/|/\[BUILD\]/
