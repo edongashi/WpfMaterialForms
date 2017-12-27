@@ -1,0 +1,6 @@
+only_commits:
+  message: 
+    - /\[Build\]/
+    - /\[CI\]/
+    - /\[build\]/
+    - /\[BUILD\]/
