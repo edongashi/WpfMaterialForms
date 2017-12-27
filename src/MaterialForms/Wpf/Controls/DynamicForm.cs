@@ -41,6 +41,8 @@ namespace MaterialForms.Wpf.Controls
             new FrameworkPropertyMetadata(FormBuilding.FormBuilder.Default));
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
+
+        public event EventHandler<string> Action; 
         
         [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnPropertyChanged = "KernelChanged")]
@@ -382,6 +384,11 @@ namespace MaterialForms.Wpf.Controls
             {
                 provider.ClearBindings();
             }
+        }
+
+        public void OnAction(string action)
+        {
+            Action?.Invoke(this, action);
         }
     }
 }

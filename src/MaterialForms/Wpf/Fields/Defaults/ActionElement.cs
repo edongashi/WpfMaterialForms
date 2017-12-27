@@ -108,6 +108,10 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     if (context.GetContextInstance() is IActionHandler contextHandler)
                         contextHandler.HandleAction(model, actionName, arg);
 
+                    if (context is IFrameworkResourceContext frameworkResource)
+                        if (frameworkResource.GetOwningElement() is DynamicForm form)
+                            form.OnAction(actionName);
+
                     model.GetType().FindOverridableType<MaterialMapper>()?.HandleAction(model, actionName, arg);
                     break;
                 case ICommand command:
