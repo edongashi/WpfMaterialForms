@@ -15,20 +15,11 @@ configuration: Release
 
 platform: Any CPU
 
-shallow_clone: true
-
-clone_depth: 5
-
 init:
 
 - ps: >-
 
     $newVersion = $env:appveyor_build_version.Substring(0,$env:appveyor_build_version.LastIndexOf('.'))
-
-
-
-
-
     Update-AppveyorBuild -Version "$newVersion-ci$(Get-Date -format yyyyMMdd)-$(Get-Date -format HHmmss)"
 
 assembly_info:
