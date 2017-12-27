@@ -7,7 +7,7 @@ branches:
   - master
 
 only_commits:
-  message: /\[Build\]/|/\[CI\]/|/\[build\]/|/\[BUILD\]/
+  message: /\[Build\]/
 
 image: Visual Studio 2017
 
