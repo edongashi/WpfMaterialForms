@@ -7,7 +7,7 @@ branches:
   - master
 
 only_commits:
-  message: /build/
+  message: /\[Build\]/|/\[CI\]/|/\[build\]/|/\[BUILD\]/
 
 image: Visual Studio 2017
 
@@ -51,3 +51,11 @@ after_build:
 artifacts:
 
 - path: '**\MaterialForms.*.nupkg'
+
+deploy:
+
+- provider: NuGet
+
+  api_key:
+
+    secure: ALElYwQcTMo/PpXFNBakLvjgDsuJHunVnIhbccQulTM/9mCNRhyD1HpEehGD46n/
