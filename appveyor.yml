@@ -19,7 +19,7 @@ init:
 
 - ps: >-
 
-    $newVersion = $env:appveyor_build_version.Substring(0,$env:appveyor_build_version.LastIndexOf('.'))
+    $newVersion = $env:appveyor_build_version.Substring(0,$env:appveyor_build_version.LastIndexOf('.'));
     Update-AppveyorBuild -Version "$newVersion-ci$(Get-Date -format yyyyMMdd)-$(Get-Date -format HHmmss)"
 
 assembly_info:
