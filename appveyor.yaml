@@ -1,3 +1,71 @@
+version: 2.0.0.{build}
+
+branches:
+
+  only:
+
+  - master
+
+image: Visual Studio 2017
+
+configuration: Release
+
+platform: Any CPU
+
+shallow_clone: true
+
+clone_depth: 5
+
+init:
+
+- ps: >-
+
+    $newVersion = $env:appveyor_build_version.Substring(0,$env:appveyor_build_version.LastIndexOf('.'))
+
+
+
+
+
+    Update-AppveyorBuild -Version "$newVersion-ci$(Get-Date -format yyyyMMdd)-$(Get-Date -format HHmmss)"
+
+assembly_info:
+
+  patch: true
+
+  file: '**\AssemblyInfo.*'
+
+  assembly_version: 2.0.0.0
+
+  assembly_file_version: 2.0.0.{build}
+
+  assembly_informational_version: 2.0.0.{build}
+
+before_build:
+
+- ps: nuget restore
+
+build:
+
+  project: src\MaterialForms\MaterialForms.csproj
+
+  verbosity: minimal
+
+after_build:
+
+- ps: nuget pack src\MaterialForms\MaterialForms.csproj -Version $env:APPVEYOR_BUILD_VERSION -IncludeReferencedProjects
+
+artifacts:
+
+- path: '**\MaterialForms.*.nupkg'
+
+deploy:
+
+- provider: NuGet
+
+  api_key:
+
+    secure: ALElYwQcTMo/PpXFNBakLvjgDsuJHunVnIhbccQulTM/9mCNRhyD1HpEehGD46n/
+
 only_commits:
   message: 
     - /\[Build\]/
