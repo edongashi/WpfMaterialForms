@@ -68,5 +68,10 @@ namespace MaterialForms.Wpf.Resources
         {
             return Form;
         }
+
+        public void OnAction(object model, string action, object parameter)
+        {
+            Form.RaiseOnAction(model, action, parameter);
+        }
     }
 }

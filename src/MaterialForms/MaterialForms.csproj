@@ -204,6 +204,7 @@
     <Compile Include="Wpf\Annotations\SelectionType.cs" />
     <Compile Include="Wpf\Annotations\ValidationAction.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
+    <Compile Include="Wpf\ActionEventArgs.cs" />
     <Compile Include="Wpf\Controls\ActionPanel.cs" />
     <Compile Include="Wpf\Controls\DynamicForm.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
