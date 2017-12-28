@@ -10,12 +10,6 @@ using MaterialForms.Wpf.Controls;
 using Proxier.Mappers;
 
 namespace MaterialForms.Demo.Infrastructure {
-    public class LoginExtensions : MaterialMapper<Login> {
-        public LoginExtensions () {
-            AddPropertyAttribute(i => i.RememberMe,() => new FieldAttribute { Name = "sdfgsrysert" });
-        }
-    }
-
     public class DemoAppController : AppController {
         protected override void OnInitializing () {
             var factory = Routes.RouteFactory;
@@ -23,9 +17,6 @@ namespace MaterialForms.Demo.Infrastructure {
             Routes.MenuRoutes.Add (factory.Get<ExamplesRoute> ());
             Routes.MenuRoutes.Add (factory.Get<XmlExamplesRoute> ());
             FontSize = 15d;
-
-            var window = new MetroWindow () { Content = new DynamicForm { Model = new Login () }, WindowStartupLocation = WindowStartupLocation.CenterScreen, Height = 200, Width = 200 };
-            window.Show ();
         }
 
     }
