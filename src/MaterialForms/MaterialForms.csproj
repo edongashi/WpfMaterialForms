@@ -77,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttachedProperties\PasswordBoxHelper.cs" />
+    <Compile Include="Extensions\Dialog.cs" />
+    <Compile Include="Extensions\DialogExtensions.cs" />
+    <Compile Include="Extensions\DialogResult.cs" />
     <Compile Include="Mappers\MaterialMapper.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Controls\ButtonControl.xaml.cs">
