@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace MaterialForms.AttachedProperties
+namespace MaterialForms.Extensions.AttachedProperties
 {
     //Source: https://antonymale.co.uk/binding-to-a-passwordbox-password-in-wpf.html
     public static class PasswordBoxHelper

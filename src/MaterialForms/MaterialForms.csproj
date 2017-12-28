@@ -76,10 +76,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttachedProperties\PasswordBoxHelper.cs" />
+    <Compile Include="Extensions\AttachedProperties\PasswordBoxHelper.cs" />
     <Compile Include="Extensions\Dialog.cs" />
     <Compile Include="Extensions\DialogExtensions.cs" />
-    <Compile Include="Extensions\DialogResult.cs" />
+    <Compile Include="Extensions\Interfaces\IShowRoutine.cs" />
+    <Compile Include="Extensions\Models\DialogResult.cs" />
+    <Compile Include="Extensions\Routines\ShowDialogRoutine.cs" />
+    <Compile Include="Extensions\Routines\ShowRoutine.cs" />
+    <Compile Include="Extensions\Routines\ShowWindowRoutine.cs" />
     <Compile Include="Mappers\MaterialMapper.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Controls\ButtonControl.xaml.cs">
