@@ -1,8 +1,11 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Material.Application.Infrastructure;
 using Material.Application.Routing;
 using MaterialDesignThemes.Wpf;
+using MaterialForms.Demo.Models;
 using MaterialForms.Demo.Models.Home;
+using MaterialForms.Extensions;
 using MaterialForms.Wpf;
 
 namespace MaterialForms.Demo.Routes
@@ -17,6 +20,15 @@ namespace MaterialForms.Demo.Routes
             RouteConfig.Title = "Introduction";
             RouteConfig.Icon = PackIconKind.Home;
             Model = new Introduction();
+        }
+
+        protected override void RouteReady(RouteActivationMethod routeActivationMethod, IEnumerable<RouteEventError> errors)
+        {
+            Dialog.For<Login>().AsMaterialDialog().Show().ContinueWith(task =>
+            {
+                
+            });
+            base.RouteReady(routeActivationMethod, errors);
         }
 
         public object Model { get; }
