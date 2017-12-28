@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MaterialForms.Extensions
+namespace MaterialForms.Extensions.Models
 {
     public class DialogResult<T>
     {

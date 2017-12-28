@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using MahApps.Metro.Controls;
-using MaterialDesignThemes.Wpf;
+using MaterialForms.Extensions.Interfaces;
+using MaterialForms.Extensions.Routines;
 using MaterialForms.Wpf.Controls;
 using Proxier.Mappers;
 
@@ -11,7 +11,7 @@ namespace MaterialForms.Extensions
 {
     public static class DialogExtensions
     {
-        private static Task ShowPopup<TPopup>(this TPopup popup)
+        public static Task ShowPopup<TPopup>(this TPopup popup)
             where TPopup : Window
         {
             var task = new TaskCompletionSource<object>();
@@ -22,62 +22,20 @@ namespace MaterialForms.Extensions
             return task.Task;
         }
 
-        public static async Task<DialogResult<T>> AsWindow<T>(this Tuple<DynamicForm, T> dynamicForm)
+        public static IShowRoutine<T> AsCustom<T>(this Tuple<DynamicForm, T> dynamicForm, IShowRoutine<T> routine)
         {
-            var childWindow = new MetroWindow
-            {
-                Content = dynamicForm.Item1,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Height = 200,
-                Width = 200
-            };
-
-            var returnObject = new DialogResult<T>();
-            RegisterActionCallback(dynamicForm.Item1, returnObject, childWindow);
-
-            await childWindow.ShowPopup();
-            return returnObject;
+            routine.Form = dynamicForm.Item1;
+            return routine;
         }
 
-        public static async Task<DialogResult<T>> AsMaterialDialog<T>(this Tuple<DynamicForm, T> dynamicForm)
+        public static ShowWindowRoutine<T> AsWindow<T>(this Tuple<DynamicForm, T> dynamicForm)
         {
-            var window = Application.Current.Windows[0];
-
-            if (window == null)
-                throw new Exception("Could not determinate the application's window.");
-
-            var dialogHost = window.GetChildOfType<DialogHost>();
-
-            if (dialogHost == null)
-                window.Content = new DialogHost {Content = window.Content};
-
-            var returnObject = new DialogResult<T>();
-
-            RegisterActionCallback(dynamicForm.Item1, returnObject, null);
-
-            await dialogHost.ShowDialog(dynamicForm.Item1);
-
-            await Task.Factory.StartNew(() =>
-            {
-                while (string.IsNullOrEmpty(returnObject.Action))
-                {
-                }
-            });
-
-            return returnObject;
+            return new ShowWindowRoutine<T>(dynamicForm.Item1);
         }
-        
-        private static void RegisterActionCallback<T>(DynamicForm dynamicForm, DialogResult<T> returnObject,
-            Window childWindow)
+
+        public static ShowDialogRoutine<T> AsMaterialDialog<T>(this Tuple<DynamicForm, T> dynamicForm)
         {
-            dynamicForm.Action += (sender, s) =>
-            {
-                if (!(sender is DynamicForm form)) return;
-                returnObject.Model =
-                    (T) form.Model.CopyTo(Activator.CreateInstance(typeof(T).AddParameterlessConstructor()));
-                returnObject.Action = s;
-                childWindow?.Close();
-            };
+            return new ShowDialogRoutine<T>(dynamicForm.Item1);
         }
 
         public static DynamicForm CreateDynamicForm<T>(T obj = default(T)) where T : class
@@ -85,7 +43,7 @@ namespace MaterialForms.Extensions
             return new DynamicForm {Model = obj};
         }
 
-        private static T GetChildOfType<T>(this DependencyObject depObj)
+        internal static T GetChildOfType<T>(this DependencyObject depObj)
             where T : DependencyObject
         {
             if (depObj == null) return null;
