@@ -18,12 +18,12 @@ namespace MaterialForms.Extensions.Routines
         public void RegisterActionCallback(DynamicForm dynamicForm, DialogResult<T> returnObject,
             Window childWindow, TaskCompletionSource<object> toFlag = null)
         {
-            dynamicForm.Action += (sender, s) =>
+            dynamicForm.OnAction += (sender, s) =>
             {
                 if (!(sender is DynamicForm form)) return;
                 returnObject.Model =
                     (T) form.Model.CopyTo(Activator.CreateInstance(typeof(T).AddParameterlessConstructor()));
-                returnObject.Action = s;
+                returnObject.Action = s.Action;
                 childWindow?.Close();
                 toFlag?.SetResult(null);
             };
