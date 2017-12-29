@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Bindables;
 using MaterialForms.Wpf.Fields;
 using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Resources.ValueConverters;
 using Ninject;
-using Bindables;
 using Proxier.Mappers;
 
 namespace MaterialForms.Wpf.Controls
@@ -42,29 +42,23 @@ namespace MaterialForms.Wpf.Controls
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
 
-        public event EventHandler<string> Action; 
-        
-        [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnPropertyChanged = "KernelChanged")]
-        public IKernel Kernel { get; set; }
+        internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
+
+        private readonly List<FrameworkElement> currentElements;
+        internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
+        internal readonly Dictionary<string, DataFormField> DataFields;
+
+        internal readonly IResourceContext ResourceContext;
+        private double[] columns;
+
+        private Grid itemsGrid;
+        private int rows;
 
         static DynamicForm()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
                 new FrameworkPropertyMetadata(typeof(DynamicForm)));
         }
-
-        internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
-
-        internal readonly IResourceContext ResourceContext;
-
-        private readonly List<FrameworkElement> currentElements;
-        internal readonly Dictionary<string, DataFormField> DataFields;
-        internal readonly Dictionary<string, IDataBindingProvider> DataBindingProviders;
-        private double[] columns;
-        private int rows;
-
-        private Grid itemsGrid;
 
         public DynamicForm()
         {
@@ -86,14 +80,23 @@ namespace MaterialForms.Wpf.Controls
             Unloaded += (s, e) => { ActiveForms.Remove(this); };
         }
 
+        [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+            OnPropertyChanged = "KernelChanged")]
+        public IKernel Kernel { get; set; }
+
         /// <summary>
         /// Gets or sets the form builder that is responsible for building forms.
         /// </summary>
         public IFormBuilder FormBuilder
         {
-            get => (IFormBuilder) GetValue(FormBuilderProperty);
+            get => (IFormBuilder)GetValue(FormBuilderProperty);
             set => SetValue(FormBuilderProperty, value);
         }
+
+        /// <summary>
+        /// Raised when an action is performed within the generated form.
+        /// </summary>
+        public event EventHandler<ActionEventArgs> OnAction;
 
         /// <summary>
         /// Gets or sets the model associated with this form.
@@ -105,7 +108,6 @@ namespace MaterialForms.Wpf.Controls
         /// <remarks>
         /// Setting the value to a form definition that may eventually
         /// create a direct model binding might cause unexpected behavior.
-        /// 
         /// Because there is no way to know if a boxed value type is nullable,
         /// binding this value to a boxed nullable primitive will treat it as non-nullable.
         /// </remarks>
@@ -144,22 +146,26 @@ namespace MaterialForms.Wpf.Controls
 
         private static void KernelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var form = (DynamicForm) obj;
+            var form = (DynamicForm)obj;
             var kernel = (IKernel)e.NewValue;
             var oldModel = form.Model;
             if (form.Model != null)
+            {
                 kernel.Inject(form.Model);
+            }
             form.UpdateModel(oldModel, form.Model);
         }
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var form = (DynamicForm) obj;
+            var form = (DynamicForm)obj;
             Mapper.InitializeMapperClasses(form.Kernel);
             var objec = e.NewValue.GetInjectedObject();
-            if(objec != null)
+            if (objec != null)
+            {
                 form.Kernel?.Inject(objec);
-            form.UpdateModel(e.OldValue, objec);          
+            }
+            form.UpdateModel(e.OldValue, objec);
         }
 
         private void UpdateModel(object oldModel, object newModel)
@@ -342,7 +348,7 @@ namespace MaterialForms.Wpf.Controls
             itemsGrid.ColumnDefinitions.Clear();
             for (var i = 0; i < rows; i++)
             {
-                itemsGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
+                itemsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             }
 
             foreach (var column in columns)
@@ -371,7 +377,7 @@ namespace MaterialForms.Wpf.Controls
             {
                 if (key is DynamicResourceKey || key is BindingProxyKey)
                 {
-                    var proxy = (BindingProxy) resources[key];
+                    var proxy = (BindingProxy)resources[key];
                     proxy.Value = null;
                     resources.Remove(key);
                 }
@@ -386,9 +392,9 @@ namespace MaterialForms.Wpf.Controls
             }
         }
 
-        public void OnAction(string action)
+        internal void RaiseOnAction(object model, string action, object parameter)
         {
-            Action?.Invoke(this, action);
+            OnAction?.Invoke(this, new ActionEventArgs(model, action, parameter));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using MaterialForms.Wpf;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,6 +35,8 @@ namespace MaterialForms.Tests
                 OnPropertyChanged();
             }
         }
+
+        public event EventHandler<ActionEventArgs> OnAction;
 
         public object Value
         {
@@ -101,6 +104,11 @@ namespace MaterialForms.Tests
         }
 
         public void AddResource(object key, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAction(object model, string action, object parameter)
         {
             throw new NotImplementedException();
         }

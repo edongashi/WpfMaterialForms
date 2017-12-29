@@ -54,6 +54,11 @@ namespace MaterialForms.Wpf.Resources
         /// <param name="key">Resource key.</param>
         /// <param name="value">Resource value.</param>
         void AddResource(object key, object value);
+
+        /// <summary>
+        /// Notifies that an action has occurred.
+        /// </summary>
+        void OnAction(object model, string action, object parameter);
     }
 
     public interface IFrameworkResourceContext : IResourceContext

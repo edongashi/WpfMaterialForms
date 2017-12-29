@@ -76,6 +76,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Extensions\AttachedProperties\PasswordBoxHelper.cs" />
     <Compile Include="Extensions\Dialog.cs" />
     <Compile Include="Extensions\DialogExtensions.cs" />
@@ -84,6 +85,9 @@
     <Compile Include="Extensions\Routines\ShowDialogRoutine.cs" />
     <Compile Include="Extensions\Routines\ShowRoutine.cs" />
     <Compile Include="Extensions\Routines\ShowWindowRoutine.cs" />
+=======
+    <Compile Include="AttachedProperties\PasswordBoxHelper.cs" />
+>>>>>>> feature/form-onaction
     <Compile Include="Mappers\MaterialMapper.cs" />
     <Compile Include="Old\ColorAssist.cs" />
     <Compile Include="Old\Controls\ButtonControl.xaml.cs">
@@ -211,6 +215,7 @@
     <Compile Include="Wpf\Annotations\SelectionType.cs" />
     <Compile Include="Wpf\Annotations\ValidationAction.cs" />
     <Compile Include="Wpf\Annotations\ValueAttribute.cs" />
+    <Compile Include="Wpf\ActionEventArgs.cs" />
     <Compile Include="Wpf\Controls\ActionPanel.cs" />
     <Compile Include="Wpf\Controls\DynamicForm.cs" />
     <Compile Include="Wpf\Controls\IDynamicForm.cs" />
