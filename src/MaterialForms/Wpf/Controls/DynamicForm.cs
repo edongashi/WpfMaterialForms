@@ -146,9 +146,13 @@ namespace MaterialForms.Wpf.Controls
         {
             var form = (DynamicForm) obj;
             var kernel = (IKernel)e.NewValue;
+
+            if (kernel == null)
+                return;
+            
             var oldModel = form.Model;
-            if (form.Model != null)
-                kernel.Inject(form.Model);
+            if (oldModel != null)
+                kernel.Inject(oldModel);
             form.UpdateModel(oldModel, form.Model);
         }
 
