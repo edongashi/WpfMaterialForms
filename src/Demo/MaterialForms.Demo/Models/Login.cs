@@ -8,6 +8,7 @@ namespace MaterialForms.Demo.Models
     [Title("Login to continue")]
     [Action("cancel", "CANCEL")]
     [Action("login", "LOG IN")]
+    [AddINotifyPropertyChangedInterface]
     public class Login : IActionHandler
     {
         // Enums may be deserialized from strings.
