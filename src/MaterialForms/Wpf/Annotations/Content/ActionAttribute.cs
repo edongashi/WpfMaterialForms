@@ -47,6 +47,11 @@ namespace MaterialForms.Wpf.Annotations
         /// Accepts a boolean or a dynamic resource.
         /// </summary>
         public object IsEnabled { get; set; }
+        
+        /// <summary>
+        /// Determines whether this button is loading or not.
+        /// </summary>
+        public object IsLoading { get; set; }
 
         /// <summary>
         /// Displayed icon. Accepts a PackIconKind or a dynamic resource.
@@ -81,7 +86,8 @@ namespace MaterialForms.Wpf.Annotations
                 Validates = Utilities.GetResource<bool>(Validates, false, Deserializers.Boolean),
                 ClosesDialog = Utilities.GetResource<bool>(ClosesDialog, true, Deserializers.Boolean),
                 IsReset = Utilities.GetResource<bool>(IsReset, false, Deserializers.Boolean),
-                IsEnabled = Utilities.GetResource<bool>(IsEnabled, true, Deserializers.Boolean)
+                IsEnabled = Utilities.GetResource<bool>(IsEnabled, true, Deserializers.Boolean),
+                IsLoading = Utilities.GetResource<bool>(IsLoading, false, Deserializers.Boolean)
             };
         }
     }
