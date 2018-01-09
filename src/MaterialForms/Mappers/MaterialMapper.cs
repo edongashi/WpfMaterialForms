@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MaterialForms.Wpf.Annotations;
 using Proxier.Mappers;
 
 namespace MaterialForms.Mappers
@@ -9,6 +11,25 @@ namespace MaterialForms.Mappers
     {
         protected MaterialMapper(Type type) : base(type)
         {
+        }
+
+        public bool AutoHide { get; set; }
+
+        public override object TransfomSpawn(object createInstance)
+        {
+            if (AutoHide)
+            {
+                foreach (var type in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
+                {
+                    Mappings.Add(new Mapper(this)
+                    {
+                        Expression = new Expression<Func<Attribute>>[] {() => new FieldAttribute {IsVisible = false}},
+                        PropertyInfo = type
+                    });
+                }
+            }
+
+            return base.TransfomSpawn(createInstance);
         }
 
         /// <summary>
