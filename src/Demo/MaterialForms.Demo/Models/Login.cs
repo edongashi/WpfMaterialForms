@@ -9,7 +9,7 @@ using PropertyChanged;
 namespace MaterialForms.Demo.Models
 {
     [Title("Login to continue")]
-    [Action("cancel", "CANCEL")]
+    [Action("cancel", "CANCEL", IsCancel = true)]
     [Action("login", "LOG IN", IsLoading = "{Binding Loading}", IsDefault = true)]
     [AddINotifyPropertyChangedInterface]
     public class Login : IActionHandler

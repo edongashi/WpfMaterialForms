@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
 using MaterialForms.Mappers;
 using MaterialForms.Wpf.Controls;
@@ -45,7 +44,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
             return new ActionPresenter(context, Resources, formResources)
             {
                 Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates,
-                    ClosesDialog, IsReset, IsLoading, IsCancel, IsDefault),
+                    ClosesDialog, IsReset),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment =
                     LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
@@ -57,21 +56,15 @@ namespace MaterialForms.Wpf.Fields.Defaults
     {
         private readonly IProxy action;
         private readonly IProxy actionParameter;
+        private readonly IResourceContext context;
+
         private readonly IBoolProxy canExecute;
         private readonly IBoolProxy closesDialog;
-
-        private readonly IResourceContext context;
         private readonly IBoolProxy resets;
         private readonly IBoolProxy validates;
-        private readonly IBoolProxy resets;
-        private readonly IBoolProxy closesDialog;
-        private readonly IBoolProxy isLoading;
-        private readonly IBoolProxy isCancel;
-        private readonly IBoolProxy isDefault;
 
         public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter,
-            IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset,
-            IValueProvider isLoading,IValueProvider isCancel,IValueProvider isDefault)
+            IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset)
         {
             this.context = context;
             this.action = action?.GetBestMatchingProxy(context) ?? new PlainObject(null);
@@ -91,14 +84,11 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     break;
             }
 
-            this.validates = validates != null ? (IBoolProxy) validates.GetBoolValue(context) : new PlainBool(false);
-            this.isLoading = isLoading != null ? (IBoolProxy) isLoading.GetBoolValue(context) : new PlainBool(false);
-            this.isCancel = isCancel != null ? (IBoolProxy) isCancel.GetBoolValue(context) : new PlainBool(false);
-            this.isDefault = isDefault != null ? (IBoolProxy) isDefault.GetBoolValue(context) : new PlainBool(false);
+            this.validates = validates != null ? (IBoolProxy)validates.GetBoolValue(context) : new PlainBool(false);
             this.closesDialog = closesDialog != null
-                ? (IBoolProxy) closesDialog.GetBoolValue(context)
+                ? (IBoolProxy)closesDialog.GetBoolValue(context)
                 : new PlainBool(true);
-            resets = isReset != null ? (IBoolProxy) isReset.GetBoolValue(context) : new PlainBool(false);
+            resets = isReset != null ? (IBoolProxy)isReset.GetBoolValue(context) : new PlainBool(false);
             this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
 
@@ -167,15 +157,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
         }
 
         public event EventHandler CanExecuteChanged;
-
-        private static IEnumerable<DependencyObject> GetVisualAncestry(DependencyObject leaf)
-        {
-            while (leaf != null)
-            {
-                yield return leaf;
-                leaf = VisualTreeHelper.GetParent(leaf);
-            }
-        }
     }
 
     public class ActionPresenter : BindingProvider
@@ -199,14 +180,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public ICommand Command
         {
-            get => (ICommand) GetValue(CommandProperty);
+            get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
-        }
-
-        public ActionPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
-            IDictionary<string, IValueProvider> formResources)
-            : base(context, fieldResources, formResources, true)
-        {
         }
     }
 }
