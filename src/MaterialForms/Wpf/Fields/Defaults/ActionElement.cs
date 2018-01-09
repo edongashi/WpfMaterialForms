@@ -24,13 +24,19 @@ namespace MaterialForms.Wpf.Fields.Defaults
         public IValueProvider Validates { get; set; }
 
         public IValueProvider ClosesDialog { get; set; }
-        
+
         public IValueProvider IsLoading { get; set; }
-        
+
+        public IValueProvider IsDefault { get; set; }
+
+        public IValueProvider IsCancel { get; set; }
+
         protected internal override void Freeze()
         {
             base.Freeze();
             Resources.Add(nameof(IsLoading), IsLoading ?? LiteralValue.False);
+            Resources.Add(nameof(IsDefault), IsDefault ?? LiteralValue.False);
+            Resources.Add(nameof(IsCancel), IsCancel ?? LiteralValue.False);
         }
 
         protected internal override IBindingProvider CreateBindingProvider(IResourceContext context,
@@ -38,7 +44,8 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             return new ActionPresenter(context, Resources, formResources)
             {
-                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates, ClosesDialog, IsReset, IsLoading),
+                Command = new ActionElementCommand(context, ActionName, ActionParameter, IsEnabled, Validates,
+                    ClosesDialog, IsReset, IsLoading, IsCancel, IsDefault),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment =
                     LinePosition == Position.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right
@@ -59,8 +66,12 @@ namespace MaterialForms.Wpf.Fields.Defaults
         private readonly IBoolProxy resets;
         private readonly IBoolProxy closesDialog;
         private readonly IBoolProxy isLoading;
+        private readonly IBoolProxy isCancel;
+        private readonly IBoolProxy isDefault;
 
-        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter, IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset, IValueProvider isLoading)
+        public ActionElementCommand(IResourceContext context, IValueProvider action, IValueProvider actionParameter,
+            IValueProvider isEnabled, IValueProvider validates, IValueProvider closesDialog, IValueProvider isReset,
+            IValueProvider isLoading,IValueProvider isCancel,IValueProvider isDefault)
         {
             this.context = context;
             this.action = action?.GetBestMatchingProxy(context) ?? new PlainObject(null);
@@ -80,10 +91,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     break;
             }
 
-            this.validates = validates != null ? (IBoolProxy)validates.GetBoolValue(context) : new PlainBool(false);
-            this.isLoading = isLoading != null ? (IBoolProxy)isLoading.GetBoolValue(context) : new PlainBool(false);
-            this.closesDialog = closesDialog != null ? (IBoolProxy)closesDialog.GetBoolValue(context) : new PlainBool(true);
-            resets = isReset != null ? (IBoolProxy)isReset.GetBoolValue(context) : new PlainBool(false);
+            this.validates = validates != null ? (IBoolProxy) validates.GetBoolValue(context) : new PlainBool(false);
+            this.isLoading = isLoading != null ? (IBoolProxy) isLoading.GetBoolValue(context) : new PlainBool(false);
+            this.isCancel = isCancel != null ? (IBoolProxy) isCancel.GetBoolValue(context) : new PlainBool(false);
+            this.isDefault = isDefault != null ? (IBoolProxy) isDefault.GetBoolValue(context) : new PlainBool(false);
+            this.closesDialog = closesDialog != null
+                ? (IBoolProxy) closesDialog.GetBoolValue(context)
+                : new PlainBool(true);
+            resets = isReset != null ? (IBoolProxy) isReset.GetBoolValue(context) : new PlainBool(false);
             this.actionParameter = actionParameter?.GetBestMatchingProxy(context) ?? new PlainObject(null);
         }
 
@@ -184,8 +199,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
 
         public ICommand Command
         {
-            get => (ICommand)GetValue(CommandProperty);
+            get => (ICommand) GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
+        }
+
+        public ActionPresenter(IResourceContext context, IDictionary<string, IValueProvider> fieldResources,
+            IDictionary<string, IValueProvider> formResources)
+            : base(context, fieldResources, formResources, true)
+        {
         }
     }
 }

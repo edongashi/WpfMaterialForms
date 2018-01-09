@@ -10,7 +10,7 @@ namespace MaterialForms.Demo.Models
 {
     [Title("Login to continue")]
     [Action("cancel", "CANCEL")]
-    [Action("login", "LOG IN", IsLoading = "{Binding Loading}")]
+    [Action("login", "LOG IN", IsLoading = "{Binding Loading}", IsDefault = true)]
     [AddINotifyPropertyChangedInterface]
     public class Login : IActionHandler
     {
