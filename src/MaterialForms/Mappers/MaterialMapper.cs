@@ -32,42 +32,6 @@ namespace MaterialForms.Mappers
             return base.TransfomSpawn(createInstance);
         }
 
-        /// <summary>
-        ///     Add an attribute to a class.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
-        {
-            var mapper = new Mapper(this)
-            {
-                PropertyInfo = null,
-                Expression = expression
-            };
-
-            Mappings.Add(mapper);
-        }
-
-        /// <summary>
-        ///     Adds a mapper by name.
-        /// </summary>
-        public void AddProperty(string prop, Type type)
-        {
-            Type = Type.InjectProperty(prop, type);
-        }
-
-        /// <summary>
-        ///     Adds a mapper by name.
-        /// </summary>
-        public void AddPropertyAttribute(string prop,
-            params Expression<Func<Attribute>>[] expression)
-        {
-            Mappings.Add(new Mapper(this)
-            {
-                Expression = expression,
-                PropertyInfo = Type.GetHighestProperty(prop)
-            });
-        }
-
         public virtual void HandleAction(object model, string action, object parameter)
         {
         }
