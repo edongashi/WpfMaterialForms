@@ -3,17 +3,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:defaults="clr-namespace:MaterialForms.Wpf.Fields.Defaults"
     xmlns:fields="clr-namespace:MaterialForms.Wpf.Fields"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:components="clr-namespace:MaterialForms.Components">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="MaterialActionPresenterTemplate" TargetType="{x:Type defaults:ActionPresenter}">
-        <Button
+        <components:LoadingButton
             MinHeight="36"
             Padding="{TemplateBinding Padding}"
             Command="{TemplateBinding Command}"
+            IsLoading="{fields:FormBinding IsLoading}"
             Style="{StaticResource MaterialDesignFlatButton}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon
@@ -26,7 +28,7 @@
                     Visibility="{fields:FormBinding IconVisibility}" />
                 <TextBlock VerticalAlignment="Center" Text="{fields:FormBinding Content}" />
             </StackPanel>
-        </Button>
+        </components:LoadingButton>
     </ControlTemplate>
 
     <Style x:Key="MaterialActionPresenterStyle" TargetType="defaults:ActionPresenter">
