@@ -23,9 +23,17 @@ namespace MaterialForms.Wpf.Annotations
             LinePosition = Controls.Position.Right;
         }
 
-        public bool IsDefault { get; set; }
+        /// <summary>
+        /// Determines whether the enter key will invoke the action.
+        /// Accepts a boolean or a dynamic resource.
+        /// </summary>
+        public object IsDefault { get; set; }
 
-        public bool IsCancel { get; set; }
+        /// <summary>
+        /// Determines whether the escape key will invoke the action.
+        /// Accepts a boolean or a dynamic resource.
+        /// </summary>
+        public object IsCancel { get; set; }
 
         /// <summary>
         /// Action identifier that is passed to handlers.
@@ -87,7 +95,9 @@ namespace MaterialForms.Wpf.Annotations
                 ClosesDialog = Utilities.GetResource<bool>(ClosesDialog, true, Deserializers.Boolean),
                 IsReset = Utilities.GetResource<bool>(IsReset, false, Deserializers.Boolean),
                 IsEnabled = Utilities.GetResource<bool>(IsEnabled, true, Deserializers.Boolean),
-                IsLoading = Utilities.GetResource<bool>(IsLoading, false, Deserializers.Boolean)
+                IsLoading = Utilities.GetResource<bool>(IsLoading, false, Deserializers.Boolean),
+                IsDefault = Utilities.GetResource<bool>(IsDefault, false, Deserializers.Boolean),
+                IsCancel = Utilities.GetResource<bool>(IsCancel, false, Deserializers.Boolean)
             };
         }
     }
