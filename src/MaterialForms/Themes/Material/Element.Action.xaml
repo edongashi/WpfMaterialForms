@@ -13,6 +13,8 @@
     <ControlTemplate x:Key="MaterialActionPresenterTemplate" TargetType="{x:Type defaults:ActionPresenter}">
         <components:LoadingButton
             MinHeight="36"
+            IsDefault="{fields:FormBinding IsDefault}"
+            IsCancel="{fields:FormBinding IsCancel}"
             Padding="{TemplateBinding Padding}"
             Command="{TemplateBinding Command}"
             IsLoading="{fields:FormBinding IsLoading}"
