@@ -42,6 +42,18 @@ namespace MaterialForms.Wpf.Controls
 
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;
 
+        public event EventHandler<string> Action;
+
+        [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+            OnPropertyChanged = "KernelChanged")]
+        public IKernel Kernel { get; set; }
+
+        static DynamicForm()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
+                new FrameworkPropertyMetadata(typeof(DynamicForm)));
+        }
+
         internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
 
         private readonly List<FrameworkElement> currentElements;
@@ -146,16 +158,19 @@ namespace MaterialForms.Wpf.Controls
 
         private static void KernelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var form = (DynamicForm)obj;
-            var kernel = (IKernel)e.NewValue;
+            var form = (DynamicForm) obj;
+            var kernel = (IKernel) e.NewValue;
 
             if (kernel == null)
                 return;
-            
-            var oldModel = form.Model;
-            if (oldModel != null)
-                kernel.Inject(oldModel);
-            form.UpdateModel(oldModel, form.Model);
+
+            if (form.Model != null)
+            {
+                var oldModel = form.Model;
+                var newModel = form.Model.CopyTo(form.Model.GetType());
+                kernel.Inject(newModel);
+                form.UpdateModel(oldModel, newModel);
+            }
         }
 
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
