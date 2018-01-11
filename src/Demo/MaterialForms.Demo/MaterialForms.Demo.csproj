@@ -38,8 +38,8 @@
     <StartupObject>MaterialForms.Demo.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AttributeBuilder.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.1.0-CI-20171226-194624\lib\netstandard2.0\AttributeBuilder.Standard.dll</HintPath>
+    <Reference Include="AttributeBuilder.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.3.34\lib\netstandard2.0\AttributeBuilder.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.3.191, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Dragablz.0.0.3.191\lib\net45\Dragablz.dll</HintPath>
@@ -69,8 +69,8 @@
     <Reference Include="PropertyChanged, Version=2.2.4.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd">
       <HintPath>..\..\..\packages\PropertyChanged.Fody.2.2.4.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
-    <Reference Include="Proxier, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Proxier.1.2.0\lib\netstandard2.0\Proxier.dll</HintPath>
+    <Reference Include="Proxier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Proxier.1.3.34\lib\netstandard2.0\Proxier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
