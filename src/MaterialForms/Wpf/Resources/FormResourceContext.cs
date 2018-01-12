@@ -25,7 +25,7 @@ namespace MaterialForms.Wpf.Resources
 
         public BindingExpressionBase[] GetBindings()
         {
-            return Form.Value.GetBindings();
+            return ModelState.GetBindings(Form.Value);
         }
 
         public object GetContextInstance() => Form.Context;
