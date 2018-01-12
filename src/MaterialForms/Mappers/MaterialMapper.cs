@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Controls.Primitives;
 using MaterialForms.Wpf.Annotations;
 using Proxier.Mappers;
 
@@ -19,13 +21,22 @@ namespace MaterialForms.Mappers
         {
             if (AutoHide)
             {
-                foreach (var type in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
+                var propertyInfos = Type.GetHighestProperties().Select(i => i.PropertyInfo);
+                var shouldHave = Mappings.Select(i => i.PropertyInfo).Where(i => i != null).ToList();
+                foreach (var prop in propertyInfos)
                 {
-                    Mappings.Add(new Mapper(this)
+                    if (shouldHave.Any(i => i.Name == prop.Name)) continue;
                     {
-                        Expression = new Expression<Func<Attribute>>[] {() => new FieldAttribute {IsVisible = false}},
-                        PropertyInfo = type
-                    });
+                        if (Mappings.Any(i => i.PropertyInfo?.Name == prop.Name))
+                            continue;
+
+                        Mappings.Add(new Mapper(this)
+                        {
+                            Expression = new Expression<Func<Attribute>>[]
+                                {() => new FieldAttribute {IsVisible = false}},
+                            PropertyInfo = prop
+                        });
+                    }
                 }
             }
 
@@ -92,7 +103,7 @@ namespace MaterialForms.Mappers
         /// <param name="parameter">The parameter.</param>
         public override void HandleAction(object model, string action, object parameter)
         {
-            Action((TSource) model.CopyTo(Activator.CreateInstance(Type.AddParameterlessConstructor())), action,
+            Action((TSource) model.CopyTo(Activator.CreateInstance(BaseType.AddParameterlessConstructor())), action,
                 parameter);
         }
     }
