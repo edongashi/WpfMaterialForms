@@ -23,6 +23,11 @@ namespace MaterialForms.Wpf.Resources
 
         public object GetModelInstance() => Form.Value;
 
+        public BindingExpressionBase[] GetBindings()
+        {
+            return Form.Value.GetBindings();
+        }
+
         public object GetContextInstance() => Form.Context;
 
         public Binding CreateDirectModelBinding()

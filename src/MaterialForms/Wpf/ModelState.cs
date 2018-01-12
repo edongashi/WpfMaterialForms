@@ -242,7 +242,7 @@ namespace MaterialForms.Wpf
             return list;
         }
 
-        private static BindingExpressionBase[] GetBindings(object model)
+        public static BindingExpressionBase[] GetBindings(this object model)
         {
             return GetForms(model)
                 .SelectMany(f => f.DataBindingProviders.Values.SelectMany(p => p.GetBindings()))
