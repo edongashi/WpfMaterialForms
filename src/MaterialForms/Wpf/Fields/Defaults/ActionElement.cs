@@ -123,12 +123,18 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 case string actionName:
                     if (model is IActionHandler modelHandler)
                     {
-                        modelHandler.HandleAction(model, actionName, arg);
+                        modelHandler.HandleAction(
+                            model.GetInjectedObject()
+                                ?.CopyTo(model.GetType().FindOverridableType()?.BaseType ?? model.GetType()) ?? model,
+                            actionName, arg);
                     }
 
                     if (context.GetContextInstance() is IActionHandler contextHandler)
                     {
-                        contextHandler.HandleAction(model, actionName, arg);
+                        contextHandler.HandleAction(
+                            model.GetInjectedObject()
+                                ?.CopyTo(model.GetType().FindOverridableType()?.BaseType ?? model.GetType()) ?? model,
+                            actionName, arg);
                     }
 
                     model.GetType().FindOverridableType<MaterialMapper>()?.HandleAction(model, actionName, arg);
