@@ -14,6 +14,11 @@ namespace MaterialForms.Demo.Infrastructure {
         public LoginExtensions () {
             AddPropertyAttribute(i => i.RememberMe,() => new FieldAttribute { Name = "sdfgsrysert" });
         }
+
+        public override void Action(Login model, string action, object parameter)
+        {
+            base.Action(model, action, parameter);
+        }
     }
 
     public class DemoAppController : AppController {
