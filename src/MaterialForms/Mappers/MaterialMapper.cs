@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MaterialForms.Wpf.Annotations;
 using Proxier.Mappers;
 
 namespace MaterialForms.Mappers
@@ -11,40 +13,23 @@ namespace MaterialForms.Mappers
         {
         }
 
-        /// <summary>
-        ///     Add an attribute to a class.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        public void AddClassAttribute(params Expression<Func<Attribute>>[] expression)
+        public bool AutoHide { get; set; }
+
+        public override object TransfomSpawn(object createInstance)
         {
-            var mapper = new Mapper(this)
+            if (AutoHide)
             {
-                PropertyInfo = null,
-                Expression = expression
-            };
+                foreach (var type in Type.GetProperties().Except(Mappings.Select(i => i.PropertyInfo)))
+                {
+                    Mappings.Add(new Mapper(this)
+                    {
+                        Expression = new Expression<Func<Attribute>>[] {() => new FieldAttribute {IsVisible = false}},
+                        PropertyInfo = type
+                    });
+                }
+            }
 
-            Mappings.Add(mapper);
-        }
-
-        /// <summary>
-        ///     Adds a mapper by name.
-        /// </summary>
-        public void AddProperty(string prop, Type type)
-        {
-            Type = Type.InjectProperty(prop, type);
-        }
-
-        /// <summary>
-        ///     Adds a mapper by name.
-        /// </summary>
-        public void AddPropertyAttribute(string prop,
-            params Expression<Func<Attribute>>[] expression)
-        {
-            Mappings.Add(new Mapper(this)
-            {
-                Expression = expression,
-                PropertyInfo = Type.GetHighestProperty(prop)
-            });
+            return base.TransfomSpawn(createInstance);
         }
 
         public virtual void HandleAction(object model, string action, object parameter)
