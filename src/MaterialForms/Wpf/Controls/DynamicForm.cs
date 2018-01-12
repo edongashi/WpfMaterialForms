@@ -48,12 +48,6 @@ namespace MaterialForms.Wpf.Controls
             OnPropertyChanged = "KernelChanged")]
         public IKernel Kernel { get; set; }
 
-        static DynamicForm()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicForm),
-                new FrameworkPropertyMetadata(typeof(DynamicForm)));
-        }
-
         internal static readonly HashSet<DynamicForm> ActiveForms = new HashSet<DynamicForm>();
 
         private readonly List<FrameworkElement> currentElements;
@@ -91,10 +85,6 @@ namespace MaterialForms.Wpf.Controls
 
             Unloaded += (s, e) => { ActiveForms.Remove(this); };
         }
-
-        [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnPropertyChanged = "KernelChanged")]
-        public IKernel Kernel { get; set; }
 
         /// <summary>
         /// Gets or sets the form builder that is responsible for building forms.
