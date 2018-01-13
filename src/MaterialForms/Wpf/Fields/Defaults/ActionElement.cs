@@ -97,11 +97,6 @@ namespace MaterialForms.Wpf.Fields.Defaults
             var arg = actionParameter.Value;
             var model = context.GetModelInstance();
 
-            foreach (var binding in context.GetBindings())
-            {
-                binding.UpdateSource();
-            }
-            
             if (resets.Value && ModelState.IsModel(model))
             {
                 ModelState.Reset(model);
@@ -112,6 +107,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 if (!isValid)
                 {
                     return;
+                }
+            }
+            else
+            {
+                foreach (var binding in context.GetBindings())
+                {
+                    if (ModelState.IsModel(model))
+                        binding.UpdateSource();
                 }
             }
 
