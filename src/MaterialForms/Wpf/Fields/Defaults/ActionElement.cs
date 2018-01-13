@@ -111,11 +111,11 @@ namespace MaterialForms.Wpf.Fields.Defaults
             }
             else
             {
-                foreach (var binding in context.GetBindings())
-                {
-                    if (ModelState.IsModel(model))
+                if (ModelState.IsModel(model))
+                    foreach (var binding in context.GetBindings())
+                    {
                         binding.UpdateSource();
-                }
+                    }
             }
 
             if (closesDialog.Value && context is IFrameworkResourceContext fwContext)
