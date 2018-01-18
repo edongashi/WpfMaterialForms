@@ -96,6 +96,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
         {
             var arg = actionParameter.Value;
             var model = context.GetModelInstance();
+
             if (resets.Value && ModelState.IsModel(model))
             {
                 ModelState.Reset(model);
@@ -107,6 +108,14 @@ namespace MaterialForms.Wpf.Fields.Defaults
                 {
                     return;
                 }
+            }
+            else
+            {
+                if (ModelState.IsModel(model))
+                    foreach (var binding in context.GetBindings())
+                    {
+                        binding.UpdateSource();
+                    }
             }
 
             if (closesDialog.Value && context is IFrameworkResourceContext fwContext)
