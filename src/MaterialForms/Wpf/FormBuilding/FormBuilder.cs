@@ -37,6 +37,7 @@ namespace MaterialForms.Wpf.FormBuilding
             PropertyBuilders = new List<IFieldBuilder>
             {
                 // Default property builders.
+                new ProgressBuilder(),
                 new SelectFromBuilder(),
                 new SliderBuilder()
             };

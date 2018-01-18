@@ -14,6 +14,12 @@ namespace MaterialForms.Wpf.Resources
         object GetModelInstance();
 
         /// <summary>
+        /// Gets all bindings for the current model
+        /// </summary>
+        /// <returns></returns>
+        BindingExpressionBase[] GetBindings();
+
+        /// <summary>
         /// Gets current context instance.
         /// </summary>
         object GetContextInstance();

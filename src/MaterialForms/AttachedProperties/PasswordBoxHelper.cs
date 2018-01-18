@@ -31,7 +31,7 @@ namespace MaterialForms.AttachedProperties
                 new FrameworkPropertyMetadata(Guid.NewGuid().ToString(), HandleBoundPasswordChanged)
                 {
                     BindsTwoWayByDefault = true,
-                    DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged // Match the default on Binding
+                    DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus // Match the default on Binding
                 });
 
         private static void HandleBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)

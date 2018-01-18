@@ -67,6 +67,11 @@ namespace MaterialForms.Tests
 
         public object GetModelInstance() => form.Value;
 
+        public BindingExpressionBase[] GetBindings()
+        {
+            return null;
+        }
+
         public object GetContextInstance() => form.Context;
 
         public Binding CreateDirectModelBinding()
