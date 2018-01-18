@@ -138,8 +138,12 @@ namespace MaterialForms.Demo.Models
                 volume = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(VolumeIcon));
+                OnPropertyChanged(nameof(VolumeProgress));
             }
         }
+
+        [Field, Progress]
+        public double VolumeProgress => volume;
 
         public PackIconKind VolumeIcon
         {

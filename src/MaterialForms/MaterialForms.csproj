@@ -192,6 +192,7 @@
     <Compile Include="Wpf\Annotations\Content\TextElementAttribute.cs" />
     <Compile Include="Wpf\Annotations\DefaultFields.cs" />
     <Compile Include="Wpf\Annotations\Display\PasswordAttribute.cs" />
+    <Compile Include="Wpf\Annotations\Display\ProgressAttribute.cs" />
     <Compile Include="Wpf\Annotations\Display\SliderAttribute.cs" />
     <Compile Include="Wpf\Annotations\Display\ToggleAttribute.cs" />
     <Compile Include="Wpf\Annotations\EnumDisplayAttribute.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Wpf\Fields\Defaults\DateField.cs" />
     <Compile Include="Wpf\Fields\Defaults\DividerElement.cs" />
     <Compile Include="Wpf\Fields\Defaults\HeadingElement.cs" />
+    <Compile Include="Wpf\Fields\Defaults\ProgressField.cs" />
     <Compile Include="Wpf\Fields\Defaults\SelectionField.cs" />
     <Compile Include="Wpf\Fields\Defaults\SliderField.cs" />
     <Compile Include="Wpf\Fields\Defaults\StringField.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Wpf\FormBuilding\Defaults\Properties\SelectFromBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Properties\SliderBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\DefaultTypeBuilders.cs" />
+    <Compile Include="Wpf\FormBuilding\Defaults\Types\ProgressBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Defaults\Types\TypeBuilder.cs" />
     <Compile Include="Wpf\FormBuilding\Deserializers.cs" />
     <Compile Include="Wpf\FormBuilding\DynamicProperty.cs" />
@@ -459,6 +462,10 @@
     <Page Include="Themes\Material\Field.Selection.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Themes\Material\Field.Progress.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Material\Field.Slider.xaml">
       <SubType>Designer</SubType>

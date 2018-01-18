@@ -60,6 +60,8 @@ namespace MaterialForms.Demo.Routes
 
             yield return new ExamplePresenter(new FoodSelection(), "Food Selection", large);
 
+            yield return new ExamplePresenter(new ProgressModel(), "Progress", small);
+
             yield return new ExamplePresenter(new Alert
             {
                 Message = "Item deleted."
