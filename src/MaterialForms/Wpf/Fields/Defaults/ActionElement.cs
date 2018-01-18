@@ -6,6 +6,7 @@ using MaterialDesignThemes.Wpf;
 using MaterialForms.Mappers;
 using MaterialForms.Wpf.Controls;
 using MaterialForms.Wpf.Resources;
+using Proxier.Extensions;
 using Proxier.Mappers;
 
 namespace MaterialForms.Wpf.Fields.Defaults
@@ -134,7 +135,7 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     {
                         modelHandler.HandleAction(
                             model.GetInjectedObject()
-                                ?.CopyTo(model.GetType().FindOverridableType()?.BaseType ?? model.GetType()) ?? model,
+                                ?.CopyTo(model.GetType().GetMapper()?.BaseType ?? model.GetType()) ?? model,
                             actionName, arg);
                     }
 
@@ -142,11 +143,11 @@ namespace MaterialForms.Wpf.Fields.Defaults
                     {
                         contextHandler.HandleAction(
                             model.GetInjectedObject()
-                                ?.CopyTo(model.GetType().FindOverridableType()?.BaseType ?? model.GetType()) ?? model,
+                                ?.CopyTo(model.GetType().GetMapper()?.BaseType ?? model.GetType()) ?? model,
                             actionName, arg);
                     }
 
-                    model.GetType().FindOverridableType<MaterialMapper>()?.HandleAction(model, actionName, arg);
+                    model.GetType().GetMapper<MaterialMapper>()?.HandleAction(model, actionName, arg);
                     context.OnAction(model, actionName, arg);
                     break;
                 case ICommand command:

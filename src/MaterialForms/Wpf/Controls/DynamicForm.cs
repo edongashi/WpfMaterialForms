@@ -9,7 +9,9 @@ using MaterialForms.Wpf.FormBuilding;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Resources.ValueConverters;
 using Ninject;
+using Proxier.Extensions;
 using Proxier.Mappers;
+using Proxier.Mappers.Maps;
 
 namespace MaterialForms.Wpf.Controls
 {
@@ -166,7 +168,7 @@ namespace MaterialForms.Wpf.Controls
         private static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var form = (DynamicForm)obj;
-            Mapper.InitializeMapperClasses(form.Kernel);
+            ProxierMapper.InitializeMapperClasses(form.Kernel);
             var objec = e.NewValue.GetInjectedObject();
             if (objec != null)
             {

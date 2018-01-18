@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Controls.Primitives;
 using MaterialForms.Wpf.Annotations;
+using Proxier.Extensions;
 using Proxier.Mappers;
+using Proxier.Mappers.Maps;
 
 namespace MaterialForms.Mappers
 {
@@ -22,17 +24,17 @@ namespace MaterialForms.Mappers
             if (AutoHide)
             {
                 var propertyInfos = Type.GetHighestProperties().Select(i => i.PropertyInfo);
-                var shouldHave = Mappings.Select(i => i.PropertyInfo).Where(i => i != null).ToList();
+                var shouldHave = AttributeMappings.Select(i => i.PropertyInfo).Where(i => i != null).ToList();
                 foreach (var prop in propertyInfos)
                 {
                     if (shouldHave.Any(i => i.Name == prop.Name)) continue;
                     {
-                        if (Mappings.Any(i => i.PropertyInfo?.Name == prop.Name))
+                        if (AttributeMappings.Any(i => i.PropertyInfo?.Name == prop.Name))
                             continue;
 
-                        Mappings.Add(new Mapper(this)
+                        AttributeMappings.Add(new AttributeMap(this)
                         {
-                            Expression = new Expression<Func<Attribute>>[]
+                            Attributes = new Expression<Func<Attribute>>[]
                                 {() => new FieldAttribute {IsVisible = false}},
                             PropertyInfo = prop
                         });
@@ -79,13 +81,13 @@ namespace MaterialForms.Mappers
                 throw new ArgumentException(
                     $"Expresion '{propertyLambda}' refers to a property that is not from type {type}.");
 
-            var mapper = new Mapper(this)
+            var mapper = new AttributeMap(this)
             {
-                Expression = expression,
+                Attributes = expression,
                 PropertyInfo = propInfo
             };
 
-            Mappings.Add(mapper);
+            AttributeMappings.Add(mapper);
         }
 
         /// <summary>

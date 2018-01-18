@@ -9,7 +9,7 @@ using MaterialDesignThemes.Wpf;
 using MaterialForms.Wpf.Annotations;
 using MaterialForms.Wpf.Resources;
 using MaterialForms.Wpf.Validation;
-using Proxier.Mappers;
+using Proxier.Extensions;
 
 namespace MaterialForms.Wpf.FormBuilding
 {
