@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AttributeBuilder.Standard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.5.2\lib\net461\AttributeBuilder.Standard.dll</HintPath>
+      <HintPath>..\..\..\packages\AttributeBuilder.Standard.1.5.4\lib\net461\AttributeBuilder.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Dragablz, Version=0.0.3.191, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Dragablz.0.0.3.191\lib\net45\Dragablz.dll</HintPath>
@@ -76,7 +76,7 @@
       <HintPath>..\..\..\packages\PropertyChanged.Fody.2.2.4.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="Proxier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Proxier.1.5.2\lib\net461\Proxier.dll</HintPath>
+      <HintPath>..\..\..\packages\Proxier.1.5.4\lib\net461\Proxier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
