@@ -75,8 +75,8 @@
     <Reference Include="PropertyChanged, Version=2.2.4.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd">
       <HintPath>..\..\..\packages\PropertyChanged.Fody.2.2.4.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
-    <Reference Include="Proxier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Proxier.1.5.4\lib\net461\Proxier.dll</HintPath>
+    <Reference Include="Proxier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Proxier.1.5.6\lib\net461\Proxier.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
